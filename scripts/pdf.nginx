@@ -1,0 +1,16 @@
+location = /resume.pdf {
+    internal;
+    default_type application/pdf;
+    set $pdf_file "";
+
+    # Call the bash script and capture the output filename
+    set_by_lua_block $pdf_file {
+        local handle = io.popen("/var/www/scripts/fetch-resume-pdf.sh")
+        local result = handle:read("*a")
+        handle:close()
+        return result:gsub("%s+", "") -- Trim whitespace
+    }
+
+    # Serve the generated PDF if it exists
+    alias /var/www/html/.cache/$pdf_file;
+}
