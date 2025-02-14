@@ -1,8 +1,27 @@
 {
   "scripts": {
-    "": ""
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
   },
   "dependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@types/jquery": "^3.5.32",
+    "glob": "^11.0.1",
+    "jquery": "^3.7.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "rxjs": "^7.8.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "@vitejs/plugin-react": "^4.3.4",
+    "@vitest/browser": "^3.0.5",
+    "globals": "^15.14.0",
+    "typescript": "^5.7.3",
+    "vite": "^6.1.0",
+    "vitest": "^3.0.5"
   }
 }
