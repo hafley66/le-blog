@@ -1,10 +1,15 @@
 import {
   Observable,
   animationFrameScheduler,
+  filter,
+  fromEvent,
   interval,
   map,
   merge,
+  pairwise,
   scan,
+  share,
+  shareReplay,
   startWith,
   tap,
 } from "rxjs";
@@ -118,7 +123,7 @@ export function mergeByKeyScan<T extends Record<string, Observable<any>>>(
   [K in keyof T]: T[K] extends Observable<infer U> ? U : never;
 }> {
   return mergeByKey(rec).pipe(
-    scan((state, next) => ((state[next.key] = next.value), state), defaultVal),
+    scan((state, next) => ({ ...state, [next.key]: next.value }), defaultVal),
     startWith(defaultVal),
   );
 }
@@ -157,19 +162,17 @@ export const drawTick = interval(0, animationFrameScheduler).pipe(
  *   console.log("Button clicked:", event);
  * });
  */
-export function fromEventDelegate<Event extends keyof HTMLElementEventMap>(
+export function fromEventDelegate<K extends keyof DocumentEventMap>(
   selector: string,
-  event: Event,
-  container = document.body,
-) {
-  return new Observable<HTMLElementEventMap[Event]>(subscriber => {
-    const handler = (e: HTMLElementEventMap[Event]) => {
-      if (e.target instanceof HTMLElement && e.target.matches(selector))
-        subscriber.next(e);
-    };
-    container.addEventListener(event, handler);
-    return () => container.removeEventListener(event, handler);
-  });
+  eventName: K,
+  root = document.body,
+): Observable<DocumentEventMap[K]> {
+  return fromEvent<DocumentEventMap[K]>(root, eventName).pipe(
+    filter(event => {
+      const target = event.target as HTMLElement;
+      return target?.matches(selector);
+    }),
+  );
 }
 
 /**
@@ -193,3 +196,28 @@ export function fromInputNumber(selector: string, defaultValue?: number) {
     tap(console.log),
   );
 }
+
+export const mouseMove$ = fromEvent<MouseEvent>(document, "mousemove").pipe(
+  map(e => ({ x: e.clientX, y: e.clientY, timestamp: e.timeStamp })),
+  pairwise(),
+  map(([prev, curr]) => {
+    const dt = curr.timestamp - prev.timestamp;
+    return {
+      x: (curr.x - prev.x) / dt,
+      y: (curr.y - prev.y) / dt,
+      currentX: curr.x,
+      currentY: curr.y,
+    };
+  }),
+  scan(
+    (acc, curr) => ({
+      x: acc.x * 0.8 + curr.x * 0.2,
+      y: acc.y * 0.8 + curr.y * 0.2,
+      currentX: curr.currentX,
+      currentY: curr.currentY,
+    }),
+    { x: 0, y: 0, currentX: 0, currentY: 0 },
+  ),
+  startWith({ x: 0, y: 0, currentX: 0, currentY: 0 }),
+  shareReplay({ refCount: true, bufferSize: 1 }),
+);
