@@ -9,13 +9,20 @@
     "ignoreUnknown": false,
     "ignore": []
   },
-  "formatter": { "enabled": true, "indentStyle": "space" },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "lineWidth": 60
+  },
   "organizeImports": { "enabled": false },
   "linter": {
     "enabled": true,
     "rules": {
       "recommended": true,
-      "complexity": { "noUselessConstructor": "off", "noForEach": "off" },
+      "complexity": {
+        "noUselessConstructor": "off",
+        "noForEach": "off"
+      },
       "style": {
         "useNodejsImportProtocol": "off",
         "useImportType": "off",
@@ -30,6 +37,10 @@
     }
   },
   "javascript": {
-    "formatter": { "quoteStyle": "double", "arrowParentheses": "asNeeded" }
+    "formatter": {
+      "quoteStyle": "double",
+      "arrowParentheses": "asNeeded",
+      "lineWidth": 60
+    }
   }
 }

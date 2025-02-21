@@ -1,4 +1,4 @@
-import { REF } from "../../FS/ref.dual.mts";
+import { REF } from "../../src/FS/ref.dual.mts";
 
 export const render = () => String.raw`
   <html>

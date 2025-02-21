@@ -3,9 +3,9 @@ import { glob } from "glob";
 import { resolve } from "path";
 
 // https://vite.dev/config/
-const fileGlob = "src/**/*.html";
+const fileGlob = "**/*.html";
 const htmlFiles = glob
-  .sync(fileGlob)
+  .sync(fileGlob, { ignore: ["dist/**", "node_modules/**"] })
   // .concat(glob.sync("public/blog/**/*.html"))
   .reduce(
     (acc, path) => {
@@ -18,7 +18,31 @@ const htmlFiles = glob
 console.log(htmlFiles);
 
 export default defineConfig({
-  plugins: [],
+  experimental: {
+    // renderBuiltUrl: (filename, type) => {
+    //   console.log({ filename, type });
+    //   if (type.hostType === "html" && type.type === "asset") {
+    //     filename;
+    //   }
+    //   return filename;
+    // },
+  },
+  plugins: [
+    // {
+    //   name: "html-partials",
+    //   transformIndexHtml: {
+    //     order: "pre",
+    //     async handler(html) {
+    //       // create a DOM on the server
+    //       const dom = html;
+    //       // console.log({ html });
+    //       // get list of file names
+    //       // return the updated html string
+    //       return dom;
+    //     },
+    //   },
+    // },
+  ],
   logLevel: "info",
   build: {
     assetsDir: "",

@@ -14,31 +14,49 @@ import {
   tap,
 } from "rxjs";
 import { makeWatcher$ } from "./fs_watcher.deno.mts";
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import {
+  mkdirSync,
+  readFileSync,
+  writeFileSync,
+} from "node:fs";
 import { MARKDOWN_IT } from "./markdown.deno.mts";
 import path from "node:path";
 import { HTML } from "./HTML.dual.mts";
 import { createMermaidRenderer } from "mermaid-isomorphic";
 
-const search = `${(globalThis as any).process.cwd()}/src`;
+const search = `${(globalThis as any).process.cwd()}`;
 const allDenoWatcher$ = makeWatcher$(search, "deno.mts");
-const denoRenderWatcher$ = makeWatcher$(search, "render.deno.mts");
+const denoRenderWatcher$ = makeWatcher$(
+  search,
+  "render.deno.mts",
+);
 const dualWatcher$ = makeWatcher$(search, "dual.mts");
-const mdWatcher$ = makeWatcher$(search, ".md");
-const srcWatcher$ = makeWatcher$(search, "");
+const mdWatcher$ = makeWatcher$(
+  search,
+  /(src|demos|blog)\/.*\.md/,
+);
+const srcWatcher$ = makeWatcher$(search, "src/");
 
 // Deno does not allow glob matching on enabled >:|
 let vscodeSettings = `${process.cwd()}/.vscode/settings.json`;
-const updateDenoPathsBcUgh = merge(allDenoWatcher$, dualWatcher$)
+const updateDenoPathsBcUgh = merge(
+  allDenoWatcher$,
+  dualWatcher$,
+)
   .pipe(
     tap(it => {
-      const ot = JSON.parse(readFileSync(vscodeSettings).toString());
+      const ot = JSON.parse(
+        readFileSync(vscodeSettings).toString(),
+      );
       const p = `src/${it.path.split("src/")[1]}`;
       ot["deno.enablePaths"] ||= [];
       if (!ot["deno.enablePaths"].includes(p)) {
         ot["deno.enablePaths"].push(p);
       }
-      writeFileSync(vscodeSettings, JSON.stringify(ot, null, 2));
+      writeFileSync(
+        vscodeSettings,
+        JSON.stringify(ot, null, 2),
+      );
     }),
   )
   .subscribe();
@@ -75,7 +93,10 @@ const effect$ = denoRenderWatcher$.pipe(
     let module = null;
     return defer(() => from(import(e.path))).pipe(
       switchMap(html =>
-        of(["data", { metaPath: [e.index, eI], module: html }] as const).pipe(),
+        of([
+          "data",
+          { metaPath: [e.index, eI], module: html },
+        ] as const).pipe(),
       ),
       catchError(err => of(["error", err, e] as const)),
       takeUntil(
@@ -92,40 +113,54 @@ const MERMAIDER = createMermaidRenderer();
 const renderMd = mdWatcher$
   .pipe(
     mergeMap(async n => {
+      console.log("Ayo wtf", n);
       let html = readFileSync(n.path).toString();
 
-      html = await Array.from(html.matchAll(/```mermaid/gi)).reduce(
-        function ReduceMermaidManually(n_html, match) {
-          return n_html.then(async html => {
-            const startIndex = match.index;
-            const endIndex = html.indexOf("```", startIndex + 10);
-            if (endIndex !== -1) {
-              const [mermaidContent] = await MERMAIDER([
-                html.substring(startIndex + 10, endIndex),
-              ]);
-              return `${html.slice(0, startIndex)}<pre><code class="mermaid">${
-                mermaidContent.status === "fulfilled"
-                  ? mermaidContent.value.svg
-                  : mermaidContent.reason
-              }</code></pre>${html.slice(endIndex + 3)}`;
-            }
-            return html;
-          });
-        },
-        Promise.resolve(html),
-      );
+      html = await Array.from(
+        html.matchAll(/```mermaid/gi),
+      ).reduce(function ReduceMermaidManually(
+        n_html,
+        match,
+      ) {
+        return n_html.then(async html => {
+          const startIndex = match.index;
+          const endIndex = html.indexOf(
+            "```",
+            startIndex + 10,
+          );
+          if (endIndex !== -1) {
+            const [mermaidContent] = await MERMAIDER([
+              html.substring(startIndex + 10, endIndex),
+            ]);
+            return `${html.slice(0, startIndex)}<pre><code class="mermaid">${
+              mermaidContent.status === "fulfilled"
+                ? mermaidContent.value.svg
+                : mermaidContent.reason
+            }</code></pre>${html.slice(endIndex + 3)}`;
+          }
+          return html;
+        });
+      }, Promise.resolve(html));
 
       let capturedFiles: string[] = [];
       html = Array.from(
-        html.matchAll(/<a data-preview href="(.*)"><\/a>/gi),
+        html.matchAll(
+          /<a data-preview href="(.*)"><\/a>/gi,
+        ),
       ).reduce(function RenderSpecialDirective(acc, match) {
         const p = path.join(
-          match[1].startsWith("/") ? process.cwd() : path.dirname(n.path),
+          match[1].startsWith("/")
+            ? process.cwd()
+            : path.dirname(n.path),
           match[1],
         );
         capturedFiles.push(p);
         const file = readFileSync(p).toString().trim();
-        const hmm = `\`\`\`${match[1].includes(".mts") ? "ts" : path.extname(match[1]).replace(".", "")}
+        const hmm = `\`\`\`${
+          match[1].includes(".mts")
+            ? "ts"
+            : path.extname(match[1]).replace(".", "")
+        }
 ${file}
 \`\`\`
 
@@ -134,10 +169,9 @@ ${file}
         return acc.replace(a, hmm);
       }, html);
       if (capturedFiles.length) {
-        html = html.replace(
-          "<body>",
-          `<body>\n\t<script>window.__hafley_files=[${capturedFiles.join(", ")}]</script>`,
-        );
+        html = `${html}\n<script>window.__hafley_files=["${capturedFiles
+          .map(i => i.replace(process.cwd(), ""))
+          .join('", "')}"]</script>`;
       }
       return {
         next: n,
@@ -148,14 +182,19 @@ ${file}
       };
     }),
     tap(n => {
-      const toDist = path.join(n.next.path.replace(/\.md$/i, ".html"));
+      const toDist = path.join(
+        n.next.path.replace(/\.md$/i, ".html"),
+      );
 
       mkdirSync(path.dirname(toDist), { recursive: true });
       writeFileSync(toDist, n.output);
     }),
     debounceTime(500),
     tap(() => {
-      const it = path.join(process.cwd(), "vite.config.mts");
+      const it = path.join(
+        process.cwd(),
+        "vite.config.mts",
+      );
       const fileContents = readFileSync(it);
       writeFileSync(it, fileContents);
     }),
@@ -167,12 +206,16 @@ effect$
     takeUntil(
       denoRenderWatcher$.pipe(
         filter(w => w.path === `${import.meta.filename}`),
-        tap(n => console.log("TAKE UNTIL TRIGGERED MAIN", n)),
+        tap(n =>
+          console.log("TAKE UNTIL TRIGGERED MAIN", n),
+        ),
       ),
     ),
   )
   .subscribe(x =>
-    x[0] === "error" ? console.log("Error: ", x.slice(1)) : null,
+    x[0] === "error"
+      ? console.log("Error: ", x.slice(1))
+      : null,
   );
 
 console.log("What?");

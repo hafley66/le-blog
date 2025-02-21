@@ -12,8 +12,8 @@ import {
   withLatestFrom,
 } from "rxjs";
 import $ from "jquery";
-import { drawTick, mergeByKeyScan } from "../../lib.dual.mts";
-import { fromEventDelegate, mouseMove$ } from "../../lib.dom.mts";
+import { drawTick, mergeByKeyScan } from "~/lib.dual.mts";
+import { fromEventDelegate, mouseMove$ } from "~/lib.dom.mts";
 
 const GEN_HEX = () => String.raw`
   <svg class="hex" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
