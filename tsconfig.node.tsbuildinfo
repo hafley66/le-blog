@@ -1,1 +1,1 @@
-{"root":["./vite.config.ts"],"errors":true,"version":"5.7.3"}
+{"root":["./vite.config.mts","./src/fs_watcher.deno.mts","./src/main_ssg.deno.mts","./src/markdown.deno.mts","./src/blog/redux-vs-rxjs/render.deno.mts","./src/html.dual.mts","./src/lib.dual.mts","./src/shiki.dual.mts","./src/fs/ref.dual.mts"],"errors":true,"version":"5.7.3"}

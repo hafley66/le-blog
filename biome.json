@@ -5,13 +5,17 @@
     "clientKind": "git",
     "useIgnoreFile": false
   },
-  "files": { "ignoreUnknown": false, "ignore": [] },
+  "files": {
+    "ignoreUnknown": false,
+    "ignore": []
+  },
   "formatter": { "enabled": true, "indentStyle": "space" },
   "organizeImports": { "enabled": false },
   "linter": {
     "enabled": true,
     "rules": {
       "recommended": true,
+      "complexity": { "noUselessConstructor": "off", "noForEach": "off" },
       "style": {
         "useNodejsImportProtocol": "off",
         "useImportType": "off",

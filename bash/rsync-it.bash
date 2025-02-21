@@ -23,3 +23,8 @@ _.blog.sync() {
     -avz \
     $LE_BLOG root@hafley.codes:$LE_BLOG_TARGET
 }
+_.blog.sync.parallel() {
+  (sleep 3 && echo "[1] $(ls -la)" | sed 's/^/[1] /') &
+  (sleep 2 && echo "[2] $(pwd)" | sed 's/^/[2] /') &
+  wait
+}

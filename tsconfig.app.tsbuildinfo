@@ -1,1 +1,1 @@
-{"root":["./src/vite-env.d.ts"],"version":"5.7.3"}
+{"root":["./src/codeloader.mts","./src/html.dual.mts","./src/sidebar.mts","./src/lib.dom.mts","./src/lib.dual.mts","./src/lib.test.ts","./src/shiki.dual.mts","./src/vite-env.d.ts","./src/fs/ref.dual.mts","./src/blog/2025-02-18/merge_demo.mts","./src/demo/2025-02-14/demo1.mts"],"errors":true,"version":"5.7.3"}

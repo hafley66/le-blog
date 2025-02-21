@@ -1,0 +1,25 @@
+<html>
+  <head>
+    <!-- <script type="module" src="../../CodeLoader.mts"></script> -->
+    <style>
+      pre.shiki code {
+        counter-reset: step;
+        counter-increment: step 0;
+      }
+      
+      pre.shiki code .line::before {
+        content: counter(step);
+        counter-increment: step;
+        width: 1rem;
+        margin-right: 1.5rem;
+        display: inline-block;
+        text-align: right;
+        color: rgba(115,138,148,.4)
+      }
+    </style>
+  </head>
+  <body>
+    <!-- <a data-preview href="./index.html?raw"></a>
+    <a data-preview href="../2025-02-14/demo1.mts?raw"></a> -->
+  </body>
+</html>
