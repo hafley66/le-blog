@@ -24,18 +24,18 @@ import path from "node:path";
 import { HTML } from "./HTML.dual.mts";
 import { createMermaidRenderer } from "mermaid-isomorphic";
 
-const search = `${(globalThis as any).process.cwd()}`;
+const search = ["src", "demos", "blog"];
+// .map(
+//   i => `${(globalThis as any).process.cwd()}/${i}`,
+// );
 const allDenoWatcher$ = makeWatcher$(search, "deno.mts");
 const denoRenderWatcher$ = makeWatcher$(
   search,
   "render.deno.mts",
 );
 const dualWatcher$ = makeWatcher$(search, "dual.mts");
-const mdWatcher$ = makeWatcher$(
-  search,
-  /(src|demos|blog)\/.*\.md/,
-);
-const srcWatcher$ = makeWatcher$(search, "src/");
+const mdWatcher$ = makeWatcher$(search, ".md");
+const srcWatcher$ = makeWatcher$(["src"]);
 
 // Deno does not allow glob matching on enabled >:|
 let vscodeSettings = `${process.cwd()}/.vscode/settings.json`;
@@ -113,7 +113,6 @@ const MERMAIDER = createMermaidRenderer();
 const renderMd = mdWatcher$
   .pipe(
     mergeMap(async n => {
-      console.log("Ayo wtf", n);
       let html = readFileSync(n.path).toString();
 
       html = await Array.from(
@@ -173,21 +172,25 @@ ${file}
           .map(i => i.replace(process.cwd(), ""))
           .join('", "')}"]</script>`;
       }
-      return {
+      const it = {
         next: n,
         output: HTML()(MARKDOWN_IT.render(html)).replaceAll(
           '<span class="line"></span></code>',
           "</code>",
         ),
       };
-    }),
-    tap(n => {
       const toDist = path.join(
-        n.next.path.replace(/\.md$/i, ".html"),
+        it.next.path.replace(/\.md$/i, ".html"),
       );
 
       mkdirSync(path.dirname(toDist), { recursive: true });
-      writeFileSync(toDist, n.output);
+      writeFileSync(toDist, it.output);
+      console.log(
+        "Rendered...",
+        it.next.path,
+        "=>",
+        toDist,
+      );
     }),
     debounceTime(500),
     tap(() => {
