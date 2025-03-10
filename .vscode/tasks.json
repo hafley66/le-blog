@@ -1,0 +1,33 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run Biome Formatter Blog",
+      "type": "shell",
+      "command": "pnpx @biomejs/biome format --write",
+      "args": ["."],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [],
+      "options": {
+        "cwd": "${workspaceFolder}/blog"
+      }
+    },
+    {
+      "label": "Run Biome Formatter Demos",
+      "type": "shell",
+      "command": "pnpx @biomejs/biome format --write .",
+      "args": ["."],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [],
+      "options": {
+        "cwd": "${workspaceFolder}/demos"
+      }
+    }
+  ]
+}

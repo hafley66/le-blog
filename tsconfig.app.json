@@ -2,10 +2,13 @@
   "compilerOptions": {
     "target": "ESNext",
     "useDefineForClassFields": true,
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "lib": [
+      "ESNext",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "module": "ESNext",
     "skipLibCheck": true,
-
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
@@ -13,14 +16,26 @@
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
-
+    "jsxImportSource": "react",
     /* Linting */
     "strict": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
-      "~/*": ["./src/*"]
+      "~/*": [
+        "./src/*"
+      ]
     }
   },
-  "include": ["src", "**/*.dual.mts", "**/*.dom.mts", "demos", "blog"],
-  "exclude": ["vite.config.mts", "**/*.deno.mts", "**/*.html.mts", "dist", "node_modules"]
+  "include": [
+    "**/*.dual.tsx",
+    "**/*.dual.ts"
+  ],
+  "exclude": [
+    "vite.config.mts",
+    "**/*.deno.ts",
+    "**/*.deno.tsx",
+    "dist",
+    "node_modules",
+    "src/vite-env.d.ts"
+  ]
 }

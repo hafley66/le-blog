@@ -1,38 +1,4 @@
-
-<!--
-The nav/ol/li/a nesting is semantically correct and follows accessibility best practices:
-- <nav> correctly identifies a navigation section
-- <ol> is appropriate for an ordered list of navigation links
-- <li> elements are properly used as list items
-- <a> elements are direct children of <li> which is correct
-
-However, a few accessibility improvements could be made:
-- Add aria-label to <nav> to describe its purpose (e.g. "Main navigation")
-- Add aria-current="page" to the active link when applicable
-- Consider adding a skip link before the nav for keyboard users
-- Ensure color contrast meets WCAG guidelines for the links
--->
-
-<nav style="margin: 2px auto;">
-  <ol style="padding: 0px; display: flex; gap: 8px; list-style-type: none; align-items: baseline; justify-content: space-between; width: 100%;">
-    <li>
-      <a href="/src/hello">Hello</a>
-    </li>
-    <li>
-      <a href="/src/resume">Resume</a>
-    </li>
-    <li>
-      <a href="/src/demos">Demos</a>
-    </li>
-    <li style="font-size: 120%">
-      <a href="/src/big-thoughts">Big Thoughts</a>
-    </li>
-    <li style="font-size: 80%">
-      <a href="/src/small-thoughts">Small Thoughts</a>
-    </li>
-  </ol>
-</nav>
-
+<a data-include href="/src/Sidebar.html"></a>
 <details open><summary>Table of Contents
 
 </summary>

@@ -1,88 +1,84 @@
-import { defineConfig } from "vite";
-import { glob } from "glob";
-import { resolve } from "path";
+import { defineConfig } from "vite"
+import { glob } from "glob"
+import { resolve } from "node:path"
+import { existsSync } from "node:fs"
 
 // https://vite.dev/config/
-const fileGlob = "**/*.html";
+const fileGlob = "src/**/*.vite.html"
 const htmlFiles = glob
-  .sync(fileGlob, { ignore: ["dist/**", "node_modules/**"] })
-  // .concat(glob.sync("public/blog/**/*.html"))
+  .sync(fileGlob, {
+    ignore: ["dist/**", "node_modules/**"],
+  })
   .reduce(
     (acc, path) => {
-      acc[path] = path;
-      return acc;
+      acc[path.replace(".vite", "").replace(/^src/i, "")] =
+        path.replace(/^src/i, "")
+      return acc
     },
     {} as Record<string, string>,
-  );
+  )
 
-console.log(htmlFiles);
-
+console.log(htmlFiles)
+const serverRewrites = Object.fromEntries(
+  Object.entries(htmlFiles)
+    .map(([k, v]) => [`^${k}$`, v]) // This server config only listens to regex strings that begin with ^
+    .flatMap(([key, value]) => [
+      [
+        key,
+        {
+          target: "http://localhost:5173",
+          rewrite: () => value,
+        },
+      ],
+      [
+        key.replace(".html", ""),
+        {
+          target: "http://localhost:5173",
+          rewrite: () => value,
+        },
+      ],
+      [
+        key.replace("/index.html", ""),
+        {
+          target: "http://localhost:5173",
+          rewrite: () => value,
+        },
+      ],
+    ]),
+)
+console.log({ serverRewrites })
 export default defineConfig({
-  experimental: {
-    // renderBuiltUrl: (filename, type) => {
-    //   console.log({ filename, type });
-    //   if (type.hostType === "html" && type.type === "asset") {
-    //     filename;
-    //   }
-    //   return filename;
-    // },
-  },
-  plugins: [
-    // {
-    //   name: "html-partials",
-    //   transformIndexHtml: {
-    //     order: "pre",
-    //     async handler(html) {
-    //       // create a DOM on the server
-    //       const dom = html;
-    //       // console.log({ html });
-    //       // get list of file names
-    //       // return the updated html string
-    //       return dom;
-    //     },
-    //   },
-    // },
-  ],
-  logLevel: "info",
+  root: "src",
+  publicDir: process.cwd() + "/public",
   build: {
     assetsDir: "",
-
+    outDir: process.cwd() + "/dist",
     minify: false,
     copyPublicDir: true,
     target: "ES2024",
     rollupOptions: {
       input: htmlFiles,
-      output: {
-        manualChunks: id => {
-          if (id.includes("node_modules")) {
-            return "vendor";
-          }
-        },
-      },
+      // output: {
+      //   manualChunks: id => {
+      //     if (id.includes("node_modules")) {
+      //       return "vendor"
+      //     }
+      //   },
+      // },
     },
   },
-  // root: resolve(process.cwd(), "src"),
+  server: {
+    proxy: {
+      ...serverRewrites,
+    },
+  },
+
   resolve: {
     alias: {
       "~": resolve(process.cwd(), "src"),
     },
   },
   optimizeDeps: {
-    include: [
-      "react",
-      "react-dom",
-      "rxjs",
-      "lodash",
-      "shiki/wasm",
-      "@shikijs/langs/javascript",
-      "@shikijs/langs/typescript",
-      "@shikijs/langs/html",
-      "@shikijs/langs/bash",
-      "@shikijs/langs/css",
-      "jquery",
-      "@shikijs/themes/nord",
-      "shiki/core",
-      "shiki/engine/oniguruma",
-    ],
+    include: ["react", "react-dom", "rxjs", "lodash"],
   },
-});
+})

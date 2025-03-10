@@ -4,60 +4,88 @@
       <meta charset="utf-8">
       <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
       <meta http-equiv="content-type" content="application/json; charset=utf-8" />
-      <script type="module" src="/src/special-hex-underline.mts"></script>
+      <!-- <script type="module" src="/src/special-hex-underline.mts"></script> -->
       <link rel="stylesheet" href="/src/shiki-twoslash.css">
       <link rel="stylesheet" href="/src/i-am-kate-code-tree.css">
       
-      <style>
-        * { box-sizing: border-box; }
-
-        body {
-          margin: auto;
-          max-width: 60rem;
-          position: relative;
-          opacity: 1;
-          font-family: Caslon, serif;
-        }
-
-        .f-a-center { display: flex; align-items: center; }
-        .f-col { display: flex; flex-direction: column; }
-        .j-space-between { justify-content: space-between;}
-        .f {display: flex;}
-        .w50 {width: 50%}
-        .w100 { width: 100%}
-      </style>
-      
     </head>
     <body data-body>
-      <!--
-The nav/ol/li/a nesting is semantically correct and follows accessibility best practices:
-- <nav> correctly identifies a navigation section
-- <ol> is appropriate for an ordered list of navigation links
-- <li> elements are properly used as list items
-- <a> elements are direct children of <li> which is correct
-
-However, a few accessibility improvements could be made:
-- Add aria-label to <nav> to describe its purpose (e.g. "Main navigation")
-- Add aria-current="page" to the active link when applicable
-- Consider adding a skip link before the nav for keyboard users
-- Ensure color contrast meets WCAG guidelines for the links
--->
-<nav style="margin: 2px auto;">
-  <ol style="padding: 0px; display: flex; gap: 8px; list-style-type: none; align-items: baseline; justify-content: space-between; width: 100%;">
+      <nav aria-label="Main navigation" style="margin: 2px auto;">
+  <style>
+    .nav-list {
+      counter-reset: nav-list-counter;
+      padding: 0;
+      margin-left: 0px;
+      display: flex;
+      list-style-type: none;
+      align-items: center;
+      width: 100%;
+      font-family: Arial, "Space Mono", monospace;
+    }
+    .nav-list li {
+      flex: 1;
+      text-align: center;
+    }
+    .nav-list li:nth-of-type(1) { --bb-color: red }
+    .nav-list li:nth-of-type(2) { --bb-color: purple }
+    .nav-list li:nth-of-type(3) { --bb-color: green }
+    .nav-list li:nth-of-type(4) { --bb-color: blue }
+    .nav-list li:nth-of-type(5) { --bb-color: black }
+    .nav-list li a { 
+      padding: 12px 0px;
+      display: block;
+      text-align: center;
+      height: inherit;
+      width: inherit;
+      text-decoration: none;
+      color: #2a2a2a;
+      position: relative;
+      transition: color 0.1s linear, background 0.1s linear;
+      font-weight: 400;
+    }
+    .nav-list a:hover:not([aria-current="page"])::before {
+      position: absolute;
+      content: "";
+      height: 0px;
+      width: 60px;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      border-bottom: 8px solid var(--bb-color);
+    }
+    .nav-list a[aria-current="page"] {
+      color: white;
+      background: rgba(0, 0, 255, 0.9);
+    }
+    .nav-link[aria-current="page"]::after {
+      content: "";
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      /* animation: float 3s ease-in-out infinite; */
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+  </style>
+  <ol class="nav-list">
     <li>
-      <a href="/src/hello">Hello</a>
+      <a href="/index.html">Hello</a>
     </li>
     <li>
-      <a href="/src/resume">Resume</a>
+      <a href="/resume.html">Resume</a>
     </li>
     <li>
-      <a href="/src/demos">Demos</a>
+      <a href="/demos/index.html">Demos</a>
     </li>
     <li style="font-size: 120%">
-      <a href="/src/big-thoughts">Big Thoughts</a>
+      <a href="/blogs/index" class="nav-link" aria-current="page">Big Thoughts</a>
     </li>
     <li style="font-size: 80%">
-      <a href="/src/small-thoughts">Small Thoughts</a>
+      <a href="/journal/index.html">Small Thoughts</a>
     </li>
   </ol>
 </nav>
@@ -102,7 +130,11 @@ However, a few accessibility improvements could be made:
 </ul>
 </li>
 </ul>
-<pre class="shiki nord twoslash lsp" style="background-color:#2e3440ff;color:#d8dee9ff" tabindex="0"><code class="language-ts"><span class="line"><span style="color:#81A1C1">import</span><span style="color:#ECEFF4"> {</span><span style="color:#D8DEE9"> </span><span style="color:#D8DEE9"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#81A1C1">function</span><span style="color:#88C0D0"> merge</span><span style="color:#ECEFF4">&#x3C;</span><span style="color:#8FBCBB">A</span><span style="color:#81A1C1"> extends</span><span style="color:#81A1C1"> readonly</span><span style="color:#8FBCBB"> unknown</span><span style="color:#D8DEE9FF">[]</span><span style="color:#ECEFF4">>(</span><span style="color:#81A1C1">...</span><span style="color:#D8DEE9">sources</span><span style="color:#81A1C1">:</span><span style="color:#8FBCBB"> ObservableInputTuple</span><span style="color:#ECEFF4">&#x3C;</span><span style="color:#8FBCBB">A</span><span style="color:#ECEFF4">>)</span><span style="color:#81A1C1">:</span><span style="color:#8FBCBB"> Observable</span><span style="color:#ECEFF4">&#x3C;</span><span style="color:#8FBCBB">A</span><span style="color:#D8DEE9FF">[</span><span style="color:#8FBCBB">number</span><span style="color:#D8DEE9FF">]</span><span style="color:#ECEFF4">></span><span style="color:#D8DEE9FF"> (+</span><span style="color:#B48EAD">3</span><span style="color:#8FBCBB"> overloads</span><span style="color:#D8DEE9FF">)</span></code></span>merge</span></span><span style="color:#ECEFF4">,</span><span style="color:#D8DEE9"> </span><span style="color:#D8DEE9"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#81A1C1">function</span><span style="color:#88C0D0"> fromEvent</span><span style="color:#ECEFF4">&#x3C;</span><span style="color:#8FBCBB">T</span><span style="color:#ECEFF4">>(</span><span style="color:#D8DEE9">target</span><span style="color:#81A1C1">:</span><span style="color:#8FBCBB"> HasEventTargetAddRemove</span><span style="color:#ECEFF4">&#x3C;</span><span style="color:#8FBCBB">T</span><span style="color:#ECEFF4">></span><span style="color:#81A1C1"> |</span><span style="color:#8FBCBB"> ArrayLike</span><span style="color:#ECEFF4">&#x3C;</span><span style="color:#8FBCBB">HasEventTargetAddRemove</span><span style="color:#ECEFF4">&#x3C;</span><span style="color:#8FBCBB">T</span><span style="color:#ECEFF4">>>,</span><span style="color:#D8DEE9"> eventName</span><span style="color:#81A1C1">:</span><span style="color:#8FBCBB"> string</span><span style="color:#ECEFF4">)</span><span style="color:#81A1C1">:</span><span style="color:#8FBCBB"> Observable</span><span style="color:#ECEFF4">&#x3C;</span><span style="color:#8FBCBB">T</span><span style="color:#ECEFF4">></span><span style="color:#D8DEE9FF"> (+</span><span style="color:#B48EAD">11</span><span style="color:#8FBCBB"> overloads</span><span style="color:#D8DEE9FF">)</span></code></span>fromEvent</span></span><span style="color:#ECEFF4">,</span><span style="color:#D8DEE9"> </span><span style="color:#D8DEE9"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#81A1C1">function</span><span style="color:#88C0D0"> map</span><span style="color:#ECEFF4">&#x3C;</span><span style="color:#8FBCBB">T</span><span style="color:#ECEFF4">,</span><span style="color:#8FBCBB"> R</span><span style="color:#ECEFF4">>(</span><span style="color:#88C0D0">project</span><span style="color:#81A1C1">:</span><span style="color:#ECEFF4"> (</span><span style="color:#D8DEE9">value</span><span style="color:#81A1C1">:</span><span style="color:#8FBCBB"> T</span><span style="color:#ECEFF4">,</span><span style="color:#D8DEE9"> index</span><span style="color:#81A1C1">:</span><span style="color:#8FBCBB"> number</span><span style="color:#ECEFF4">)</span><span style="color:#81A1C1"> =></span><span style="color:#8FBCBB"> R</span><span style="color:#ECEFF4">)</span><span style="color:#81A1C1">:</span><span style="color:#8FBCBB"> OperatorFunction</span><span style="color:#ECEFF4">&#x3C;</span><span style="color:#8FBCBB">T</span><span style="color:#ECEFF4">,</span><span style="color:#8FBCBB"> R</span><span style="color:#ECEFF4">></span><span style="color:#D8DEE9FF"> (+</span><span style="color:#B48EAD">1</span><span style="color:#8FBCBB"> overload</span><span style="color:#D8DEE9FF">)</span></code></span>map</span></span><span style="color:#ECEFF4"> }</span><span style="color:#81A1C1"> from</span><span style="color:#ECEFF4"> "</span><span style="color:#A3BE8C">rxjs</span><span style="color:#ECEFF4">"</span><span style="color:#81A1C1">;</span></span>
+<pre class="shiki nord twoslash lsp" style="background-color:#2e3440ff;color:#d8dee9ff" tabindex="0"><code class="language-ts"><span class="line"><span style="color:#81A1C1">import</span><span style="color:#ECEFF4"> {</span></span>
+<span class="line"><span style="color:#D8DEE9">  </span><span style="color:#D8DEE9"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#81A1C1">function</span><span style="color:#88C0D0"> fromEvent</span><span style="color:#ECEFF4">&#x3C;</span><span style="color:#8FBCBB">T</span><span style="color:#ECEFF4">>(</span><span style="color:#D8DEE9">target</span><span style="color:#81A1C1">:</span><span style="color:#8FBCBB"> HasEventTargetAddRemove</span><span style="color:#ECEFF4">&#x3C;</span><span style="color:#8FBCBB">T</span><span style="color:#ECEFF4">></span><span style="color:#81A1C1"> |</span><span style="color:#8FBCBB"> ArrayLike</span><span style="color:#ECEFF4">&#x3C;</span><span style="color:#8FBCBB">HasEventTargetAddRemove</span><span style="color:#ECEFF4">&#x3C;</span><span style="color:#8FBCBB">T</span><span style="color:#ECEFF4">>>,</span><span style="color:#D8DEE9"> eventName</span><span style="color:#81A1C1">:</span><span style="color:#8FBCBB"> string</span><span style="color:#ECEFF4">)</span><span style="color:#81A1C1">:</span><span style="color:#8FBCBB"> Observable</span><span style="color:#ECEFF4">&#x3C;</span><span style="color:#8FBCBB">T</span><span style="color:#ECEFF4">></span><span style="color:#D8DEE9FF"> (+</span><span style="color:#B48EAD">11</span><span style="color:#8FBCBB"> overloads</span><span style="color:#D8DEE9FF">)</span></code></span>fromEvent</span></span><span style="color:#ECEFF4">,</span></span>
+<span class="line"><span style="color:#D8DEE9">  </span><span style="color:#D8DEE9"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#81A1C1">function</span><span style="color:#88C0D0"> map</span><span style="color:#ECEFF4">&#x3C;</span><span style="color:#8FBCBB">T</span><span style="color:#ECEFF4">,</span><span style="color:#8FBCBB"> R</span><span style="color:#ECEFF4">>(</span><span style="color:#88C0D0">project</span><span style="color:#81A1C1">:</span><span style="color:#ECEFF4"> (</span><span style="color:#D8DEE9">value</span><span style="color:#81A1C1">:</span><span style="color:#8FBCBB"> T</span><span style="color:#ECEFF4">,</span><span style="color:#D8DEE9"> index</span><span style="color:#81A1C1">:</span><span style="color:#8FBCBB"> number</span><span style="color:#ECEFF4">)</span><span style="color:#81A1C1"> =></span><span style="color:#8FBCBB"> R</span><span style="color:#ECEFF4">)</span><span style="color:#81A1C1">:</span><span style="color:#8FBCBB"> OperatorFunction</span><span style="color:#ECEFF4">&#x3C;</span><span style="color:#8FBCBB">T</span><span style="color:#ECEFF4">,</span><span style="color:#8FBCBB"> R</span><span style="color:#ECEFF4">></span><span style="color:#D8DEE9FF"> (+</span><span style="color:#B48EAD">1</span><span style="color:#8FBCBB"> overload</span><span style="color:#D8DEE9FF">)</span></code></span>map</span></span><span style="color:#ECEFF4">,</span></span>
+<span class="line"><span style="color:#D8DEE9">  </span><span style="color:#D8DEE9"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#81A1C1">function</span><span style="color:#88C0D0"> merge</span><span style="color:#ECEFF4">&#x3C;</span><span style="color:#8FBCBB">A</span><span style="color:#81A1C1"> extends</span><span style="color:#81A1C1"> readonly</span><span style="color:#8FBCBB"> unknown</span><span style="color:#D8DEE9FF">[]</span><span style="color:#ECEFF4">>(</span><span style="color:#81A1C1">...</span><span style="color:#D8DEE9">sources</span><span style="color:#81A1C1">:</span><span style="color:#8FBCBB"> ObservableInputTuple</span><span style="color:#ECEFF4">&#x3C;</span><span style="color:#8FBCBB">A</span><span style="color:#ECEFF4">>)</span><span style="color:#81A1C1">:</span><span style="color:#8FBCBB"> Observable</span><span style="color:#ECEFF4">&#x3C;</span><span style="color:#8FBCBB">A</span><span style="color:#D8DEE9FF">[</span><span style="color:#8FBCBB">number</span><span style="color:#D8DEE9FF">]</span><span style="color:#ECEFF4">></span><span style="color:#D8DEE9FF"> (+</span><span style="color:#B48EAD">3</span><span style="color:#8FBCBB"> overloads</span><span style="color:#D8DEE9FF">)</span></code></span>merge</span></span><span style="color:#ECEFF4">,</span></span>
+<span class="line"><span style="color:#ECEFF4">}</span><span style="color:#81A1C1"> from</span><span style="color:#ECEFF4"> "</span><span style="color:#A3BE8C">rxjs</span><span style="color:#ECEFF4">"</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#81A1C1">const</span><span style="color:#D8DEE9"> </span><span style="color:#D8DEE9"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><pre class="shiki nord" style="background-color:#2e3440ff;color:#d8dee9ff" tabindex="0"><code><span class="line"><span style="color:#81A1C1">const</span><span style="color:#D8DEE9"> events</span><span style="color:#81A1C1">:</span><span style="color:#8FBCBB"> Observable</span><span style="color:#ECEFF4">&#x3C;{</span></span>
 <span class="line"><span style="color:#81A1C1">    readonly</span><span style="color:#D8DEE9FF"> type</span><span style="color:#81A1C1">:</span><span style="color:#ECEFF4"> "</span><span style="color:#A3BE8C">click</span><span style="color:#ECEFF4">"</span><span style="color:#81A1C1">;</span></span>
@@ -127,22 +159,29 @@ However, a few accessibility improvements could be made:
 <span class="line"><span style="color:#ECEFF4">}</span><span style="color:#81A1C1">></span><span style="color:#ECEFF4">(</span><span style="color:#88C0D0">project</span><span style="color:#81A1C1">:</span><span style="color:#ECEFF4"> (</span><span style="color:#D8DEE9">value</span><span style="color:#81A1C1">:</span><span style="color:#8FBCBB"> Event</span><span style="color:#ECEFF4">,</span><span style="color:#D8DEE9"> index</span><span style="color:#81A1C1">:</span><span style="color:#8FBCBB"> number</span><span style="color:#ECEFF4">)</span><span style="color:#81A1C1"> =></span><span style="color:#ECEFF4"> {</span></span>
 <span class="line"><span style="color:#81A1C1">    readonly</span><span style="color:#D8DEE9FF"> type</span><span style="color:#81A1C1">:</span><span style="color:#ECEFF4"> "</span><span style="color:#A3BE8C">click</span><span style="color:#ECEFF4">"</span><span style="color:#81A1C1">;</span></span>
 <span class="line"><span style="color:#81A1C1">    readonly</span><span style="color:#D8DEE9FF"> target</span><span style="color:#81A1C1">:</span><span style="color:#8FBCBB"> EventTarget</span><span style="color:#81A1C1"> |</span><span style="color:#8FBCBB"> null</span><span style="color:#81A1C1">;</span></span>
-<span class="line"><span style="color:#ECEFF4">})</span><span style="color:#81A1C1">:</span><span style="color:#8FBCBB"> OperatorFunction</span><span style="color:#ECEFF4">&#x3C;</span><span style="color:#D8DEE9FF">...</span><span style="color:#ECEFF4">></span><span style="color:#D8DEE9FF"> (+</span><span style="color:#B48EAD">1</span><span style="color:#8FBCBB"> overload</span><span style="color:#D8DEE9FF">)</span></span></code></pre></code><div class="twoslash-popup-docs twoslash-popup-docs-tags"><span class="twoslash-popup-docs-tag"><span class="twoslash-popup-docs-tag-name">@deprecated</span><span class="twoslash-popup-docs-tag-value">Use a closure instead of a `thisArg`. Signatures accepting a `thisArg` will be removed in v8.</span></span></div></span>map</span></span><span style="color:#D8DEE9FF">(</span><span style="color:#D8DEE9"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#D8DEE9FF">i</span><span style="color:#ECEFF4">:</span><span style="color:#D8DEE9"> Event</span></code></span>i</span></span><span style="color:#81A1C1"> =></span><span style="color:#D8DEE9FF"> (</span><span style="color:#ECEFF4">{</span><span style="color:#D8DEE9"> </span><span style="color:#D8DEE9"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#D8DEE9FF">type</span><span style="color:#ECEFF4">:</span><span style="color:#ECEFF4"> "</span><span style="color:#A3BE8C">click</span><span style="color:#ECEFF4">"</span></code></span>type</span></span><span style="color:#ECEFF4">:</span><span style="color:#ECEFF4"> "</span><span style="color:#A3BE8C">click</span><span style="color:#ECEFF4">"</span><span style="color:#ECEFF4">,</span><span style="color:#D8DEE9"> </span><span style="color:#D8DEE9"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#D8DEE9FF">target</span><span style="color:#ECEFF4">:</span><span style="color:#D8DEE9"> EventTarget</span><span style="color:#81A1C1"> |</span><span style="color:#81A1C1"> null</span></code></span>target</span></span><span style="color:#ECEFF4">:</span><span style="color:#D8DEE9"> </span><span style="color:#D8DEE9"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#D8DEE9FF">i</span><span style="color:#ECEFF4">:</span><span style="color:#D8DEE9"> Event</span></code></span>i</span></span><span style="color:#ECEFF4">.</span><span style="color:#D8DEE9"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#D8DEE9">Event</span><span style="color:#ECEFF4">.</span><span style="color:#D8DEE9">target</span><span style="color:#D8DEE9FF">: </span><span style="color:#D8DEE9">EventTarget</span><span style="color:#81A1C1"> |</span><span style="color:#81A1C1"> null</span></code><div class="twoslash-popup-docs">Returns the object to which event is dispatched (its target).
+<span class="line"><span style="color:#ECEFF4">})</span><span style="color:#81A1C1">:</span><span style="color:#8FBCBB"> OperatorFunction</span><span style="color:#ECEFF4">&#x3C;</span><span style="color:#D8DEE9FF">...</span><span style="color:#ECEFF4">></span><span style="color:#D8DEE9FF"> (+</span><span style="color:#B48EAD">1</span><span style="color:#8FBCBB"> overload</span><span style="color:#D8DEE9FF">)</span></span></code></pre></code><div class="twoslash-popup-docs twoslash-popup-docs-tags"><span class="twoslash-popup-docs-tag"><span class="twoslash-popup-docs-tag-name">@deprecated</span><span class="twoslash-popup-docs-tag-value">Use a closure instead of a `thisArg`. Signatures accepting a `thisArg` will be removed in v8.</span></span></div></span>map</span></span><span style="color:#D8DEE9FF">(</span></span>
+<span class="line"><span style="color:#D8DEE9">      </span><span style="color:#D8DEE9"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#D8DEE9FF">i</span><span style="color:#ECEFF4">:</span><span style="color:#D8DEE9"> Event</span></code></span>i</span></span><span style="color:#81A1C1"> =></span></span>
+<span class="line"><span style="color:#D8DEE9FF">        (</span><span style="color:#ECEFF4">{</span></span>
+<span class="line"><span style="color:#D8DEE9">          </span><span style="color:#D8DEE9"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#D8DEE9FF">type</span><span style="color:#ECEFF4">:</span><span style="color:#ECEFF4"> "</span><span style="color:#A3BE8C">click</span><span style="color:#ECEFF4">"</span></code></span>type</span></span><span style="color:#ECEFF4">:</span><span style="color:#ECEFF4"> "</span><span style="color:#A3BE8C">click</span><span style="color:#ECEFF4">"</span><span style="color:#ECEFF4">,</span></span>
+<span class="line"><span style="color:#D8DEE9">          </span><span style="color:#D8DEE9"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#D8DEE9FF">target</span><span style="color:#ECEFF4">:</span><span style="color:#D8DEE9"> EventTarget</span><span style="color:#81A1C1"> |</span><span style="color:#81A1C1"> null</span></code></span>target</span></span><span style="color:#ECEFF4">:</span><span style="color:#D8DEE9"> </span><span style="color:#D8DEE9"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#D8DEE9FF">i</span><span style="color:#ECEFF4">:</span><span style="color:#D8DEE9"> Event</span></code></span>i</span></span><span style="color:#ECEFF4">.</span><span style="color:#D8DEE9"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#D8DEE9">Event</span><span style="color:#ECEFF4">.</span><span style="color:#D8DEE9">target</span><span style="color:#D8DEE9FF">: </span><span style="color:#D8DEE9">EventTarget</span><span style="color:#81A1C1"> |</span><span style="color:#81A1C1"> null</span></code><div class="twoslash-popup-docs">Returns the object to which event is dispatched (its target).
 
-[MDN Reference](https://developer.mozilla.org/docs/Web/API/Event/target)</div></span>target</span></span><span style="color:#ECEFF4"> }</span><span style="color:#D8DEE9FF">) </span><span style="color:#81A1C1">as</span><span style="color:#81A1C1"> </span><span style="color:#81A1C1"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><pre class="shiki nord" style="background-color:#2e3440ff;color:#d8dee9ff" tabindex="0"><code><span class="line"><span style="color:#81A1C1">type</span><span style="color:#8FBCBB"> const</span><span style="color:#81A1C1"> =</span><span style="color:#ECEFF4"> {</span></span>
+[MDN Reference](https://developer.mozilla.org/docs/Web/API/Event/target)</div></span>target</span></span><span style="color:#ECEFF4">,</span></span>
+<span class="line"><span style="color:#ECEFF4">        }</span><span style="color:#D8DEE9FF">) </span><span style="color:#81A1C1">as</span><span style="color:#81A1C1"> </span><span style="color:#81A1C1"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><pre class="shiki nord" style="background-color:#2e3440ff;color:#d8dee9ff" tabindex="0"><code><span class="line"><span style="color:#81A1C1">type</span><span style="color:#8FBCBB"> const</span><span style="color:#81A1C1"> =</span><span style="color:#ECEFF4"> {</span></span>
 <span class="line"><span style="color:#81A1C1">    readonly</span><span style="color:#D8DEE9FF"> type</span><span style="color:#81A1C1">:</span><span style="color:#ECEFF4"> "</span><span style="color:#A3BE8C">click</span><span style="color:#ECEFF4">"</span><span style="color:#81A1C1">;</span></span>
 <span class="line"><span style="color:#81A1C1">    readonly</span><span style="color:#D8DEE9FF"> target</span><span style="color:#81A1C1">:</span><span style="color:#8FBCBB"> EventTarget</span><span style="color:#81A1C1"> |</span><span style="color:#8FBCBB"> null</span><span style="color:#81A1C1">;</span></span>
-<span class="line"><span style="color:#ECEFF4">}</span></span></code></pre></code></span>const</span></span><span style="color:#D8DEE9FF">)</span><span style="color:#ECEFF4">,</span></span>
+<span class="line"><span style="color:#ECEFF4">}</span></span></code></pre></code></span>const</span></span><span style="color:#ECEFF4">,</span></span>
+<span class="line"><span style="color:#D8DEE9FF">    )</span><span style="color:#ECEFF4">,</span></span>
 <span class="line"><span style="color:#D8DEE9FF">  )</span><span style="color:#ECEFF4">,</span></span>
-<span class="line"><span style="color:#D8DEE9FF">)</span><span style="color:#81A1C1">;</span></span>
+<span class="line"><span style="color:#D8DEE9FF">)</span></span>
 <span class="line"><span style="color:#D8DEE9"><span class="twoslash-hover twoslash-query-presisted"><span class="twoslash-popup-container"><div class="twoslash-popup-arrow"></div><code class="twoslash-popup-code"><pre class="shiki nord" style="background-color:#2e3440ff;color:#d8dee9ff" tabindex="0"><code><span class="line"><span style="color:#81A1C1">const</span><span style="color:#D8DEE9"> events</span><span style="color:#81A1C1">:</span><span style="color:#8FBCBB"> Observable</span><span style="color:#ECEFF4">&#x3C;{</span></span>
 <span class="line"><span style="color:#81A1C1">    readonly</span><span style="color:#D8DEE9FF"> type</span><span style="color:#81A1C1">:</span><span style="color:#ECEFF4"> "</span><span style="color:#A3BE8C">click</span><span style="color:#ECEFF4">"</span><span style="color:#81A1C1">;</span></span>
 <span class="line"><span style="color:#81A1C1">    readonly</span><span style="color:#D8DEE9FF"> target</span><span style="color:#81A1C1">:</span><span style="color:#8FBCBB"> EventTarget</span><span style="color:#81A1C1"> |</span><span style="color:#8FBCBB"> null</span><span style="color:#81A1C1">;</span></span>
-<span class="line"><span style="color:#ECEFF4">}></span></span></code></pre></code></span>events</span></span><span style="color:#81A1C1">;</span></span>
+<span class="line"><span style="color:#ECEFF4">}></span></span></code></pre></code></span>events</span></span></span>
 </code></pre>
 <pre class="shiki nord" style="background-color:#2e3440ff;color:#d8dee9ff" tabindex="0"><code class="language-json"><span class="line"><span style="color:#ECEFF4">{</span></span>
 <span class="line"><span style="color:#ECEFF4">  "</span><span style="color:#8FBCBB">imports</span><span style="color:#ECEFF4">"</span><span style="color:#ECEFF4">:</span><span style="color:#ECEFF4"> {</span></span>
-<span class="line"><span style="color:#ECEFF4">    "</span><span style="color:#8FBCBB">@std/fs</span><span style="color:#ECEFF4">"</span><span style="color:#ECEFF4">:</span><span style="color:#ECEFF4"> "</span><span style="color:#A3BE8C">jsr:@std/fs@^1.0.13</span><span style="color:#ECEFF4">"</span><span style="color:#ECEFF4">,</span></span>
+<span class="line"><span style="color:#ECEFF4">    "</span><span style="color:#8FBCBB">~/</span><span style="color:#ECEFF4">"</span><span style="color:#ECEFF4">:</span><span style="color:#ECEFF4"> "</span><span style="color:#A3BE8C">./src/</span><span style="color:#ECEFF4">"</span><span style="color:#ECEFF4">,</span></span>
+<span class="line"><span style="color:#ECEFF4">    "</span><span style="color:#8FBCBB">@std/fs</span><span style="color:#ECEFF4">"</span><span style="color:#ECEFF4">:</span><span style="color:#ECEFF4"> "</span><span style="color:#A3BE8C">jsr:@std/fs@^1.0.14</span><span style="color:#ECEFF4">"</span><span style="color:#ECEFF4">,</span></span>
 <span class="line"><span style="color:#ECEFF4">    "</span><span style="color:#8FBCBB">@std/path</span><span style="color:#ECEFF4">"</span><span style="color:#ECEFF4">:</span><span style="color:#ECEFF4"> "</span><span style="color:#A3BE8C">jsr:@std/path@^1.0.8</span><span style="color:#ECEFF4">"</span><span style="color:#ECEFF4">,</span></span>
 <span class="line"><span style="color:#ECEFF4">    "</span><span style="color:#8FBCBB">rxjs</span><span style="color:#ECEFF4">"</span><span style="color:#ECEFF4">:</span><span style="color:#ECEFF4"> "</span><span style="color:#A3BE8C">npm:rxjs</span><span style="color:#ECEFF4">"</span></span>
 <span class="line"><span style="color:#ECEFF4">  }</span></span>
@@ -164,6 +203,6 @@ However, a few accessibility improvements could be made:
 <ol>
 <li>If you convert</li>
 </ol>
-<script>window.__hafley_files=["/blog/2025-02-18/merge_demo.mts", "/deno.json"]</script>
+<script>window.__hafley_files=["/blog/2025-02-18/merge_demo.mts", "/deno.json", "/src/Sidebar.html"]</script>
     </body>
   </html>

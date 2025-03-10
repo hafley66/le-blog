@@ -24,9 +24,13 @@ async function generatePDF() {
   }
 
   // Generate PDF with Puppeteer
-  const browser = await puppeteer.launch({ headless: "new" });
+  const browser = await puppeteer.launch({
+    headless: "new",
+  });
   const page = await browser.newPage();
-  await page.goto(`file://${HTML_FILE}`, { waitUntil: "networkidle2" });
+  await page.goto(`file://${HTML_FILE}`, {
+    waitUntil: "networkidle2",
+  });
   await page.pdf({ path: pdfPath, format: "A4" });
 
   await browser.close();

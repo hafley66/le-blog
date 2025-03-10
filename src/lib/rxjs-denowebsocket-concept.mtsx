@@ -1,0 +1,23 @@
+// filename: src/blog/post/index.mtsx
+export const publicBase = 'blog/a-post';
+
+
+export const render$ = defer(() => from(
+  ReactDOM.renderToString(
+    <Layout { ...etc } >
+    <CssLink href={ publicBase + '/index.css'}>
+      </CssLink>
+      < ClientScript src = { publicBase + '/example.mtsx'}/> / / Special, will collect all mentions of ClientScripts and add them to eventual list of
+        </Layout>
+  )
+)).pipe(
+          map(i => ['vite-dist', i] as const)
+        );
+
+// for every observable string, 
+
+export default class extends RenderObservable {
+
+};
+
+

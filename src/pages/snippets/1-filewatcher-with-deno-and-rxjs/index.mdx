@@ -1,0 +1,191 @@
+---
+layout: ~/layouts/MarkdownLayout.astro
+date_created: "2025-02-24"
+title: "Filewatcher with deno and rxjs"
+description: "Filesystem CRUDding with built-ins and rxjs"
+tags: ['deno', 'rxjs', 'backend', 'typescript', 'javascript']
+---
+oh cool i had to solve this same problem. here's an online updater you can run during your server's dev mode. it will do side effect of keeping the list auto-up-to date. Feel free to make it a separate command or change up.
+
+I am rolling my own ssg for learning deno and react server apis for my site. In involves deno built-ins for watching files, std/fs for initially reading all files by glob, and rxjs to flatten the timing of all these async things/state management. Cheers, hope it helps someone.
+
+## Install rxjs and std/fs
+run `deno install npm:rxjs jsr:@std/fs` first if not already
+
+Fun facts:
+| Function | Globs? | Read File | Create File | Update File | OutputType | Infinite |
+|-|-|-|-|-|-|-|
+| Deno.watchFs | No | No | Yes | Yes | Async Iterator of batched file events | Yes | 
+| expandGlob | Yes | Yes | No | No | Async Iterator of each file in the glob then | No |
+
+## The rxjs file watcher
+Initialize with expandGlob on subscribe and then switch over to deno watcher and map expandGlob to match watcher. 
+There is some redundancy but this works fine.
+
+```ts
+import {
+  debounceTime,
+  defer,
+  filter,
+  from,
+  map,
+  merge,
+  mergeMap,
+  Observable,
+  ObservableInput,
+  reduce,
+  share,
+  startWith,
+  switchMap,
+} from "rxjs";
+import { expandGlob } from "@std/fs";
+
+// Convenience, very useful to convert lazy observable of 1 value on init of many places.
+export function deferFrom<T>(
+  factory: () => ObservableInput<T>,
+): Observable<T> {
+  return defer(() => from(factory()));
+}
+
+export const makeWatcher$ = (
+  folders: string[],
+  endsWith = "",
+  includeDirs = false,
+) =>
+  deferFrom(() =>
+    // Get all files based on root list, and file type
+    expandGlob(`{${folders.join(",")}}/**/*${endsWith}*`, {
+      includeDirs,
+    })
+  ).pipe(
+    // map path to path on complete
+    reduce(
+      (acc, path) => ((acc[path.path] = path.path), acc),
+      {} as Record<string, string>,
+    ),
+    // Convert to object to make this initial read match watcher api.
+    map((p) => ({ paths: Object.values(p) })),
+    // By this point, we are done with initial read
+    switchMap((next) =>
+      // Now, we use merge for each folder, and then we watch every file we initially found.
+      // Deno.watchFs does not work with same glob pattern, so we have to do some trickery.
+      merge(
+        // now we combo into watch fs, we must do this for 2-forms, list of files, and an $ for every folder.
+        // This is necessary for the watchFs api, can't mix them.
+        deferFrom(() => Deno.watchFs(next.paths)),
+        ...folders.map((f) =>
+          deferFrom(() =>
+            Deno.watchFs(f, {
+              recursive: true,
+            })
+          )
+        ),
+      ).pipe(
+        filter(
+          (e) => e.kind === "create" || e.kind === "modify",
+        ),
+        debounceTime(100),
+        // Start with the initial read concat'ed
+        // This creates a type union of our duck type with actual fs.events type in deno,
+        // but its fine bc we are ducked to .paths
+        startWith(next),
+      )
+    ),
+    // Map remove the things we dont want (tail matching)
+    mergeMap((i, index) =>
+      // We flatten/convert normal object {paths: []} into multiple Observable<{path: string}>
+      from(i.paths).pipe(
+        filter((i) => i.includes(endsWith)),
+        map((p) => ({ path: p, time: +new Date(), index })),
+      )
+    ),
+    // Share the watcher instances
+    share(),
+  );
+```
+
+## The settings reader/writer
+This just listens for whatever patterns you make from above. You can change `search` and `deno.mts` etc. 
+NOTE: Run this from root containing .vscode folder.
+
+```ts
+import {
+  concatMap,
+  defer,
+  merge,
+  of,
+  scan,
+  switchMap,
+  throttleTime,
+} from "rxjs";
+import { makeWatcher$ } from "./fs_watcher.deno.ts";
+
+// These are the three roots for renderables
+// We have to do it this way bc not everything supports shell glob in multiple places.
+const search = ["src", "demos", "blog"];
+
+// Every deno file ending in deno.mts
+const allDenoWatcher$ = makeWatcher$(search, "deno.ts");
+const dualWatcher$ = makeWatcher$(search, "dual.ts");
+
+// Deno does not allow glob matching on enabled >:|
+let vscodeSettings = `${process.cwd()}/.vscode/settings.json`;
+
+// merge = async SELECT UNION ALL
+const updateDenoPathsBcUgh = defer(function ReadFromVscodeSettingsForInit() {
+  let init: { ["deno.enablePaths"]: string[] };
+  try {
+    const it = Deno.readTextFileSync(vscodeSettings);
+    console.log({ it });
+    init = JSON.parse(
+      it,
+    );
+  } catch (e) {
+    console.error(e);
+    init = { "deno.enablePaths": [] };
+  }
+  return of(init);
+}).pipe(
+  switchMap(
+    // Scan is stable state bc defer only returns 1 value and completes, so switchMap only runs 1 time.
+    function ListenToFileChangesAndTheirPathsOnMatch(dot_vscode_config) {
+      // Grab our 2 streams of valid files.
+      return merge(
+        allDenoWatcher$,
+        dualWatcher$,
+      ).pipe(
+        // Yeehaw redux = scan but with ability to freestyle the next event.
+        scan(function StorePathChangeToSettings(state, next) {
+          let nextWithoutCWD = next.path.replace(process.cwd(), "").replace(
+            /^\//ig,
+            "",
+          ); // remove cwd and trailing
+          if (!state["deno.enablePaths"]?.includes(nextWithoutCWD)) {
+            state["deno.enablePaths"].push(nextWithoutCWD);
+          }
+          return state;
+        }, dot_vscode_config),
+      );
+    },
+  ),
+  // Prevent chaos
+  throttleTime(1000, undefined, {
+    leading: true,
+    trailing: true,
+  }),
+  // All higher rxjs maps accept promise outputs and auto-converts into observable of 1 value.
+  // If longer than 1second to write for whatever reason, it will queue them in sequence.
+  concatMap((dot_vscode_config) =>
+    Deno.writeTextFile(
+      vscodeSettings,
+      JSON.stringify(dot_vscode_config, null, 2),
+    ).then(
+      // Echo param since this is side effectual.
+      () => dot_vscode_config,
+    )
+  ),
+  // Get told when a commit happens.
+).subscribe(
+  (n) => console.log("Wrote to vscode settings for deno file patterns", n),
+);
+```

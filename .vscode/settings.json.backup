@@ -1,0 +1,25 @@
+{
+  "deno.enablePaths": [
+    "src/blog/1-how-i-made-this-site/index.render.deno.tsx",
+    "src/blog/ideas.render.deno.tsx",
+    "src/lib/00_Remark.deno.tsx",
+    "src/lib/0_RenderBase.deno.tsx",
+    "src/lib/fix-deno-vscode-settings.deno.ts",
+    "src/lib/fs_watcher.deno.ts",
+    "src/main_ssg.deno.ts",
+    "src/lib/00_ReactAsyncPrerender.dual.tsx",
+    "src/lib/0_Layout.dual.tsx",
+    "src/lib/Hex/index.dual.tsx",
+    "src/lib/lib.dual.ts"
+  ],
+  "deno.config": "./deno.json",
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "src/**/index.vite.html": true
+  }
+}

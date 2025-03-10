@@ -1,0 +1,24 @@
+---
+import IndexFolderPage from "~/components/IndexFolderPage.astro";
+const allPosts = Object.values(
+  import.meta.glob("./*/index.astro", { eager: true }),
+) as any[];
+const allMd = Object.values(
+  import.meta.glob("./*/index.md", { eager: true }),
+).map((i: any) => ({
+  title: i.frontmatter.title,
+  description: i.frontmatter.description,
+  date_created: i.frontmatter.date_created,
+  url: i.url
+})) as any[];
+const allMdx = Object.values(
+  import.meta.glob("./*/index.mdx", { eager: true }),
+).map((i: any) => ({
+  title: i.frontmatter.title,
+  description: i.frontmatter.description,
+  date_created: i.frontmatter.date_created,
+  url: i.url
+})) as any[];
+
+---
+<IndexFolderPage title={"Blog Index"} description={"All the blogs"} modules={[...allPosts, ...allMd, ...allMdx]} h1="Look at all these chickens"/>

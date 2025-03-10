@@ -1,20 +1,37 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "lib": ["ESNext", "DOM", "deno.ns"],
+    "lib": [
+      "ESNext",
+      "DOM",
+      "deno.ns"
+    ],
     "module": "ESNext",
     "skipLibCheck": true,
-
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "moduleDetection": "force",
     "noEmit": true,
-
     /* Linting */
     "strict": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    /* React */
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "paths": {
+      "~/*": [
+        "./src/*"
+      ]
+    }
   },
-  "include": ["vite.config.mts", "**/*.deno.mts", "**/*.dual.mts"]
+  "include": [
+    "vite.config.mts",
+    "**/*.deno.tsx",
+    "**/*.deno.ts",
+    "**/*.dual.ts",
+    "**/*.dual.tsx",
+    "src/vite-env.d.ts"
+  ]
 }
