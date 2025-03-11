@@ -7,11 +7,12 @@ import {
   interval,
   map,
   merge,
+  of,
   scan,
   shareReplay,
   startWith,
   tap,
-} from "rxjs";
+} from "rxjs"
 
 /**
  * Merges multiple observables into a single observable, while preserving the key-value pairs of the original observables.
@@ -42,9 +43,9 @@ export function mergeByKey<
 ): Observable<
   {
     [K in keyof T]: {
-      key: K;
-      value: T[K] extends Observable<infer U> ? U : never;
-    };
+      key: K
+      value: T[K] extends Observable<infer U> ? U : never
+    }
   }[keyof T]
 > {
   return merge(
@@ -56,7 +57,7 @@ export function mergeByKey<
         })),
       ),
     ),
-  );
+  )
 }
 
 /**
@@ -90,7 +91,7 @@ export function mergeByTup<
     readonly [K in keyof T]: [
       K,
       T[K] extends Observable<infer U> ? U : never,
-    ];
+    ]
   }[keyof T]
 > {
   // @ts-ignore
@@ -98,7 +99,7 @@ export function mergeByTup<
     ...Object.keys(rec).map(key =>
       rec[key].pipe(map(value => [key, value] as const)),
     ),
-  );
+  )
 }
 
 /**
@@ -129,12 +130,12 @@ export function mergeByKeyScan<
   defaultVal: {
     [K in keyof T]: T[K] extends Observable<infer U>
       ? U
-      : never;
+      : never
   },
 ): Observable<{
   [K in keyof T]: T[K] extends Observable<infer U>
     ? U
-    : never;
+    : never
 }> {
   return mergeByKey(rec).pipe(
     scan(
@@ -145,7 +146,7 @@ export function mergeByKeyScan<
       defaultVal,
     ),
     startWith(defaultVal),
-  );
+  )
 }
 
 /**
@@ -162,21 +163,21 @@ export const drawTick = interval(
 ).pipe(
   s$ =>
     new Observable<number>(s => {
-      let start = performance.now();
+      let start = performance.now()
       let u = s$
         .pipe(map(() => performance.now() - start))
-        .subscribe(s);
+        .subscribe(s)
       return () => {
-        u.unsubscribe();
-      };
+        u.unsubscribe()
+      }
     }),
-);
+)
 
 export function shareLatest<T>() {
   return (source: Observable<T>) =>
     shareReplay<T>({ bufferSize: 1, refCount: true })(
       source,
-    );
+    )
 }
 
 export function TAG<T>(TAG_PREFIX: string | number) {
@@ -190,11 +191,67 @@ export function TAG<T>(TAG_PREFIX: string | number) {
         console.log(`${TAG_PREFIX}/subscribe`),
       unsubscribe: () =>
         console.log(`${TAG_PREFIX}/unsubscribe`),
-    })(source);
+    })(source)
 }
 
 export function deferFrom<T>(
   factory: () => ObservableInput<T>,
 ): Observable<T> {
-  return defer(() => from(factory()));
+  return defer(() => from(factory()))
+}
+
+/**
+ * Partial combineLatest, where we are waiting for FIRST next from ANY, not at least FIRST from EVERY
+ * @param sources
+ * @returns
+ */
+
+export function combinePartialArray<
+  T extends Observable<any>[],
+>(
+  sources: T,
+): Observable<{
+  [K in keyof T]: T[K] extends Observable<infer U>
+    ? U | undefined
+    : never
+}> {
+  const isArray = sources;
+    // @ts-ignore im done fighting you TS
+    return merge(
+      ...isArray.map((source, index) =>
+        source.pipe(map(value => ({ index, value }))),
+      ),
+    ).pipe(
+      scan((acc, { index, value }) => {
+        const newAcc = [...acc]
+        newAcc[index] = value
+        return newAcc
+      }, Array(isArray.length).fill(undefined)),
+    )
+}
+
+
+export function combinePartialRecord<
+  T extends Record<string, Observable<any>>
+>(
+  sources: T,
+): Observable<{
+  [K in keyof T]: T[K] extends Observable<infer U>
+    ? U | undefined
+    : never
+}> {
+  const asObject = !Array.isArray(sources) ? sources : null
+  if (!asObject)
+    throw new Error("not possible mergeCollect")
+
+  const keys = Object.keys(asObject)
+  return merge(
+    ...keys.map(key =>
+      asObject[key].pipe(map(value => ({ key, value }))),
+    ),
+  ).pipe(
+    scan((acc, { key, value }) => {
+      return { ...acc, [key]: value }
+    }, {} as any),
+  )
 }

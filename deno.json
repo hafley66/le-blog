@@ -1,14 +1,15 @@
 {
-  "imports": {
-    "@qnighy/dedent": "jsr:@qnighy/dedent@^0.1.2",
-    "@std/jsonc": "jsr:@std/jsonc@^1.0.1",
-    "~/": "./src/",
-    "@std/fs": "jsr:@std/fs@^1.0.14",
-    "@std/path": "jsr:@std/path@^1.0.8",
-    "rxjs": "npm:rxjs"
-  },
-  "compilerOptions": {
-    "jsx": "react-jsx",
-    "jsxImportSource": "react"
-  }
+	"imports": {
+		"@qnighy/dedent": "jsr:@qnighy/dedent@^0.1.2",
+		"@std/jsonc": "jsr:@std/jsonc@^1.0.1",
+		"~/": "./src/",
+		"@std/fs": "jsr:@std/fs@^1.0.14",
+		"@std/path": "jsr:@std/path@^1.0.8",
+		"rxjs": "npm:rxjs",
+		"lodash": "npm:lodash"
+	},
+	"compilerOptions": {
+		"jsx": "react-jsx",
+		"jsxImportSource": "react"
+	}
 }

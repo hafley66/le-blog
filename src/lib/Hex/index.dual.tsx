@@ -1,18 +1,24 @@
+/** @jsxImportSource ~/lib/rxjs-vhtml */
+/** @jsxImportSourceTypes ~/lib/rxjs-vhtml */
+
+import { Observable, of } from "rxjs"
+import { Props$ } from "~/lib/rxjs-vhtml/jsx-runtime"
+
 export const Hex: {
   (props: {
-    value: React.ReactNode
-  }): React.ReactNode
+    value: string
+  }): Observable<string>
   getColor(index: number): Record<string, string>
   className: string
 } = props => {
-  return (
-    <>
-      <div className="hex-content hex-shadow">
-        <div className="hex-content-amoeba" />
+  return of(
+    String.raw`
+      <div class="hex-content hex-shadow">
+        <div class="hex-content-amoeba"></div>
       </div>
-      <div className="hex-content-amoeba" />
-      <span>{props.value}</span>
-    </>
+      <div class="hex-content-amoeba"></div>
+      <span>${props.value}</span>
+`,
   )
 }
 

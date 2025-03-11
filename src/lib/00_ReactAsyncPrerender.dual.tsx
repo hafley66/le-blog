@@ -7,15 +7,20 @@ import {
   lastValueFrom,
   Observable,
 } from "rxjs"
+import { TAG } from "~/lib/lib.dual.ts"
 
 export const asyncPrerenderStatic = async (
-  jsxMaybes: React.ReactNode | Observable<React.ReactNode>,
+  jsxMaybes: React.ReactNode | Observable<string>,
 ): Promise<string> => {
+  console.log({ jsxMaybes })
   const Root = isObservable(jsxMaybes)
     ? () =>
         use(
           useMemo(
-            () => lastValueFrom(jsxMaybes),
+            () =>
+              lastValueFrom(
+                jsxMaybes.pipe(TAG("JSX MAybes")),
+              ),
             [jsxMaybes],
           ),
         )

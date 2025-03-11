@@ -43,7 +43,11 @@ const effect$ = denoRenderWatcher$
           ),
         ),
         map(i => ["data", i] as const),
-        catchError(err => of(["error", err, e] as const)),
+        catchError(
+          err =>
+            console.error(err) ||
+            of(["error", err, e] as const),
+        ),
       )
     }),
     debounceTime(500),

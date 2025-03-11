@@ -10,7 +10,11 @@
     "src/lib/00_ReactAsyncPrerender.dual.tsx",
     "src/lib/0_Layout.dual.tsx",
     "src/lib/Hex/index.dual.tsx",
-    "src/lib/lib.dual.ts"
+    "src/lib/lib.dual.ts",
+    "src/lib/idea.deno.tsx",
+    "src/lib/00_Remark2.deno.tsx",
+    "src/lib/rxjs-vhtml/vhtml.deno.ts",
+    "src/lib/rxjs-vhtml/test.deno.tsx"
   ],
   "deno.config": "./deno.json",
   "files.exclude": {

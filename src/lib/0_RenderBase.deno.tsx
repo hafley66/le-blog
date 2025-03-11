@@ -1,28 +1,32 @@
-import React, { use } from "react"
+/** @jsxImportSource ./rxjs-vhtml */
+/** @jsxImportSourceTypes ./rxjs-vhtml */
+import _ from "lodash"
+
 import {
   BehaviorSubject,
-  lastValueFrom,
-  map,
   MonoTypeOperatorFunction,
+  Observable,
+  Subject,
   scan,
   share,
-  Subject,
+  shareReplay,
+  switchMap,
   takeUntil,
   tap,
   timer,
 } from "rxjs"
-import _ from "lodash"
 import {
   FootnoteFlat,
   HeaderFlat,
   HeaderProps,
   TOC,
 } from "./0_Layout.dual.tsx"
-import { Remark } from "./00_Remark.deno.tsx"
-import { dedent } from "@qnighy/dedent"
+import { Remark } from "./00_Remark2.deno.tsx"
+import jsx from "~/lib/rxjs-vhtml/jsx-runtime"
+import { TAG } from "~/lib/lib.dual.ts"
 
 export const Render$ = (
-  tocTreePipe: MonoTypeOperatorFunction<React.JSX.Element> = takeUntil<React.JSX.Element>(
+  tocTreePipe: MonoTypeOperatorFunction<string> = takeUntil<string>(
     timer(500),
   ),
 ) => {
@@ -34,14 +38,22 @@ export const Render$ = (
     `H${1 | 2 | 3 | 4 | 5 | 6}`,
     (
       title: string,
-      render?: React.ReactNode,
-    ) => React.ReactNode
+      render?:
+        | string
+        | string[]
+        | Element
+        | Element[]
+        | (string | Element)[],
+    ) => Observable<string>
   > = Object.fromEntries(
     ([1, 2, 3, 4, 5, 6] as const).map(
       i =>
         [
           `H${i}`,
-          (title: string, render?: React.ReactNode) => {
+          (
+            title: string,
+            render?: Observable<string> | string,
+          ) => {
             const id = _.kebabCase(title)
             header$.next({
               value: title,
@@ -50,22 +62,16 @@ export const Render$ = (
             })
             const latest =
               asTreeState$.value.flat.at(-1)?.address
-            console.log(title, latest)
+
             return (
               <section id={`section-${id}`}>
-                {React.createElement(
-                  `h${i}`,
-                  { id },
-                  <>
-                    <span>{latest ?? ""}</span>
-                    {title}
-                  </>,
-                )}
-                {(typeof render === "string" ? (
-                  <Remark>{dedent`${render.replace(/''/gi, "`")}`}</Remark>
-                ) : (
-                  render
-                )) ?? null}
+                {jsx(`h${i}`, {
+                  id,
+                  children: [latest ?? "", title],
+                })}
+                {(typeof render === "string"
+                  ? Remark(`${render.replace(/''/gi, "`")}`)
+                  : render) ?? null}
               </section>
             )
           },
@@ -104,7 +110,13 @@ export const Render$ = (
             n.push(curr.index)
             curr = curr.parent
           }
-          return n.reverse().join(".") + "."
+          return `${n
+            .reverse()
+            .slice(1 /* slice the root h1 off */)
+            .map(
+              i => i + 1 /* Users start at index 1 base */,
+            )
+            .join(".")}. `
         },
       }
 
@@ -120,7 +132,7 @@ export const Render$ = (
       state.push(node)
       flat.push(node)
 
-      console.log({ next })
+      // console.log({ next })
 
       return {
         stack: state,
@@ -132,26 +144,18 @@ export const Render$ = (
   )
 
   const asTreeRoot$ = asTree$.pipe(
-    map(
-      i => <TOC tocRoot={i.stack[0]} />, // The root is at the front
+    switchMap(
+      i => TOC({ tocRoot: i.stack[0] }), // The root is at the front
     ),
+    tocTreePipe,
+    shareReplay(),
   )
 
-  let lastValuePromise: Promise<React.JSX.Element> | null =
-    null
-
-  const asTreeSync$ = asTreeRoot$.pipe(tocTreePipe)
-  asTreeSync$.subscribe()
+  asTreeRoot$.subscribe()
   return {
     ...H,
     asTree$,
-    // TOC_SYNC: () =>
-    //   use(
-    //     (lastValuePromise ||= lastValueFrom(asTreeSync$)),
-    //   ),
-    // TOC_CUSTOM: () =>
-    //   use(
-    //     (lastValuePromise ||= lastValueFrom(asTreeRoot$)),
-    //   ),
+    TOC: asTreeRoot$,
+    header$,
   }
 }

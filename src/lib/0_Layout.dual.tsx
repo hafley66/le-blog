@@ -1,4 +1,9 @@
+/** @jsxImportSource ~/lib/rxjs-vhtml */
+/** @jsxImportSourceTypes ~/lib/rxjs-vhtml */
+
 import { Hex } from "~/lib/Hex/index.dual.tsx"
+import { Observable, of } from "rxjs"
+import { RxJSXNode } from "~/lib/rxjs-vhtml/jsx-runtime"
 
 export type LayoutProps = {
   url: string
@@ -9,9 +14,10 @@ export type LayoutProps = {
   tags?: string[]
   disable_toc?: boolean
   slots?: Partial<{
-    belowH1: React.ReactNode
+    belowH1: RxJSXNode
   }>
-  children?: React.ReactNode
+  children?: RxJSXNode
+  toc?: RxJSXNode
 }
 
 export type FootnoteFlat = {
@@ -27,109 +33,28 @@ export type FooterProps = {
 
 export const Tags = (props: { items: string[] }) => {
   return (
-    <>
+    <div
+      className="f-col f-a-center"
+      id="tags"
+      style={{ marginBottom: "24px" }}
+    >
       <div
-        className="f-col f-a-center"
-        id="tags"
-        style={{ marginBottom: "24px" }}
+        className="responsive-hex-grid-3"
+        // style={{ "--n": +props.items.length }}
       >
-        <div
-          className="responsive-hex-grid-3"
-          // style={{ "--n": +props.items.length }}
-        >
-          {props.items.map((it, index) => (
-            <a
-              key={it}
-              className="hex-content"
-              href={`/tags/${it}`}
-              // role="button"
-              style={{ ...Hex.getColor(index) }}
-            >
-              <Hex value={it} />
-            </a>
-          ))}
-        </div>
+        {props.items.map((it, index) => (
+          <a
+            key={it}
+            className="hex-content"
+            href={`/tags/${it}`}
+            // role="button"
+            style={{ ...Hex.getColor(index) }}
+          >
+            {Hex({ value: it })}
+          </a>
+        ))}
       </div>
-      <style
-        // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
-        dangerouslySetInnerHTML={{
-          __html: `
-  .hex-content {
-    background: var(--hex-color);
-    text-align: center;
-    color: white;
-    padding: 2px 2px;
-    position: relative;
-    margin-right: 4px;
-    font-weight: 700;
-    transition: 200ms transform ease;
-
-    &:not(.hex-shadow) {
-      z-index: 10;
-      cursor: pointer;
-    }
-
-    > .hex-content-amoeba {
-      container: derp / size;
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -2;
-
-      &::after {
-        content: " ";
-        width: 0px;
-        height: 0px;
-        position: absolute;
-        top: 0;
-        right: 100%;
-        border-top: 50cqh solid transparent;
-        border-bottom: 50cqh solid transparent;
-
-        border-right: 50cqh solid var(--hex-color);
-      }
-
-      &::before {
-        content: " ";
-        width: 0px;
-        height: 0px;
-        position: absolute;
-        top: 0;
-        left: 100%;
-        border-top: 50cqh solid transparent;
-        border-bottom: 50cqh solid transparent;
-
-        border-left: 50cqh solid var(--hex-color);
-      }
-    }
-  }
-
-  .hex-shadow {
-    --hex-color: var(--color-shadow);
-    color: var(--hex-color);
-    position: absolute;
-    top: 4px;
-    left: 2px;
-    width: 100%;
-    height: 100%;
-    z-index: -10;
-    pointer-events: none;
-  }
-
-  .hex-content:not(.hex-shadow):hover {
-    transform: translate(2px, 4px);
-    text-decoration: underline;
-    .hex-shadow {
-      transform: translate(-2px, -4px) scaleX(1.02) scaleY(1.1);
-    }
-  }`,
-        }}
-      />
-    </>
+    </div>
   )
 }
 
@@ -145,12 +70,10 @@ export const PrimaryNavigation = (props: {
   ]
 
   const { pathname } = URL.parse(
-    "http://localhost" + props.url,
+    `http://localhost${props.url}`,
   ) || {
     pathname: "",
   }
-
-  console.log(props.url, { pathname })
 
   const isCurrentPage = (href: string) => {
     if (href === "/") {
@@ -198,11 +121,9 @@ export const Layout = (props: LayoutProps) => {
       </head>
       <body>
         <header>
-          <PrimaryNavigation url={props.url} />
+          {PrimaryNavigation({ url: props.url })}
         </header>
-        <main
-        // class:list={[{ "body-markdown": Astro.props.enableMarkdownTocStyles }]}
-        >
+        <main className={"body-markdown"}>
           {props.title ||
           props.tags ||
           props.date_created ? (
@@ -217,11 +138,12 @@ export const Layout = (props: LayoutProps) => {
               {props.description ? (
                 <p id="h1-desc">{props.description}</p>
               ) : null}
-              {props.tags ? (
-                <Tags items={props.tags} />
-              ) : null}
+              {props.tags
+                ? Tags({ items: props.tags })
+                : null}
             </section>
           ) : null}
+          {props.toc}
           <div id="main-content-middle">
             {props.children}
           </div>
@@ -245,7 +167,10 @@ export type HeaderProps = HeaderFlat & {
   address: string
 }
 
-export const TOC = (props: { tocRoot: HeaderProps }) => {
+export const TOC = (props: {
+  tocRoot: HeaderProps
+}): Observable<string> => {
+  console.log("Le TOC")
   return (
     <details open id="section-table-of-contents">
       <summary id="toc-header-contents">
