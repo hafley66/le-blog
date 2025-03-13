@@ -281,7 +281,7 @@ main.body-markdown {
     content: counters(list-item, ".") " ";
   }
 
-  code:not(:has(div)) {
+  code:not(:has(.line)) {
     background: var(--color-bg-contrast);
     display: inline-block;
     padding: 0px 4px;
@@ -290,15 +290,24 @@ main.body-markdown {
   }
 }
 
-/* .expressive-code .gutter .ln {
-  min-width: unset !important;
+pre code:has(.line) {
+  display: grid;
+  padding: 16px;
+  & .line:empty {
+    height: 16px;
+  }
+  line-height: 1.6;
+  overflow-x: auto;
+}
+/* 
+.expressive-code .gutter .ln {
   padding-inline: 1ch !important; 
-} */
+}
 
 .expressive-code .ec-line .code {
   padding-inline-start: 8px !important;
   padding-inline-end: 4px !important;
-}
+} */
 
 .fancy-hr {
   position: relative;

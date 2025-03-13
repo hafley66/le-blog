@@ -1,16 +1,24 @@
 /** @jsxImportSource ./rxjs-vhtml */
 /** @jsxImportSourceTypes ./rxjs-vhtml */
-import rehypeExpressiveCode, {
-  RehypeExpressiveCodeOptions,
-} from "rehype-expressive-code"
-import ecTwoSlash from "expressive-code-twoslash"
 import remarkGfm from "remark-gfm"
 import rehypeStringify from "rehype-stringify"
 import remarkParse from "remark-parse"
 import remarkRehype from "remark-rehype"
-import rehypeSanitize from "rehype-sanitize"
+// import rehypeSanitize from "rehype-sanitize"
+import rehypeRaw from "rehype-raw"
 import { unified } from "unified"
-
+import rehypeExternalLinks from "rehype-external-links"
+import rehypeSlug from "rehype-slug"
+import rehypeAutolinkHeadings from "rehype-autolink-headings"
+import rehypeShikiFromHighlighter from "@shikijs/rehype/core"
+import {
+  transformerTwoslash,
+  rendererRich,
+} from "@shikijs/twoslash"
+import {
+  rehypeAddIdToSectionForToc,
+  remarkNestSections,
+} from "./remark_rehype/remarkNestSections.deno.ts"
 import {
   BehaviorSubject,
   Observable,
@@ -20,27 +28,43 @@ import {
 } from "rxjs"
 
 import _ from "lodash"
-
-const rehypeExpressiveCodeOptions: RehypeExpressiveCodeOptions =
-  {
-    defaultProps: {
-      overridesByLang: {
-        "bash,ps,sh,ts,tsx,js,jsx": {
-          preserveIndent: false,
-        },
-      },
-      preserveIndent: true,
-    },
-    plugins: [ecTwoSlash({})],
-  }
+import { SHIKI, SHIKI_THEMES } from "~/shiki.deno.ts"
 
 const REEEE = await unified()
   .use(remarkParse)
-  .use(remarkGfm)
-  .use(remarkRehype)
-  .use(rehypeSanitize)
-  .use(rehypeExpressiveCode, rehypeExpressiveCodeOptions)
-  .use(rehypeStringify)
+  .use(remarkGfm, {} as Parameters<typeof remarkGfm>[0])
+  .use(remarkNestSections)
+  .use(remarkRehype, {
+    allowDangerousHtml: true,
+    clobberPrefix: "",
+  } as Parameters<typeof remarkRehype>[0])
+  .use(rehypeRaw, {} as Parameters<typeof rehypeRaw>[0])
+  // // .use(rehypeSanitize, {
+  // //   allowComments: true,
+  // //   clobberPrefix: "",
+  // // } as Parameters<typeof rehypeSanitize>[0])
+  // .use(rehypeExternalLinks, {
+  //   rel: ["nofollow", "noopener", "noreferrer"],
+  //   target: "_blank",
+  // } as Parameters<typeof rehypeExternalLinks>[0])
+  // .use(rehypeSlug)
+  // .use(rehypeAutolinkHeadings, {
+  //   behavior: "wrap",
+  // } as Parameters<typeof rehypeAutolinkHeadings>[0])
+  // .use(rehypeAddIdToSectionForToc)
+  .use(rehypeShikiFromHighlighter, SHIKI, {
+    // defaultColor: "dark",
+    theme: "vitesse-dark",
+    // mergeWhitespaces
+    transformers: [
+      transformerTwoslash({
+        renderer: rendererRich(),
+      }),
+    ],
+  } as Parameters<typeof rehypeShikiFromHighlighter>[1])
+  .use(rehypeStringify, {
+    allowDangerousHtml: true,
+  } as Parameters<typeof rehypeStringify>[0])
 
 let remarkCalls = 0
 const _input = new Subject<string>()

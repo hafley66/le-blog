@@ -20,7 +20,9 @@
 				"useImportType": "off",
 				"noCommaOperator": "off",
 				"noNonNullAssertion": "info",
-				"useConst": "info"
+				"useConst": "info",
+				"noUnusedTemplateLiteral": "off",
+				"useTemplate": "info"
 			},
 			"suspicious": {
 				"noAssignInExpressions": "warn",

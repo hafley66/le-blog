@@ -6,16 +6,6 @@ import { Attributes, vhtml } from "./vhtml.deno.ts";
 
 const { isEmpty } = _;
 
-function resolveObservable(value: any): Observable<string> {
-  if (isObservable(value)) {
-    return value.pipe(
-      map((v) => (v == null ? "" : String(v))),
-    );
-  }
-  return of(value == null ? "" : String(value));
-}
-
-// Converts object-based styles into inline CSS string
 function styleToString(style: JSX.CSSProperties): string {
   return Object.entries(style)
     .filter(
@@ -37,12 +27,33 @@ export function jsx(
     | null,
   ...wtf
 ): Observable<string> {
+  function resolveObservable(value: any, meta: any): Observable<any> {
+    // if (propsWithChildren.debug) {
+    //   console.log({ tag, value, meta });
+    // }
+    if (isObservable(value)) {
+      return value.pipe(
+        map((
+          v,
+        ) => (v == null
+          ? ""
+          : Array.isArray(v)
+          ? (console.log(tag, meta),
+            combinePartialArray(v.map((i) => isObservable(i) ? i : of(i))))
+            .pipe(map((partial) => partial.join("")))
+          : String(v))
+        ),
+      );
+    }
+    return of(value == null ? "" : String(value));
+  }
+
   try {
     const { children: _children, ...props } = propsWithChildren ||
       {};
     let childrenn =
       (!_children ? [] : Array.isArray(_children) ? _children : [_children])
-        .filter(Boolean);
+        .filter(Boolean).flat();
 
     const attrObservables: Record<
       string,
@@ -82,15 +93,17 @@ export function jsx(
             attrObservables[key] = of(value as string);
           }
         } else if (isObservable(value)) {
-          attrObservables[key] = resolveObservable(value);
+          attrObservables[key] = resolveObservable(value, key);
         } else {
           attrObservables[key] = of(value);
         }
       }
     }
-
-    childrenn.forEach((child) => {
-      childrenObservables.push(resolveObservable(child));
+    // if (props.debug) {
+    //   console.log({ childrenn });
+    // }
+    childrenn.forEach((child, index) => {
+      childrenObservables.push(resolveObservable(child, `child-${index}`));
     });
 
     const attrs$ = Object.keys(attrObservables).length
@@ -133,13 +146,13 @@ export function jsx(
         (i) =>
           !!(hasChildren ? i.childrenCount : hasProps ? i.propCount : true),
       ),
-      switchMap((i) =>
-        of(
+      switchMap((i) => {
+        return of(
           vhtml(tag, {
             ...i.props,
           }, i.children) as string,
-        )
-      ),
+        );
+      }),
     );
   } catch (e) {
     console.error(e);

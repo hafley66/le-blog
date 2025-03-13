@@ -14,7 +14,20 @@
     "src/lib/idea.deno.tsx",
     "src/lib/00_Remark2.deno.tsx",
     "src/lib/rxjs-vhtml/vhtml.deno.ts",
-    "src/lib/rxjs-vhtml/test.deno.tsx"
+    "src/lib/rxjs-vhtml/test.deno.tsx",
+    "src/blog/2-auto-indexing-technique/index.render.deno.tsx",
+    "src/blog/how-its-made/this-site/part-1-astro/index.render.deno.tsx",
+    "src/SITEMAP.deno.ts",
+    "src/lib/ridiculous_file_watchers/SITEMAP_generator.deno.ts",
+    "src/lib/ridiculous_file_watchers/fix-deno-vscode-settings.deno.ts",
+    "src/blog/how-its-made/this-site/part-2-deno/index.render.deno.tsx",
+    "src/BASH.deno.ts",
+    "src/lib/remark_rehype/remarkNestSections.deno.ts",
+    "src/lib/shiki/gen.deno.ts",
+    "src/lib/unix_socket_test/a_parent.deno.ts",
+    "src/lib/unix_socket_test/b_child.deno.ts",
+    "src/lib/unix_socket_test/c_child.deno.ts",
+    "src/shiki.deno.ts"
   ],
   "deno.config": "./deno.json",
   "files.exclude": {

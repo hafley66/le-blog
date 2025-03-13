@@ -1,86 +1,127 @@
 /** @jsxImportSource ./rxjs-vhtml */
 /** @jsxImportSourceTypes ./rxjs-vhtml */
-import _ from "lodash"
+import _ from "lodash";
 
 import {
-  BehaviorSubject,
   MonoTypeOperatorFunction,
-  Observable,
   Subject,
-  scan,
-  share,
-  shareReplay,
+  catchError,
+  debounceTime,
+  from,
+  pipe,
   switchMap,
   takeUntil,
-  tap,
   timer,
-} from "rxjs"
+} from "rxjs";
 import {
   FootnoteFlat,
   HeaderFlat,
   HeaderProps,
+  LayoutProps,
+  Layout as Layout_,
   TOC,
-} from "./0_Layout.dual.tsx"
-import { Remark } from "./00_Remark2.deno.tsx"
-import jsx from "~/lib/rxjs-vhtml/jsx-runtime"
-import { TAG } from "~/lib/lib.dual.ts"
+} from "./0_Layout.dual.tsx";
+import { Remark } from "./00_Remark2.deno.tsx";
+
+const MARKDOWN_REGEX_TO_NAIVELY_SPLIT_HEADERS__BEWARE_HASH_COMMENTS =
+  /(#{2,} .+?)\n([\s\S]*?)(?=\n#{2,} |\n*$|$)/g;
 
 export const Render$ = (
-  tocTreePipe: MonoTypeOperatorFunction<string> = takeUntil<string>(
+  importMetaFilename: string,
+  tocTreePipe: MonoTypeOperatorFunction<any> = takeUntil<any>(
     timer(500),
   ),
 ) => {
-  // As we render H1...6, we capture their props as subject.next and we reduce over
-  const header$ = new Subject<HeaderFlat>()
-  const footnote$ = new Subject<FootnoteFlat>()
+  const OUTFILE = importMetaFilename.replace(
+    ".render.deno.tsx",
+    ".vite.html",
+  );
 
-  const H: Record<
-    `H${1 | 2 | 3 | 4 | 5 | 6}`,
-    (
-      title: string,
-      render?:
-        | string
-        | string[]
-        | Element
-        | Element[]
-        | (string | Element)[],
-    ) => Observable<string>
-  > = Object.fromEntries(
-    ([1, 2, 3, 4, 5, 6] as const).map(
-      i =>
-        [
-          `H${i}`,
-          (
-            title: string,
-            render?: Observable<string> | string,
-          ) => {
-            const id = _.kebabCase(title)
-            header$.next({
-              value: title,
-              depth: i,
-              id,
-            })
-            const latest =
-              asTreeState$.value.flat.at(-1)?.address
-
-            return (
-              <section id={`section-${id}`}>
-                {jsx(`h${i}`, {
-                  id,
-                  children: [latest ?? "", title],
-                })}
-                {(typeof render === "string"
-                  ? Remark(`${render.replace(/''/gi, "`")}`)
-                  : render) ?? null}
-              </section>
-            )
-          },
-        ] as const,
+  const writeToDist = pipe(
+    debounceTime<string>(1000),
+    switchMap(
+      async (content: string) => (
+        console.log("Writing...", OUTFILE, content.length),
+        {
+          writer: await Deno.writeTextFile(
+            OUTFILE,
+            content.replace(
+              // deno-lint-ignore no-control-regex
+              // biome-ignore lint/suspicious/noControlCharactersInRegex: <explanation>
+              /[\u0000-\u001F\u007F-\u009F]/g,
+              "",
+            ),
+          ),
+          content,
+          renderedPath: OUTFILE,
+          dirname: import.meta.dirname,
+          filename: import.meta.filename,
+        }
+      ),
     ),
-  ) as any
+    catchError(e => {
+      console.error(e);
+      throw e;
+    }),
+  );
+  // As we render H1...6, we capture their props as subject.next and we reduce over
+  const header$ = new Subject<HeaderFlat>();
+  const footnote$ = new Subject<FootnoteFlat>();
 
-  const asTreeState$ = new BehaviorSubject({
-    stack: [
+  const md = (
+    strings: TemplateStringsArray,
+    ...values: any[]
+  ) => {
+    const it = strings.join(" ");
+    const sections = [
+      ...it.matchAll(
+        MARKDOWN_REGEX_TO_NAIVELY_SPLIT_HEADERS__BEWARE_HASH_COMMENTS,
+      ),
+    ];
+
+    const them = sections
+      .map(i => ({
+        match: i[1],
+        header: i[1].replace(/#{2,} /gi, ""),
+        depth: i[1].split(/ /gi)[0].length,
+        body: i[2],
+      }))
+      .map(i => ({
+        ...i,
+        id: _.kebabCase(i.header),
+        value: i.header,
+      }));
+
+    const { byId, stack } = createNestedHeaders(them);
+    const ConstructedMarkdown = them.map(
+      it => `
+
+${"#".repeat(it.depth)} ${byId[it.id].address} ${it.header}
+${it.body}
+
+`,
+    );
+
+    const meta = {
+      sections: ConstructedMarkdown,
+      byId,
+      stack,
+    };
+    const out = from(
+      Remark(ConstructedMarkdown.join("\n")),
+    );
+
+    Object.assign(out, meta);
+
+    console.log({ ConstructedMarkdown });
+    return {
+      toc: TOC({ tocRoot: stack[0] }),
+      children: out as typeof out & typeof meta,
+    };
+  };
+
+  const createNestedHeaders = (flat: HeaderFlat[]) => {
+    const stack = [
       {
         depth: 1,
         children: [],
@@ -91,12 +132,9 @@ export const Render$ = (
         slug: "#root",
         address: "",
       } as HeaderProps,
-    ],
-    flat: [] as HeaderProps[],
-  })
-
-  const asTree$ = header$.pipe(
-    scan(({ stack: state, flat }, next, index) => {
+    ];
+    const byId: Record<string, HeaderProps> = {};
+    flat.forEach((next, index) => {
       const node: HeaderProps = {
         ...next,
         id: _.kebabCase(next.value),
@@ -104,11 +142,11 @@ export const Render$ = (
         children: [],
         parent: null,
         get address() {
-          let curr: HeaderProps | null = this
-          let n = [] as number[]
+          let curr: HeaderProps | null = this;
+          let n = [] as number[];
           while (curr) {
-            n.push(curr.index)
-            curr = curr.parent
+            n.push(curr.index);
+            curr = curr.parent;
           }
           return `${n
             .reverse()
@@ -116,46 +154,41 @@ export const Render$ = (
             .map(
               i => i + 1 /* Users start at index 1 base */,
             )
-            .join(".")}. `
+            .join(".")}. `;
         },
-      }
+      };
 
       // Pop levels until we find the correct parent for this heading
-      while (state[state.length - 1].depth >= next.depth) {
-        state.pop()
+      while (stack[stack.length - 1].depth >= next.depth) {
+        stack.pop();
       }
 
       // Add node to current parent and push it onto current level
-      node.index = state[state.length - 1].children.length
-      state[state.length - 1].children.push(node)
-      node.parent = state[state.length - 1]
-      state.push(node)
-      flat.push(node)
+      node.index = stack[stack.length - 1].children.length;
+      stack[stack.length - 1].children.push(node);
+      node.parent = stack[stack.length - 1];
+      stack.push(node);
+      byId[node.id] = node;
+    });
+    return {
+      byId,
+      stack,
+    };
+  };
 
-      // console.log({ next })
+  const Layout = (props: LayoutProps) =>
+    Layout_({
+      ...props,
+    });
 
-      return {
-        stack: state,
-        flat,
-      }
-    }, asTreeState$.value),
-    tap(asTreeState$),
-    share(),
-  )
+  const SSGLayout = (props: LayoutProps) =>
+    Layout(props).pipe(writeToDist);
 
-  const asTreeRoot$ = asTree$.pipe(
-    switchMap(
-      i => TOC({ tocRoot: i.stack[0] }), // The root is at the front
-    ),
-    tocTreePipe,
-    shareReplay(),
-  )
-
-  asTreeRoot$.subscribe()
   return {
-    ...H,
-    asTree$,
-    TOC: asTreeRoot$,
     header$,
-  }
-}
+    md,
+    writeToDist,
+    Layout,
+    SSGLayout,
+  };
+};

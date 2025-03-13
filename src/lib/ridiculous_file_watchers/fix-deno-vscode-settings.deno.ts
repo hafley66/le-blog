@@ -1,4 +1,4 @@
-import { parse } from "@std/jsonc"
+import { parse } from "@std/jsonc";
 import {
   concatMap,
   defer,
@@ -7,42 +7,34 @@ import {
   scan,
   switchMap,
   throttleTime,
-} from "rxjs"
-import { makeWatcher$ } from "./fs_watcher.deno.ts"
-import process from "node:process"
+} from "rxjs";
+import { makeWatcher$ } from "../fs_watcher.deno.ts";
+import process from "node:process";
 
 // These are the three roots for renderables.
 // We have to do it this way bc not
 //  everything supports shell glob in multiple places.
-const search = ["src"]
-
 // Every deno file ending in deno.mts
 const allDenoWatcher$ = merge(
-  makeWatcher$(search, "deno.ts"),
-  makeWatcher$(search, "deno.tsx"),
-)
-
-const dualWatcher$ = merge(
-  makeWatcher$(search, "dual.ts"),
-  makeWatcher$(search, "dual.tsx"),
-)
+  makeWatcher$(process.cwd(), "src/**/*/*{deno,dual}.{ts,tsx}"),
+);
 
 // Deno does not allow glob matching on enabled >:|
-const vscodeSettings = `${process.cwd()}/.vscode/settings.json`
+const vscodeSettings = `${process.cwd()}/.vscode/settings.json`;
 
 // merge = async SELECT UNION ALL
-const updateDenoPathsBcUgh = defer(
+export const updateDenoPathsBcUgh = defer(
   function ReadFromVscodeSettingsForInit() {
-    let init: { ["deno.enablePaths"]: string[] }
+    let init: { ["deno.enablePaths"]: string[] };
     try {
-      const it = Deno.readTextFileSync(vscodeSettings)
-      Deno.writeTextFileSync(`${vscodeSettings}.backup`, it)
-      init = parse(it)
+      const it = Deno.readTextFileSync(vscodeSettings);
+      Deno.writeTextFileSync(`${vscodeSettings}.backup`, it);
+      init = parse(it) as any;
     } catch (e) {
-      console.error(e)
-      init = { "deno.enablePaths": [] }
+      console.error(e);
+      init = { "deno.enablePaths": [] };
     }
-    return of(init)
+    return of(init);
   },
 )
   .pipe(
@@ -54,7 +46,7 @@ const updateDenoPathsBcUgh = defer(
         dot_vscode_config,
       ) {
         // Grab our 2 streams of valid files.
-        return merge(allDenoWatcher$, dualWatcher$).pipe(
+        return allDenoWatcher$.pipe(
           // Yeehaw redux = scan but with
           //   ability to freestyle the next event.
           scan(function StorePathChangeToSettings(
@@ -63,17 +55,17 @@ const updateDenoPathsBcUgh = defer(
           ) {
             let nextWithoutCWD = next.path
               .replace(process.cwd(), "")
-              .replace(/^\//gi, "") // remove cwd and trailing
+              .replace(/^\//gi, ""); // remove cwd and trailing
             if (
               !state["deno.enablePaths"]?.includes(
                 nextWithoutCWD,
               )
             ) {
-              state["deno.enablePaths"].push(nextWithoutCWD)
+              state["deno.enablePaths"].push(nextWithoutCWD);
             }
-            return state
+            return state;
           }, dot_vscode_config),
-        )
+        );
       },
     ),
     // Prevent chaos
@@ -85,21 +77,14 @@ const updateDenoPathsBcUgh = defer(
     //  outputs and auto-converts into observable of 1 value.
     // If longer than 1second to write for
     //  whatever reason, it will queue them in sequence.
-    concatMap(dot_vscode_config =>
+    concatMap((dot_vscode_config) =>
       Deno.writeTextFile(
         vscodeSettings,
         JSON.stringify(dot_vscode_config, null, 2),
       ).then(
         // Echo param since this is side effectual.
         () => dot_vscode_config,
-      ),
+      )
     ),
     // Get told when a commit happens.
-  )
-  .subscribe(
-    n => {},
-    // console.log(
-    //   // "Wrote to vscode settings for deno file patterns",
-    //   // n,
-    // ),
-  )
+  );

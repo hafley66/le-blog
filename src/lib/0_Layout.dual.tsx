@@ -2,7 +2,7 @@
 /** @jsxImportSourceTypes ~/lib/rxjs-vhtml */
 
 import { Hex } from "~/lib/Hex/index.dual.tsx"
-import { Observable, of } from "rxjs"
+import { Observable } from "rxjs"
 import { RxJSXNode } from "~/lib/rxjs-vhtml/jsx-runtime"
 
 export type LayoutProps = {
@@ -100,8 +100,10 @@ export const PrimaryNavigation = (props: {
   )
 }
 
-export const Layout = (props: LayoutProps) => {
-  return (
+export const Layout = (
+  props: LayoutProps,
+): Observable<string> & LayoutProps => {
+  const it = (
     <html lang="en">
       <head>
         <meta
@@ -117,6 +119,8 @@ export const Layout = (props: LayoutProps) => {
         <link rel="stylesheet" href="/styles/colors.css" />
         <link rel="stylesheet" href="/styles/fonts.css" />
         <link rel="stylesheet" href="/styles/global.css" />
+        <link rel="stylesheet" href="/shiki-2.css" />
+
         <title>{props.title}</title>
       </head>
       <body>
@@ -152,10 +156,13 @@ export const Layout = (props: LayoutProps) => {
       </body>
     </html>
   )
+  Object.assign(it, props)
+  // @ts-ignore
+  return it
 }
 
 export type HeaderFlat = {
-  depth: 1 | 2 | 3 | 4 | 5 | 6
+  depth: number
   value: string
   id: string
 }
@@ -170,19 +177,22 @@ export type HeaderProps = HeaderFlat & {
 export const TOC = (props: {
   tocRoot: HeaderProps
 }): Observable<string> => {
-  console.log("Le TOC")
   return (
     <details open id="section-table-of-contents">
       <summary id="toc-header-contents">
         <h2 id="table-of-contents">
           &nbsp;Table of Contents
         </h2>
-        <input
-          type="checkbox"
-          id="toc-toggle"
-          onload="this.checked = localStorage.checked"
-          onchange="localStorage.checked = event.target.checked"
-        />
+        <input type="checkbox" id="toc-toggle" />
+        {String.raw`<script>
+          
+    const it = document.getElementById("toc-toggle");
+    it.checked = JSON.parse(localStorage.tocChecked ?? "false");
+    it.addEventListener("change", (e) => {
+      localStorage.tocChecked = !!e.target.checked;
+    });
+  
+        </script>`}
       </summary>
       <div className="fancy-hr">
         {/* biome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
@@ -215,11 +225,11 @@ export const TOC = (props: {
         </svg>
       </div>
       <nav id="toc-nav">
-        <ol>
+        <ol debug>
           {props.tocRoot.children.map(
             function renderTocItem(item: HeaderProps) {
               return (
-                <li key={item.id}>
+                <li key={item.id} debug>
                   <a href={`#section-${item.id}`}>
                     {item.value}
                   </a>
