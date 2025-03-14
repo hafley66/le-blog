@@ -9,6 +9,8 @@ import {
   interval,
   map,
   merge,
+  mergeAll,
+  mergeMap,
   Observable,
   of,
   share,
@@ -23,10 +25,16 @@ import { combinePartialRecord, deferFrom, TAG } from "~/lib/lib.dual.ts";
 
 export const UnixDomainSocketServer$ = (name: string) =>
   new Observable<
-    ({ id: number } & ReturnType<typeof UnixDomainSocket$>)[]
+    {
+      conns: ({ id: number } & ReturnType<typeof UnixDomainSocket$>)[];
+      latest: ({ id: number } & ReturnType<typeof UnixDomainSocket$>) | null;
+    }
   >((S) => {
     let server: Deno.UnixListener | null = null;
     let conns = [] as ({ id: number } & ReturnType<typeof UnixDomainSocket$>)[];
+    let latest: ({ id: number } & ReturnType<typeof UnixDomainSocket$>) | null =
+      null;
+
     try {
       if (existsSync(name)) {
         console.log("Removing the socket you fucker", name);
@@ -46,14 +54,15 @@ export const UnixDomainSocketServer$ = (name: string) =>
             const _id = id++;
             conns.push({ ...UnixDomainSocket$(name, next), id: _id });
             console.log({ next });
+            latest = conns.at(-1) ?? null;
             conns.at(-1)?.output$.pipe(finalize(() => {
               const index = conns.findIndex((it) => it.id === _id);
               if (index > -1) {
                 conns.splice(index, 1);
-                S.next(conns);
+                S.next({ conns, latest });
               }
             }));
-            S.next(conns);
+            S.next({ conns, latest });
           }
         } catch (e) {
           console.error(e);
@@ -161,9 +170,19 @@ export const UnixParentTest = () => {
   const it = UnixDomainSocketServer$("/tmp/derp");
   return combinePartialRecord({
     me: it.pipe(
-      tap((i) => {
-        console.log("[0]", i.text);
-        it.input$.next("I received:" + i.text);
+      mergeMap(({ conns, latest: con }) => {
+        if (!con) {
+          return of();
+        }
+
+        return con.output$.pipe(
+          map((it) => ["out", con.id, it.index, it.text] as const),
+          tap((n) => {
+            conns.filter((i) => i !== con).forEach(
+              (i) => i.input$.next(n.join(" ")),
+            );
+          }),
+        );
       }),
     ),
     a: $$$`deno run --watch-hmr --allow-all ${import.meta.dirname}/b_child.deno.ts`

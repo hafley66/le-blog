@@ -9,5 +9,5 @@ const wait = lastValueFrom(it.output$.pipe(
 ));
 
 it.input$.next("DERP C");
-
+console.log("Hmm");
 await wait;
