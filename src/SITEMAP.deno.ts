@@ -61,44 +61,15 @@ export const FS = {
     "dirname": "src/blog/how-its-made",
     "importPath": "~/blog/how-its-made/this-site"
   },
-  "src/blog/how-its-made/this-site/part-1-astro": {
-    "path": "src/blog/how-its-made/this-site/part-1-astro",
-    "dirname": "src/blog/how-its-made/this-site",
-    "importPath": "~/blog/how-its-made/this-site/part-1-astro"
-  },
-  "src/blog/how-its-made/this-site/part-1-astro/index.render.deno.tsx": {
-    "path": "src/blog/how-its-made/this-site/part-1-astro/index.render.deno.tsx",
+  "src/blog/how-its-made/this-site/index.render.deno.tsx": {
+    "path": "src/blog/how-its-made/this-site/index.render.deno.tsx",
     "filename": "index.render.deno.tsx",
-    "dirname": "src/blog/how-its-made/this-site/part-1-astro",
+    "dirname": "src/blog/how-its-made/this-site",
     "super_extension": "render.deno.tsx",
     "extension": "tsx",
-    "importPath": "~/blog/how-its-made/this-site/part-1-astro/index.render.deno.tsx",
-    "readSync": () => Deno.readTextFileSync('src/blog/how-its-made/this-site/part-1-astro/index.render.deno.tsx'),
-    "dynamicImport": () => import('./blog/how-its-made/this-site/part-1-astro/index.render.deno.tsx')
-  },
-  "src/blog/how-its-made/this-site/part-1-astro/index.vite.html": {
-    "path": "src/blog/how-its-made/this-site/part-1-astro/index.vite.html",
-    "filename": "index.vite.html",
-    "dirname": "src/blog/how-its-made/this-site/part-1-astro",
-    "super_extension": "vite.html",
-    "extension": "html",
-    "importPath": "~/blog/how-its-made/this-site/part-1-astro/index.vite.html",
-    "readSync": () => Deno.readTextFileSync('src/blog/how-its-made/this-site/part-1-astro/index.vite.html')
-  },
-  "src/blog/how-its-made/this-site/part-2-deno": {
-    "path": "src/blog/how-its-made/this-site/part-2-deno",
-    "dirname": "src/blog/how-its-made/this-site",
-    "importPath": "~/blog/how-its-made/this-site/part-2-deno"
-  },
-  "src/blog/how-its-made/this-site/part-2-deno/index.render.deno.tsx": {
-    "path": "src/blog/how-its-made/this-site/part-2-deno/index.render.deno.tsx",
-    "filename": "index.render.deno.tsx",
-    "dirname": "src/blog/how-its-made/this-site/part-2-deno",
-    "super_extension": "render.deno.tsx",
-    "extension": "tsx",
-    "importPath": "~/blog/how-its-made/this-site/part-2-deno/index.render.deno.tsx",
-    "readSync": () => Deno.readTextFileSync('src/blog/how-its-made/this-site/part-2-deno/index.render.deno.tsx'),
-    "dynamicImport": () => import('./blog/how-its-made/this-site/part-2-deno/index.render.deno.tsx')
+    "importPath": "~/blog/how-its-made/this-site/index.render.deno.tsx",
+    "readSync": () => Deno.readTextFileSync('src/blog/how-its-made/this-site/index.render.deno.tsx'),
+    "dynamicImport": () => import('./blog/how-its-made/this-site/index.render.deno.tsx')
   },
   "src/blog/1-how-i-made-this-site": {
     "path": "src/blog/1-how-i-made-this-site",
@@ -156,6 +127,87 @@ export const FS = {
     "importPath": "~/blog/2-auto-indexing-technique/index.vite.html",
     "readSync": () => Deno.readTextFileSync('src/blog/2-auto-indexing-technique/index.vite.html')
   },
+  "src/blog/rxjs": {
+    "path": "src/blog/rxjs",
+    "dirname": "src/blog",
+    "importPath": "~/blog/rxjs"
+  },
+  "src/blog/rxjs/recreate-react-query-with-rxjs": {
+    "path": "src/blog/rxjs/recreate-react-query-with-rxjs",
+    "dirname": "src/blog/rxjs",
+    "importPath": "~/blog/rxjs/recreate-react-query-with-rxjs"
+  },
+  "src/blog/rxjs/recreate-react-query-with-rxjs/sample.deno.tsx": {
+    "path": "src/blog/rxjs/recreate-react-query-with-rxjs/sample.deno.tsx",
+    "filename": "sample.deno.tsx",
+    "dirname": "src/blog/rxjs/recreate-react-query-with-rxjs",
+    "super_extension": "deno.tsx",
+    "extension": "tsx",
+    "importPath": "~/blog/rxjs/recreate-react-query-with-rxjs/sample.deno.tsx",
+    "readSync": () => Deno.readTextFileSync('src/blog/rxjs/recreate-react-query-with-rxjs/sample.deno.tsx'),
+    "dynamicImport": () => import('./blog/rxjs/recreate-react-query-with-rxjs/sample.deno.tsx')
+  },
+  "src/blog/rxjs/recreate-react-query-with-rxjs/index.render.deno.tsx": {
+    "path": "src/blog/rxjs/recreate-react-query-with-rxjs/index.render.deno.tsx",
+    "filename": "index.render.deno.tsx",
+    "dirname": "src/blog/rxjs/recreate-react-query-with-rxjs",
+    "super_extension": "render.deno.tsx",
+    "extension": "tsx",
+    "importPath": "~/blog/rxjs/recreate-react-query-with-rxjs/index.render.deno.tsx",
+    "readSync": () => Deno.readTextFileSync('src/blog/rxjs/recreate-react-query-with-rxjs/index.render.deno.tsx'),
+    "dynamicImport": () => import('./blog/rxjs/recreate-react-query-with-rxjs/index.render.deno.tsx')
+  },
+  "src/blog/rxjs/recreate-react-query-with-rxjs/index.vite.html": {
+    "path": "src/blog/rxjs/recreate-react-query-with-rxjs/index.vite.html",
+    "filename": "index.vite.html",
+    "dirname": "src/blog/rxjs/recreate-react-query-with-rxjs",
+    "super_extension": "vite.html",
+    "extension": "html",
+    "importPath": "~/blog/rxjs/recreate-react-query-with-rxjs/index.vite.html",
+    "readSync": () => Deno.readTextFileSync('src/blog/rxjs/recreate-react-query-with-rxjs/index.vite.html')
+  },
+  "src/blog/index.render.deno.tsx": {
+    "path": "src/blog/index.render.deno.tsx",
+    "filename": "index.render.deno.tsx",
+    "dirname": "src/blog",
+    "super_extension": "render.deno.tsx",
+    "extension": "tsx",
+    "importPath": "~/blog/index.render.deno.tsx",
+    "readSync": () => Deno.readTextFileSync('src/blog/index.render.deno.tsx'),
+    "dynamicImport": () => import('./blog/index.render.deno.tsx')
+  },
+  "src/blog/index.vite.html": {
+    "path": "src/blog/index.vite.html",
+    "filename": "index.vite.html",
+    "dirname": "src/blog",
+    "super_extension": "vite.html",
+    "extension": "html",
+    "importPath": "~/blog/index.vite.html",
+    "readSync": () => Deno.readTextFileSync('src/blog/index.vite.html')
+  },
+  "src/bash": {
+    "path": "src/bash",
+    "dirname": "src",
+    "importPath": "~/bash"
+  },
+  "src/bash/rsync-it.bash": {
+    "path": "src/bash/rsync-it.bash",
+    "filename": "rsync-it.bash",
+    "dirname": "src/bash",
+    "super_extension": "bash",
+    "extension": "bash",
+    "importPath": "~/bash/rsync-it.bash",
+    "readSync": () => Deno.readTextFileSync('src/bash/rsync-it.bash')
+  },
+  "src/bash/README.md": {
+    "path": "src/bash/README.md",
+    "filename": "README.md",
+    "dirname": "src/bash",
+    "super_extension": "md",
+    "extension": "md",
+    "importPath": "~/bash/README.md",
+    "readSync": () => Deno.readTextFileSync('src/bash/README.md')
+  },
   "src/vite-env.d.ts": {
     "path": "src/vite-env.d.ts",
     "filename": "vite-env.d.ts",
@@ -166,20 +218,55 @@ export const FS = {
     "readSync": () => Deno.readTextFileSync('src/vite-env.d.ts'),
     "dynamicImport": () => import('./vite-env.d.ts')
   },
+  "src/unix_socket_test": {
+    "path": "src/unix_socket_test",
+    "dirname": "src",
+    "importPath": "~/unix_socket_test"
+  },
+  "src/unix_socket_test/c_child.deno.ts": {
+    "path": "src/unix_socket_test/c_child.deno.ts",
+    "filename": "c_child.deno.ts",
+    "dirname": "src/unix_socket_test",
+    "super_extension": "deno.ts",
+    "extension": "ts",
+    "importPath": "~/unix_socket_test/c_child.deno.ts",
+    "readSync": () => Deno.readTextFileSync('src/unix_socket_test/c_child.deno.ts'),
+    "dynamicImport": () => import('./unix_socket_test/c_child.deno.ts')
+  },
+  "src/unix_socket_test/b_child.deno.ts": {
+    "path": "src/unix_socket_test/b_child.deno.ts",
+    "filename": "b_child.deno.ts",
+    "dirname": "src/unix_socket_test",
+    "super_extension": "deno.ts",
+    "extension": "ts",
+    "importPath": "~/unix_socket_test/b_child.deno.ts",
+    "readSync": () => Deno.readTextFileSync('src/unix_socket_test/b_child.deno.ts'),
+    "dynamicImport": () => import('./unix_socket_test/b_child.deno.ts')
+  },
+  "src/unix_socket_test/test.deno.ts": {
+    "path": "src/unix_socket_test/test.deno.ts",
+    "filename": "test.deno.ts",
+    "dirname": "src/unix_socket_test",
+    "super_extension": "deno.ts",
+    "extension": "ts",
+    "importPath": "~/unix_socket_test/test.deno.ts",
+    "readSync": () => Deno.readTextFileSync('src/unix_socket_test/test.deno.ts'),
+    "dynamicImport": () => import('./unix_socket_test/test.deno.ts')
+  },
+  "src/unix_socket_test/a_parent.deno.ts": {
+    "path": "src/unix_socket_test/a_parent.deno.ts",
+    "filename": "a_parent.deno.ts",
+    "dirname": "src/unix_socket_test",
+    "super_extension": "deno.ts",
+    "extension": "ts",
+    "importPath": "~/unix_socket_test/a_parent.deno.ts",
+    "readSync": () => Deno.readTextFileSync('src/unix_socket_test/a_parent.deno.ts'),
+    "dynamicImport": () => import('./unix_socket_test/a_parent.deno.ts')
+  },
   "src/lib": {
     "path": "src/lib",
     "dirname": "src",
     "importPath": "~/lib"
-  },
-  "src/lib/00_ReactAsyncPrerender.dual.tsx": {
-    "path": "src/lib/00_ReactAsyncPrerender.dual.tsx",
-    "filename": "00_ReactAsyncPrerender.dual.tsx",
-    "dirname": "src/lib",
-    "super_extension": "dual.tsx",
-    "extension": "tsx",
-    "importPath": "~/lib/00_ReactAsyncPrerender.dual.tsx",
-    "readSync": () => Deno.readTextFileSync('src/lib/00_ReactAsyncPrerender.dual.tsx'),
-    "dynamicImport": () => import('./lib/00_ReactAsyncPrerender.dual.tsx')
   },
   "src/lib/shiki": {
     "path": "src/lib/shiki",
@@ -226,15 +313,30 @@ export const FS = {
     "readSync": () => Deno.readTextFileSync('src/lib/rxjs-vhtml/vhtml.deno.ts'),
     "dynamicImport": () => import('./lib/rxjs-vhtml/vhtml.deno.ts')
   },
-  "src/lib/rxjs-vhtml/test.deno.tsx": {
-    "path": "src/lib/rxjs-vhtml/test.deno.tsx",
-    "filename": "test.deno.tsx",
+  "src/lib/rxjs-vhtml/v2": {
+    "path": "src/lib/rxjs-vhtml/v2",
     "dirname": "src/lib/rxjs-vhtml",
-    "super_extension": "deno.tsx",
+    "importPath": "~/lib/rxjs-vhtml/v2"
+  },
+  "src/lib/rxjs-vhtml/v2/jsx-runtime.v2.deno.tsx": {
+    "path": "src/lib/rxjs-vhtml/v2/jsx-runtime.v2.deno.tsx",
+    "filename": "jsx-runtime.v2.deno.tsx",
+    "dirname": "src/lib/rxjs-vhtml/v2",
+    "super_extension": "v2.deno.tsx",
     "extension": "tsx",
-    "importPath": "~/lib/rxjs-vhtml/test.deno.tsx",
-    "readSync": () => Deno.readTextFileSync('src/lib/rxjs-vhtml/test.deno.tsx'),
-    "dynamicImport": () => import('./lib/rxjs-vhtml/test.deno.tsx')
+    "importPath": "~/lib/rxjs-vhtml/v2/jsx-runtime.v2.deno.tsx",
+    "readSync": () => Deno.readTextFileSync('src/lib/rxjs-vhtml/v2/jsx-runtime.v2.deno.tsx'),
+    "dynamicImport": () => import('./lib/rxjs-vhtml/v2/jsx-runtime.v2.deno.tsx')
+  },
+  "src/lib/rxjs-vhtml/index.deno.test.tsx": {
+    "path": "src/lib/rxjs-vhtml/index.deno.test.tsx",
+    "filename": "index.deno.test.tsx",
+    "dirname": "src/lib/rxjs-vhtml",
+    "super_extension": "deno.test.tsx",
+    "extension": "tsx",
+    "importPath": "~/lib/rxjs-vhtml/index.deno.test.tsx",
+    "readSync": () => Deno.readTextFileSync('src/lib/rxjs-vhtml/index.deno.test.tsx'),
+    "dynamicImport": () => import('./lib/rxjs-vhtml/index.deno.test.tsx')
   },
   "src/lib/fs_watcher.deno.ts": {
     "path": "src/lib/fs_watcher.deno.ts",
@@ -261,6 +363,16 @@ export const FS = {
     "readSync": () => Deno.readTextFileSync('src/lib/remark_rehype/remarkNestSections.deno.ts'),
     "dynamicImport": () => import('./lib/remark_rehype/remarkNestSections.deno.ts')
   },
+  "src/lib/lib.deno.ts": {
+    "path": "src/lib/lib.deno.ts",
+    "filename": "lib.deno.ts",
+    "dirname": "src/lib",
+    "super_extension": "deno.ts",
+    "extension": "ts",
+    "importPath": "~/lib/lib.deno.ts",
+    "readSync": () => Deno.readTextFileSync('src/lib/lib.deno.ts'),
+    "dynamicImport": () => import('./lib/lib.deno.ts')
+  },
   "src/lib/lib.dom.ts": {
     "path": "src/lib/lib.dom.ts",
     "filename": "lib.dom.ts",
@@ -270,6 +382,16 @@ export const FS = {
     "importPath": "~/lib/lib.dom.ts",
     "readSync": () => Deno.readTextFileSync('src/lib/lib.dom.ts'),
     "dynamicImport": () => import('./lib/lib.dom.ts')
+  },
+  "src/lib/TOC_intersection_polyfill.js": {
+    "path": "src/lib/TOC_intersection_polyfill.js",
+    "filename": "TOC_intersection_polyfill.js",
+    "dirname": "src/lib",
+    "super_extension": "js",
+    "extension": "js",
+    "importPath": "~/lib/TOC_intersection_polyfill.js",
+    "readSync": () => Deno.readTextFileSync('src/lib/TOC_intersection_polyfill.js'),
+    "dynamicImport": () => import('./lib/TOC_intersection_polyfill.js')
   },
   "src/lib/idea.deno.tsx": {
     "path": "src/lib/idea.deno.tsx",
@@ -311,41 +433,6 @@ export const FS = {
     "readSync": () => Deno.readTextFileSync('src/lib/0_Layout.dual.tsx'),
     "dynamicImport": () => import('./lib/0_Layout.dual.tsx')
   },
-  "src/lib/unix_socket_test": {
-    "path": "src/lib/unix_socket_test",
-    "dirname": "src/lib",
-    "importPath": "~/lib/unix_socket_test"
-  },
-  "src/lib/unix_socket_test/c_child.deno.ts": {
-    "path": "src/lib/unix_socket_test/c_child.deno.ts",
-    "filename": "c_child.deno.ts",
-    "dirname": "src/lib/unix_socket_test",
-    "super_extension": "deno.ts",
-    "extension": "ts",
-    "importPath": "~/lib/unix_socket_test/c_child.deno.ts",
-    "readSync": () => Deno.readTextFileSync('src/lib/unix_socket_test/c_child.deno.ts'),
-    "dynamicImport": () => import('./lib/unix_socket_test/c_child.deno.ts')
-  },
-  "src/lib/unix_socket_test/b_child.deno.ts": {
-    "path": "src/lib/unix_socket_test/b_child.deno.ts",
-    "filename": "b_child.deno.ts",
-    "dirname": "src/lib/unix_socket_test",
-    "super_extension": "deno.ts",
-    "extension": "ts",
-    "importPath": "~/lib/unix_socket_test/b_child.deno.ts",
-    "readSync": () => Deno.readTextFileSync('src/lib/unix_socket_test/b_child.deno.ts'),
-    "dynamicImport": () => import('./lib/unix_socket_test/b_child.deno.ts')
-  },
-  "src/lib/unix_socket_test/a_parent.deno.ts": {
-    "path": "src/lib/unix_socket_test/a_parent.deno.ts",
-    "filename": "a_parent.deno.ts",
-    "dirname": "src/lib/unix_socket_test",
-    "super_extension": "deno.ts",
-    "extension": "ts",
-    "importPath": "~/lib/unix_socket_test/a_parent.deno.ts",
-    "readSync": () => Deno.readTextFileSync('src/lib/unix_socket_test/a_parent.deno.ts'),
-    "dynamicImport": () => import('./lib/unix_socket_test/a_parent.deno.ts')
-  },
   "src/lib/ridiculous_file_watchers": {
     "path": "src/lib/ridiculous_file_watchers",
     "dirname": "src/lib",
@@ -380,6 +467,41 @@ export const FS = {
     "importPath": "~/lib/lib.dual.ts",
     "readSync": () => Deno.readTextFileSync('src/lib/lib.dual.ts'),
     "dynamicImport": () => import('./lib/lib.dual.ts')
+  },
+  "src/lib/client": {
+    "path": "src/lib/client",
+    "dirname": "src/lib",
+    "importPath": "~/lib/client"
+  },
+  "src/lib/client/img-onclick.dom.js": {
+    "path": "src/lib/client/img-onclick.dom.js",
+    "filename": "img-onclick.dom.js",
+    "dirname": "src/lib/client",
+    "super_extension": "dom.js",
+    "extension": "js",
+    "importPath": "~/lib/client/img-onclick.dom.js",
+    "readSync": () => Deno.readTextFileSync('src/lib/client/img-onclick.dom.js'),
+    "dynamicImport": () => import('./lib/client/img-onclick.dom.js')
+  },
+  "src/lib/client/checkbox.init.dom.js": {
+    "path": "src/lib/client/checkbox.init.dom.js",
+    "filename": "checkbox.init.dom.js",
+    "dirname": "src/lib/client",
+    "super_extension": "init.dom.js",
+    "extension": "js",
+    "importPath": "~/lib/client/checkbox.init.dom.js",
+    "readSync": () => Deno.readTextFileSync('src/lib/client/checkbox.init.dom.js'),
+    "dynamicImport": () => import('./lib/client/checkbox.init.dom.js')
+  },
+  "src/lib/client/code-copy.init.dom.js": {
+    "path": "src/lib/client/code-copy.init.dom.js",
+    "filename": "code-copy.init.dom.js",
+    "dirname": "src/lib/client",
+    "super_extension": "init.dom.js",
+    "extension": "js",
+    "importPath": "~/lib/client/code-copy.init.dom.js",
+    "readSync": () => Deno.readTextFileSync('src/lib/client/code-copy.init.dom.js'),
+    "dynamicImport": () => import('./lib/client/code-copy.init.dom.js')
   },
   "src/pages": {
     "path": "src/pages",

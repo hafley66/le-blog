@@ -2,7 +2,6 @@
 /** @jsxImportSourceTypes ~/lib/rxjs-vhtml */
 
 import { Observable, of } from "rxjs"
-import { Props$ } from "~/lib/rxjs-vhtml/jsx-runtime"
 
 export const Hex: {
   (props: {

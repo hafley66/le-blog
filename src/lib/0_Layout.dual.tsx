@@ -1,9 +1,7 @@
-/** @jsxImportSource ~/lib/rxjs-vhtml */
-/** @jsxImportSourceTypes ~/lib/rxjs-vhtml */
-
 import { Hex } from "~/lib/Hex/index.dual.tsx"
 import { Observable } from "rxjs"
 import { RxJSXNode } from "~/lib/rxjs-vhtml/jsx-runtime"
+import { FS } from "~/SITEMAP.deno.ts"
 
 export type LayoutProps = {
   url: string
@@ -45,7 +43,7 @@ export const Tags = (props: { items: string[] }) => {
         {props.items.map((it, index) => (
           <a
             key={it}
-            className="hex-content"
+            className="hex-content caption"
             href={`/tags/${it}`}
             // role="button"
             style={{ ...Hex.getColor(index) }}
@@ -119,7 +117,14 @@ export const Layout = (
         <link rel="stylesheet" href="/styles/colors.css" />
         <link rel="stylesheet" href="/styles/fonts.css" />
         <link rel="stylesheet" href="/styles/global.css" />
-        <link rel="stylesheet" href="/shiki-2.css" />
+        <link
+          rel="stylesheet"
+          href="/styles/nav_and_toc.css"
+        />
+        <link rel="stylesheet" href="/styles/hex.css" />
+        <link rel="stylesheet" href="/styles/code.css" />
+        <link rel="stylesheet" href="/styles/img.css" />
+        <link rel="stylesheet" href="/shiki-twoslash.css" />
 
         <title>{props.title}</title>
       </head>
@@ -148,11 +153,20 @@ export const Layout = (
             </section>
           ) : null}
           {props.toc}
+
           <div id="main-content-middle">
             {props.children}
           </div>
         </main>
         <footer />
+        {String.raw`<script>${[
+          FS["src/lib/TOC_intersection_polyfill.js"],
+          FS["src/lib/client/checkbox.init.dom.js"],
+          FS["src/lib/client/code-copy.init.dom.js"],
+          FS["src/lib/client/img-onclick.dom.js"],
+        ]
+          .map(i => i.readSync())
+          .join(";\n;")}</script>`}
       </body>
     </html>
   )
@@ -164,6 +178,7 @@ export const Layout = (
 export type HeaderFlat = {
   depth: number
   value: string
+  body: string
   id: string
 }
 
@@ -180,19 +195,8 @@ export const TOC = (props: {
   return (
     <details open id="section-table-of-contents">
       <summary id="toc-header-contents">
-        <h2 id="table-of-contents">
-          &nbsp;Table of Contents
-        </h2>
+        <h2 id="table-of-contents">Table of Contents</h2>
         <input type="checkbox" id="toc-toggle" />
-        {String.raw`<script>
-          
-    const it = document.getElementById("toc-toggle");
-    it.checked = JSON.parse(localStorage.tocChecked ?? "false");
-    it.addEventListener("change", (e) => {
-      localStorage.tocChecked = !!e.target.checked;
-    });
-  
-        </script>`}
       </summary>
       <div className="fancy-hr">
         {/* biome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
@@ -231,7 +235,7 @@ export const TOC = (props: {
               return (
                 <li key={item.id} debug>
                   <a href={`#section-${item.id}`}>
-                    {item.value}
+                    {item.value.replace(/^(\d+\.)+/gi, "")}
                   </a>
                   {item.children.length ? (
                     <ol>

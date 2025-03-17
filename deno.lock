@@ -2,8 +2,13 @@
   "version": "4",
   "specifiers": {
     "jsr:@qnighy/dedent@~0.1.2": "0.1.2",
+    "jsr:@std/assert@*": "1.0.11",
+    "jsr:@std/assert@^1.0.11": "1.0.11",
     "jsr:@std/bytes@^1.0.5": "1.0.5",
+    "jsr:@std/expect@*": "1.0.13",
+    "jsr:@std/expect@^1.0.13": "1.0.13",
     "jsr:@std/fs@^1.0.14": "1.0.14",
+    "jsr:@std/internal@^1.0.5": "1.0.5",
     "jsr:@std/io@~0.225.2": "0.225.2",
     "jsr:@std/json@1": "1.0.1",
     "jsr:@std/jsonc@^1.0.1": "1.0.1",
@@ -51,6 +56,7 @@
     "npm:markdown-it-task-lists@^2.1.1": "2.1.1",
     "npm:markdown-it-toc-done-right@^4.2.0": "4.2.0",
     "npm:markdown-it@^14.1.0": "14.1.0",
+    "npm:mdast-util-directive@^3.1.0": "3.1.0",
     "npm:mdast-util-find-and-replace@^3.0.2": "3.0.2",
     "npm:mermaid-isomorphic@3": "3.0.0_playwright@1.51.0",
     "npm:mermaid@^11.4.1": "11.4.1_cytoscape@3.31.1",
@@ -66,6 +72,7 @@
     "npm:rehype-sanitize@6": "6.0.0",
     "npm:rehype-slug@6": "6.0.0",
     "npm:rehype-stringify@^10.0.1": "10.0.1",
+    "npm:remark-directive@4": "4.0.0",
     "npm:remark-gfm@^4.0.1": "4.0.1",
     "npm:remark-parse@11": "11.0.0",
     "npm:remark-rehype@^11.1.1": "11.1.1",
@@ -92,14 +99,30 @@
     "@qnighy/dedent@0.1.2": {
       "integrity": "9e420cff5b0082dba168385c9dfc56f25ef9a07999605e5fc9bc2058529998ee"
     },
+    "@std/assert@1.0.11": {
+      "integrity": "2461ef3c368fe88bc60e186e7744a93112f16fd110022e113a0849e94d1c83c1",
+      "dependencies": [
+        "jsr:@std/internal"
+      ]
+    },
     "@std/bytes@1.0.5": {
       "integrity": "4465dd739d7963d964c809202ebea6d5c6b8e3829ef25c6a224290fbb8a1021e"
+    },
+    "@std/expect@1.0.13": {
+      "integrity": "d8e236c7089cd9fcf5e6032f27dadc3db6349d0aee48c15bc71d717bca5baa42",
+      "dependencies": [
+        "jsr:@std/assert@^1.0.11",
+        "jsr:@std/internal"
+      ]
     },
     "@std/fs@1.0.14": {
       "integrity": "1e84bf0b95fe08f41f1f4aea9717bbf29f45408a56ce073b0114474ce1c9fccf",
       "dependencies": [
         "jsr:@std/path"
       ]
+    },
+    "@std/internal@1.0.5": {
+      "integrity": "54a546004f769c1ac9e025abd15a76b6671ddc9687e2313b67376125650dc7ba"
     },
     "@std/io@0.225.2": {
       "integrity": "3c740cd4ee4c082e6cfc86458f47e2ab7cb353dc6234d5e9b1f91a2de5f4d6c7",
@@ -1633,6 +1656,9 @@
     "character-reference-invalid@1.1.4": {
       "integrity": "sha512-mKKUkUbhPpQlCOfIuZkvSEgktjPFIsZKRRbC6KWVEMvlzblj3i3asQv5ODsrwt0N3pHAEvjP8KTQPHkp0+6jOg=="
     },
+    "character-reference-invalid@2.0.1": {
+      "integrity": "sha512-iBZ4F4wRbyORVsu0jPV7gXkOsGYjGHPmAyv+HiHG8gi5PtC9KI2j1+v8/tlibRvjoWX027ypmG/n0HtO5t7unw=="
+    },
     "check-error@2.1.1": {
       "integrity": "sha512-OAlb+T7V4Op9OwdkjmguYRqncdlx5JiofwOAUkmTF+jNdHwzTaTs4sRAGpzLF3oOz5xAyDGrPgeIDFQmDOTiJw=="
     },
@@ -2581,11 +2607,21 @@
     "is-alphabetical@1.0.4": {
       "integrity": "sha512-DwzsA04LQ10FHTZuL0/grVDk4rFoVH1pjAToYwBrHSxcrBIGQuXrQMtD5U1b0U2XVgKZCTLLP8u2Qxqhy3l2Vg=="
     },
+    "is-alphabetical@2.0.1": {
+      "integrity": "sha512-FWyyY60MeTNyeSRpkM2Iry0G9hpr7/9kD40mD/cGQEuilcZYS4okz8SN2Q6rLCJ8gbCt6fN+rC+6tMGS99LaxQ=="
+    },
     "is-alphanumerical@1.0.4": {
       "integrity": "sha512-UzoZUr+XfVz3t3v4KyGEniVL9BDRoQtY7tOyrRybkVNjDFWyo1yhXNGrrBTQxp3ib9BLAWs7k2YKBQsFRkZG9A==",
       "dependencies": [
-        "is-alphabetical",
-        "is-decimal"
+        "is-alphabetical@1.0.4",
+        "is-decimal@1.0.4"
+      ]
+    },
+    "is-alphanumerical@2.0.1": {
+      "integrity": "sha512-hmbYhX/9MUMF5uh7tOXyK/n0ZvWpad5caBA17GsC6vyuCqaWliRG5K1qS9inmUhEMaOBIW7/whAnSwveW/LtZw==",
+      "dependencies": [
+        "is-alphabetical@2.0.1",
+        "is-decimal@2.0.1"
       ]
     },
     "is-buffer@2.0.5": {
@@ -2594,11 +2630,17 @@
     "is-decimal@1.0.4": {
       "integrity": "sha512-RGdriMmQQvZ2aqaQq3awNA6dCGtKpiDFcOzrTWrDAT2MiWrKQVPmxLGHl7Y2nNu6led0kEyoX0enY0qXYsv9zw=="
     },
+    "is-decimal@2.0.1": {
+      "integrity": "sha512-AAB9hiomQs5DXWcRB1rqsxGUstbRroFOPPVAomNk/3XHR5JyEZChOyTWe2oayKnsSsr/kcGqF+z6yuH6HHpN0A=="
+    },
     "is-fullwidth-code-point@3.0.0": {
       "integrity": "sha512-zymm5+u+sCsSWyD9qNaejV3DFvhCKclKdizYaJUuHA83RLjb7nSuGnddCHGv0hk+KY7BMAlsWeK4Ueg6EV6XQg=="
     },
     "is-hexadecimal@1.0.4": {
       "integrity": "sha512-gyPJuv83bHMpocVYoqof5VDiZveEoGoFL8m3BXNb2VW8Xs+rz9kqO8LOQ5DH6EsuvilT1ApazU0pyl+ytbPtlw=="
+    },
+    "is-hexadecimal@2.0.1": {
+      "integrity": "sha512-DgZQp241c8oO6cA1SbTEWiXeoxV42vlcJxgH+B3hi1AiqqKruZR3ZGF8In3fj4+/y/7rHvlOZLZtgJ/4ttYGZg=="
     },
     "is-node-process@1.2.0": {
       "integrity": "sha512-Vg4o6/fqPxIjtxgUH5QLJhwZ7gW5diGCVlXpuUfELC62CuxM1iHcRe51f2W1FDy04Ai4KJkagKjx3XaqyfRKXw=="
@@ -2817,6 +2859,20 @@
         "unist-util-visit@2.0.3"
       ]
     },
+    "mdast-util-directive@3.1.0": {
+      "integrity": "sha512-I3fNFt+DHmpWCYAT7quoM6lHf9wuqtI+oCOfvILnoicNIqjh5E3dEJWiXuYME2gNe8vl1iMQwyUHa7bgFmak6Q==",
+      "dependencies": [
+        "@types/mdast@4.0.4",
+        "@types/unist@3.0.3",
+        "ccount",
+        "devlop",
+        "mdast-util-from-markdown@2.0.2",
+        "mdast-util-to-markdown",
+        "parse-entities@4.0.2",
+        "stringify-entities",
+        "unist-util-visit-parents@6.0.1"
+      ]
+    },
     "mdast-util-find-and-replace@3.0.2": {
       "integrity": "sha512-Tmd1Vg/m3Xz43afeNxDIhWRtFZgM2VLyaf4vSTYwudTyeuTneoL3qtWMA5jeLyz/O1vDJmmV4QuScFCA2tBPwg==",
       "dependencies": [
@@ -2832,7 +2888,7 @@
         "@types/mdast@3.0.15",
         "mdast-util-to-string@2.0.0",
         "micromark@2.11.4",
-        "parse-entities",
+        "parse-entities@2.0.0",
         "unist-util-stringify-position@2.0.3"
       ]
     },
@@ -3033,6 +3089,18 @@
         "micromark-util-subtokenize",
         "micromark-util-symbol",
         "micromark-util-types"
+      ]
+    },
+    "micromark-extension-directive@4.0.0": {
+      "integrity": "sha512-/C2nqVmXXmiseSSuCdItCMho7ybwwop6RrrRPk0KbOHW21JKoCldC+8rFOaundDoRBUWBnJJcxeA/Kvi34WQXg==",
+      "dependencies": [
+        "devlop",
+        "micromark-factory-space",
+        "micromark-factory-whitespace",
+        "micromark-util-character",
+        "micromark-util-symbol",
+        "micromark-util-types",
+        "parse-entities@4.0.2"
       ]
     },
     "micromark-extension-gfm-autolink-literal@2.1.0": {
@@ -3237,7 +3305,7 @@
       "integrity": "sha512-+WoovN/ppKolQOFIAajxi7Lu9kInbPxFuTBVEavFcL8eAfVstoc5MocPmqBeAdBOJV00uaVjegzH4+MA0DN/uA==",
       "dependencies": [
         "debug",
-        "parse-entities"
+        "parse-entities@2.0.0"
       ]
     },
     "micromark@4.0.2": {
@@ -3385,10 +3453,22 @@
       "dependencies": [
         "character-entities@1.2.4",
         "character-entities-legacy@1.1.4",
-        "character-reference-invalid",
-        "is-alphanumerical",
-        "is-decimal",
-        "is-hexadecimal"
+        "character-reference-invalid@1.1.4",
+        "is-alphanumerical@1.0.4",
+        "is-decimal@1.0.4",
+        "is-hexadecimal@1.0.4"
+      ]
+    },
+    "parse-entities@4.0.2": {
+      "integrity": "sha512-GG2AQYWoLgL877gQIKeRPGO1xF9+eG1ujIb5soS5gPvLQ1y2o8FL90w2QWNdf9I361Mpp7726c+lj3U0qK1uGw==",
+      "dependencies": [
+        "@types/unist@2.0.11",
+        "character-entities-legacy@3.0.0",
+        "character-reference-invalid@2.0.1",
+        "decode-named-character-reference",
+        "is-alphanumerical@2.0.1",
+        "is-decimal@2.0.1",
+        "is-hexadecimal@2.0.1"
       ]
     },
     "parse5@7.2.1": {
@@ -3656,6 +3736,15 @@
       "dependencies": [
         "@types/hast",
         "hast-util-to-html",
+        "unified@11.0.5"
+      ]
+    },
+    "remark-directive@4.0.0": {
+      "integrity": "sha512-7sxn4RfF1o3izevPV1DheyGDD6X4c9hrGpfdUpm7uC++dqrnJxIZVkk7CoKqcLm0VUMAuOol7Mno3m6g8cfMuA==",
+      "dependencies": [
+        "@types/mdast@4.0.4",
+        "mdast-util-directive",
+        "micromark-extension-directive",
         "unified@11.0.5"
       ]
     },
@@ -4538,6 +4627,8 @@
   "workspace": {
     "dependencies": [
       "jsr:@qnighy/dedent@~0.1.2",
+      "jsr:@std/assert@^1.0.11",
+      "jsr:@std/expect@^1.0.13",
       "jsr:@std/fs@^1.0.14",
       "jsr:@std/io@~0.225.2",
       "jsr:@std/jsonc@^1.0.1",
@@ -4589,6 +4680,7 @@
         "npm:markdown-it-task-lists@^2.1.1",
         "npm:markdown-it-toc-done-right@^4.2.0",
         "npm:markdown-it@^14.1.0",
+        "npm:mdast-util-directive@^3.1.0",
         "npm:mdast-util-find-and-replace@^3.0.2",
         "npm:mermaid-isomorphic@3",
         "npm:mermaid@^11.4.1",
@@ -4604,6 +4696,7 @@
         "npm:rehype-sanitize@6",
         "npm:rehype-slug@6",
         "npm:rehype-stringify@^10.0.1",
+        "npm:remark-directive@4",
         "npm:remark-gfm@^4.0.1",
         "npm:remark-parse@11",
         "npm:remark-rehype@^11.1.1",

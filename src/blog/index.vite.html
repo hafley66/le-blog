@@ -1,0 +1,184 @@
+<html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"><meta charSet="UTF-8"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="stylesheet" href="/styles/colors.css"><link rel="stylesheet" href="/styles/fonts.css"><link rel="stylesheet" href="/styles/global.css"><link rel="stylesheet" href="/styles/nav_and_toc.css"><link rel="stylesheet" href="/styles/hex.css"><link rel="stylesheet" href="/styles/code.css"><link rel="stylesheet" href="/styles/img.css"><link rel="stylesheet" href="/shiki-twoslash.css"><title>All Posts</title></head><body><header><nav id="primary-nav" aria-label="Primary navigation"><div class="nav-links" role="tablist"><a href="/" role="tab" class="nav-link ">Home</a><a href="/resume" role="tab" class="nav-link ">Resume</a><a href="/blog" role="tab" aria-selected="true" class="nav-link active">Blog</a><a href="/snippets" role="tab" class="nav-link ">Snipts</a><a href="/tags" role="tab" class="nav-link ">Tags</a></div></nav></header><main class="body-markdown"><section id="title-and-description"><h1>All Posts</h1></section><div id="main-content-middle"><div><a class="blog-linkimus" href="/blog/how-its-made/this-site/index.html"><section><h2>How I made this site as of 2025/03/16</h2><p>Astro.js is cool but I don't like that much magic</p></section></a><a class="blog-linkimus" href="/blog/1-how-i-made-this-site/index.html"><section><h2>How I started this site as of 2025/02/27</h2><p></p></section></a><a class="blog-linkimus" href="/blog/rxjs/recreate-react-query-with-rxjs/index.html"><section><h2>React Query vs RxJS and switchMap</h2><p>Its all switchMap</p></section></a></div></div></main><footer></footer><script>// Smooth scrolling for browsers that don't support CSS smooth scrolling
+window.addEventListener("DOMContentLoaded", () => {
+  const observer = new IntersectionObserver(entries => {
+    console.log({ entries })
+    entries.forEach(entry => {
+      const id = entry.target.getAttribute("id")
+      if (entry.isIntersecting) {
+        console.log("adding to", id)
+        document
+          .querySelector(`nav li a[href="#${id}"]`)
+          ?.parentElement?.classList.add(
+            "viewtimeline-active",
+          )
+      } else {
+        console.log("removing from", id)
+        document
+          .querySelector(`nav li a[href="#${id}"]`)
+          ?.parentElement?.classList.remove(
+            "viewtimeline-active",
+          )
+      }
+    })
+  })
+
+  // Track all sections that have an `id` applied
+  document
+    .querySelectorAll("section[id]")
+    .forEach(section => {
+      observer.observe(section)
+    })
+})
+console.log("Does not support timeline-view")
+;
+;document.addEventListener("DOMContentLoaded", () => {
+  try {
+    const it = document.getElementById("toc-toggle")
+    if (it) {
+      it.checked = JSON.parse(
+        localStorage.tocChecked ?? "false",
+      )
+      it.addEventListener("change", e => {
+        localStorage.tocChecked = !!e.target.checked
+      })
+    }
+  } catch (e) {}
+  setTimeout(() => {
+    document.body.classList.toggle("ready")
+  }, 1)
+})
+;
+;function copyToClipboard(text) {
+  navigator.clipboard
+    .writeText(text)
+    .then(() => {
+      // Text copied successfully
+      console.log("Text copied to clipboard")
+    })
+    .catch(err => {
+      // Error copying text
+      console.error("Failed to copy text: ", err)
+    })
+}
+
+/**
+ * @param {HTMLElement} el
+ * @param {Window} win
+ */
+function selectElementText(el, win) {
+  win = win || window
+  let doc = win.document
+  /**
+   * @type {Selection}
+   */
+  let sel
+  /**
+   * @type {Range}
+   */
+  let range
+
+  if (win.getSelection && doc.createRange) {
+    sel = win.getSelection()
+    range = doc.createRange()
+    range.selectNodeContents(el)
+    sel.removeAllRanges()
+    sel.addRange(range)
+  } else if (doc.body.createTextRange) {
+    range = doc.body.createTextRange()
+    range.moveToElementText(el)
+    range.select()
+  }
+  console.log(sel.toString())
+  return sel.toString()
+}
+
+document.addEventListener("click", e => {
+  let target =
+    e.target.classList.contains("copy-to-clipboard") &&
+    e.target.parentElement.classList.contains("shiki")
+      ? e.target
+      : null
+  target = target?.parentElement.querySelector("code")
+  if (target) {
+    copyToClipboard(selectElementText(target))
+    window.getSelection().removeAllRanges()
+  }
+})
+;
+;let isZoomin = false
+let container = null
+const remove = () => {
+  if (!container) return
+  container?.remove()
+  container = null
+  const it = document.querySelector(".img-zoom")
+  it?.classList.toggle("img-zoom")
+  isZoomin = false
+}
+document.addEventListener("click", e => {
+  if (
+    isZoomin &&
+    e.target.classList.contains("img-zoom-clone-parent")
+  ) {
+    document
+      .querySelector(".img-zoom-clone-exit")
+      ?.dispatchEvent(
+        new MouseEvent("click", {
+          view: window,
+          bubbles: true,
+          cancelable: false,
+        }),
+      )
+  }
+
+  if (e.target.tagName === "IMG") {
+    if (e.target.classList.contains("img-zoom-clone")) {
+      return
+    }
+    if (!e.target.classList.contains("img-zoom")) {
+      /**
+       * @type {HTMLImageElement}
+       */
+      const orig = e.target
+      /**
+       * @type {HTMLImageElement}
+       */
+      const clone = e.target.cloneNode()
+      clone.classList.add("img-zoom-clone")
+
+      container = document.createElement("div")
+      container.classList.add("img-zoom-clone-parent")
+
+      const behind = document.createElement("div")
+      behind.classList.add("behind")
+
+      const exitButton = document.createElement("button")
+      exitButton.classList.add("img-zoom-clone-exit")
+      ;[exitButton, behind].forEach(i =>
+        i.addEventListener("click", remove),
+      )
+      isZoomin = true
+
+      exitButton.setAttribute("aria-role", "button")
+      exitButton.setAttribute("type", "button")
+      exitButton.innerHTML = "Close"
+
+      container.appendChild(behind)
+      container.appendChild(clone)
+      container.appendChild(exitButton)
+
+      document.body.appendChild(container)
+      e.target.classList.toggle("img-zoom")
+      requestAnimationFrame(() => {
+        exitButton.focus()
+      })
+    }
+  }
+})
+
+document.addEventListener("keyup", e => {
+  if (e.key === "Escape" && isZoomin) {
+    remove()
+  }
+})
+</script></body></html>

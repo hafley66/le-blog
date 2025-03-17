@@ -27,7 +27,18 @@
     "src/lib/unix_socket_test/a_parent.deno.ts",
     "src/lib/unix_socket_test/b_child.deno.ts",
     "src/lib/unix_socket_test/c_child.deno.ts",
-    "src/shiki.deno.ts"
+    "src/shiki.deno.ts",
+    "src/blog/index.render.deno.tsx",
+    "src/blog/rxjs/recreate-react-query-with-rxjs/index.render.deno.tsx",
+    "src/blog/rxjs/recreate-react-query-with-rxjs/sample.deno.tsx",
+    "src/lib/rxjs-vhtml/index.deno.test.tsx",
+    "src/lib/rxjs-vhtml/v2/jsx-runtime.v2.deno.tsx",
+    "src/unix_socket_test/a_parent.deno.ts",
+    "src/unix_socket_test/b_child.deno.ts",
+    "src/unix_socket_test/c_child.deno.ts",
+    "src/unix_socket_test/test.deno.ts",
+    "src/lib/lib.deno.ts",
+    "src/blog/how-its-made/this-site/index.render.deno.tsx"
   ],
   "deno.config": "./deno.json",
   "files.exclude": {

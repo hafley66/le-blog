@@ -276,6 +276,7 @@
 --color-inferno-3: rgb(51, 5, 151);
 --color-inferno-2: rgb(34, 6, 144);
 --color-inferno-1: rgb(13, 8, 135);
+--color-inferno-0: rgb(23, 16, 212);
 }
 
 :root {
@@ -301,6 +302,7 @@ body {
     --color-text: #DFDFDF;
     --color-text-2nd: #BCBCBC;
     --color-bg: #232424;
+    --color-bg: #090509;
     --color-shadow: white;
     --color-border: white;
     --color-text-contrast: black; 

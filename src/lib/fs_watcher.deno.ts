@@ -1,12 +1,14 @@
 import {
+  concatMap,
   debounceTime,
   defer,
   filter,
   from,
   map,
-  mergeMap,
+  merge,
   Observable,
   ObservableInput,
+  of,
   reduce,
   share,
   startWith,
@@ -14,6 +16,7 @@ import {
 } from "rxjs";
 import { expandGlob } from "@std/fs";
 import { globToRegExp } from "@std/path";
+import { TAG } from "~/lib/lib.dual.ts";
 
 // Convenience, very useful to convert lazy observable of 1 value on init of many places.
 export function deferFrom<T>(
@@ -30,12 +33,13 @@ export const makeWatcher$ = (
   deferFrom(() =>
     // Get all files based on root list, and file type
     expandGlob(
-      console.log(`${absoluteRoot}/${glob}`) || `${absoluteRoot}/${glob}`,
+      `${absoluteRoot}/${glob}`,
       {
         includeDirs,
       },
     )
   ).pipe(
+    // TAG("INIT"),
     // map path to path on complete
     reduce(
       (acc, path) => ((acc[path.path] = path.path), acc),
@@ -59,12 +63,20 @@ export const makeWatcher$ = (
       )
     ),
     // Map remove the things we dont want (tail matching)
-    mergeMap((i, index) => {
+    concatMap((i, index) => {
       // We flatten/convert normal object {paths: []} into multiple Observable<{path: string}>
       const reg = globToRegExp(glob);
-      return from(i.paths).pipe(
-        filter((i) => !!i.match(reg)),
-        map((p) => ({ path: p, time: +new Date(), index })),
+
+      const waitFuck = i.paths.map((i) => i.replace(`${process.cwd()}/`, ""))
+        .filter((i) => !!i.match(reg)).map((p) =>
+          of({
+            path: p,
+            time: +new Date(),
+            index,
+          })
+        );
+      return merge(
+        ...waitFuck,
       );
     }),
     // Share the watcher instances

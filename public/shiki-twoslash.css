@@ -1,20 +1,3 @@
-pre {
-  /* In theory shiki will overwrite these, but this is to make sure there are defaults regardless */
-  background-color: white;
-  color: black;
-  margin: 0px;
-  padding: 4px;
-  /* Important to allow the code to move horizontally; */
-  position: relative;
-}
-
-/* pre.shiki {
-  width: fit-content;
-  min-width: 50rem;
-} */
-/* pre.shiki {
-  
-} */
 pre.shiki:hover .dim {
   opacity: 1;
 }
@@ -41,11 +24,6 @@ pre.shiki div.line {
 /** Don't show the language identifiers */
 pre.shiki .language-id {
   display: none;
-}
-
-/* Visually differentiates twoslash code samples  */
-pre.twoslash {
-  border-color: #719af4;
 }
 
 /** When you mouse over the pre, show the underlines */
@@ -101,9 +79,6 @@ pre.shiki code {
   counter-increment: step 0;
 }
 
-.line {
-  display: inline-flex;
-}
 
 pre.shiki code .line::before {
   content: counter(step);
@@ -127,7 +102,7 @@ pre .code-container:hover a {
 pre code {
   font-size: 14px;
   font-family: "JetBrains Mono", Menlo, Monaco, Consolas, Courier New, monospace;
-  white-space: pre;
+  /* white-space: pre; */
   -webkit-overflow-scrolling: touch;
 }
 
@@ -380,57 +355,6 @@ pre .logger.log-log svg {
     transition: none !important;
   }
 }
-
-/* Counter for headings */
-body { counter-reset: h2counter; }
-h1 { counter-reset: h2counter; }
-h2 { counter-reset: h3counter; }-
-h3 { counter-reset: h4counter; }
-h4 { counter-reset: h5counter; }
-h5 { counter-reset: h6counter; }
-h1::first-letter { font-size: 150%; }
-h2::first-letter { font-size: 140%; }
-h3::first-letter { font-size: 130%; }
-h4::first-letter { font-size: 120%; }
-h5::first-letter { font-size: 110%; }
-h6::first-letter { font-size: 105%; }
-
-/* Thanks AI */
-/* h1:before {
-  counter-increment: h1counter;
-  content: counter(h1counter) ". ";
-} */
-
-h2:before {
-  counter-increment: h2counter;
-  content: counter(h2counter) ". ";
-}
-
-h3:before {
-  counter-increment: h3counter;
-  content: counter(h2counter) "." counter(h3counter) ". ";
-}
-
-h4:before {
-  counter-increment: h4counter;
-  content: counter(h2counter) "." counter(h3counter) "." counter(h4counter) ". ";
-}
-
-h5:before {
-  counter-increment: h5counter;
-  content: counter(h2counter) "." counter(h3counter) "." counter(h4counter) "." counter(h5counter) ". ";
-}
-
-h6:before {
-  counter-increment: h6counter;
-  content: counter(h2counter) "." counter(h3counter) "." counter(h4counter) "." counter(h5counter) "." counter(h6counter) ". ";
-}
-
-nav.table-of-contents ol { counter-reset: list-item; }
-nav.table-of-contents li { display: block; counter-increment: list-item; }
-nav.table-of-contents li:before { content: counters(list-item,'.') ' '; }
-
-
 
 /* ===== Hover Info ===== */
 .twoslash:hover .twoslash-hover {

@@ -1,7 +1,16 @@
 import { ensureFileSync } from "@std/fs";
 import path from "node:path";
 import { deferFrom } from "~/lib/lib.dual.ts";
-import { concatMap, debounceTime, filter, startWith, switchMap } from "rxjs";
+import {
+  concatMap,
+  debounceTime,
+  filter,
+  startWith,
+  Subject,
+  switchMap,
+  takeUntil,
+} from "rxjs";
+import { TAKE_UNTIL_EXIT } from "~/lib/lib.deno.ts";
 
 interface FSFile {
   path: string;
@@ -24,6 +33,8 @@ export const MakeSITEMAP_lol = (
     cwd = process.cwd(),
     extensions = [
       "ts",
+      "js",
+      "jsx",
       "tsx",
       "md",
       "css",
@@ -36,6 +47,8 @@ export const MakeSITEMAP_lol = (
       "svg",
       "gif",
       "mp4",
+      "sh",
+      "bash",
     ],
   }: { outputFilePath: string; extensions?: string[]; cwd?: string },
 ) => {
@@ -169,8 +182,8 @@ export const SITEMAP = {
       (i.kind === "create" || i.kind === "remove" || i.kind === "rename") &&
       i.paths.some((i) => extensions.includes(path.extname(i)))
     ),
-    startWith(null),
     debounceTime(1000),
+    startWith(null),
     concatMap(
       () => generateFS(),
     ),
@@ -179,3 +192,9 @@ export const SITEMAP = {
   // Start the process
   return findSrcChange;
 };
+
+MakeSITEMAP_lol({
+  outputFilePath: `${process.cwd()}/src/SITEMAP.deno.ts`,
+}).pipe(
+  TAKE_UNTIL_EXIT(),
+).subscribe();

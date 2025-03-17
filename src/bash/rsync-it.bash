@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-export LE_BLOG=~/projects/le-blog/ # christ the trailing slash is important for rsync
+export LE_BLOG=~/projects/le-blog/
 export LE_BLOG_TARGET=/var/www/html
 
 _.blog.sync.watch() {

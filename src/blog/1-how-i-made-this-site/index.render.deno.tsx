@@ -1,11 +1,11 @@
 /** @jsxImportSource ../../lib/rxjs-vhtml */
 /** @jsxImportSourceTypes ../../lib/rxjs-vhtml */
 import { Render$ } from "~/lib/0_RenderBase.deno.tsx"
+import { FS } from "~/SITEMAP.deno.ts"
 const $ = Render$(import.meta.filename!)
 
 export default $.SSGLayout({
   title: "How I started this site as of 2025/02/27",
-  url: "/blog/how-i-made-this-site",
   description: "",
   date_created: "2025-02-25",
   tags: [
@@ -30,7 +30,6 @@ Once you go through this and get an instance, you must ssh into it with vultr's 
 
 ## Find your IP4 address
 Once your instance is created, it will have an ip4 address ready to go. You will want to copy this and head back to porkbun. 
-
 
 ![vultr screenshot of instance portal where you can find ip address](./server_info.png)
 
@@ -68,18 +67,18 @@ You'll know your done once you can ssh without putting in your password.
 There are lots of ways to do this part, but I went a simple route
 1. SSH onto the machine
 2. [Follow install instructions for nginx and validate it works with regular http](https://docs.vultr.com/how-to-install-and-configure-nginx-on-a-vultr-cloud-server)
-    1. Do a quick check and go to &nbsp;''http://your-domain''
+    1. Do a quick check and go to &nbsp;\`http://your-domain\`
 3. Using [Certbot but with better docs for ubuntu and apt](https://www.inmotionhosting.com/support/website/ssl/lets-encrypt-ssl-ubuntu-with-certbot/)
 
 ~~~bash title="ssh:vultr"
 sudo apt install certbot python3-certbot-nginx -y
 
-
 sudo certbot --nginx -d $YOUR_DOMAIN_NAME -d www.$YOUR_DOMAIN_NAME
 
 service restart nginx
 ~~~
-4. Now try going back to your site, but this time use ''https://''
+
+4. Now try going back to your site, but this time use \`https://\`
 
 ## Deploying your site
 I just opted to build my blog using multiple trials of tech, writing my own, and now astro. 
@@ -88,37 +87,16 @@ people to log into and expose as portfolio and honestly any other idea I could h
 Vultr has great instance setups, so I can skip docker if I need to, or use it to my advantage. 
 
 ### Just install rsync
-Somehow, someway, and always eventually, you must install rsync. 
-Its really not that bad but install can take a second depending on your situation.
+Somehow, someway, and always eventually, you must install rsync. Its really not that bad but install can take a second depending on your situation.
 
-This is totally dependent, but I have an ancient Intel MacBook Pro, 
-so I had to use a painfully slow ''brew install rsync''. 
-During that install time, I was having second thoughts thanks to Apple not supporting their old hardware OS updates. 
+This is totally dependent, but I have an ancient Intel MacBook Pro, so I had to use a painfully slow \`brew install rsync\`. \
+During that install time, I was having second thoughts thanks to Apple not supporting their old hardware OS updates. \
 Anyways, I can't really link anything for you here, I recommend surfing the web for your situation.
 
 ### Bash time
-~~~bash title="the-great-deployer-but-actually-its-simple-af.bash"
-#!/usr/bin/env bash
 
-# christ the trailing slash is important for rsync
-export LE_BLOG=~/projects/le-blog/dist/ 
-export LE_BLOG_TARGET=/var/www/html
-
-_.blog.sync.watch() {
-  fswatch -o $LE_BLOG | while read;
-    do _.blog.sync
-  done;
-}
-
-_.blog.sync() {
-  rsync \\
-    --include dist/ \\
-    --exclude node_modules/ \\
-    --exclude .git/ \\
-    --progress \\
-    -avz \\
-    "$LE_BLOG" "root@hafley.codes:$LE_BLOG_TARGET"
-}
+~~~bash 
+${FS["src/bash/rsync-it.bash"].readSync()}
 ~~~
 
 `,

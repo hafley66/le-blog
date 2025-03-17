@@ -1,6 +1,6 @@
 /** @jsxImportSource ./rxjs-vhtml */
 /** @jsxImportSourceTypes ./rxjs-vhtml */
-import _ from "lodash";
+import _ from "lodash"
 
 import {
   MonoTypeOperatorFunction,
@@ -8,11 +8,12 @@ import {
   catchError,
   debounceTime,
   from,
+  map,
   pipe,
   switchMap,
   takeUntil,
   timer,
-} from "rxjs";
+} from "rxjs"
 import {
   FootnoteFlat,
   HeaderFlat,
@@ -20,11 +21,11 @@ import {
   LayoutProps,
   Layout as Layout_,
   TOC,
-} from "./0_Layout.dual.tsx";
-import { Remark } from "./00_Remark2.deno.tsx";
+} from "./0_Layout.dual.tsx"
+import { Remark } from "./00_Remark2.deno.tsx"
 
 const MARKDOWN_REGEX_TO_NAIVELY_SPLIT_HEADERS__BEWARE_HASH_COMMENTS =
-  /(#{2,} .+?)\n([\s\S]*?)(?=\n#{2,} |\n*$|$)/g;
+  /(#{2,} .+?)\n([\s\S]*?)(?=\n#{2,} |\n*$|$)/g
 
 export const Render$ = (
   importMetaFilename: string,
@@ -32,10 +33,14 @@ export const Render$ = (
     timer(500),
   ),
 ) => {
+  const [dontCare, ...thisOne] =
+    importMetaFilename.split("/src")
+  const dir = thisOne.join("")
+
   const OUTFILE = importMetaFilename.replace(
     ".render.deno.tsx",
     ".vite.html",
-  );
+  )
 
   const writeToDist = pipe(
     debounceTime<string>(1000),
@@ -45,12 +50,13 @@ export const Render$ = (
         {
           writer: await Deno.writeTextFile(
             OUTFILE,
-            content.replace(
-              // deno-lint-ignore no-control-regex
-              // biome-ignore lint/suspicious/noControlCharactersInRegex: <explanation>
-              /[\u0000-\u001F\u007F-\u009F]/g,
-              "",
-            ),
+            content,
+            // content.replace(
+            //   // deno-lint-ignore no-control-regex
+            //   // biome-ignore lint/suspicious/noControlCharactersInRegex: <explanation>
+            //   /[\u0000-\u001F\u007F-\u009F]/g,
+            //   "",
+            // ),
           ),
           content,
           renderedPath: OUTFILE,
@@ -60,24 +66,30 @@ export const Render$ = (
       ),
     ),
     catchError(e => {
-      console.error(e);
-      throw e;
+      console.error(e)
+      throw e
     }),
-  );
+  )
   // As we render H1...6, we capture their props as subject.next and we reduce over
-  const header$ = new Subject<HeaderFlat>();
-  const footnote$ = new Subject<FootnoteFlat>();
+  const header$ = new Subject<HeaderFlat>()
+  const footnote$ = new Subject<FootnoteFlat>()
 
   const md = (
     strings: TemplateStringsArray,
     ...values: any[]
   ) => {
-    const it = strings.join(" ");
+    let i = 0
+    let build = [] as string[]
+    for (const n of strings) {
+      const other = values[i++]
+      build.push(n + (other ?? ""))
+    }
+    const it = build.join(" ")
     const sections = [
       ...it.matchAll(
         MARKDOWN_REGEX_TO_NAIVELY_SPLIT_HEADERS__BEWARE_HASH_COMMENTS,
       ),
-    ];
+    ]
 
     const them = sections
       .map(i => ({
@@ -90,35 +102,32 @@ export const Render$ = (
         ...i,
         id: _.kebabCase(i.header),
         value: i.header,
-      }));
+      }))
 
-    const { byId, stack } = createNestedHeaders(them);
-    const ConstructedMarkdown = them.map(
+    const { byId, stack, items } = createNestedHeaders(them)
+    const ConstructedMarkdown = items.map(
       it => `
 
-${"#".repeat(it.depth)} ${byId[it.id].address} ${it.header}
+${"#".repeat(it.depth)} ${it.value}
 ${it.body}
 
 `,
-    );
+    )
 
     const meta = {
       sections: ConstructedMarkdown,
       byId,
       stack,
-    };
-    const out = from(
-      Remark(ConstructedMarkdown.join("\n")),
-    );
+    }
+    const out = from(Remark(ConstructedMarkdown.join("\n")))
 
-    Object.assign(out, meta);
+    Object.assign(out, meta)
 
-    console.log({ ConstructedMarkdown });
     return {
       toc: TOC({ tocRoot: stack[0] }),
       children: out as typeof out & typeof meta,
-    };
-  };
+    }
+  }
 
   const createNestedHeaders = (flat: HeaderFlat[]) => {
     const stack = [
@@ -131,10 +140,12 @@ ${it.body}
         value: "root",
         slug: "#root",
         address: "",
+        body: "",
       } as HeaderProps,
-    ];
-    const byId: Record<string, HeaderProps> = {};
-    flat.forEach((next, index) => {
+    ]
+    const byId: Record<string, HeaderProps> = {}
+    const items: HeaderProps[] = []
+    const all = flat.map((next, index) => {
       const node: HeaderProps = {
         ...next,
         id: _.kebabCase(next.value),
@@ -142,11 +153,11 @@ ${it.body}
         children: [],
         parent: null,
         get address() {
-          let curr: HeaderProps | null = this;
-          let n = [] as number[];
+          let curr: HeaderProps | null = this
+          let n = [] as number[]
           while (curr) {
-            n.push(curr.index);
-            curr = curr.parent;
+            n.push(curr.index)
+            curr = curr.parent
           }
           return `${n
             .reverse()
@@ -154,35 +165,56 @@ ${it.body}
             .map(
               i => i + 1 /* Users start at index 1 base */,
             )
-            .join(".")}. `;
+            .join(".")}. `
         },
-      };
+      }
 
       // Pop levels until we find the correct parent for this heading
       while (stack[stack.length - 1].depth >= next.depth) {
-        stack.pop();
+        stack.pop()
       }
 
       // Add node to current parent and push it onto current level
-      node.index = stack[stack.length - 1].children.length;
-      stack[stack.length - 1].children.push(node);
-      node.parent = stack[stack.length - 1];
-      stack.push(node);
-      byId[node.id] = node;
-    });
+      node.index = stack[stack.length - 1].children.length
+      stack[stack.length - 1].children.push(node)
+      node.parent = stack[stack.length - 1]
+      stack.push(node)
+      items.push(node)
+    })
+
+    items.forEach(it => {
+      it.value = `${it.address} ${it.value}`
+      byId[it.id] = it
+    })
+    // console.log({ items })
     return {
       byId,
       stack,
-    };
-  };
+      items: items,
+    }
+  }
 
   const Layout = (props: LayoutProps) =>
     Layout_({
       ...props,
-    });
+    })
 
-  const SSGLayout = (props: LayoutProps) =>
-    Layout(props).pipe(writeToDist);
+  const SSGLayout = (props: Omit<LayoutProps, "url">) => {
+    const it = Layout({ ...props, url: dir }).pipe(
+      writeToDist,
+      map(i => ({
+        ...i,
+        props,
+        importMetaFilename,
+        dir,
+      })),
+    )
+    return TypedAssign(it, {
+      props,
+      importMetaFilename,
+      dir,
+    })
+  }
 
   return {
     header$,
@@ -190,5 +222,12 @@ ${it.body}
     writeToDist,
     Layout,
     SSGLayout,
-  };
-};
+  }
+}
+
+function TypedAssign<T extends Record<any, any>, Next>(
+  source: T,
+  shallow: Next,
+): T & Next {
+  return Object.assign(source ?? ({} as T), shallow)
+}

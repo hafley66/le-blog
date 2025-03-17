@@ -9,7 +9,6 @@ import {
   interval,
   map,
   merge,
-  mergeAll,
   mergeMap,
   Observable,
   of,

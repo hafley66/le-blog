@@ -28,10 +28,10 @@
   },
   "include": [
     "vite.config.mts",
-    "**/*.deno.tsx",
-    "**/*.deno.ts",
+    "**/*.deno.*tsx",
+    "**/*.deno.*ts",
     "**/*.dual.ts",
     "**/*.dual.tsx",
     "src/vite-env.d.ts"
-  ]
+, "src/lib/rxjs-vhtml/index.deno.test.tsx"  ]
 }

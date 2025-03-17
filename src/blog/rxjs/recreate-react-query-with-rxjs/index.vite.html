@@ -1,0 +1,342 @@
+<html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"><meta charSet="UTF-8"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="stylesheet" href="/styles/colors.css"><link rel="stylesheet" href="/styles/fonts.css"><link rel="stylesheet" href="/styles/global.css"><link rel="stylesheet" href="/styles/nav_and_toc.css"><link rel="stylesheet" href="/styles/hex.css"><link rel="stylesheet" href="/styles/code.css"><link rel="stylesheet" href="/styles/img.css"><link rel="stylesheet" href="/shiki-twoslash.css"><title>React Query vs RxJS and switchMap</title></head><body><header><nav id="primary-nav" aria-label="Primary navigation"><div class="nav-links" role="tablist"><a href="/" role="tab" class="nav-link ">Home</a><a href="/resume" role="tab" class="nav-link ">Resume</a><a href="/blog" role="tab" aria-selected="true" class="nav-link active">Blog</a><a href="/snippets" role="tab" class="nav-link ">Snipts</a><a href="/tags" role="tab" class="nav-link ">Tags</a></div></nav></header><main class="body-markdown"><section id="title-and-description"><h1>React Query vs RxJS and switchMap</h1><sub>2025-02-25 by Chris Hafley</sub><p id="h1-desc">Its all switchMap</p><div class="f-col f-a-center" id="tags" style="margin-bottom:24px;"><div class="responsive-hex-grid-3"><a class="hex-content caption" href="/tags/typescript" style="--hex-color:var(--color-inferno-2);">
+      <div class="hex-content hex-shadow">
+        <div class="hex-content-amoeba"></div>
+      </div>
+      <div class="hex-content-amoeba"></div>
+      <span>typescript</span>
+</a><a class="hex-content caption" href="/tags/javascript" style="--hex-color:var(--color-inferno-4);">
+      <div class="hex-content hex-shadow">
+        <div class="hex-content-amoeba"></div>
+      </div>
+      <div class="hex-content-amoeba"></div>
+      <span>javascript</span>
+</a><a class="hex-content caption" href="/tags/rxjs" style="--hex-color:var(--color-inferno-6);">
+      <div class="hex-content hex-shadow">
+        <div class="hex-content-amoeba"></div>
+      </div>
+      <div class="hex-content-amoeba"></div>
+      <span>rxjs</span>
+</a><a class="hex-content caption" href="/tags/react-query" style="--hex-color:var(--color-inferno-8);">
+      <div class="hex-content hex-shadow">
+        <div class="hex-content-amoeba"></div>
+      </div>
+      <div class="hex-content-amoeba"></div>
+      <span>react-query</span>
+</a><a class="hex-content caption" href="/tags/react" style="--hex-color:var(--color-inferno-10);">
+      <div class="hex-content hex-shadow">
+        <div class="hex-content-amoeba"></div>
+      </div>
+      <div class="hex-content-amoeba"></div>
+      <span>react</span>
+</a><a class="hex-content caption" href="/tags/react-context" style="--hex-color:var(--color-inferno-12);">
+      <div class="hex-content hex-shadow">
+        <div class="hex-content-amoeba"></div>
+      </div>
+      <div class="hex-content-amoeba"></div>
+      <span>react-context</span>
+</a><a class="hex-content caption" href="/tags/rxjs-share" style="--hex-color:var(--color-inferno-14);">
+      <div class="hex-content hex-shadow">
+        <div class="hex-content-amoeba"></div>
+      </div>
+      <div class="hex-content-amoeba"></div>
+      <span>rxjs-share</span>
+</a><a class="hex-content caption" href="/tags/react-hooks" style="--hex-color:var(--color-inferno-16);">
+      <div class="hex-content hex-shadow">
+        <div class="hex-content-amoeba"></div>
+      </div>
+      <div class="hex-content-amoeba"></div>
+      <span>react-hooks</span>
+</a></div></div></section><details open="true" id="section-table-of-contents"><summary id="toc-header-contents"><h2 id="table-of-contents">Table of Contents</h2><input type="checkbox" id="toc-toggle"></summary><div class="fancy-hr"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 20"><circle cx="10" cy="10" r="7" style="fill:var(--color-text);" stroke-width="2"></circle><circle cx="30" cy="10" r="9" style="fill:var(--color-text);" stroke-width="2" fill="transparent"></circle><circle cx="50" cy="10" r="7" style="fill:var(--color-text);" stroke-width="2"></circle></svg></div><nav id="toc-nav"><ol debug="true"><li debug="true"><a href="#section-motivations">  Motivations</a></li><li debug="true"><a href="#section-the-basic-use-query">  The basic useQuery</a></li></ol></nav></details><div id="main-content-middle"><section id="section-motivations"><h2 id="motivations"><a href="#motivations">1.  Motivations</a></h2><p>I recently finished up working on multiple projects with react-query, and at the end of it, I was transitioning into using plain rxjs for making side effects as state.</p><p>I spent several months over-abstracting rxjs + react-query, when I finally realized I can just use some very simple patterns.</p></section>
+<section id="section-the-basic-use-query"><h2 id="the-basic-use-query"><a href="#the-basic-use-query">2.  The basic useQuery</a></h2><p>One way to describe useQuery is as replacement for useEffect, if useEffect had a cache-by-dependency-array and a return value of its current state.</p><p>Lets imagine we have an async calculator API for math with <code>async add</code> and <code>async sub</code>.</p><pre class="shiki vitesse-dark twoslash lsp" style="background-color:#121212;color:#dbd7caee" tabindex="0"><div class="code-scroller"><code><span class="line"><span style="color:#758575DD">// @@filename </span></span>
+<span class="line"><span style="color:#4D9375">export</span><span style="color:#CB7676"> const</span><span style="color:#BD976A"> </span><span style="color:#BD976A"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><pre class="shiki vitesse-dark" style="background-color:#121212;color:#dbd7caee" tabindex="0"><div class="code-scroller"><code><span class="line"><span style="color:#CB7676">const</span><span style="color:#BD976A"> MATH</span><span style="color:#666666">: {</span></span>
+<span class="line"><span style="color:#80A665">    add</span><span style="color:#666666">(</span><span style="color:#BD976A">x</span><span style="color:#666666">: </span><span style="color:#5DA994">number</span><span style="color:#666666">, </span><span style="color:#BD976A">y</span><span style="color:#666666">: </span><span style="color:#5DA994">number</span><span style="color:#666666">): </span><span style="color:#5DA994">Promise</span><span style="color:#666666">&#x3C;</span><span style="color:#5DA994">number</span><span style="color:#666666">>;</span></span>
+<span class="line"><span style="color:#80A665">    sub</span><span style="color:#666666">(</span><span style="color:#BD976A">x</span><span style="color:#666666">: </span><span style="color:#5DA994">number</span><span style="color:#666666">, </span><span style="color:#BD976A">y</span><span style="color:#666666">: </span><span style="color:#5DA994">number</span><span style="color:#666666">): </span><span style="color:#5DA994">Promise</span><span style="color:#666666">&#x3C;</span><span style="color:#5DA994">number</span><span style="color:#666666">>;</span></span>
+<span class="line"><span style="color:#666666">}</span></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre></code></span>MATH</span></span><span style="color:#666666"> =</span><span style="color:#666666"> {</span></span>
+<span class="line"><span style="color:#CB7676">  async</span><span style="color:#80A665"> </span><span style="color:#80A665"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#CB7676">function</span><span style="color:#80A665"> add</span><span style="color:#666666">(</span><span style="color:#BD976A">x</span><span style="color:#666666">: </span><span style="color:#5DA994">number</span><span style="color:#666666">,</span><span style="color:#BD976A"> y</span><span style="color:#666666">: </span><span style="color:#5DA994">number</span><span style="color:#666666">):</span><span style="color:#5DA994"> Promise</span><span style="color:#666666">&#x3C;</span><span style="color:#5DA994">number</span><span style="color:#666666">></span></code></span>add</span></span><span style="color:#666666">(</span><span style="color:#BD976A"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#80A665">x</span><span style="color:#666666">:</span><span style="color:#BD976A"> number</span></code></span>x</span></span><span style="color:#666666">: </span><span style="color:#5DA994">number</span><span style="color:#666666">,</span><span style="color:#BD976A"> </span><span style="color:#BD976A"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#80A665">y</span><span style="color:#666666">:</span><span style="color:#BD976A"> number</span></code></span>y</span></span><span style="color:#666666">: </span><span style="color:#5DA994">number</span><span style="color:#666666">)</span><span style="color:#666666"> {</span></span>
+<span class="line"><span style="color:#4D9375">    return</span><span style="color:#B8A965"> </span><span style="color:#B8A965"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#CB7676">var</span><span style="color:#BD976A"> Promise</span><span style="color:#666666">: </span><span style="color:#5DA994">PromiseConstructor</span></code><div class="twoslash-popup-docs">Represents the completion of an asynchronous operation</div></span>Promise</span></span><span style="color:#666666">.</span><span style="color:#80A665"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#BD976A">PromiseConstructor</span><span style="color:#666666">.</span><span style="color:#80A665">resolve</span><span style="color:#666666">&#x3C;</span><span style="color:#5DA994">number</span><span style="color:#666666">>(</span><span style="color:#BD976A">value</span><span style="color:#DBD7CAEE">: </span><span style="color:#BD976A">number</span><span style="color:#666666">)</span><span style="color:#DBD7CAEE">: </span><span style="color:#B8A965">Promise</span><span style="color:#666666">&#x3C;</span><span style="color:#5DA994">number</span><span style="color:#666666">></span><span style="color:#666666"> (</span><span style="color:#CB7676">+</span><span style="color:#4C9A91">2</span><span style="color:#BD976A"> overloads</span><span style="color:#666666">)</span></code><div class="twoslash-popup-docs">Creates a new resolved promise for the provided value.</div><div class="twoslash-popup-docs twoslash-popup-docs-tags"><span class="twoslash-popup-docs-tag"><span class="twoslash-popup-docs-tag-name">@param</span><span class="twoslash-popup-docs-tag-value">value A promise.</span></span><span class="twoslash-popup-docs-tag"><span class="twoslash-popup-docs-tag-name">@returns</span><span class="twoslash-popup-docs-tag-value">A promise whose internal state matches the provided promise.</span></span></div></span>resolve</span></span><span style="color:#666666">(</span><span style="color:#BD976A"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#80A665">x</span><span style="color:#666666">:</span><span style="color:#BD976A"> number</span></code></span>x</span></span><span style="color:#CB7676"> +</span><span style="color:#BD976A"> </span><span style="color:#BD976A"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#80A665">y</span><span style="color:#666666">:</span><span style="color:#BD976A"> number</span></code></span>y</span></span><span style="color:#666666">)</span></span>
+<span class="line"><span style="color:#666666">  },</span></span>
+<span class="line"><span style="color:#CB7676">  async</span><span style="color:#80A665"> </span><span style="color:#80A665"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#CB7676">function</span><span style="color:#80A665"> sub</span><span style="color:#666666">(</span><span style="color:#BD976A">x</span><span style="color:#666666">: </span><span style="color:#5DA994">number</span><span style="color:#666666">,</span><span style="color:#BD976A"> y</span><span style="color:#666666">: </span><span style="color:#5DA994">number</span><span style="color:#666666">):</span><span style="color:#5DA994"> Promise</span><span style="color:#666666">&#x3C;</span><span style="color:#5DA994">number</span><span style="color:#666666">></span></code></span>sub</span></span><span style="color:#666666">(</span><span style="color:#BD976A"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#80A665">x</span><span style="color:#666666">:</span><span style="color:#BD976A"> number</span></code></span>x</span></span><span style="color:#666666">: </span><span style="color:#5DA994">number</span><span style="color:#666666">,</span><span style="color:#BD976A"> </span><span style="color:#BD976A"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#80A665">y</span><span style="color:#666666">:</span><span style="color:#BD976A"> number</span></code></span>y</span></span><span style="color:#666666">: </span><span style="color:#5DA994">number</span><span style="color:#666666">)</span><span style="color:#666666"> {</span></span>
+<span class="line"><span style="color:#4D9375">    return</span><span style="color:#B8A965"> </span><span style="color:#B8A965"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#CB7676">var</span><span style="color:#BD976A"> Promise</span><span style="color:#666666">: </span><span style="color:#5DA994">PromiseConstructor</span></code><div class="twoslash-popup-docs">Represents the completion of an asynchronous operation</div></span>Promise</span></span><span style="color:#666666">.</span><span style="color:#80A665"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#BD976A">PromiseConstructor</span><span style="color:#666666">.</span><span style="color:#80A665">resolve</span><span style="color:#666666">&#x3C;</span><span style="color:#5DA994">number</span><span style="color:#666666">>(</span><span style="color:#BD976A">value</span><span style="color:#DBD7CAEE">: </span><span style="color:#BD976A">number</span><span style="color:#666666">)</span><span style="color:#DBD7CAEE">: </span><span style="color:#B8A965">Promise</span><span style="color:#666666">&#x3C;</span><span style="color:#5DA994">number</span><span style="color:#666666">></span><span style="color:#666666"> (</span><span style="color:#CB7676">+</span><span style="color:#4C9A91">2</span><span style="color:#BD976A"> overloads</span><span style="color:#666666">)</span></code><div class="twoslash-popup-docs">Creates a new resolved promise for the provided value.</div><div class="twoslash-popup-docs twoslash-popup-docs-tags"><span class="twoslash-popup-docs-tag"><span class="twoslash-popup-docs-tag-name">@param</span><span class="twoslash-popup-docs-tag-value">value A promise.</span></span><span class="twoslash-popup-docs-tag"><span class="twoslash-popup-docs-tag-name">@returns</span><span class="twoslash-popup-docs-tag-value">A promise whose internal state matches the provided promise.</span></span></div></span>resolve</span></span><span style="color:#666666">(</span><span style="color:#BD976A"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#80A665">x</span><span style="color:#666666">:</span><span style="color:#BD976A"> number</span></code></span>x</span></span><span style="color:#CB7676"> -</span><span style="color:#BD976A"> </span><span style="color:#BD976A"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#80A665">y</span><span style="color:#666666">:</span><span style="color:#BD976A"> number</span></code></span>y</span></span><span style="color:#666666">)</span></span>
+<span class="line"><span style="color:#666666">  },</span></span>
+<span class="line"><span style="color:#666666">}</span></span>
+<span class="line"><span style="color:#DBD7CAEE"> </span></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><div class="code-group code-group-0"><div class="code-group-tabs"><input type="radio" name="code-group-0" id="code-group-radio-0" checked="true"><label for="code-group-radio-0"><div class="centerino">basic useQuery</div></label><input type="radio" name="code-group-0" id="code-group-radio-1"><label for="code-group-radio-1"><div class="centerino">useEffect + state</div></label></div><pre class="shiki vitesse-dark twoslash lsp" style="background-color:#121212;color:#dbd7caee" tabindex="0"><div class="code-scroller"><code><span class="line"></span>
+<span class="line"></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><pre class="shiki vitesse-dark twoslash lsp" style="background-color:#121212;color:#dbd7caee" tabindex="0"><div class="code-scroller"><code><span class="line"></span>
+<span class="line"></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><style>
+.code-group pre {display:none}
+.code-group-0 {
+
+  #code-group-radio-0+label {
+
+  }
+
+  #code-group-radio-0:checked+label {
+    background:rgb(18, 18, 18);
+    position: relative;
+    z-index:1;
+
+    &:hover {
+      text-decoration: underline;
+      color: white;
+    }
+
+    border-top-color: var(--color-red-600);
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      z-index: 10;
+      width: 100%; 
+      background: var(--color-red-600);
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      z-index: 10;
+      width: 100%; 
+      background: rgba(18, 18, 18, 1.0);;
+    }
+  }
+
+  &:has(#code-group-radio-0:checked) pre:nth-child(2){ 
+    display: block;
+  }
+  
+
+  #code-group-radio-1+label {
+
+  }
+
+  #code-group-radio-1:checked+label {
+    background:rgb(18, 18, 18);
+    position: relative;
+    z-index:1;
+
+    &:hover {
+      text-decoration: underline;
+      color: white;
+    }
+
+    border-top-color: var(--color-red-600);
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      z-index: 10;
+      width: 100%; 
+      background: var(--color-red-600);
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      z-index: 10;
+      width: 100%; 
+      background: rgba(18, 18, 18, 1.0);;
+    }
+  }
+
+  &:has(#code-group-radio-1:checked) pre:nth-child(3){ 
+    display: block;
+  }
+  
+} </style></div></section></div></main><footer></footer><script>// Smooth scrolling for browsers that don't support CSS smooth scrolling
+window.addEventListener("DOMContentLoaded", () => {
+  const observer = new IntersectionObserver(entries => {
+    console.log({ entries })
+    entries.forEach(entry => {
+      const id = entry.target.getAttribute("id")
+      if (entry.isIntersecting) {
+        console.log("adding to", id)
+        document
+          .querySelector(`nav li a[href="#${id}"]`)
+          ?.parentElement?.classList.add(
+            "viewtimeline-active",
+          )
+      } else {
+        console.log("removing from", id)
+        document
+          .querySelector(`nav li a[href="#${id}"]`)
+          ?.parentElement?.classList.remove(
+            "viewtimeline-active",
+          )
+      }
+    })
+  })
+
+  // Track all sections that have an `id` applied
+  document
+    .querySelectorAll("section[id]")
+    .forEach(section => {
+      observer.observe(section)
+    })
+})
+console.log("Does not support timeline-view")
+;
+;document.addEventListener("DOMContentLoaded", () => {
+  try {
+    const it = document.getElementById("toc-toggle")
+    if (it) {
+      it.checked = JSON.parse(
+        localStorage.tocChecked ?? "false",
+      )
+      it.addEventListener("change", e => {
+        localStorage.tocChecked = !!e.target.checked
+      })
+    }
+  } catch (e) {}
+  setTimeout(() => {
+    document.body.classList.toggle("ready")
+  }, 1)
+})
+;
+;function copyToClipboard(text) {
+  navigator.clipboard
+    .writeText(text)
+    .then(() => {
+      // Text copied successfully
+      console.log("Text copied to clipboard")
+    })
+    .catch(err => {
+      // Error copying text
+      console.error("Failed to copy text: ", err)
+    })
+}
+
+/**
+ * @param {HTMLElement} el
+ * @param {Window} win
+ */
+function selectElementText(el, win) {
+  win = win || window
+  let doc = win.document
+  /**
+   * @type {Selection}
+   */
+  let sel
+  /**
+   * @type {Range}
+   */
+  let range
+
+  if (win.getSelection && doc.createRange) {
+    sel = win.getSelection()
+    range = doc.createRange()
+    range.selectNodeContents(el)
+    sel.removeAllRanges()
+    sel.addRange(range)
+  } else if (doc.body.createTextRange) {
+    range = doc.body.createTextRange()
+    range.moveToElementText(el)
+    range.select()
+  }
+  console.log(sel.toString())
+  return sel.toString()
+}
+
+document.addEventListener("click", e => {
+  let target =
+    e.target.classList.contains("copy-to-clipboard") &&
+    e.target.parentElement.classList.contains("shiki")
+      ? e.target
+      : null
+  target = target?.parentElement.querySelector("code")
+  if (target) {
+    copyToClipboard(selectElementText(target))
+    window.getSelection().removeAllRanges()
+  }
+})
+;
+;let isZoomin = false
+let container = null
+const remove = () => {
+  if (!container) return
+  container?.remove()
+  container = null
+  const it = document.querySelector(".img-zoom")
+  it?.classList.toggle("img-zoom")
+  isZoomin = false
+}
+document.addEventListener("click", e => {
+  if (
+    isZoomin &&
+    e.target.classList.contains("img-zoom-clone-parent")
+  ) {
+    document
+      .querySelector(".img-zoom-clone-exit")
+      ?.dispatchEvent(
+        new MouseEvent("click", {
+          view: window,
+          bubbles: true,
+          cancelable: false,
+        }),
+      )
+  }
+
+  if (e.target.tagName === "IMG") {
+    if (e.target.classList.contains("img-zoom-clone")) {
+      return
+    }
+    if (!e.target.classList.contains("img-zoom")) {
+      /**
+       * @type {HTMLImageElement}
+       */
+      const orig = e.target
+      /**
+       * @type {HTMLImageElement}
+       */
+      const clone = e.target.cloneNode()
+      clone.classList.add("img-zoom-clone")
+
+      container = document.createElement("div")
+      container.classList.add("img-zoom-clone-parent")
+
+      const behind = document.createElement("div")
+      behind.classList.add("behind")
+
+      const exitButton = document.createElement("button")
+      exitButton.classList.add("img-zoom-clone-exit")
+      ;[exitButton, behind].forEach(i =>
+        i.addEventListener("click", remove),
+      )
+      isZoomin = true
+
+      exitButton.setAttribute("aria-role", "button")
+      exitButton.setAttribute("type", "button")
+      exitButton.innerHTML = "Close"
+
+      container.appendChild(behind)
+      container.appendChild(clone)
+      container.appendChild(exitButton)
+
+      document.body.appendChild(container)
+      e.target.classList.toggle("img-zoom")
+      requestAnimationFrame(() => {
+        exitButton.focus()
+      })
+    }
+  }
+})
+
+document.addEventListener("keyup", e => {
+  if (e.key === "Escape" && isZoomin) {
+    remove()
+  }
+})
+</script></body></html>

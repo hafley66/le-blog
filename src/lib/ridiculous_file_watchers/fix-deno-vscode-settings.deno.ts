@@ -5,18 +5,22 @@ import {
   merge,
   of,
   scan,
+  Subject,
   switchMap,
+  takeUntil,
   throttleTime,
 } from "rxjs";
 import { makeWatcher$ } from "../fs_watcher.deno.ts";
 import process from "node:process";
+import { TAG } from "~/lib/lib.dual.ts";
+import { TAKE_UNTIL_EXIT, UNTIL_SIGEXIT } from "~/lib/lib.deno.ts";
 
 // These are the three roots for renderables.
 // We have to do it this way bc not
 //  everything supports shell glob in multiple places.
 // Every deno file ending in deno.mts
 const allDenoWatcher$ = merge(
-  makeWatcher$(process.cwd(), "src/**/*/*{deno,dual}.{ts,tsx}"),
+  makeWatcher$(process.cwd(), "src/**/*/*{deno,dual}.*{ts,tsx}"),
 );
 
 // Deno does not allow glob matching on enabled >:|
@@ -61,6 +65,7 @@ export const updateDenoPathsBcUgh = defer(
                 nextWithoutCWD,
               )
             ) {
+              console.log("Does not contain...");
               state["deno.enablePaths"].push(nextWithoutCWD);
             }
             return state;
@@ -68,6 +73,7 @@ export const updateDenoPathsBcUgh = defer(
         );
       },
     ),
+    TAG("DERP"),
     // Prevent chaos
     throttleTime(1000, undefined, {
       leading: true,
@@ -78,6 +84,7 @@ export const updateDenoPathsBcUgh = defer(
     // If longer than 1second to write for
     //  whatever reason, it will queue them in sequence.
     concatMap((dot_vscode_config) =>
+      console.log("Writing...", dot_vscode_config) ||
       Deno.writeTextFile(
         vscodeSettings,
         JSON.stringify(dot_vscode_config, null, 2),
@@ -88,3 +95,5 @@ export const updateDenoPathsBcUgh = defer(
     ),
     // Get told when a commit happens.
   );
+
+updateDenoPathsBcUgh.pipe(TAKE_UNTIL_EXIT()).subscribe();

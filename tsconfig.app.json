@@ -19,6 +19,7 @@
     "jsxImportSource": "react",
     /* Linting */
     "strict": true,
+    "allowJs": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
       "~/*": [
@@ -28,7 +29,9 @@
   },
   "include": [
     "**/*.dual.tsx",
-    "**/*.dual.ts"
+    "**/*.dual.ts",
+    "**/*.dual.js",
+    "**/*.dom.js"
   ],
   "exclude": [
     "vite.config.mts",

@@ -1,1 +1,289 @@
-<html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"><meta charSet="UTF-8"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="stylesheet" href="/styles/colors.css"><link rel="stylesheet" href="/styles/fonts.css"><link rel="stylesheet" href="/styles/global.css"><link rel="stylesheet" href="/shiki-2.css"><title>How I started this site as of 2025/02/27</title></head><body><header><nav id="primary-nav" aria-label="Primary navigation"><div class="nav-links" role="tablist"><a href="/" role="tab" class="nav-link ">Home</a><a href="/resume" role="tab" class="nav-link ">Resume</a><a href="/blog" role="tab" aria-selected="true" class="nav-link active">Blog</a><a href="/snippets" role="tab" class="nav-link ">Snipts</a><a href="/tags" role="tab" class="nav-link ">Tags</a></div></nav></header><main class="body-markdown"><section id="title-and-description"><h1>How I started this site as of 2025/02/27</h1><sub>2025-02-25 by Chris Hafley</sub><div class="f-col f-a-center" id="tags" style="margin-bottom:24px;"><div class="responsive-hex-grid-3"><a class="hex-content" href="/tags/typescript" style="--hex-color:var(--color-inferno-2);">      <div class="hex-content hex-shadow">        <div class="hex-content-amoeba"></div>      </div>      <div class="hex-content-amoeba"></div>      <span>typescript</span></a><a class="hex-content" href="/tags/javascript" style="--hex-color:var(--color-inferno-4);">      <div class="hex-content hex-shadow">        <div class="hex-content-amoeba"></div>      </div>      <div class="hex-content-amoeba"></div>      <span>javascript</span></a><a class="hex-content" href="/tags/astro" style="--hex-color:var(--color-inferno-6);">      <div class="hex-content hex-shadow">        <div class="hex-content-amoeba"></div>      </div>      <div class="hex-content-amoeba"></div>      <span>astro</span></a><a class="hex-content" href="/tags/vultr" style="--hex-color:var(--color-inferno-8);">      <div class="hex-content hex-shadow">        <div class="hex-content-amoeba"></div>      </div>      <div class="hex-content-amoeba"></div>      <span>vultr</span></a><a class="hex-content" href="/tags/bash" style="--hex-color:var(--color-inferno-10);">      <div class="hex-content hex-shadow">        <div class="hex-content-amoeba"></div>      </div>      <div class="hex-content-amoeba"></div>      <span>bash</span></a><a class="hex-content" href="/tags/dns" style="--hex-color:var(--color-inferno-12);">      <div class="hex-content hex-shadow">        <div class="hex-content-amoeba"></div>      </div>      <div class="hex-content-amoeba"></div>      <span>dns</span></a><a class="hex-content" href="/tags/vps" style="--hex-color:var(--color-inferno-14);">      <div class="hex-content hex-shadow">        <div class="hex-content-amoeba"></div>      </div>      <div class="hex-content-amoeba"></div>      <span>vps</span></a><a class="hex-content" href="/tags/deployments" style="--hex-color:var(--color-inferno-16);">      <div class="hex-content hex-shadow">        <div class="hex-content-amoeba"></div>      </div>      <div class="hex-content-amoeba"></div>      <span>deployments</span></a></div></div></section><details open="true" id="section-table-of-contents"><summary id="toc-header-contents"><h2 id="table-of-contents"> Table of Contents</h2><input type="checkbox" id="toc-toggle"><script>              const it = document.getElementById("toc-toggle");    it.checked = JSON.parse(localStorage.tocChecked ?? "false");    it.addEventListener("change", (e) => {      localStorage.tocChecked = !!e.target.checked;    });          </script></summary><div class="fancy-hr"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 20"><circle cx="10" cy="10" r="7" style="fill:var(--color-text);" stroke-width="2"></circle><circle cx="30" cy="10" r="9" style="fill:var(--color-text);" stroke-width="2" fill="transparent"></circle><circle cx="50" cy="10" r="7" style="fill:var(--color-text);" stroke-width="2"></circle></svg></div><nav id="toc-nav"><ol debug="true"><li debug="true"><a href="#section-buy-a-domain">Buy a domain</a></li><li debug="true"><a href="#section-buy-a-pre-pay-vps">Buy a pre-pay VPS</a></li><li debug="true"><a href="#section-find-your-ip-4-address">Find your IP4 address</a></li><li debug="true"><a href="#section-update-porkbun-dns">Update Porkbun DNS</a><ol><li debug="true"><a href="#section-ensure-2-a-records">Ensure 2 A records</a></li></ol></li><li debug="true"><a href="#section-ssh-time">SSH time</a></li><li debug="true"><a href="#section-install-nginx-and-ssl">Install nginx and ssl</a></li><li debug="true"><a href="#section-deploying-your-site">Deploying your site</a><ol><li debug="true"><a href="#section-just-install-rsync">Just install rsync</a></li><li debug="true"><a href="#section-bash-time">Bash time</a></li></ol></li></ol></nav></details><div id="main-content-middle"><section><h2 id="">1.  Buy a domain</h2><p>I used <a href="https://porkbun.com/">Porkbun</a>, very easy to use. They also come with easy to use WHOIS protection, which is a big plus.</p></section><section><h2 id="">2.  Buy a pre-pay VPS</h2><p>I do not want to put a line of credit on big cloud names and I am not wizard enough to magic myself my own vps on my own hardware (...yet) with a stable IP. But we'll get there.</p><p>I got the lowest cost compute instance over at <a href="https://www.vultr.com/">Vultr</a> for about $5/month.Once you go through this and get an instance, you must ssh into it with vultr's docs.</p></section><section><h2 id="">3.  Find your IP4 address</h2><p>Once your instance is created, it will have an ip4 address ready to go. You will want to copy this and head back to porkbun.</p><p><img src="./server_info.png" alt="vultr screenshot of instance portal where you can find ip address"></p></section><section><h2 id="">4.  Update Porkbun DNS</h2><p>Once in <a href="https://porkbun.com/account/domainsSpeedy">Porkbun Portal</a>,look for your domain name, and click on its <del>Details</del>.What expands below is a lot of config options.Find the ever so tiny button next to the words <code>DNS Records</code>.</p><p><img src="./porkbun.png" alt="screenshot of porkbun portal and where to click"></p></section><section><h3 id="">4.1.  Ensure 2 A records</h3><p>Take your IP from vultr and make sure there are 2 A records, both pointing to the ip address.</p><ol><li>Have one for your domain</li><li>And have another for <del><a href="http://www">www</a>.<your-domain></your-domain></del></li><li>Both answer sections should be your vultr ip4 address</li></ol></section><section><h2 id="">5.  SSH time</h2><p>Now we need to get on the box, so take your IP addressand follow the ssh instructions from vultr to get in.You can either wait for your DNS records to propogate (will likely take 10 minutes or so),or directly use the ip address.</p><p>Please <a href="https://docs.vultr.com/how-to-use-ssh-with-vultr-servers">follow these instructions at Vultr</a></p><p>I have made an alis in my <code>~/.bash_profile</code></p><pre class="shiki vitesse-dark" style="background-color:#121212;color:#dbd7caee" tabindex="0"><code><span class="line"><span style="color:#80A665">ssh-blog</span><span style="color:#666666">()</span><span style="color:#666666"> {</span><span style="color:#80A665"> ssh</span><span style="color:#C98A7D77"> "</span><span style="color:#C98A7D">root@$YOUR_DOMAIN_NAME</span><span style="color:#C98A7D77">"</span><span style="color:#666666">;</span><span style="color:#666666"> }</span></span></code></pre><p>You'll know your done once you can ssh without putting in your password.</p></section><section><h2 id="">6.  Install nginx and ssl</h2><p>There are lots of ways to do this part, but I went a simple route</p><ol><li>SSH onto the machine</li><li><a href="https://docs.vultr.com/how-to-install-and-configure-nginx-on-a-vultr-cloud-server">Follow install instructions for nginx and validate it works with regular http</a><ol><li>Do a quick check and go to  ''<a href="http://your-domain">http://your-domain</a>''</li></ol></li><li>Using <a href="https://www.inmotionhosting.com/support/website/ssl/lets-encrypt-ssl-ubuntu-with-certbot/">Certbot but with better docs for ubuntu and apt</a></li></ol><pre class="shiki vitesse-dark" style="background-color:#121212;color:#dbd7caee" tabindex="0"><code><span class="line"><span style="color:#80A665">sudo</span><span style="color:#C98A7D"> apt</span><span style="color:#C98A7D"> install</span><span style="color:#C98A7D"> certbot</span><span style="color:#C98A7D"> python3-certbot-nginx</span><span style="color:#C99076"> -y</span></span><span class="line"></span><span class="line"></span><span class="line"><span style="color:#80A665">sudo</span><span style="color:#C98A7D"> certbot</span><span style="color:#C99076"> --nginx</span><span style="color:#C99076"> -d</span><span style="color:#BD976A"> $YOUR_DOMAIN_NAME</span><span style="color:#C99076"> -d</span><span style="color:#C98A7D"> www.</span><span style="color:#BD976A">$YOUR_DOMAIN_NAME</span></span><span class="line"></span><span class="line"><span style="color:#80A665">service</span><span style="color:#C98A7D"> restart</span><span style="color:#C98A7D"> nginx</span></span></code></pre><ol start="4"><li>Now try going back to your site, but this time use ''https://''</li></ol></section><section><h2 id="">7.  Deploying your site</h2><p>I just opted to build my blog using multiple trials of tech, writing my own, and now astro.I needed VPS because I am going to write demo apps forpeople to log into and expose as portfolio and honestly any other idea I could have.Vultr has great instance setups, so I can skip docker if I need to, or use it to my advantage.</p></section><section><h3 id="">7.1.  Just install rsync</h3><p>Somehow, someway, and always eventually, you must install rsync.Its really not that bad but install can take a second depending on your situation.</p><p>This is totally dependent, but I have an ancient Intel MacBook Pro,so I had to use a painfully slow ''brew install rsync''.During that install time, I was having second thoughts thanks to Apple not supporting their old hardware OS updates.Anyways, I can't really link anything for you here, I recommend surfing the web for your situation.</p></section><section><h3 id="">7.2.  Bash time</h3><pre class="shiki vitesse-dark" style="background-color:#121212;color:#dbd7caee" tabindex="0"><code><span class="line"><span style="color:#758575DD">#!/usr/bin/env bash</span></span><span class="line"></span><span class="line"><span style="color:#758575DD"># christ the trailing slash is important for rsync</span></span><span class="line"><span style="color:#CB7676">export</span><span style="color:#BD976A"> LE_BLOG</span><span style="color:#666666">=</span><span style="color:#CB7676">~</span><span style="color:#DBD7CAEE">/</span><span style="color:#BD976A">projects</span><span style="color:#DBD7CAEE">/</span><span style="color:#BD976A">le-blog</span><span style="color:#DBD7CAEE">/</span><span style="color:#BD976A">dist</span><span style="color:#DBD7CAEE">/ </span></span><span class="line"><span style="color:#CB7676">export</span><span style="color:#BD976A"> LE_BLOG_TARGET</span><span style="color:#666666">=</span><span style="color:#DBD7CAEE">/</span><span style="color:#BD976A">var</span><span style="color:#DBD7CAEE">/</span><span style="color:#BD976A">www</span><span style="color:#DBD7CAEE">/</span><span style="color:#BD976A">html</span></span><span class="line"></span><span class="line"><span style="color:#80A665">_.blog.sync.watch</span><span style="color:#666666">()</span><span style="color:#666666"> {</span></span><span class="line"><span style="color:#80A665">  fswatch</span><span style="color:#C99076"> -o</span><span style="color:#BD976A"> $LE_BLOG</span><span style="color:#CB7676"> |</span><span style="color:#4D9375"> while</span><span style="color:#B8A965"> read</span><span style="color:#666666">;</span></span><span class="line"><span style="color:#4D9375">    do</span><span style="color:#80A665"> _.blog.sync</span></span><span class="line"><span style="color:#4D9375">  done</span><span style="color:#666666">;</span></span><span class="line"><span style="color:#666666">}</span></span><span class="line"></span><span class="line"><span style="color:#80A665">_.blog.sync</span><span style="color:#666666">()</span><span style="color:#666666"> {</span></span><span class="line"><span style="color:#80A665">  rsync</span><span style="color:#C99076"> \</span></span><span class="line"><span style="color:#C99076">    --include</span><span style="color:#C98A7D"> dist/</span><span style="color:#C99076"> \</span></span><span class="line"><span style="color:#C99076">    --exclude</span><span style="color:#C98A7D"> node_modules/</span><span style="color:#C99076"> \</span></span><span class="line"><span style="color:#C99076">    --exclude</span><span style="color:#C98A7D"> .git/</span><span style="color:#C99076"> \</span></span><span class="line"><span style="color:#C99076">    --progress</span><span style="color:#C99076"> \</span></span><span class="line"><span style="color:#C99076">    -avz</span><span style="color:#C99076"> \</span></span><span class="line"><span style="color:#C98A7D77">    "</span><span style="color:#C98A7D">$LE_BLOG</span><span style="color:#C98A7D77">"</span><span style="color:#C98A7D77"> "</span><span style="color:#C98A7D">root@hafley.codes:$LE_BLOG_TARGET</span><span style="color:#C98A7D77">"</span></span><span class="line"><span style="color:#666666">}</span></span></code></pre></section></div></main><footer></footer></body></html>
+<html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"><meta charSet="UTF-8"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="stylesheet" href="/styles/colors.css"><link rel="stylesheet" href="/styles/fonts.css"><link rel="stylesheet" href="/styles/global.css"><link rel="stylesheet" href="/styles/nav_and_toc.css"><link rel="stylesheet" href="/styles/hex.css"><link rel="stylesheet" href="/styles/code.css"><link rel="stylesheet" href="/styles/img.css"><link rel="stylesheet" href="/shiki-twoslash.css"><title>How I started this site as of 2025/02/27</title></head><body><header><nav id="primary-nav" aria-label="Primary navigation"><div class="nav-links" role="tablist"><a href="/" role="tab" class="nav-link ">Home</a><a href="/resume" role="tab" class="nav-link ">Resume</a><a href="/blog" role="tab" aria-selected="true" class="nav-link active">Blog</a><a href="/snippets" role="tab" class="nav-link ">Snipts</a><a href="/tags" role="tab" class="nav-link ">Tags</a></div></nav></header><main class="body-markdown"><section id="title-and-description"><h1>How I started this site as of 2025/02/27</h1><sub>2025-02-25 by Chris Hafley</sub><div class="f-col f-a-center" id="tags" style="margin-bottom:24px;"><div class="responsive-hex-grid-3"><a class="hex-content caption" href="/tags/typescript" style="--hex-color:var(--color-inferno-2);">
+      <div class="hex-content hex-shadow">
+        <div class="hex-content-amoeba"></div>
+      </div>
+      <div class="hex-content-amoeba"></div>
+      <span>typescript</span>
+</a><a class="hex-content caption" href="/tags/javascript" style="--hex-color:var(--color-inferno-4);">
+      <div class="hex-content hex-shadow">
+        <div class="hex-content-amoeba"></div>
+      </div>
+      <div class="hex-content-amoeba"></div>
+      <span>javascript</span>
+</a><a class="hex-content caption" href="/tags/astro" style="--hex-color:var(--color-inferno-6);">
+      <div class="hex-content hex-shadow">
+        <div class="hex-content-amoeba"></div>
+      </div>
+      <div class="hex-content-amoeba"></div>
+      <span>astro</span>
+</a><a class="hex-content caption" href="/tags/vultr" style="--hex-color:var(--color-inferno-8);">
+      <div class="hex-content hex-shadow">
+        <div class="hex-content-amoeba"></div>
+      </div>
+      <div class="hex-content-amoeba"></div>
+      <span>vultr</span>
+</a><a class="hex-content caption" href="/tags/bash" style="--hex-color:var(--color-inferno-10);">
+      <div class="hex-content hex-shadow">
+        <div class="hex-content-amoeba"></div>
+      </div>
+      <div class="hex-content-amoeba"></div>
+      <span>bash</span>
+</a><a class="hex-content caption" href="/tags/dns" style="--hex-color:var(--color-inferno-12);">
+      <div class="hex-content hex-shadow">
+        <div class="hex-content-amoeba"></div>
+      </div>
+      <div class="hex-content-amoeba"></div>
+      <span>dns</span>
+</a><a class="hex-content caption" href="/tags/vps" style="--hex-color:var(--color-inferno-14);">
+      <div class="hex-content hex-shadow">
+        <div class="hex-content-amoeba"></div>
+      </div>
+      <div class="hex-content-amoeba"></div>
+      <span>vps</span>
+</a><a class="hex-content caption" href="/tags/deployments" style="--hex-color:var(--color-inferno-16);">
+      <div class="hex-content hex-shadow">
+        <div class="hex-content-amoeba"></div>
+      </div>
+      <div class="hex-content-amoeba"></div>
+      <span>deployments</span>
+</a></div></div></section><details open="true" id="section-table-of-contents"><summary id="toc-header-contents"><h2 id="table-of-contents">Table of Contents</h2><input type="checkbox" id="toc-toggle"></summary><div class="fancy-hr"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 20"><circle cx="10" cy="10" r="7" style="fill:var(--color-text);" stroke-width="2"></circle><circle cx="30" cy="10" r="9" style="fill:var(--color-text);" stroke-width="2" fill="transparent"></circle><circle cx="50" cy="10" r="7" style="fill:var(--color-text);" stroke-width="2"></circle></svg></div><nav id="toc-nav"><ol debug="true"><li debug="true"><a href="#section-buy-a-domain">  Buy a domain</a></li><li debug="true"><a href="#section-buy-a-pre-pay-vps">  Buy a pre-pay VPS</a></li><li debug="true"><a href="#section-find-your-ip-4-address">  Find your IP4 address</a></li><li debug="true"><a href="#section-update-porkbun-dns">  Update Porkbun DNS</a><ol><li debug="true"><a href="#section-ensure-2-a-records">  Ensure 2 A records</a></li></ol></li><li debug="true"><a href="#section-ssh-time">  SSH time</a></li><li debug="true"><a href="#section-install-nginx-and-ssl">  Install nginx and ssl</a></li><li debug="true"><a href="#section-deploying-your-site">  Deploying your site</a><ol><li debug="true"><a href="#section-just-install-rsync">  Just install rsync</a></li><li debug="true"><a href="#section-bash-time">  Bash time</a></li></ol></li></ol></nav></details><div id="main-content-middle"><section id="section-buy-a-domain"><h2 id="buy-a-domain"><a href="#buy-a-domain">1.  Buy a domain</a></h2><p>I used <a href="https://porkbun.com/" rel="nofollow noopener noreferrer" target="_blank">Porkbun</a>, very easy to use. They also come with easy to use WHOIS protection, which is a big plus.</p></section>
+<section id="section-buy-a-pre-pay-vps"><h2 id="buy-a-pre-pay-vps"><a href="#buy-a-pre-pay-vps">2.  Buy a pre-pay VPS</a></h2><p>I do not want to put a line of credit on big cloud names and I am not wizard enough to magic myself my own vps on my own hardware (...yet) with a stable IP. But we'll get there.</p><p>I got the lowest cost compute instance over at <a href="https://www.vultr.com/" rel="nofollow noopener noreferrer" target="_blank">Vultr</a> for about $5/month.
+Once you go through this and get an instance, you must ssh into it with vultr's docs.</p></section>
+<section id="section-find-your-ip-4-address"><h2 id="find-your-ip-4-address"><a href="#find-your-ip-4-address">3.  Find your IP4 address</a></h2><p>Once your instance is created, it will have an ip4 address ready to go. You will want to copy this and head back to porkbun.</p><p><img src="./server_info.png" alt="vultr screenshot of instance portal where you can find ip address"></p></section>
+<section id="section-update-porkbun-dns"><h2 id="update-porkbun-dns"><a href="#update-porkbun-dns">4.  Update Porkbun DNS</a></h2><p>Once in <a href="https://porkbun.com/account/domainsSpeedy" rel="nofollow noopener noreferrer" target="_blank">Porkbun Portal</a>,
+look for your domain name, and click on its <del>Details</del>.
+What expands below is a lot of config options.
+Find the ever so tiny button next to the words <code>DNS Records</code>.</p><p><img src="./porkbun.png" alt="screenshot of porkbun portal and where to click"></p></section>
+<section id="section-ensure-2-a-records"><h3 id="ensure-2-a-records"><a href="#ensure-2-a-records">4.1.  Ensure 2 A records</a></h3><p>Take your IP from vultr and make sure there are 2 A records, both pointing to the ip address.</p><ol>
+<li>Have one for your domain</li>
+<li>And have another for <del><a href="http://www" rel="nofollow noopener noreferrer" target="_blank">www</a>.<your-domain></your-domain></del></li>
+<li>Both answer sections should be your vultr ip4 address</li>
+</ol></section>
+<section id="section-ssh-time"><h2 id="ssh-time"><a href="#ssh-time">5.  SSH time</a></h2><p>Now we need to get on the box, so take your IP address
+and follow the ssh instructions from vultr to get in.
+You can either wait for your DNS records to propogate (will likely take 10 minutes or so),
+or directly use the ip address.</p><p>Please <a href="https://docs.vultr.com/how-to-use-ssh-with-vultr-servers" rel="nofollow noopener noreferrer" target="_blank">follow these instructions at Vultr</a></p><p>I have made an alis in my <code>~/.bash_profile</code></p><pre class="shiki vitesse-dark" style="background-color:#121212;color:#dbd7caee" tabindex="0"><div class="code-scroller"><code><span class="line"><span style="color:#80A665">ssh-blog</span><span style="color:#666666">()</span><span style="color:#666666"> {</span><span style="color:#80A665"> ssh</span><span style="color:#C98A7D77"> "</span><span style="color:#C98A7D">root@$YOUR_DOMAIN_NAME</span><span style="color:#C98A7D77">"</span><span style="color:#666666">;</span><span style="color:#666666"> }</span></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><p>You'll know your done once you can ssh without putting in your password.</p></section>
+<section id="section-install-nginx-and-ssl"><h2 id="install-nginx-and-ssl"><a href="#install-nginx-and-ssl">6.  Install nginx and ssl</a></h2><p>There are lots of ways to do this part, but I went a simple route</p><ol>
+<li>SSH onto the machine</li>
+<li><a href="https://docs.vultr.com/how-to-install-and-configure-nginx-on-a-vultr-cloud-server" rel="nofollow noopener noreferrer" target="_blank">Follow install instructions for nginx and validate it works with regular http</a>
+<ol>
+<li>Do a quick check and go to  <code>http://your-domain</code></li>
+</ol>
+</li>
+<li>Using <a href="https://www.inmotionhosting.com/support/website/ssl/lets-encrypt-ssl-ubuntu-with-certbot/" rel="nofollow noopener noreferrer" target="_blank">Certbot but with better docs for ubuntu and apt</a></li>
+</ol><pre class="shiki vitesse-dark" style="background-color:#121212;color:#dbd7caee" tabindex="0"><div class="code-scroller"><code><span class="line"><span style="color:#80A665">sudo</span><span style="color:#C98A7D"> apt</span><span style="color:#C98A7D"> install</span><span style="color:#C98A7D"> certbot</span><span style="color:#C98A7D"> python3-certbot-nginx</span><span style="color:#C99076"> -y</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#80A665">sudo</span><span style="color:#C98A7D"> certbot</span><span style="color:#C99076"> --nginx</span><span style="color:#C99076"> -d</span><span style="color:#BD976A"> $YOUR_DOMAIN_NAME</span><span style="color:#C99076"> -d</span><span style="color:#C98A7D"> www.</span><span style="color:#BD976A">$YOUR_DOMAIN_NAME</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#80A665">service</span><span style="color:#C98A7D"> restart</span><span style="color:#C98A7D"> nginx</span></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><ol start="4">
+<li>Now try going back to your site, but this time use <code>https://</code></li>
+</ol></section>
+<section id="section-deploying-your-site"><h2 id="deploying-your-site"><a href="#deploying-your-site">7.  Deploying your site</a></h2><p>I just opted to build my blog using multiple trials of tech, writing my own, and now astro.
+I needed VPS because I am going to write demo apps for
+people to log into and expose as portfolio and honestly any other idea I could have.
+Vultr has great instance setups, so I can skip docker if I need to, or use it to my advantage.</p></section>
+<section id="section-just-install-rsync"><h3 id="just-install-rsync"><a href="#just-install-rsync">7.1.  Just install rsync</a></h3><p>Somehow, someway, and always eventually, you must install rsync. Its really not that bad but install can take a second depending on your situation.</p><p>This is totally dependent, but I have an ancient Intel MacBook Pro, so I had to use a painfully slow <code>brew install rsync</code>. During that install time, I was having second thoughts thanks to Apple not supporting their old hardware OS updates. Anyways, I can't really link anything for you here, I recommend surfing the web for your situation.</p></section>
+<section id="section-bash-time"><h3 id="bash-time"><a href="#bash-time">7.2.  Bash time</a></h3><pre class="shiki vitesse-dark" style="background-color:#121212;color:#dbd7caee" tabindex="0"><div class="code-scroller"><code><span class="line"><span style="color:#758575DD">#!/usr/bin/env bash</span></span>
+<span class="line"><span style="color:#CB7676">export</span><span style="color:#BD976A"> LE_BLOG</span><span style="color:#666666">=</span><span style="color:#CB7676">~</span><span style="color:#DBD7CAEE">/</span><span style="color:#BD976A">projects</span><span style="color:#DBD7CAEE">/</span><span style="color:#BD976A">le-blog</span><span style="color:#DBD7CAEE">/</span></span>
+<span class="line"><span style="color:#CB7676">export</span><span style="color:#BD976A"> LE_BLOG_TARGET</span><span style="color:#666666">=</span><span style="color:#DBD7CAEE">/</span><span style="color:#BD976A">var</span><span style="color:#DBD7CAEE">/</span><span style="color:#BD976A">www</span><span style="color:#DBD7CAEE">/</span><span style="color:#BD976A">html</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#80A665">_.blog.sync.watch</span><span style="color:#666666">()</span><span style="color:#666666"> {</span></span>
+<span class="line"><span style="color:#80A665">  fswatch</span><span style="color:#C99076"> -o</span><span style="color:#BD976A"> $LE_BLOG</span><span style="color:#CB7676"> |</span><span style="color:#4D9375"> while</span><span style="color:#B8A965"> read</span><span style="color:#666666">;</span></span>
+<span class="line"><span style="color:#4D9375">    do</span><span style="color:#80A665"> _.blog.sync</span></span>
+<span class="line"><span style="color:#4D9375">  done</span><span style="color:#666666">;</span></span>
+<span class="line"><span style="color:#666666">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#80A665">_.blog.sync</span><span style="color:#666666">()</span><span style="color:#666666"> {</span></span>
+<span class="line"><span style="color:#80A665">  rsync</span><span style="color:#C99076"> \</span></span>
+<span class="line"><span style="color:#C99076">    --include</span><span style="color:#C98A7D"> index.html</span><span style="color:#C99076"> \</span></span>
+<span class="line"><span style="color:#C99076">    --include</span><span style="color:#C98A7D"> dist/</span><span style="color:#C99076"> \</span></span>
+<span class="line"><span style="color:#C99076">    --exclude</span><span style="color:#C98A7D"> node_modules/</span><span style="color:#C99076"> \</span></span>
+<span class="line"><span style="color:#C99076">    --exclude</span><span style="color:#C98A7D"> .git/</span><span style="color:#C99076"> \</span></span>
+<span class="line"><span style="color:#C99076">    --progress</span><span style="color:#C99076"> \</span></span>
+<span class="line"><span style="color:#C99076">    -avz</span><span style="color:#C99076"> \</span></span>
+<span class="line"><span style="color:#BD976A">    $LE_BLOG</span><span style="color:#C98A7D"> root@hafley.codes:</span><span style="color:#BD976A">$LE_BLOG_TARGET</span></span>
+<span class="line"><span style="color:#666666">}</span></span>
+<span class="line"><span style="color:#DBD7CAEE"> </span></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre></section></div></main><footer></footer><script>// Smooth scrolling for browsers that don't support CSS smooth scrolling
+window.addEventListener("DOMContentLoaded", () => {
+  const observer = new IntersectionObserver(entries => {
+    console.log({ entries })
+    entries.forEach(entry => {
+      const id = entry.target.getAttribute("id")
+      if (entry.isIntersecting) {
+        console.log("adding to", id)
+        document
+          .querySelector(`nav li a[href="#${id}"]`)
+          ?.parentElement?.classList.add(
+            "viewtimeline-active",
+          )
+      } else {
+        console.log("removing from", id)
+        document
+          .querySelector(`nav li a[href="#${id}"]`)
+          ?.parentElement?.classList.remove(
+            "viewtimeline-active",
+          )
+      }
+    })
+  })
+
+  // Track all sections that have an `id` applied
+  document
+    .querySelectorAll("section[id]")
+    .forEach(section => {
+      observer.observe(section)
+    })
+})
+console.log("Does not support timeline-view")
+;
+;document.addEventListener("DOMContentLoaded", () => {
+  try {
+    const it = document.getElementById("toc-toggle")
+    if (it) {
+      it.checked = JSON.parse(
+        localStorage.tocChecked ?? "false",
+      )
+      it.addEventListener("change", e => {
+        localStorage.tocChecked = !!e.target.checked
+      })
+    }
+  } catch (e) {}
+  setTimeout(() => {
+    document.body.classList.toggle("ready")
+  }, 1)
+})
+;
+;function copyToClipboard(text) {
+  navigator.clipboard
+    .writeText(text)
+    .then(() => {
+      // Text copied successfully
+      console.log("Text copied to clipboard")
+    })
+    .catch(err => {
+      // Error copying text
+      console.error("Failed to copy text: ", err)
+    })
+}
+
+/**
+ * @param {HTMLElement} el
+ * @param {Window} win
+ */
+function selectElementText(el, win) {
+  win = win || window
+  let doc = win.document
+  /**
+   * @type {Selection}
+   */
+  let sel
+  /**
+   * @type {Range}
+   */
+  let range
+
+  if (win.getSelection && doc.createRange) {
+    sel = win.getSelection()
+    range = doc.createRange()
+    range.selectNodeContents(el)
+    sel.removeAllRanges()
+    sel.addRange(range)
+  } else if (doc.body.createTextRange) {
+    range = doc.body.createTextRange()
+    range.moveToElementText(el)
+    range.select()
+  }
+  console.log(sel.toString())
+  return sel.toString()
+}
+
+document.addEventListener("click", e => {
+  let target =
+    e.target.classList.contains("copy-to-clipboard") &&
+    e.target.parentElement.classList.contains("shiki")
+      ? e.target
+      : null
+  target = target?.parentElement.querySelector("code")
+  if (target) {
+    copyToClipboard(selectElementText(target))
+    window.getSelection().removeAllRanges()
+  }
+})
+;
+;let isZoomin = false
+let container = null
+const remove = () => {
+  if (!container) return
+  container?.remove()
+  container = null
+  const it = document.querySelector(".img-zoom")
+  it?.classList.toggle("img-zoom")
+  isZoomin = false
+}
+document.addEventListener("click", e => {
+  if (
+    isZoomin &&
+    e.target.classList.contains("img-zoom-clone-parent")
+  ) {
+    document
+      .querySelector(".img-zoom-clone-exit")
+      ?.dispatchEvent(
+        new MouseEvent("click", {
+          view: window,
+          bubbles: true,
+          cancelable: false,
+        }),
+      )
+  }
+
+  if (e.target.tagName === "IMG") {
+    if (e.target.classList.contains("img-zoom-clone")) {
+      return
+    }
+    if (!e.target.classList.contains("img-zoom")) {
+      /**
+       * @type {HTMLImageElement}
+       */
+      const orig = e.target
+      /**
+       * @type {HTMLImageElement}
+       */
+      const clone = e.target.cloneNode()
+      clone.classList.add("img-zoom-clone")
+
+      container = document.createElement("div")
+      container.classList.add("img-zoom-clone-parent")
+
+      const behind = document.createElement("div")
+      behind.classList.add("behind")
+
+      const exitButton = document.createElement("button")
+      exitButton.classList.add("img-zoom-clone-exit")
+      ;[exitButton, behind].forEach(i =>
+        i.addEventListener("click", remove),
+      )
+      isZoomin = true
+
+      exitButton.setAttribute("aria-role", "button")
+      exitButton.setAttribute("type", "button")
+      exitButton.innerHTML = "Close"
+
+      container.appendChild(behind)
+      container.appendChild(clone)
+      container.appendChild(exitButton)
+
+      document.body.appendChild(container)
+      e.target.classList.toggle("img-zoom")
+      requestAnimationFrame(() => {
+        exitButton.focus()
+      })
+    }
+  }
+})
+
+document.addEventListener("keyup", e => {
+  if (e.key === "Escape" && isZoomin) {
+    remove()
+  }
+})
+</script></body></html>

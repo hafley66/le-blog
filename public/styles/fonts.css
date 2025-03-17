@@ -272,9 +272,18 @@ h1, .h1 {
   line-height:1.1;
 }
 
+@media (width < 780px) {
+  h1, .h1 {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    margin-bottom: clamp(10, 3vw, 1rem);
+    margin-top: clamp(10, 3vw, 1rem);
+  }
+}
+
 h2, .h2 {
   /* font-size: calc(var(--h2-size) * 1rem); */
-  font-size: clamp(1.1rem, 1.7vw, 1.4rem);
+  font-size: clamp(1.2rem, 2.5vw, 1.4rem);
   font-weight: 600;
 }
 
@@ -289,7 +298,8 @@ h6 {
 }
 
 h3 {
-  font-size: calc(var(--h3-size) * 1rem);
+  font-size: clamp(1.1rem, 1.7vw, 1.3rem);
+
 }
 
 h4 {
@@ -356,12 +366,15 @@ a {
 h2, h3, h4, h5, h6 { 
   > a {
     color: unset;
+    width: 100%;
+    display: inline-block;
     &:hover {
       color: var(--color-text-link);
     }
   }
-
 }
+
+
 
 a:hover {
   /* font-weight: 600; */

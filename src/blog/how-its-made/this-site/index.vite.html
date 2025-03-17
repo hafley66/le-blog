@@ -1,0 +1,240 @@
+<html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"><meta charSet="UTF-8"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="stylesheet" href="/styles/colors.css"><link rel="stylesheet" href="/styles/fonts.css"><link rel="stylesheet" href="/styles/global.css"><link rel="stylesheet" href="/styles/nav_and_toc.css"><link rel="stylesheet" href="/styles/hex.css"><link rel="stylesheet" href="/styles/code.css"><link rel="stylesheet" href="/styles/img.css"><link rel="stylesheet" href="/shiki-twoslash.css"><title>How I made this site as of 2025/03/16</title></head><body><header><nav id="primary-nav" aria-label="Primary navigation"><div class="nav-links" role="tablist"><a href="/" role="tab" class="nav-link ">Home</a><a href="/resume" role="tab" class="nav-link ">Resume</a><a href="/blog" role="tab" aria-selected="true" class="nav-link active">Blog</a><a href="/snippets" role="tab" class="nav-link ">Snipts</a><a href="/tags" role="tab" class="nav-link ">Tags</a></div></nav></header><main class="body-markdown"><section id="title-and-description"><h1>How I made this site as of 2025/03/16</h1><sub>2025-03-11 by Chris Hafley</sub><p id="h1-desc">Astro.js is cool but I don't like that much magic</p><div class="f-col f-a-center" id="tags" style="margin-bottom:24px;"><div class="responsive-hex-grid-3"><a class="hex-content caption" href="/tags/typescript" style="--hex-color:var(--color-inferno-2);">
+      <div class="hex-content hex-shadow">
+        <div class="hex-content-amoeba"></div>
+      </div>
+      <div class="hex-content-amoeba"></div>
+      <span>typescript</span>
+</a><a class="hex-content caption" href="/tags/javascript" style="--hex-color:var(--color-inferno-4);">
+      <div class="hex-content hex-shadow">
+        <div class="hex-content-amoeba"></div>
+      </div>
+      <div class="hex-content-amoeba"></div>
+      <span>javascript</span>
+</a><a class="hex-content caption" href="/tags/astro" style="--hex-color:var(--color-inferno-6);">
+      <div class="hex-content hex-shadow">
+        <div class="hex-content-amoeba"></div>
+      </div>
+      <div class="hex-content-amoeba"></div>
+      <span>astro</span>
+</a><a class="hex-content caption" href="/tags/ssg" style="--hex-color:var(--color-inferno-8);">
+      <div class="hex-content hex-shadow">
+        <div class="hex-content-amoeba"></div>
+      </div>
+      <div class="hex-content-amoeba"></div>
+      <span>ssg</span>
+</a><a class="hex-content caption" href="/tags/deno" style="--hex-color:var(--color-inferno-10);">
+      <div class="hex-content hex-shadow">
+        <div class="hex-content-amoeba"></div>
+      </div>
+      <div class="hex-content-amoeba"></div>
+      <span>deno</span>
+</a><a class="hex-content caption" href="/tags/markdown" style="--hex-color:var(--color-inferno-12);">
+      <div class="hex-content hex-shadow">
+        <div class="hex-content-amoeba"></div>
+      </div>
+      <div class="hex-content-amoeba"></div>
+      <span>markdown</span>
+</a><a class="hex-content caption" href="/tags/node" style="--hex-color:var(--color-inferno-14);">
+      <div class="hex-content hex-shadow">
+        <div class="hex-content-amoeba"></div>
+      </div>
+      <div class="hex-content-amoeba"></div>
+      <span>node</span>
+</a></div></div></section><details open="true" id="section-table-of-contents"><summary id="toc-header-contents"><h2 id="table-of-contents">Table of Contents</h2><input type="checkbox" id="toc-toggle"></summary><div class="fancy-hr"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 20"><circle cx="10" cy="10" r="7" style="fill:var(--color-text);" stroke-width="2"></circle><circle cx="30" cy="10" r="9" style="fill:var(--color-text);" stroke-width="2" fill="transparent"></circle><circle cx="50" cy="10" r="7" style="fill:var(--color-text);" stroke-width="2"></circle></svg></div><nav id="toc-nav"><ol debug="true"><li debug="true"><a href="#section-reasons-to-make-my-own-website">  Reasons to make my own website</a></li><li debug="true"><a href="#section-the-good">  The good</a><ol><li debug="true"><a href="#section-really-nice-docs">  Really nice docs</a></li><li debug="true"><a href="#section-is-quite-fast">  Is quite fast </a></li><li debug="true"><a href="#section-lots-of-options">  Lots of options</a></li><li debug="true"><a href="#section-markdown">  Markdown </a></li><li debug="true"><a href="#section-vite-based">  Vite based</a></li></ol></li><li debug="true"><a href="#section-the-bad">  The Bad</a><ol><li debug="true"><a href="#section-too-many-options">  Too many options</a></li><li debug="true"><a href="#section-confusing-flow-of-time">  Confusing flow of time</a></li><li debug="true"><a href="#section-to-react-or-not-react">  To react or not react</a></li><li debug="true"><a href="#section-magic-meta-glob-imports">  Magic meta glob imports</a></li><li debug="true"><a href="#section-collections-or-source-code">  Collections or source code</a></li><li debug="true"><a href="#section-markdown-frontmatter">  Markdown frontmatter</a></li></ol></li></ol></nav></details><div id="main-content-middle"><section id="section-reasons-to-make-my-own-website"><h2 id="reasons-to-make-my-own-website"><a href="#reasons-to-make-my-own-website">1.  Reasons to make my own website</a></h2><p>So I have been caught writing a lot of my thoughts to coworkers in gigantic article length messages.
+I kept hitting post limits, so better to state an argument for or against an idea publically, so my goal is to make it easy for me to shortform, it gets frustrating...or if you've ever had Confluence or Teams decide your message was no longer worth keeping around >:|</p></section>
+<section id="section-the-good"><h2 id="the-good"><a href="#the-good">2.  The good</a></h2></section>
+<section id="section-really-nice-docs"><h3 id="really-nice-docs"><a href="#really-nice-docs">2.1.  Really nice docs</a></h3></section>
+<section id="section-is-quite-fast"><h3 id="is-quite-fast"><a href="#is-quite-fast">2.2.  Is quite fast</a></h3></section>
+<section id="section-lots-of-options"><h3 id="lots-of-options"><a href="#lots-of-options">2.3.  Lots of options</a></h3></section>
+<section id="section-markdown"><h3 id="markdown"><a href="#markdown">2.4.  Markdown</a></h3></section>
+<section id="section-vite-based"><h3 id="vite-based"><a href="#vite-based">2.5.  Vite based</a></h3></section>
+<section id="section-the-bad"><h2 id="the-bad"><a href="#the-bad">3.  The Bad</a></h2></section>
+<section id="section-too-many-options"><h3 id="too-many-options"><a href="#too-many-options">3.1.  Too many options</a></h3></section>
+<section id="section-confusing-flow-of-time"><h3 id="confusing-flow-of-time"><a href="#confusing-flow-of-time">3.2.  Confusing flow of time</a></h3></section>
+<section id="section-to-react-or-not-react"><h3 id="to-react-or-not-react"><a href="#to-react-or-not-react">3.3.  To react or not react</a></h3></section>
+<section id="section-magic-meta-glob-imports"><h3 id="magic-meta-glob-imports"><a href="#magic-meta-glob-imports">3.4.  Magic meta glob imports</a></h3></section>
+<section id="section-collections-or-source-code"><h3 id="collections-or-source-code"><a href="#collections-or-source-code">3.5.  Collections or source code</a></h3></section>
+<section id="section-markdown-frontmatter"><h3 id="markdown-frontmatter"><a href="#markdown-frontmatter">3.6.  Markdown frontmatter</a></h3></section></div></main><footer></footer><script>// Smooth scrolling for browsers that don't support CSS smooth scrolling
+window.addEventListener("DOMContentLoaded", () => {
+  const observer = new IntersectionObserver(entries => {
+    console.log({ entries })
+    entries.forEach(entry => {
+      const id = entry.target.getAttribute("id")
+      if (entry.isIntersecting) {
+        console.log("adding to", id)
+        document
+          .querySelector(`nav li a[href="#${id}"]`)
+          ?.parentElement?.classList.add(
+            "viewtimeline-active",
+          )
+      } else {
+        console.log("removing from", id)
+        document
+          .querySelector(`nav li a[href="#${id}"]`)
+          ?.parentElement?.classList.remove(
+            "viewtimeline-active",
+          )
+      }
+    })
+  })
+
+  // Track all sections that have an `id` applied
+  document
+    .querySelectorAll("section[id]")
+    .forEach(section => {
+      observer.observe(section)
+    })
+})
+console.log("Does not support timeline-view")
+;
+;document.addEventListener("DOMContentLoaded", () => {
+  try {
+    const it = document.getElementById("toc-toggle")
+    if (it) {
+      it.checked = JSON.parse(
+        localStorage.tocChecked ?? "false",
+      )
+      it.addEventListener("change", e => {
+        localStorage.tocChecked = !!e.target.checked
+      })
+    }
+  } catch (e) {}
+  setTimeout(() => {
+    document.body.classList.toggle("ready")
+  }, 1)
+})
+;
+;function copyToClipboard(text) {
+  navigator.clipboard
+    .writeText(text)
+    .then(() => {
+      // Text copied successfully
+      console.log("Text copied to clipboard")
+    })
+    .catch(err => {
+      // Error copying text
+      console.error("Failed to copy text: ", err)
+    })
+}
+
+/**
+ * @param {HTMLElement} el
+ * @param {Window} win
+ */
+function selectElementText(el, win) {
+  win = win || window
+  let doc = win.document
+  /**
+   * @type {Selection}
+   */
+  let sel
+  /**
+   * @type {Range}
+   */
+  let range
+
+  if (win.getSelection && doc.createRange) {
+    sel = win.getSelection()
+    range = doc.createRange()
+    range.selectNodeContents(el)
+    sel.removeAllRanges()
+    sel.addRange(range)
+  } else if (doc.body.createTextRange) {
+    range = doc.body.createTextRange()
+    range.moveToElementText(el)
+    range.select()
+  }
+  console.log(sel.toString())
+  return sel.toString()
+}
+
+document.addEventListener("click", e => {
+  let target =
+    e.target.classList.contains("copy-to-clipboard") &&
+    e.target.parentElement.classList.contains("shiki")
+      ? e.target
+      : null
+  target = target?.parentElement.querySelector("code")
+  if (target) {
+    copyToClipboard(selectElementText(target))
+    window.getSelection().removeAllRanges()
+  }
+})
+;
+;let isZoomin = false
+let container = null
+const remove = () => {
+  if (!container) return
+  container?.remove()
+  container = null
+  const it = document.querySelector(".img-zoom")
+  it?.classList.toggle("img-zoom")
+  isZoomin = false
+}
+document.addEventListener("click", e => {
+  if (
+    isZoomin &&
+    e.target.classList.contains("img-zoom-clone-parent")
+  ) {
+    document
+      .querySelector(".img-zoom-clone-exit")
+      ?.dispatchEvent(
+        new MouseEvent("click", {
+          view: window,
+          bubbles: true,
+          cancelable: false,
+        }),
+      )
+  }
+
+  if (e.target.tagName === "IMG") {
+    if (e.target.classList.contains("img-zoom-clone")) {
+      return
+    }
+    if (!e.target.classList.contains("img-zoom")) {
+      /**
+       * @type {HTMLImageElement}
+       */
+      const orig = e.target
+      /**
+       * @type {HTMLImageElement}
+       */
+      const clone = e.target.cloneNode()
+      clone.classList.add("img-zoom-clone")
+
+      container = document.createElement("div")
+      container.classList.add("img-zoom-clone-parent")
+
+      const behind = document.createElement("div")
+      behind.classList.add("behind")
+
+      const exitButton = document.createElement("button")
+      exitButton.classList.add("img-zoom-clone-exit")
+      ;[exitButton, behind].forEach(i =>
+        i.addEventListener("click", remove),
+      )
+      isZoomin = true
+
+      exitButton.setAttribute("aria-role", "button")
+      exitButton.setAttribute("type", "button")
+      exitButton.innerHTML = "Close"
+
+      container.appendChild(behind)
+      container.appendChild(clone)
+      container.appendChild(exitButton)
+
+      document.body.appendChild(container)
+      e.target.classList.toggle("img-zoom")
+      requestAnimationFrame(() => {
+        exitButton.focus()
+      })
+    }
+  }
+})
+
+document.addEventListener("keyup", e => {
+  if (e.key === "Escape" && isZoomin) {
+    remove()
+  }
+})
+</script></body></html>

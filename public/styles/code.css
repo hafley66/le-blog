@@ -1,0 +1,120 @@
+
+.shiki {
+  border: 1px solid var(--color-border);
+  /* border-radius: 4px; */
+  padding: 4px 8px;
+
+  .code-scroller {
+    overflow: auto;
+  }
+}
+
+code:not(:has(.line)):not(.twoslash-popup-code) {
+  background: var(--color-bg-contrast);
+  display: inline-block;
+  padding: 0px 4px;
+  border-radius: 4px;
+  color: var(--color-text-contrast);
+}
+
+.shiki > button {
+  position: absolute;
+  top: -1px;
+  right: -1;
+  /* padding: 12px 28px; */
+  border: 1px solid white;
+  height: 32px;
+  /* transform: translateY(-80%); */
+  /* border-radius: 3px; */
+  /* border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 3px;
+  */
+  border-top-right-radius: 3px; 
+  background: var(--color-pink-500);
+  color: white;
+  cursor: pointer;
+  z-index: 1;
+  &:hover{
+    background: var(--color-pink-700);
+    font-weight: 600;
+    text-decoration: underline;
+  }
+  &:active{
+    background: white;
+    color: var(--color-pink-500);
+  }
+}
+
+
+.shiki {position: relative;}
+
+pre {
+  margin-top: 32px;
+  margin-bottom: 0px;
+}
+
+
+.code-group {
+  margin-top: 12px;
+  .code-group-tabs { 
+    display: flex; 
+    /* align-items: center; */
+    overflow-y: visible;
+    /* overflow-x: auto; */
+    max-width: 100%;
+
+    input {
+      opacity: 0;
+      position: fixed;
+      height: 0px;
+      width: 0px;
+    }
+
+    label {
+      position: relative;
+      flex: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      background: var(--color-bg);
+      /* 121212 */
+      color: white;
+      padding: 8px 4px;
+
+      border: 1px solid var(--color-border);
+
+      &:active {
+        opacity: 50%;
+      }
+
+      &:hover {
+        background: rgb(200, 200, 200);
+        color: black;
+        text-decoration: underline;
+        &::before {
+          content: "";
+          position: absolute;
+          top: -1px;
+          width: 100%;
+          height: 3px;
+          left: 0;
+          right: 0;
+          background: var(--color-pink-400);
+          z-index: 10;
+        }
+      }
+      .centerino {padding-left: 6px;}
+    }
+
+    input:checked + label {
+      /* background: red; */
+      font-weight: 600;
+    }
+  }
+  
+  pre.shiki {
+    margin-top: unset;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+  }
+}
