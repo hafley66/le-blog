@@ -12,8 +12,7 @@ import {
 } from "rxjs";
 import { makeWatcher$ } from "../fs_watcher.deno.ts";
 import process from "node:process";
-import { TAG } from "~/lib/lib.dual.ts";
-import { TAKE_UNTIL_EXIT, UNTIL_SIGEXIT } from "~/lib/lib.deno.ts";
+import { TAKE_UNTIL_EXIT } from "~/lib/lib.deno.ts";
 
 // These are the three roots for renderables.
 // We have to do it this way bc not
@@ -73,7 +72,6 @@ export const updateDenoPathsBcUgh = defer(
         );
       },
     ),
-    TAG("DERP"),
     // Prevent chaos
     throttleTime(1000, undefined, {
       leading: true,
@@ -83,16 +81,20 @@ export const updateDenoPathsBcUgh = defer(
     //  outputs and auto-converts into observable of 1 value.
     // If longer than 1second to write for
     //  whatever reason, it will queue them in sequence.
-    concatMap((dot_vscode_config) =>
-      console.log("Writing...", dot_vscode_config) ||
-      Deno.writeTextFile(
-        vscodeSettings,
-        JSON.stringify(dot_vscode_config, null, 2),
-      ).then(
-        // Echo param since this is side effectual.
-        () => dot_vscode_config,
-      )
-    ),
+    concatMap((dot_vscode_config) => {
+      const next = JSON.stringify(dot_vscode_config, null, 2);
+      if (next !== Deno.readTextFileSync(vscodeSettings)) {
+        console.log("Writing...");
+        return Deno.writeTextFile(
+          vscodeSettings,
+          JSON.stringify(dot_vscode_config, null, 2),
+        ).then(
+          // Echo param since this is side effectual.
+          () => dot_vscode_config,
+        );
+      }
+      return of();
+    }),
     // Get told when a commit happens.
   );
 

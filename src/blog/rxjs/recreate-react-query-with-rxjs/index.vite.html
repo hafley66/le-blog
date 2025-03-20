@@ -1,4 +1,4 @@
-<html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"><meta charSet="UTF-8"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="stylesheet" href="/styles/colors.css"><link rel="stylesheet" href="/styles/fonts.css"><link rel="stylesheet" href="/styles/global.css"><link rel="stylesheet" href="/styles/nav_and_toc.css"><link rel="stylesheet" href="/styles/hex.css"><link rel="stylesheet" href="/styles/code.css"><link rel="stylesheet" href="/styles/img.css"><link rel="stylesheet" href="/shiki-twoslash.css"><title>React Query vs RxJS and switchMap</title></head><body><header><nav id="primary-nav" aria-label="Primary navigation"><div class="nav-links" role="tablist"><a href="/" role="tab" class="nav-link ">Home</a><a href="/resume" role="tab" class="nav-link ">Resume</a><a href="/blog" role="tab" aria-selected="true" class="nav-link active">Blog</a><a href="/snippets" role="tab" class="nav-link ">Snipts</a><a href="/tags" role="tab" class="nav-link ">Tags</a></div></nav></header><main class="body-markdown"><section id="title-and-description"><h1>React Query vs RxJS and switchMap</h1><sub>2025-02-25 by Chris Hafley</sub><p id="h1-desc">Its all switchMap</p><div class="f-col f-a-center" id="tags" style="margin-bottom:24px;"><div class="responsive-hex-grid-3"><a class="hex-content caption" href="/tags/typescript" style="--hex-color:var(--color-inferno-2);">
+<html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"><meta charSet="UTF-8"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="stylesheet" href="/styles/colors.css"><link rel="stylesheet" href="/styles/fonts.css"><link rel="stylesheet" href="/styles/global.css"><link rel="stylesheet" href="/styles/nav_and_toc.css"><link rel="stylesheet" href="/styles/hex.css"><link rel="stylesheet" href="/styles/code.css"><link rel="stylesheet" href="/styles/img.css"><link rel="stylesheet" href="/shiki-twoslash.css"><title>React Query vs RxJS and switchMap</title></head><body class=""><header><nav id="primary-nav" aria-label="Primary navigation"><div class="nav-links" role="tablist"><a href="/home" role="tab" class="nav-link-anchor"><span class="nav-link ">Home</span></a><a href="/resume" role="tab" class="nav-link-anchor"><span class="nav-link ">Resume</span></a><a href="/blog" role="tab" aria-selected="true" class="nav-link-anchor"><span class="nav-link active">Blog</span></a><a href="/tags" role="tab" class="nav-link-anchor"><span class="nav-link ">Tags</span></a></div></nav></header><main class="body-markdown"><section id="title-and-description"><h1>React Query vs RxJS and switchMap</h1><sub>2025-02-25 by Chris Hafley</sub><div id="h1-desc">Its all switchMap</div><div class="f-col f-a-center" id="tags" style="margin-bottom:24px;"><div class="responsive-hex-grid-3"><a class="hex-content caption" href="/tags/typescript" style="--hex-color:var(--color-inferno-2);">
       <div class="hex-content hex-shadow">
         <div class="hex-content-amoeba"></div>
       </div>
@@ -46,22 +46,18 @@
       </div>
       <div class="hex-content-amoeba"></div>
       <span>react-hooks</span>
-</a></div></div></section><details open="true" id="section-table-of-contents"><summary id="toc-header-contents"><h2 id="table-of-contents">Table of Contents</h2><input type="checkbox" id="toc-toggle"></summary><div class="fancy-hr"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 20"><circle cx="10" cy="10" r="7" style="fill:var(--color-text);" stroke-width="2"></circle><circle cx="30" cy="10" r="9" style="fill:var(--color-text);" stroke-width="2" fill="transparent"></circle><circle cx="50" cy="10" r="7" style="fill:var(--color-text);" stroke-width="2"></circle></svg></div><nav id="toc-nav"><ol debug="true"><li debug="true"><a href="#section-motivations">  Motivations</a></li><li debug="true"><a href="#section-the-basic-use-query">  The basic useQuery</a></li></ol></nav></details><div id="main-content-middle"><section id="section-motivations"><h2 id="motivations"><a href="#motivations">1.  Motivations</a></h2><p>I recently finished up working on multiple projects with react-query, and at the end of it, I was transitioning into using plain rxjs for making side effects as state.</p><p>I spent several months over-abstracting rxjs + react-query, when I finally realized I can just use some very simple patterns.</p></section>
-<section id="section-the-basic-use-query"><h2 id="the-basic-use-query"><a href="#the-basic-use-query">2.  The basic useQuery</a></h2><p>One way to describe useQuery is as replacement for useEffect, if useEffect had a cache-by-dependency-array and a return value of its current state.</p><p>Lets imagine we have an async calculator API for math with <code>async add</code> and <code>async sub</code>.</p><pre class="shiki vitesse-dark twoslash lsp" style="background-color:#121212;color:#dbd7caee" tabindex="0"><div class="code-scroller"><code><span class="line"><span style="color:#758575DD">// @@filename </span></span>
-<span class="line"><span style="color:#4D9375">export</span><span style="color:#CB7676"> const</span><span style="color:#BD976A"> </span><span style="color:#BD976A"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><pre class="shiki vitesse-dark" style="background-color:#121212;color:#dbd7caee" tabindex="0"><div class="code-scroller"><code><span class="line"><span style="color:#CB7676">const</span><span style="color:#BD976A"> MATH</span><span style="color:#666666">: {</span></span>
-<span class="line"><span style="color:#80A665">    add</span><span style="color:#666666">(</span><span style="color:#BD976A">x</span><span style="color:#666666">: </span><span style="color:#5DA994">number</span><span style="color:#666666">, </span><span style="color:#BD976A">y</span><span style="color:#666666">: </span><span style="color:#5DA994">number</span><span style="color:#666666">): </span><span style="color:#5DA994">Promise</span><span style="color:#666666">&#x3C;</span><span style="color:#5DA994">number</span><span style="color:#666666">>;</span></span>
-<span class="line"><span style="color:#80A665">    sub</span><span style="color:#666666">(</span><span style="color:#BD976A">x</span><span style="color:#666666">: </span><span style="color:#5DA994">number</span><span style="color:#666666">, </span><span style="color:#BD976A">y</span><span style="color:#666666">: </span><span style="color:#5DA994">number</span><span style="color:#666666">): </span><span style="color:#5DA994">Promise</span><span style="color:#666666">&#x3C;</span><span style="color:#5DA994">number</span><span style="color:#666666">>;</span></span>
-<span class="line"><span style="color:#666666">}</span></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre></code></span>MATH</span></span><span style="color:#666666"> =</span><span style="color:#666666"> {</span></span>
-<span class="line"><span style="color:#CB7676">  async</span><span style="color:#80A665"> </span><span style="color:#80A665"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#CB7676">function</span><span style="color:#80A665"> add</span><span style="color:#666666">(</span><span style="color:#BD976A">x</span><span style="color:#666666">: </span><span style="color:#5DA994">number</span><span style="color:#666666">,</span><span style="color:#BD976A"> y</span><span style="color:#666666">: </span><span style="color:#5DA994">number</span><span style="color:#666666">):</span><span style="color:#5DA994"> Promise</span><span style="color:#666666">&#x3C;</span><span style="color:#5DA994">number</span><span style="color:#666666">></span></code></span>add</span></span><span style="color:#666666">(</span><span style="color:#BD976A"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#80A665">x</span><span style="color:#666666">:</span><span style="color:#BD976A"> number</span></code></span>x</span></span><span style="color:#666666">: </span><span style="color:#5DA994">number</span><span style="color:#666666">,</span><span style="color:#BD976A"> </span><span style="color:#BD976A"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#80A665">y</span><span style="color:#666666">:</span><span style="color:#BD976A"> number</span></code></span>y</span></span><span style="color:#666666">: </span><span style="color:#5DA994">number</span><span style="color:#666666">)</span><span style="color:#666666"> {</span></span>
-<span class="line"><span style="color:#4D9375">    return</span><span style="color:#B8A965"> </span><span style="color:#B8A965"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#CB7676">var</span><span style="color:#BD976A"> Promise</span><span style="color:#666666">: </span><span style="color:#5DA994">PromiseConstructor</span></code><div class="twoslash-popup-docs">Represents the completion of an asynchronous operation</div></span>Promise</span></span><span style="color:#666666">.</span><span style="color:#80A665"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#BD976A">PromiseConstructor</span><span style="color:#666666">.</span><span style="color:#80A665">resolve</span><span style="color:#666666">&#x3C;</span><span style="color:#5DA994">number</span><span style="color:#666666">>(</span><span style="color:#BD976A">value</span><span style="color:#DBD7CAEE">: </span><span style="color:#BD976A">number</span><span style="color:#666666">)</span><span style="color:#DBD7CAEE">: </span><span style="color:#B8A965">Promise</span><span style="color:#666666">&#x3C;</span><span style="color:#5DA994">number</span><span style="color:#666666">></span><span style="color:#666666"> (</span><span style="color:#CB7676">+</span><span style="color:#4C9A91">2</span><span style="color:#BD976A"> overloads</span><span style="color:#666666">)</span></code><div class="twoslash-popup-docs">Creates a new resolved promise for the provided value.</div><div class="twoslash-popup-docs twoslash-popup-docs-tags"><span class="twoslash-popup-docs-tag"><span class="twoslash-popup-docs-tag-name">@param</span><span class="twoslash-popup-docs-tag-value">value A promise.</span></span><span class="twoslash-popup-docs-tag"><span class="twoslash-popup-docs-tag-name">@returns</span><span class="twoslash-popup-docs-tag-value">A promise whose internal state matches the provided promise.</span></span></div></span>resolve</span></span><span style="color:#666666">(</span><span style="color:#BD976A"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#80A665">x</span><span style="color:#666666">:</span><span style="color:#BD976A"> number</span></code></span>x</span></span><span style="color:#CB7676"> +</span><span style="color:#BD976A"> </span><span style="color:#BD976A"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#80A665">y</span><span style="color:#666666">:</span><span style="color:#BD976A"> number</span></code></span>y</span></span><span style="color:#666666">)</span></span>
+</a></div></div></section><details open="true" id="section-table-of-contents"><summary id="toc-header-contents"><h2 id="table-of-contents">Table of Contents</h2><input type="checkbox" id="toc-toggle"></summary><div class="fancy-hr"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 20"><circle cx="10" cy="10" r="7" style="fill:var(--color-text);" stroke-width="2"></circle><circle cx="30" cy="10" r="9" style="fill:var(--color-text);" stroke-width="2" fill="transparent"></circle><circle cx="50" cy="10" r="7" style="fill:var(--color-text);" stroke-width="2"></circle></svg></div><nav id="toc-nav"><div class="debug-slider"></div><ol debug="true"><li debug="true"><a href="#section-the-basic-use-query">1.  The basic useQuery</a></li></ol></nav></details><div id="main-content-middle"><section id="section-the-basic-use-query"><h2 id="the-basic-use-query"><a href="#the-basic-use-query">1.  The basic useQuery</a></h2><p>One way to describe useQuery is as replacement for useEffect, if useEffect had a cache-by-dependency-array and a return value of its current state.</p><p>Lets imagine we have an async calculator API for math with <code>async add</code> and <code>async sub</code>.</p><pre class="shiki vitesse-dark" style="background-color:#121212;color:#dbd7caee" tabindex="0"><div class="code-scroller"><code><span class="line"><span style="color:#758575DD">// @@filename </span></span>
+<span class="line"><span style="color:#4D9375">export</span><span style="color:#CB7676"> const</span><span style="color:#BD976A"> MATH</span><span style="color:#666666"> =</span><span style="color:#666666"> {</span></span>
+<span class="line"><span style="color:#CB7676">  async</span><span style="color:#80A665"> add</span><span style="color:#666666">(</span><span style="color:#BD976A">x</span><span style="color:#666666">: </span><span style="color:#5DA994">number</span><span style="color:#666666">,</span><span style="color:#BD976A"> y</span><span style="color:#666666">: </span><span style="color:#5DA994">number</span><span style="color:#666666">)</span><span style="color:#666666"> {</span></span>
+<span class="line"><span style="color:#4D9375">    return</span><span style="color:#B8A965"> Promise</span><span style="color:#666666">.</span><span style="color:#80A665">resolve</span><span style="color:#666666">(</span><span style="color:#BD976A">x</span><span style="color:#CB7676"> +</span><span style="color:#BD976A"> y</span><span style="color:#666666">)</span></span>
 <span class="line"><span style="color:#666666">  },</span></span>
-<span class="line"><span style="color:#CB7676">  async</span><span style="color:#80A665"> </span><span style="color:#80A665"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#CB7676">function</span><span style="color:#80A665"> sub</span><span style="color:#666666">(</span><span style="color:#BD976A">x</span><span style="color:#666666">: </span><span style="color:#5DA994">number</span><span style="color:#666666">,</span><span style="color:#BD976A"> y</span><span style="color:#666666">: </span><span style="color:#5DA994">number</span><span style="color:#666666">):</span><span style="color:#5DA994"> Promise</span><span style="color:#666666">&#x3C;</span><span style="color:#5DA994">number</span><span style="color:#666666">></span></code></span>sub</span></span><span style="color:#666666">(</span><span style="color:#BD976A"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#80A665">x</span><span style="color:#666666">:</span><span style="color:#BD976A"> number</span></code></span>x</span></span><span style="color:#666666">: </span><span style="color:#5DA994">number</span><span style="color:#666666">,</span><span style="color:#BD976A"> </span><span style="color:#BD976A"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#80A665">y</span><span style="color:#666666">:</span><span style="color:#BD976A"> number</span></code></span>y</span></span><span style="color:#666666">: </span><span style="color:#5DA994">number</span><span style="color:#666666">)</span><span style="color:#666666"> {</span></span>
-<span class="line"><span style="color:#4D9375">    return</span><span style="color:#B8A965"> </span><span style="color:#B8A965"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#CB7676">var</span><span style="color:#BD976A"> Promise</span><span style="color:#666666">: </span><span style="color:#5DA994">PromiseConstructor</span></code><div class="twoslash-popup-docs">Represents the completion of an asynchronous operation</div></span>Promise</span></span><span style="color:#666666">.</span><span style="color:#80A665"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#BD976A">PromiseConstructor</span><span style="color:#666666">.</span><span style="color:#80A665">resolve</span><span style="color:#666666">&#x3C;</span><span style="color:#5DA994">number</span><span style="color:#666666">>(</span><span style="color:#BD976A">value</span><span style="color:#DBD7CAEE">: </span><span style="color:#BD976A">number</span><span style="color:#666666">)</span><span style="color:#DBD7CAEE">: </span><span style="color:#B8A965">Promise</span><span style="color:#666666">&#x3C;</span><span style="color:#5DA994">number</span><span style="color:#666666">></span><span style="color:#666666"> (</span><span style="color:#CB7676">+</span><span style="color:#4C9A91">2</span><span style="color:#BD976A"> overloads</span><span style="color:#666666">)</span></code><div class="twoslash-popup-docs">Creates a new resolved promise for the provided value.</div><div class="twoslash-popup-docs twoslash-popup-docs-tags"><span class="twoslash-popup-docs-tag"><span class="twoslash-popup-docs-tag-name">@param</span><span class="twoslash-popup-docs-tag-value">value A promise.</span></span><span class="twoslash-popup-docs-tag"><span class="twoslash-popup-docs-tag-name">@returns</span><span class="twoslash-popup-docs-tag-value">A promise whose internal state matches the provided promise.</span></span></div></span>resolve</span></span><span style="color:#666666">(</span><span style="color:#BD976A"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#80A665">x</span><span style="color:#666666">:</span><span style="color:#BD976A"> number</span></code></span>x</span></span><span style="color:#CB7676"> -</span><span style="color:#BD976A"> </span><span style="color:#BD976A"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="color:#80A665">y</span><span style="color:#666666">:</span><span style="color:#BD976A"> number</span></code></span>y</span></span><span style="color:#666666">)</span></span>
+<span class="line"><span style="color:#CB7676">  async</span><span style="color:#80A665"> sub</span><span style="color:#666666">(</span><span style="color:#BD976A">x</span><span style="color:#666666">: </span><span style="color:#5DA994">number</span><span style="color:#666666">,</span><span style="color:#BD976A"> y</span><span style="color:#666666">: </span><span style="color:#5DA994">number</span><span style="color:#666666">)</span><span style="color:#666666"> {</span></span>
+<span class="line"><span style="color:#4D9375">    return</span><span style="color:#B8A965"> Promise</span><span style="color:#666666">.</span><span style="color:#80A665">resolve</span><span style="color:#666666">(</span><span style="color:#BD976A">x</span><span style="color:#CB7676"> -</span><span style="color:#BD976A"> y</span><span style="color:#666666">)</span></span>
 <span class="line"><span style="color:#666666">  },</span></span>
 <span class="line"><span style="color:#666666">}</span></span>
-<span class="line"><span style="color:#DBD7CAEE"> </span></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><div class="code-group code-group-0"><div class="code-group-tabs"><input type="radio" name="code-group-0" id="code-group-radio-0" checked="true"><label for="code-group-radio-0"><div class="centerino">basic useQuery</div></label><input type="radio" name="code-group-0" id="code-group-radio-1"><label for="code-group-radio-1"><div class="centerino">useEffect + state</div></label></div><pre class="shiki vitesse-dark twoslash lsp" style="background-color:#121212;color:#dbd7caee" tabindex="0"><div class="code-scroller"><code><span class="line"></span>
-<span class="line"></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><pre class="shiki vitesse-dark twoslash lsp" style="background-color:#121212;color:#dbd7caee" tabindex="0"><div class="code-scroller"><code><span class="line"></span>
-<span class="line"></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><style>
+<span class="line"><span style="color:#DBD7CAEE"> </span></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><div class="code-group code-group-0"><div class="code-group-tabs"><input type="radio" name="code-group-0" id="code-group-radio-0" checked="true"><label for="code-group-radio-0"><div class="centerino">basic useQuery
+</div></label><input type="radio" name="code-group-0" id="code-group-radio-1"><label for="code-group-radio-1"><div class="centerino">useEffect + state
+</div></label></div><pre class="shiki vitesse-dark" style="background-color:#121212;color:#dbd7caee" tabindex="0"><div class="code-scroller"><code><span class="line"></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><pre class="shiki vitesse-dark" style="background-color:#121212;color:#dbd7caee" tabindex="0"><div class="code-scroller"><code><span class="line"></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><style>
 .code-group pre {display:none}
 .code-group-0 {
 
@@ -156,38 +152,205 @@
     display: block;
   }
   
-} </style></div></section></div></main><footer></footer><script>// Smooth scrolling for browsers that don't support CSS smooth scrolling
-window.addEventListener("DOMContentLoaded", () => {
-  const observer = new IntersectionObserver(entries => {
-    console.log({ entries })
-    entries.forEach(entry => {
-      const id = entry.target.getAttribute("id")
-      if (entry.isIntersecting) {
-        console.log("adding to", id)
-        document
-          .querySelector(`nav li a[href="#${id}"]`)
-          ?.parentElement?.classList.add(
-            "viewtimeline-active",
-          )
-      } else {
-        console.log("removing from", id)
-        document
-          .querySelector(`nav li a[href="#${id}"]`)
-          ?.parentElement?.classList.remove(
-            "viewtimeline-active",
-          )
-      }
-    })
-  })
+} </style></div><style>
+#section-the-basic-use-query {
+  --section-header-hr-start: 0%;
+  --section-header-hr-stop: 100%;
+}
+</style></section></div></main><footer></footer><script>// Smooth scrolling for browsers that don't support CSS smooth scrolling
+;(() => {
+  /**
+   * @type {Record<string, {elem: HTMLElement, percent: number, lastEntry: null | IntersectionObserverEntry}>}
+   */
+  const byId = {}
+  window.sectionById = byId
+  /**
+   * @type {(typeof byId)[string]}
+   */
+  let top = null
+  /**
+   * @type {(typeof byId)[string]}
+   */
+  let bottom = null
 
-  // Track all sections that have an `id` applied
-  document
-    .querySelectorAll("section[id]")
-    .forEach(section => {
-      observer.observe(section)
+  window.addEventListener("DOMContentLoaded", () => {
+    /**
+     * @type {HTMLElement}
+     */
+    const nav = document.getElementById("toc-nav")
+    const li = nav?.querySelector("li a")
+
+    let liRatio = li.offsetHeight / nav.offsetHeight
+
+    window.addEventListener("resize", () => {
+      console.log("Resize detected")
+      liRatio = li.offsetHeight / nav.offsetHeight
     })
-})
-console.log("Does not support timeline-view")
+
+    const setEnds = (start, end) => {
+      start != null &&
+        nav.style.setProperty(
+          "--toc-scroll-start",
+          "" + (start * 100).toFixed(0) + "%",
+        )
+      end != null &&
+        nav.style.setProperty(
+          "--toc-scroll-end",
+          "" + (end * 100).toFixed(0) + "%",
+        )
+    }
+
+    // use elem, its the li
+    // now we have its offset from its parent
+    // get percent from parent 0 edge
+    // that is constant range start
+
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          const id = entry.target.getAttribute("id") ?? ""
+          let cache =
+            // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
+            (byId[id] ||= {
+              elem: document.querySelector(
+                `nav li a[href="#${id}"]`,
+              ),
+              percent: 0,
+              lastEntry: entry,
+            })
+          const elem = cache.elem
+          cache.lastEntry = entry
+          cache.percent = entry.intersectionRatio
+          if (entry.isIntersecting) {
+            if (entry.intersectionRatio === 1) {
+              // console.log("we are golden", cache)
+              // console.log("--", elem)
+              if (!top) {
+                // console.log("A)", elem)
+                top = cache
+              } else if (
+                top.lastEntry.intersectionRect.top >
+                  entry.intersectionRect.top ||
+                top.lastEntry.time < entry.time
+              ) {
+                // console.log("AA)", elem)
+                // this entry is above the previous top
+                top = cache
+              } else {
+                // console.log(
+                //   top.lastEntry,
+                //   "does not beat",
+                //   entry,
+                // )
+              }
+              // we take full percent of offset + offset+height of LI
+            } else if (
+              entry.intersectionRect.y ===
+                entry.rootBounds.y &&
+              entry.intersectionRect.bottom ===
+                entry.rootBounds.bottom
+            ) {
+              // console.log("B)", elem)
+              top = cache
+              bottom = cache
+              // console.log(
+              //   "this is both entering/exiting element",
+              //   cache,
+              // )
+            } else if (entry.intersectionRect.y === 0) {
+              // console.log(
+              //   "this is the leaving element",
+              //   cache,
+              // )
+              // console.log("C)", elem)
+              top = cache
+            } else {
+              // console.log(
+              //   "this is the entering element",
+              //   cache,
+              // )
+              // console.log("D)", elem)
+              bottom = cache
+            }
+            if (cache.percent === 0)
+              elem?.parentElement?.classList.add(
+                "viewtimeline-active",
+              )
+          } else {
+            elem?.parentElement?.classList.remove(
+              "viewtimeline-active",
+            )
+            cache.percent = 0
+          }
+          console.log(entry.boundingClientRect.top)
+          if (entry.boundingClientRect.top < 0) {
+            // we have passed the element and are exiting, which means we are stickied. we need to set the var for our mini gradient as a ratio of relative percent of top / height
+            const underWater =
+              Math.abs(entry.boundingClientRect.top) /
+              entry.boundingClientRect.height
+
+            entry.target.style.setProperty(
+              "--section-header-hr-progress",
+              underWater,
+            )
+          }
+        })
+        if (top && bottom) {
+          const a = top.elem // get corresponding LI's anchor
+          const percentFromNavTop =
+            a.offsetTop / a.offsetParent.offsetHeight // this is our base percent we are setting
+          // now calculate the intersection ratio relative to
+
+          const percentDiff =
+            (a.offsetHeight *
+              (1 - top.lastEntry.intersectionRatio)) /
+            a.offsetParent.offsetHeight
+
+          const b = bottom.elem
+          const percentFromNavTopToBottom =
+            (b.offsetTop + b.offsetHeight) /
+            b.offsetParent.offsetHeight // this is our base percent we are setting
+          // now calculate the intersection ratio relative to
+
+          const percentDiffB =
+            (b.offsetHeight *
+              (1 - bottom.lastEntry.intersectionRatio)) /
+            b.offsetParent.offsetHeight
+
+          // console.log({
+          //   top,
+          //   bottom,
+          //   percentFromNavTop,
+          //   percentFromNavTopToBottom,
+          //   percentDiff,
+          //   percentDiffB,
+          //   a,
+          //   b,
+          // })
+
+          setEnds(
+            percentFromNavTop + percentDiff,
+            percentFromNavTopToBottom - percentDiffB,
+          )
+        }
+        // console.log({ top, bottom })
+      },
+      {
+        threshold: Array.from(
+          { length: 10 },
+          (_, i) => i / 10,
+        ),
+      },
+    )
+
+    // Track all sections that have an `id` applied
+    document
+      .querySelectorAll("#main-content-middle section[id]")
+      .forEach(section => {
+        observer.observe(section)
+      })
+  })
+})()
 ;
 ;document.addEventListener("DOMContentLoaded", () => {
   try {

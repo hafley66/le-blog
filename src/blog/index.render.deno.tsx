@@ -7,8 +7,13 @@ const $ = Render$(import.meta.filename!)
 
 const allRenders = combineLatest(
   SITEMAP.includes("render.deno.ts" as const)
+    .filter(i => i.path.startsWith("src/blog"))
     .filter(
-      i => i.path !== "src/blog/index.render.deno.tsx",
+      i =>
+        i.path !== "src/blog/index.render.deno.tsx" &&
+        i.path !== "src/resume/index.render.deno.tsx" &&
+        i.path !== "src/home/index.render.deno.tsx" &&
+        i.path !== "src/tags/index.render.deno.tsx",
     )
     .map(i =>
       deferFrom(() =>
@@ -54,6 +59,7 @@ const body = allRenders.pipe(
         >
           <section>
             <h2>{it.props.title}</h2>
+            <hr />
             <p>{it.props.description}</p>
           </section>
         </a>
@@ -65,6 +71,7 @@ const body = allRenders.pipe(
 export default $.SSGLayout({
   title: "All Posts",
   description: "",
+  disable_toc: true,
   // date_created: "2025-02-25",
   // tags: [],
   children: body,

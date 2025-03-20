@@ -1,4 +1,4 @@
-<html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"><meta charSet="UTF-8"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="stylesheet" href="/styles/colors.css"><link rel="stylesheet" href="/styles/fonts.css"><link rel="stylesheet" href="/styles/global.css"><link rel="stylesheet" href="/styles/nav_and_toc.css"><link rel="stylesheet" href="/styles/hex.css"><link rel="stylesheet" href="/styles/code.css"><link rel="stylesheet" href="/styles/img.css"><link rel="stylesheet" href="/shiki-twoslash.css"><title>How I started this site as of 2025/02/27</title></head><body><header><nav id="primary-nav" aria-label="Primary navigation"><div class="nav-links" role="tablist"><a href="/" role="tab" class="nav-link ">Home</a><a href="/resume" role="tab" class="nav-link ">Resume</a><a href="/blog" role="tab" aria-selected="true" class="nav-link active">Blog</a><a href="/snippets" role="tab" class="nav-link ">Snipts</a><a href="/tags" role="tab" class="nav-link ">Tags</a></div></nav></header><main class="body-markdown"><section id="title-and-description"><h1>How I started this site as of 2025/02/27</h1><sub>2025-02-25 by Chris Hafley</sub><div class="f-col f-a-center" id="tags" style="margin-bottom:24px;"><div class="responsive-hex-grid-3"><a class="hex-content caption" href="/tags/typescript" style="--hex-color:var(--color-inferno-2);">
+<html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"><meta charSet="UTF-8"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="stylesheet" href="/styles/colors.css"><link rel="stylesheet" href="/styles/fonts.css"><link rel="stylesheet" href="/styles/global.css"><link rel="stylesheet" href="/styles/nav_and_toc.css"><link rel="stylesheet" href="/styles/hex.css"><link rel="stylesheet" href="/styles/code.css"><link rel="stylesheet" href="/styles/img.css"><link rel="stylesheet" href="/shiki-twoslash.css"><title>How I started this site as of 2025/02/27</title></head><body class=""><header><nav id="primary-nav" aria-label="Primary navigation"><div class="nav-links" role="tablist"><a href="/home" role="tab" class="nav-link-anchor"><span class="nav-link ">Home</span></a><a href="/resume" role="tab" class="nav-link-anchor"><span class="nav-link ">Resume</span></a><a href="/blog" role="tab" aria-selected="true" class="nav-link-anchor"><span class="nav-link active">Blog</span></a><a href="/tags" role="tab" class="nav-link-anchor"><span class="nav-link ">Tags</span></a></div></nav></header><main class="body-markdown"><section id="title-and-description"><h1>How I started this site as of 2025/02/27</h1><sub>2025-02-25 by Chris Hafley</sub><div class="f-col f-a-center" id="tags" style="margin-bottom:24px;"><div class="responsive-hex-grid-3"><a class="hex-content caption" href="/tags/typescript" style="--hex-color:var(--color-inferno-2);">
       <div class="hex-content hex-shadow">
         <div class="hex-content-amoeba"></div>
       </div>
@@ -46,23 +46,53 @@
       </div>
       <div class="hex-content-amoeba"></div>
       <span>deployments</span>
-</a></div></div></section><details open="true" id="section-table-of-contents"><summary id="toc-header-contents"><h2 id="table-of-contents">Table of Contents</h2><input type="checkbox" id="toc-toggle"></summary><div class="fancy-hr"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 20"><circle cx="10" cy="10" r="7" style="fill:var(--color-text);" stroke-width="2"></circle><circle cx="30" cy="10" r="9" style="fill:var(--color-text);" stroke-width="2" fill="transparent"></circle><circle cx="50" cy="10" r="7" style="fill:var(--color-text);" stroke-width="2"></circle></svg></div><nav id="toc-nav"><ol debug="true"><li debug="true"><a href="#section-buy-a-domain">  Buy a domain</a></li><li debug="true"><a href="#section-buy-a-pre-pay-vps">  Buy a pre-pay VPS</a></li><li debug="true"><a href="#section-find-your-ip-4-address">  Find your IP4 address</a></li><li debug="true"><a href="#section-update-porkbun-dns">  Update Porkbun DNS</a><ol><li debug="true"><a href="#section-ensure-2-a-records">  Ensure 2 A records</a></li></ol></li><li debug="true"><a href="#section-ssh-time">  SSH time</a></li><li debug="true"><a href="#section-install-nginx-and-ssl">  Install nginx and ssl</a></li><li debug="true"><a href="#section-deploying-your-site">  Deploying your site</a><ol><li debug="true"><a href="#section-just-install-rsync">  Just install rsync</a></li><li debug="true"><a href="#section-bash-time">  Bash time</a></li></ol></li></ol></nav></details><div id="main-content-middle"><section id="section-buy-a-domain"><h2 id="buy-a-domain"><a href="#buy-a-domain">1.  Buy a domain</a></h2><p>I used <a href="https://porkbun.com/" rel="nofollow noopener noreferrer" target="_blank">Porkbun</a>, very easy to use. They also come with easy to use WHOIS protection, which is a big plus.</p></section>
+</a></div></div></section><details open="true" id="section-table-of-contents"><summary id="toc-header-contents"><h2 id="table-of-contents">Table of Contents</h2><input type="checkbox" id="toc-toggle"></summary><div class="fancy-hr"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 20"><circle cx="10" cy="10" r="7" style="fill:var(--color-text);" stroke-width="2"></circle><circle cx="30" cy="10" r="9" style="fill:var(--color-text);" stroke-width="2" fill="transparent"></circle><circle cx="50" cy="10" r="7" style="fill:var(--color-text);" stroke-width="2"></circle></svg></div><nav id="toc-nav"><div class="debug-slider"></div><ol debug="true"><li debug="true"><a href="#section-buy-a-domain">1.  Buy a domain</a></li><li debug="true"><a href="#section-buy-a-pre-pay-vps">2.  Buy a pre-pay VPS</a></li><li debug="true"><a href="#section-find-your-ip-4-address">3.  Find your IP4 address</a></li><li debug="true"><a href="#section-update-porkbun-dns">4.  Update Porkbun DNS</a><ol><li debug="true"><a href="#section-ensure-2-a-records">4.1.  Ensure 2 A records</a></li></ol></li><li debug="true"><a href="#section-ssh-time">5.  SSH time</a></li><li debug="true"><a href="#section-install-nginx-and-ssl">6.  Install nginx and ssl</a></li><li debug="true"><a href="#section-deploying-your-site">7.  Deploying your site</a><ol><li debug="true"><a href="#section-just-install-rsync">7.1.  Just install rsync</a></li><li debug="true"><a href="#section-bash-time">7.2.  Bash time</a></li></ol></li></ol></nav></details><div id="main-content-middle"><section id="section-buy-a-domain"><h2 id="buy-a-domain"><a href="#buy-a-domain">1.  Buy a domain</a></h2><p>I used <a href="https://porkbun.com/" rel="nofollow noopener noreferrer" target="_blank">Porkbun</a>, very easy to use. They also come with easy to use WHOIS protection, which is a big plus.</p><style>
+#section-buy-a-domain {
+  --section-header-hr-start: 0%;
+  --section-header-hr-stop: 10%;
+}
+</style></section>
 <section id="section-buy-a-pre-pay-vps"><h2 id="buy-a-pre-pay-vps"><a href="#buy-a-pre-pay-vps">2.  Buy a pre-pay VPS</a></h2><p>I do not want to put a line of credit on big cloud names and I am not wizard enough to magic myself my own vps on my own hardware (...yet) with a stable IP. But we'll get there.</p><p>I got the lowest cost compute instance over at <a href="https://www.vultr.com/" rel="nofollow noopener noreferrer" target="_blank">Vultr</a> for about $5/month.
-Once you go through this and get an instance, you must ssh into it with vultr's docs.</p></section>
-<section id="section-find-your-ip-4-address"><h2 id="find-your-ip-4-address"><a href="#find-your-ip-4-address">3.  Find your IP4 address</a></h2><p>Once your instance is created, it will have an ip4 address ready to go. You will want to copy this and head back to porkbun.</p><p><img src="./server_info.png" alt="vultr screenshot of instance portal where you can find ip address"></p></section>
+Once you go through this and get an instance, you must ssh into it with vultr's docs.</p><style>
+#section-buy-a-pre-pay-vps {
+  --section-header-hr-start: 10%;
+  --section-header-hr-stop: 20%;
+}
+</style></section>
+<section id="section-find-your-ip-4-address"><h2 id="find-your-ip-4-address"><a href="#find-your-ip-4-address">3.  Find your IP4 address</a></h2><p>Once your instance is created, it will have an ip4 address ready to go. You will want to copy this and head back to porkbun.</p><p><img src="./server_info.png" alt="vultr screenshot of instance portal where you can find ip address"></p><style>
+#section-find-your-ip-4-address {
+  --section-header-hr-start: 20%;
+  --section-header-hr-stop: 30%;
+}
+</style></section>
 <section id="section-update-porkbun-dns"><h2 id="update-porkbun-dns"><a href="#update-porkbun-dns">4.  Update Porkbun DNS</a></h2><p>Once in <a href="https://porkbun.com/account/domainsSpeedy" rel="nofollow noopener noreferrer" target="_blank">Porkbun Portal</a>,
 look for your domain name, and click on its <del>Details</del>.
 What expands below is a lot of config options.
-Find the ever so tiny button next to the words <code>DNS Records</code>.</p><p><img src="./porkbun.png" alt="screenshot of porkbun portal and where to click"></p></section>
+Find the ever so tiny button next to the words <code>DNS Records</code>.</p><p><img src="./porkbun.png" alt="screenshot of porkbun portal and where to click"></p><style>
+#section-update-porkbun-dns {
+  --section-header-hr-start: 30%;
+  --section-header-hr-stop: 40%;
+}
+</style></section>
 <section id="section-ensure-2-a-records"><h3 id="ensure-2-a-records"><a href="#ensure-2-a-records">4.1.  Ensure 2 A records</a></h3><p>Take your IP from vultr and make sure there are 2 A records, both pointing to the ip address.</p><ol>
 <li>Have one for your domain</li>
 <li>And have another for <del><a href="http://www" rel="nofollow noopener noreferrer" target="_blank">www</a>.<your-domain></your-domain></del></li>
 <li>Both answer sections should be your vultr ip4 address</li>
-</ol></section>
+</ol><style>
+#section-ensure-2-a-records {
+  --section-header-hr-start: 40%;
+  --section-header-hr-stop: 50%;
+}
+</style></section>
 <section id="section-ssh-time"><h2 id="ssh-time"><a href="#ssh-time">5.  SSH time</a></h2><p>Now we need to get on the box, so take your IP address
 and follow the ssh instructions from vultr to get in.
 You can either wait for your DNS records to propogate (will likely take 10 minutes or so),
-or directly use the ip address.</p><p>Please <a href="https://docs.vultr.com/how-to-use-ssh-with-vultr-servers" rel="nofollow noopener noreferrer" target="_blank">follow these instructions at Vultr</a></p><p>I have made an alis in my <code>~/.bash_profile</code></p><pre class="shiki vitesse-dark" style="background-color:#121212;color:#dbd7caee" tabindex="0"><div class="code-scroller"><code><span class="line"><span style="color:#80A665">ssh-blog</span><span style="color:#666666">()</span><span style="color:#666666"> {</span><span style="color:#80A665"> ssh</span><span style="color:#C98A7D77"> "</span><span style="color:#C98A7D">root@$YOUR_DOMAIN_NAME</span><span style="color:#C98A7D77">"</span><span style="color:#666666">;</span><span style="color:#666666"> }</span></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><p>You'll know your done once you can ssh without putting in your password.</p></section>
+or directly use the ip address.</p><p>Please <a href="https://docs.vultr.com/how-to-use-ssh-with-vultr-servers" rel="nofollow noopener noreferrer" target="_blank">follow these instructions at Vultr</a></p><p>I have made an alis in my <code>~/.bash_profile</code></p><pre class="shiki vitesse-dark" style="background-color:#121212;color:#dbd7caee" tabindex="0"><div class="code-scroller"><code><span class="line"><span style="color:#80A665">ssh-blog</span><span style="color:#666666">()</span><span style="color:#666666"> {</span><span style="color:#80A665"> ssh</span><span style="color:#C98A7D77"> "</span><span style="color:#C98A7D">root@$YOUR_DOMAIN_NAME</span><span style="color:#C98A7D77">"</span><span style="color:#666666">;</span><span style="color:#666666"> }</span></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><p>You'll know your done once you can ssh without putting in your password.</p><style>
+#section-ssh-time {
+  --section-header-hr-start: 50%;
+  --section-header-hr-stop: 60%;
+}
+</style></section>
 <section id="section-install-nginx-and-ssl"><h2 id="install-nginx-and-ssl"><a href="#install-nginx-and-ssl">6.  Install nginx and ssl</a></h2><p>There are lots of ways to do this part, but I went a simple route</p><ol>
 <li>SSH onto the machine</li>
 <li><a href="https://docs.vultr.com/how-to-install-and-configure-nginx-on-a-vultr-cloud-server" rel="nofollow noopener noreferrer" target="_blank">Follow install instructions for nginx and validate it works with regular http</a>
@@ -77,12 +107,27 @@ or directly use the ip address.</p><p>Please <a href="https://docs.vultr.com/how
 <span class="line"></span>
 <span class="line"><span style="color:#80A665">service</span><span style="color:#C98A7D"> restart</span><span style="color:#C98A7D"> nginx</span></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><ol start="4">
 <li>Now try going back to your site, but this time use <code>https://</code></li>
-</ol></section>
+</ol><style>
+#section-install-nginx-and-ssl {
+  --section-header-hr-start: 60%;
+  --section-header-hr-stop: 70%;
+}
+</style></section>
 <section id="section-deploying-your-site"><h2 id="deploying-your-site"><a href="#deploying-your-site">7.  Deploying your site</a></h2><p>I just opted to build my blog using multiple trials of tech, writing my own, and now astro.
 I needed VPS because I am going to write demo apps for
 people to log into and expose as portfolio and honestly any other idea I could have.
-Vultr has great instance setups, so I can skip docker if I need to, or use it to my advantage.</p></section>
-<section id="section-just-install-rsync"><h3 id="just-install-rsync"><a href="#just-install-rsync">7.1.  Just install rsync</a></h3><p>Somehow, someway, and always eventually, you must install rsync. Its really not that bad but install can take a second depending on your situation.</p><p>This is totally dependent, but I have an ancient Intel MacBook Pro, so I had to use a painfully slow <code>brew install rsync</code>. During that install time, I was having second thoughts thanks to Apple not supporting their old hardware OS updates. Anyways, I can't really link anything for you here, I recommend surfing the web for your situation.</p></section>
+Vultr has great instance setups, so I can skip docker if I need to, or use it to my advantage.</p><style>
+#section-deploying-your-site {
+  --section-header-hr-start: 70%;
+  --section-header-hr-stop: 80%;
+}
+</style></section>
+<section id="section-just-install-rsync"><h3 id="just-install-rsync"><a href="#just-install-rsync">7.1.  Just install rsync</a></h3><p>Somehow, someway, and always eventually, you must install rsync. Its really not that bad but install can take a second depending on your situation.</p><p>This is totally dependent, but I have an ancient Intel MacBook Pro, so I had to use a painfully slow <code>brew install rsync</code>. During that install time, I was having second thoughts thanks to Apple not supporting their old hardware OS updates. Anyways, I can't really link anything for you here, I recommend surfing the web for your situation.</p><style>
+#section-just-install-rsync {
+  --section-header-hr-start: 80%;
+  --section-header-hr-stop: 90%;
+}
+</style></section>
 <section id="section-bash-time"><h3 id="bash-time"><a href="#bash-time">7.2.  Bash time</a></h3><pre class="shiki vitesse-dark" style="background-color:#121212;color:#dbd7caee" tabindex="0"><div class="code-scroller"><code><span class="line"><span style="color:#758575DD">#!/usr/bin/env bash</span></span>
 <span class="line"><span style="color:#CB7676">export</span><span style="color:#BD976A"> LE_BLOG</span><span style="color:#666666">=</span><span style="color:#CB7676">~</span><span style="color:#DBD7CAEE">/</span><span style="color:#BD976A">projects</span><span style="color:#DBD7CAEE">/</span><span style="color:#BD976A">le-blog</span><span style="color:#DBD7CAEE">/</span></span>
 <span class="line"><span style="color:#CB7676">export</span><span style="color:#BD976A"> LE_BLOG_TARGET</span><span style="color:#666666">=</span><span style="color:#DBD7CAEE">/</span><span style="color:#BD976A">var</span><span style="color:#DBD7CAEE">/</span><span style="color:#BD976A">www</span><span style="color:#DBD7CAEE">/</span><span style="color:#BD976A">html</span></span>
@@ -103,38 +148,205 @@ Vultr has great instance setups, so I can skip docker if I need to, or use it to
 <span class="line"><span style="color:#C99076">    -avz</span><span style="color:#C99076"> \</span></span>
 <span class="line"><span style="color:#BD976A">    $LE_BLOG</span><span style="color:#C98A7D"> root@hafley.codes:</span><span style="color:#BD976A">$LE_BLOG_TARGET</span></span>
 <span class="line"><span style="color:#666666">}</span></span>
-<span class="line"><span style="color:#DBD7CAEE"> </span></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre></section></div></main><footer></footer><script>// Smooth scrolling for browsers that don't support CSS smooth scrolling
-window.addEventListener("DOMContentLoaded", () => {
-  const observer = new IntersectionObserver(entries => {
-    console.log({ entries })
-    entries.forEach(entry => {
-      const id = entry.target.getAttribute("id")
-      if (entry.isIntersecting) {
-        console.log("adding to", id)
-        document
-          .querySelector(`nav li a[href="#${id}"]`)
-          ?.parentElement?.classList.add(
-            "viewtimeline-active",
-          )
-      } else {
-        console.log("removing from", id)
-        document
-          .querySelector(`nav li a[href="#${id}"]`)
-          ?.parentElement?.classList.remove(
-            "viewtimeline-active",
-          )
-      }
-    })
-  })
+<span class="line"><span style="color:#DBD7CAEE"> </span></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><style>
+#section-bash-time {
+  --section-header-hr-start: 90%;
+  --section-header-hr-stop: 100%;
+}
+</style></section></div></main><footer></footer><script>// Smooth scrolling for browsers that don't support CSS smooth scrolling
+;(() => {
+  /**
+   * @type {Record<string, {elem: HTMLElement, percent: number, lastEntry: null | IntersectionObserverEntry}>}
+   */
+  const byId = {}
+  window.sectionById = byId
+  /**
+   * @type {(typeof byId)[string]}
+   */
+  let top = null
+  /**
+   * @type {(typeof byId)[string]}
+   */
+  let bottom = null
 
-  // Track all sections that have an `id` applied
-  document
-    .querySelectorAll("section[id]")
-    .forEach(section => {
-      observer.observe(section)
+  window.addEventListener("DOMContentLoaded", () => {
+    /**
+     * @type {HTMLElement}
+     */
+    const nav = document.getElementById("toc-nav")
+    const li = nav?.querySelector("li a")
+
+    let liRatio = li.offsetHeight / nav.offsetHeight
+
+    window.addEventListener("resize", () => {
+      console.log("Resize detected")
+      liRatio = li.offsetHeight / nav.offsetHeight
     })
-})
-console.log("Does not support timeline-view")
+
+    const setEnds = (start, end) => {
+      start != null &&
+        nav.style.setProperty(
+          "--toc-scroll-start",
+          "" + (start * 100).toFixed(0) + "%",
+        )
+      end != null &&
+        nav.style.setProperty(
+          "--toc-scroll-end",
+          "" + (end * 100).toFixed(0) + "%",
+        )
+    }
+
+    // use elem, its the li
+    // now we have its offset from its parent
+    // get percent from parent 0 edge
+    // that is constant range start
+
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          const id = entry.target.getAttribute("id") ?? ""
+          let cache =
+            // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
+            (byId[id] ||= {
+              elem: document.querySelector(
+                `nav li a[href="#${id}"]`,
+              ),
+              percent: 0,
+              lastEntry: entry,
+            })
+          const elem = cache.elem
+          cache.lastEntry = entry
+          cache.percent = entry.intersectionRatio
+          if (entry.isIntersecting) {
+            if (entry.intersectionRatio === 1) {
+              // console.log("we are golden", cache)
+              // console.log("--", elem)
+              if (!top) {
+                // console.log("A)", elem)
+                top = cache
+              } else if (
+                top.lastEntry.intersectionRect.top >
+                  entry.intersectionRect.top ||
+                top.lastEntry.time < entry.time
+              ) {
+                // console.log("AA)", elem)
+                // this entry is above the previous top
+                top = cache
+              } else {
+                // console.log(
+                //   top.lastEntry,
+                //   "does not beat",
+                //   entry,
+                // )
+              }
+              // we take full percent of offset + offset+height of LI
+            } else if (
+              entry.intersectionRect.y ===
+                entry.rootBounds.y &&
+              entry.intersectionRect.bottom ===
+                entry.rootBounds.bottom
+            ) {
+              // console.log("B)", elem)
+              top = cache
+              bottom = cache
+              // console.log(
+              //   "this is both entering/exiting element",
+              //   cache,
+              // )
+            } else if (entry.intersectionRect.y === 0) {
+              // console.log(
+              //   "this is the leaving element",
+              //   cache,
+              // )
+              // console.log("C)", elem)
+              top = cache
+            } else {
+              // console.log(
+              //   "this is the entering element",
+              //   cache,
+              // )
+              // console.log("D)", elem)
+              bottom = cache
+            }
+            if (cache.percent === 0)
+              elem?.parentElement?.classList.add(
+                "viewtimeline-active",
+              )
+          } else {
+            elem?.parentElement?.classList.remove(
+              "viewtimeline-active",
+            )
+            cache.percent = 0
+          }
+          console.log(entry.boundingClientRect.top)
+          if (entry.boundingClientRect.top < 0) {
+            // we have passed the element and are exiting, which means we are stickied. we need to set the var for our mini gradient as a ratio of relative percent of top / height
+            const underWater =
+              Math.abs(entry.boundingClientRect.top) /
+              entry.boundingClientRect.height
+
+            entry.target.style.setProperty(
+              "--section-header-hr-progress",
+              underWater,
+            )
+          }
+        })
+        if (top && bottom) {
+          const a = top.elem // get corresponding LI's anchor
+          const percentFromNavTop =
+            a.offsetTop / a.offsetParent.offsetHeight // this is our base percent we are setting
+          // now calculate the intersection ratio relative to
+
+          const percentDiff =
+            (a.offsetHeight *
+              (1 - top.lastEntry.intersectionRatio)) /
+            a.offsetParent.offsetHeight
+
+          const b = bottom.elem
+          const percentFromNavTopToBottom =
+            (b.offsetTop + b.offsetHeight) /
+            b.offsetParent.offsetHeight // this is our base percent we are setting
+          // now calculate the intersection ratio relative to
+
+          const percentDiffB =
+            (b.offsetHeight *
+              (1 - bottom.lastEntry.intersectionRatio)) /
+            b.offsetParent.offsetHeight
+
+          // console.log({
+          //   top,
+          //   bottom,
+          //   percentFromNavTop,
+          //   percentFromNavTopToBottom,
+          //   percentDiff,
+          //   percentDiffB,
+          //   a,
+          //   b,
+          // })
+
+          setEnds(
+            percentFromNavTop + percentDiff,
+            percentFromNavTopToBottom - percentDiffB,
+          )
+        }
+        // console.log({ top, bottom })
+      },
+      {
+        threshold: Array.from(
+          { length: 10 },
+          (_, i) => i / 10,
+        ),
+      },
+    )
+
+    // Track all sections that have an `id` applied
+    document
+      .querySelectorAll("#main-content-middle section[id]")
+      .forEach(section => {
+        observer.observe(section)
+      })
+  })
+})()
 ;
 ;document.addEventListener("DOMContentLoaded", () => {
   try {

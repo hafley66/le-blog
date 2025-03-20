@@ -19,11 +19,8 @@ export CLICOLOR_FORCE=1
 # to force color output with its own flags (e.g. --color=always)
 
 (pnpm dev | sed "s/^/${GREEN}[1]${NC} /") &
-(deno --watch --allow-read --allow-write --allow-env --allow-sys --allow-run src/main_ssg.deno.ts | sed "s/^/${CYAN}[2]${NC} /") &
-(deno run --allow-all src/lib/ridiculous_file_watchers/fix-deno-vscode-settings.deno.ts | sed "s/^/${LIGHT_MAGENTA}[3]${NC} /") &
-(deno run --allow-all src/lib/ridiculous_file_watchers/SITEMAP_generator.deno.ts | sed "s/^/${BLUE}[4]${NC} /") &
+(pnpm dev:server | sed "s/^/${CYAN}[2]${NC} /") &
+(pnpm watch:sitemap | sed "s/^/${LIGHT_MAGENTA}[3]${NC} /") &
+(pnpm watch:deno-settings | sed "s/^/${BLUE}[4]${NC} /") &
 wait
 
-# (pnpm dev | sed 's/^/[1] /') &
-# (pnpm deno:dev | sed 's/^/[2] /') &
-# wait

@@ -5,6 +5,7 @@ import { Directives } from "mdast-util-directive";
 import { u } from "unist-builder";
 import { visit } from "unist-util-visit";
 import { h } from "hastscript";
+import { inspect } from "unist-util-inspect";
 
 export function remarkNestSections(
   props: { enableNesting: boolean } = {
@@ -124,6 +125,29 @@ export const rehypeAddIdToSectionForToc = () => {
             children: [text],
           }];
         }
+
+        const parentSections: Array<any> = parent?.children?.filter((i: any) =>
+          i.tagName === "section"
+        );
+
+        const incr = 100 / parentSections.length;
+        const start = ((parentSections.findIndex((i) => i === node) + 1) /
+          parentSections.length) * 100;
+
+        node.children.push({
+          type: "element",
+          tagName: "style",
+          properties: {},
+          children: [{
+            type: "text",
+            value: `
+#${node.properties.id} {
+  --section-header-hr-start: ${start - incr}%;
+  --section-header-hr-stop: ${start}%;
+}
+`,
+          }],
+        });
       }
     });
   };
@@ -146,10 +170,14 @@ export function myRemarkPlugin() {
       if (node.type === "containerDirective" && node.name === "codes") {
         const enhanced = node.children.filter((i) => i.type === "code").map(
           (i) => {
-            const maybe = i.value.match(/(.* @@filename .*)\n/i)?.[1];
-            console.log({ maybe, data: i.data });
+            const maybe = i.value.match(/(.* @@filename .*\n)/i)?.[1];
+            const maybeLogs = i.value.match(/(.*@@log.*\n)/i)?.[1];
+            // console.log({ maybe, data: i.data });
             const filename = maybe?.split("@@filename ")[1];
             const id = `code-group-radio-${tab_id++}`;
+
+            const f = maybe ? i.value.replace?.(maybe, "") ?? i.value : i.value;
+            const g = maybeLogs ? f.replace(maybeLogs, "") : f;
             return {
               ...i,
               data: {
@@ -160,7 +188,7 @@ export function myRemarkPlugin() {
                 },
               },
               filename,
-              value: maybe ? i.value.replace?.(maybe, "") ?? i.value : i.value,
+              value: g,
               id,
             };
           },

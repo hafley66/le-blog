@@ -3,8 +3,7 @@
     "target": "ESNext",
     "lib": [
       "ESNext",
-      "DOM",
-      "deno.ns"
+      "DOM"
     ],
     "module": "ESNext",
     "skipLibCheck": true,
@@ -19,7 +18,8 @@
     "noFallthroughCasesInSwitch": true,
     /* React */
     "jsx": "react-jsx",
-    "jsxImportSource": "react",
+		"jsxImportSource": "~/lib/rxjs-vhtml/v2",
+		"types": ["~/lib/rxjs-vhtml/v2"],
     "paths": {
       "~/*": [
         "./src/*"
@@ -32,6 +32,7 @@
     "**/*.deno.*ts",
     "**/*.dual.ts",
     "**/*.dual.tsx",
-    "src/vite-env.d.ts"
-, "src/lib/rxjs-vhtml/index.deno.test.tsx"  ]
+    "src/vite-env.d.ts",
+    "src/lib/rxjs-vhtml/index.deno.test.tsx"
+  ]
 }

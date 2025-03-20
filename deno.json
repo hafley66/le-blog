@@ -15,5 +15,6 @@
 		"jsx": "react-jsx",
 		"jsxImportSource": "~/lib/rxjs-vhtml/v2",
 		"types": ["~/lib/rxjs-vhtml/v2"]
-	}
+	},
+	"unstable": ["sloppy-imports"]
 }

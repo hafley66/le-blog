@@ -80,7 +80,7 @@ ol {
 }
 
 /* The toc toggle is not checked so we show griddo */
-main {
+main.body-markdown {
   display: grid;
   column-gap: 8px;
   grid-template-columns: var(--main-grid-template-columns);
@@ -96,18 +96,10 @@ main {
       margin-top: 12px;
       margin-bottom: 6px;
     }
-  }
-
-  #section-table-of-contents {
-    grid-column: span 1;
-    position: var(--main-toc-position);
-    top: 0;
-    height: fit-content;
-    max-height: 100vh;
-    overflow: auto;
-    min-width: 250px;
-    max-width: var(--TOC-max-width);
-    
+    display: flex;
+    flex-direction: column;
+    align-items: end;  
+    text-align: right;
   }
 
   #main-content-middle {
@@ -116,28 +108,74 @@ main {
   }
 }
 
-main:has(#toc-toggle) {
-  --main-grid-template-columns: minmax(250px, 0.3fr) minmax(0, 1fr);
-  --main-content-span: span 1;
-  --main-toc-position: sticky;
-  --main-max-width: 100%;
-  --TOC-max-width: 350px;
-  --TOC-line-height: 2.0;
-  --TOC-margin-bottom: 0px;
+main:not(.body-markdown) {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 60rem;
+  #title-and-description {
+    text-align: center;
+    #h1-desc {
+      margin-top: 12px;
+      margin-bottom: 6px;
+    }
+  }
+  #main-content-middle {
+    width: 100%;
+  }
 }
 
-main:has(#toc-toggle:checked), main:not(:has(#toc-toggle)) {
-  --main-grid-template-columns: 100%;
-  --main-content-span: span 1;
-  --main-toc-position: relative;
-  --main-max-width: 60rem;
-  --TOC-line-height: 2.0;
-  --TOC-max-width: 100%;
-  --TOC-margin-bottom: 32px;
-}
 
-@media (width <= 768px) {
-  main:has(#toc-toggle#toc-toggle) {
+
+@media (width > 768px) {
+  main:has(#toc-toggle) {
+    --main-grid-template-columns: minmax(250px, 0.3fr) minmax(0, 1fr);
+    --main-content-span: span 1;
+    --main-toc-position: sticky;
+    --main-max-width: 100%;
+    --TOC-max-width: 350px;
+    --TOC-line-height: 2.0;
+    --TOC-margin-bottom: 0px;
+    --TOC-justify-self: center;
+
+    #toc-nav {
+      position:relative;
+      background: linear-gradient(
+        to bottom,
+        var(--color-rose-500) 0%,
+        var(--color-red-400) calc(var(--toc-scroll-start) * 0.75),
+        var(--color-pink-300) calc(var(--toc-scroll-start) - 2%),
+        var(--color-blue-50) var(--toc-scroll-start),
+        var(--color-blue-50) var(--toc-scroll-end),
+        var(--color-purple-300) calc(var(--toc-scroll-end) + 2%),
+        var(--color-purple-300) calc(var(--toc-scroll-end) * 1.25),
+        var(--color-fuchsia-500) 100%
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+
+
+  main:has(#toc-toggle:checked) {
+    --main-grid-template-columns: 100%;
+    --main-content-span: span 1;
+    --main-toc-position: relative;
+    --main-max-width: 60rem;
+    --TOC-line-height: 2.0;
+    --TOC-max-width: 100%;
+    --TOC-margin-bottom: 32px;
+    --TOC-justify-self: none;
+    #toc-nav {
+      position:relative;
+      background: none;
+      -webkit-background-clip: unset;
+      -webkit-text-fill-color: unset;
+    }
+  }
+
+  main:not(:has(#toc-toggle)) {
     --main-grid-template-columns: 100%;
     --main-content-span: span 1;
     --main-toc-position: relative;
@@ -146,8 +184,19 @@ main:has(#toc-toggle:checked), main:not(:has(#toc-toggle)) {
     --TOC-max-width: 100%;
     --TOC-margin-bottom: 24px;
   }
+} 
+@media (width <= 768px) {
   #toc-toggle {
     display: none;
+  }
+  main:has(#toc-toggle#toc-toggle) {
+    --main-grid-template-columns: 100%;
+    --main-content-span: span 1;
+    --main-toc-position: relative;
+    --main-max-width: 100%;
+    --TOC-line-height: 1.8;
+    --TOC-max-width: 100%;
+    --TOC-margin-bottom: 24px;
   }
 }
 
@@ -164,13 +213,6 @@ section + section {
   max-width: 60rem;
 }
 
-#title-and-description {
-  display: flex;
-  flex-direction: column;
-  align-items: end;  
-  text-align: right;
-}
-
 aside {
   grid-column: span 1;
 }
@@ -180,37 +222,6 @@ aside:empty {
 }
 
 
-/* Counter for headings */
-main.body-markdown {
-  section {
-    /* Required for sticky overlap to work idfkw */
-    display: block;
-  }
-
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    padding: 4px 0px;
-    /* border-bottom: 1px solid black; */
-    /* position: relative; */
-  }
-
-  /* Table of Contents Fix */
-  nav.table-of-contents ol {
-    counter-reset: list-item;
-  }
-
-  nav.table-of-contents li {
-    display: block;
-    counter-increment: list-item;
-  }
-
-  nav.table-of-contents li:before {
-    content: counters(list-item, ".") " ";
-  }
-}
 
 .fancy-hr {
   position: relative;

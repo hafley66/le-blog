@@ -38,7 +38,18 @@
     "src/unix_socket_test/c_child.deno.ts",
     "src/unix_socket_test/test.deno.ts",
     "src/lib/lib.deno.ts",
-    "src/blog/how-its-made/this-site/index.render.deno.tsx"
+    "src/blog/how-its-made/this-site/index.render.deno.tsx",
+    "src/home/index.render.deno.tsx",
+    "src/resume/index.render.deno.tsx",
+    "src/blog/unholy-custom-jsx-with-observable-strings/index.render.deno.tsx",
+    "src/blog/state-management-showdown-rxjs-vs-react-hooks/index.render.deno.tsx",
+    "src/blog/state-management-showdown/state-management-showdown-rxjs-vs-react-hooks/index.render.deno.tsx",
+    "src/lib/leet/add-two-numbers.deno.ts",
+    "src/blog/1-vs-many/index.render.deno.tsx",
+    "src/blog/1-vs-many/index.render.deno.tsx/index.render.deno.tsx",
+    "src/tags/index.render.deno.tsx",
+    "src/blog/translating-react-to-rxjs/index.render.deno.tsx",
+    "src/lib/remark_rehype/remark-plant-uml.deno.ts"
   ],
   "deno.config": "./deno.json",
   "files.exclude": {

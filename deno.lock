@@ -4686,6 +4686,7 @@
         "npm:mermaid@^11.4.1",
         "npm:playwright@^1.51.0",
         "npm:react-dom@19",
+        "npm:react-query@^3.39.3",
         "npm:react-remark@^2.1.0",
         "npm:react@19",
         "npm:rehype-autolink-headings@^7.1.0",

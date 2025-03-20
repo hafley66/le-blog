@@ -20,7 +20,7 @@ const htmlFiles = glob
     {} as Record<string, string>,
   );
 
-console.log(htmlFiles);
+// console.log(htmlFiles);
 const serverRewrites = Object.fromEntries(
   Object.entries(htmlFiles)
     .map(([k, v]) => [`^${k}$`, v]) // This server config only listens to regex strings that begin with ^
@@ -48,7 +48,7 @@ const serverRewrites = Object.fromEntries(
       ],
     ]),
 );
-console.log({ serverRewrites });
+// console.log({ serverRewrites });
 export default defineConfig({
   root: "src",
   publicDir: process.cwd() + "/public",

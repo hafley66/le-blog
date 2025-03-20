@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  plantuml:
+    image: plantuml/plantuml-server:jetty
+    container_name: plantuml
+    networks:
+      - local_network
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+  deno_server:
+    image: denoland/deno:latest
+    container_name: deno_server
+    command: run --allow-net --allow-read /app/main.ts
+    volumes:
+      - .:/app
+    networks:
+      - local_network
+    restart: unless-stopped
+
+networks:
+  local_network:
+    driver: bridge

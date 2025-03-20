@@ -1,15 +1,7 @@
 import { ensureFileSync } from "@std/fs";
 import path from "node:path";
 import { deferFrom } from "~/lib/lib.dual.ts";
-import {
-  concatMap,
-  debounceTime,
-  filter,
-  startWith,
-  Subject,
-  switchMap,
-  takeUntil,
-} from "rxjs";
+import { concatMap, debounceTime, filter, startWith } from "rxjs";
 import { TAKE_UNTIL_EXIT } from "~/lib/lib.deno.ts";
 
 interface FSFile {
@@ -178,11 +170,15 @@ export const SITEMAP = {
   const findSrcChange = deferFrom(() =>
     Deno.watchFs(`${cwd}/src`, { recursive: true })
   ).pipe(
-    filter((i) =>
-      (i.kind === "create" || i.kind === "remove" || i.kind === "rename") &&
-      i.paths.some((i) => extensions.includes(path.extname(i)))
+    filter((
+      i,
+    ) => ((i.kind === "create" || i.kind === "remove" || i.kind === "rename" ||
+      i.kind === "modify") &&
+      i.paths.some((i) =>
+        extensions.includes(path.extname(i).replace(".", ""))
+      ))
     ),
-    debounceTime(1000),
+    debounceTime(100),
     startWith(null),
     concatMap(
       () => generateFS(),

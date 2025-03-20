@@ -11,6 +11,7 @@ import rehypeExternalLinks from "rehype-external-links"
 import remarkDirective from "remark-directive"
 import { visit } from "unist-util-visit"
 import rehypeRaw from "rehype-raw"
+import rehypeMermaid from "rehype-mermaid"
 
 import rehypeShikiFromHighlighter from "@shikijs/rehype/core"
 import { transformerTwoslash } from "@shikijs/twoslash"
@@ -29,9 +30,11 @@ import {
 
 import _ from "lodash"
 import { SHIKI } from "~/shiki.deno.ts"
+import { remarkPlantUML } from "~/lib/remark_rehype/remark-plant-uml.deno.ts"
 
 const REEEE = await unified()
   .use(remarkParse)
+  .use(remarkPlantUML)
   .use(remarkDirective)
   .use(myRemarkPlugin)
   .use(remarkGfm, {} as Parameters<typeof remarkGfm>[0])
@@ -40,6 +43,11 @@ const REEEE = await unified()
     allowDangerousHtml: true,
     clobberPrefix: "",
   } as Parameters<typeof remarkRehype>[0])
+  .use(rehypeMermaid, {
+    strategy: "img-svg",
+    dark: true,
+    prefix: "rehype-mermaid",
+  })
   .use(rehypeRaw, {} as Parameters<typeof rehypeRaw>[0])
   // .use(rehypeSanitize, {
   //   allowComments: true,
@@ -51,7 +59,11 @@ const REEEE = await unified()
   } as Parameters<typeof rehypeExternalLinks>[0])
   .use(rehypeShikiFromHighlighter, SHIKI, {
     theme: "vitesse-dark",
-    transformers: [transformerTwoslash({})],
+    transformers: [
+      transformerTwoslash({
+        explicitTrigger: true, // <--
+      }),
+    ],
   } as Parameters<typeof rehypeShikiFromHighlighter>[1])
   .use(rehypeAddIdToSectionForToc)
   .use(rehypeStringify, {
@@ -69,7 +81,7 @@ const RemarkDaemon = _input
     scan((state, next) => {
       if (state[next]) return state
       state[next] = new Observable<string>(sub => {
-        console.log("processing next")
+        // console.log("processing next")
         REEEE.process(next)
           .then(i => {
             // console.log({ next, i: i.value })

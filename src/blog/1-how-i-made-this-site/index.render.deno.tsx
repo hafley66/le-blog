@@ -1,24 +1,24 @@
+import { FS } from "~/SITEMAP.deno.ts";
 /** @jsxImportSource ../../lib/rxjs-vhtml */
 /** @jsxImportSourceTypes ../../lib/rxjs-vhtml */
-import { Render$ } from "~/lib/0_RenderBase.deno.tsx"
-import { FS } from "~/SITEMAP.deno.ts"
-const $ = Render$(import.meta.filename!)
+import { Render$ } from "~/lib/0_RenderBase.deno.tsx";
+const $ = Render$(import.meta.filename!);
 
 export default $.SSGLayout({
-  title: "How I started this site as of 2025/02/27",
-  description: "",
-  date_created: "2025-02-25",
-  tags: [
-    "typescript",
-    "javascript",
-    "astro",
-    "vultr",
-    "bash",
-    "dns",
-    "vps",
-    "deployments",
-  ],
-  ...$.md`
+	title: "How I started this site as of 2025/02/27",
+	description: "",
+	date_created: "2025-02-25",
+	tags: [
+		"typescript",
+		"javascript",
+		"astro",
+		"vultr",
+		"bash",
+		"dns",
+		"vps",
+		"deployments",
+	],
+	...$.md`
 ## Buy a domain
 I used [Porkbun](https://porkbun.com/), very easy to use. They also come with easy to use WHOIS protection, which is a big plus.
 
@@ -100,4 +100,4 @@ ${FS["src/bash/rsync-it.bash"].readSync()}
 ~~~
 
 `,
-})
+});

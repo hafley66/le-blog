@@ -1,5 +1,3 @@
-/** @jsxImportSource ./rxjs-vhtml */
-/** @jsxImportSourceTypes ./rxjs-vhtml */
 import _ from "lodash"
 
 import {
@@ -19,7 +17,7 @@ import {
   HeaderFlat,
   HeaderProps,
   LayoutProps,
-  Layout as Layout_,
+  Layout,
   TOC,
 } from "./0_Layout.dual.tsx"
 import { Remark } from "./00_Remark2.deno.tsx"
@@ -27,12 +25,7 @@ import { Remark } from "./00_Remark2.deno.tsx"
 const MARKDOWN_REGEX_TO_NAIVELY_SPLIT_HEADERS__BEWARE_HASH_COMMENTS =
   /(#{2,} .+?)\n([\s\S]*?)(?=\n#{2,} |\n*$|$)/g
 
-export const Render$ = (
-  importMetaFilename: string,
-  tocTreePipe: MonoTypeOperatorFunction<any> = takeUntil<any>(
-    timer(500),
-  ),
-) => {
+export const Render$ = (importMetaFilename: string) => {
   const [dontCare, ...thisOne] =
     importMetaFilename.split("/src")
   const dir = thisOne.join("")
@@ -42,29 +35,31 @@ export const Render$ = (
     ".vite.html",
   )
 
+  const safeRead = (path: string) => {
+    try {
+      return Deno.readTextFileSync(path)
+    } catch (e) {
+      return ""
+    }
+  }
+
   const writeToDist = pipe(
     debounceTime<string>(1000),
-    switchMap(
-      async (content: string) => (
-        console.log("Writing...", OUTFILE, content.length),
-        {
-          writer: await Deno.writeTextFile(
-            OUTFILE,
-            content,
-            // content.replace(
-            //   // deno-lint-ignore no-control-regex
-            //   // biome-ignore lint/suspicious/noControlCharactersInRegex: <explanation>
-            //   /[\u0000-\u001F\u007F-\u009F]/g,
-            //   "",
-            // ),
-          ),
-          content,
-          renderedPath: OUTFILE,
-          dirname: import.meta.dirname,
-          filename: import.meta.filename,
-        }
-      ),
-    ),
+    switchMap(async (content: string) => ({
+      writer:
+        safeRead(OUTFILE) !== content
+          ? (console.log(
+              "Writing...",
+              OUTFILE,
+              content.length,
+            ),
+            await Deno.writeTextFile(OUTFILE, content))
+          : false,
+      content,
+      renderedPath: OUTFILE,
+      dirname: import.meta.dirname,
+      filename: import.meta.filename,
+    })),
     catchError(e => {
       console.error(e)
       throw e
@@ -73,6 +68,13 @@ export const Render$ = (
   // As we render H1...6, we capture their props as subject.next and we reduce over
   const header$ = new Subject<HeaderFlat>()
   const footnote$ = new Subject<FootnoteFlat>()
+
+  const markdown = (
+    strings: TemplateStringsArray,
+    ...values: any[]
+  ) => {
+    return from(Remark(strings.join("\n")))
+  }
 
   const md = (
     strings: TemplateStringsArray,
@@ -194,13 +196,8 @@ ${it.body}
     }
   }
 
-  const Layout = (props: LayoutProps) =>
-    Layout_({
-      ...props,
-    })
-
   const SSGLayout = (props: Omit<LayoutProps, "url">) => {
-    const it = Layout({ ...props, url: dir }).pipe(
+    const it = (<Layout {...props} url={dir} />).pipe(
       writeToDist,
       map(i => ({
         ...i,
@@ -222,6 +219,7 @@ ${it.body}
     writeToDist,
     Layout,
     SSGLayout,
+    markdown,
   }
 }
 

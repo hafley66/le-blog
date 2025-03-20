@@ -6,7 +6,7 @@ import { FS } from "~/SITEMAP.deno.ts"
 export type LayoutProps = {
   url: string
   title?: string
-  description?: string
+  description?: RxJSXNode
   date_created?: string
   author?: string
   tags?: string[]
@@ -48,7 +48,7 @@ export const Tags = (props: { items: string[] }) => {
             // role="button"
             style={{ ...Hex.getColor(index) }}
           >
-            {Hex({ value: it })}
+            <Hex value={it} />
           </a>
         ))}
       </div>
@@ -60,10 +60,10 @@ export const PrimaryNavigation = (props: {
   url: string
 }) => {
   const links = [
-    { href: "/", label: "Home" },
+    { href: "/home", label: "Home" },
     { href: "/resume", label: "Resume" },
     { href: "/blog", label: "Blog" },
-    { href: "/snippets", label: "Snipts" },
+    // { href: "/snippets", label: "Snipts" },
     { href: "/tags", label: "Tags" },
   ]
 
@@ -88,9 +88,13 @@ export const PrimaryNavigation = (props: {
             href={href}
             role="tab"
             aria-selected={isCurrentPage(href)}
-            className={`nav-link ${isCurrentPage(href) ? "active" : ""}`}
+            className="nav-link-anchor"
           >
-            {label}
+            <span
+              className={`nav-link ${isCurrentPage(href) ? "active" : ""}`}
+            >
+              {label}
+            </span>
           </a>
         ))}
       </div>
@@ -128,11 +132,15 @@ export const Layout = (
 
         <title>{props.title}</title>
       </head>
-      <body>
+      <body className={props.disable_toc ? "ready" : ""}>
         <header>
-          {PrimaryNavigation({ url: props.url })}
+          <PrimaryNavigation url={props.url} />
         </header>
-        <main className={"body-markdown"}>
+        <main
+          className={
+            props.disable_toc ? "" : "body-markdown"
+          }
+        >
           {props.title ||
           props.tags ||
           props.date_created ? (
@@ -145,14 +153,14 @@ export const Layout = (
                 </sub>
               ) : null}
               {props.description ? (
-                <p id="h1-desc">{props.description}</p>
+                <div id="h1-desc">{props.description}</div>
               ) : null}
-              {props.tags
-                ? Tags({ items: props.tags })
-                : null}
+              {props.tags ? (
+                <Tags items={props.tags} />
+              ) : null}
             </section>
           ) : null}
-          {props.toc}
+          {props.disable_toc ? null : props.toc}
 
           <div id="main-content-middle">
             {props.children}
@@ -160,12 +168,18 @@ export const Layout = (
         </main>
         <footer />
         {String.raw`<script>${[
-          FS["src/lib/TOC_intersection_polyfill.js"],
-          FS["src/lib/client/checkbox.init.dom.js"],
+          !props.disable_toc &&
+            FS[
+              "src/lib/client/TOC_intersection_polyfill.js"
+            ],
+          !props.disable_toc &&
+            FS["src/lib/client/checkbox.init.dom.js"],
           FS["src/lib/client/code-copy.init.dom.js"],
           FS["src/lib/client/img-onclick.dom.js"],
         ]
-          .map(i => i.readSync())
+          .filter(Boolean)
+          // biome-ignore lint/complexity/useOptionalChain: ts
+          .map(i => i && i.readSync())
           .join(";\n;")}</script>`}
       </body>
     </html>
@@ -229,13 +243,14 @@ export const TOC = (props: {
         </svg>
       </div>
       <nav id="toc-nav">
+        <div className="debug-slider"></div>
         <ol debug>
           {props.tocRoot.children.map(
             function renderTocItem(item: HeaderProps) {
               return (
                 <li key={item.id} debug>
                   <a href={`#section-${item.id}`}>
-                    {item.value.replace(/^(\d+\.)+/gi, "")}
+                    {item.value}
                   </a>
                   {item.children.length ? (
                     <ol>

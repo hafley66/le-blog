@@ -1,0 +1,94 @@
+:root {
+  --color-main: #e3620c; /* Soft Orange */
+    --color-grey: #A9A9A9; /* Soothing Grey */
+    --color-off-black: #1C1C1C; /* Off-Black */
+    --color-divider: #D3D3D3; /* Divider Color */
+    --color-content-bg: #F8F8F8; /* Slight Off-White for Background */
+    --color-primary-text: #232323; /* Slight Off-Black for Primary Text */
+    --color-secondary-text: #6B6B6B; /* Grey for Secondary Text */
+
+    --color-soft-red: #D77A7A; /* Soft Red, distinct from orange */
+    --color-green: #85B88F; /* Soft Green */
+    --color-light-blue: #7FAFD8; /* Soft Light Blue */
+}
+
+#resume {
+  font-family: Arial, sans-serif;
+  max-width: 800px;
+  font-size: 16px;
+  margin: 10px auto;
+  padding: 0px;
+  border-radius: none;
+  border: none;
+  background: var(--color-bg);
+}
+
+.links-print { display: none; }
+@media print {
+  .links-screen { display: none; }
+  .links-print { display: block; }
+  #resume {
+    margin-top: -12px;
+    font-size: 14px;
+    p {
+      font-size: 16px;
+    }
+  }
+  
+  body>header {
+    display: none;
+  }
+}
+#resume header {
+  text-align: center;
+}
+
+#resume p {
+  font-size: 16px;
+  color: var(--color-text);
+  margin: 5px 0;
+}
+
+#resume a {
+  color: var(--color-text-link);
+  text-decoration: none;
+}
+
+#resume a:hover {
+  text-decoration: underline;
+}
+
+#resume h2 {
+  font-size: 22px;
+  border-bottom: 2px solid #0073e6;
+  padding-bottom: 5px;
+  margin-top: 12px;
+  margin-bottom: 6px;
+}
+
+#resume h3 {
+  font-size: 18px;
+  margin: 10px 0 5px;
+  color: var(--color-resume-heading);
+}
+
+#resume ul {
+  padding-left: 20px;
+  margin-top: 8px;
+}
+
+#resume li {
+  margin-bottom: 6px;
+}
+
+section {
+  margin-bottom: 12px;
+}
+
+#employment {
+  hr{ 
+    border-color: var(--color-sky-500);
+    margin: 4px 20px;
+    padding: 0px 24px;
+  }
+}
