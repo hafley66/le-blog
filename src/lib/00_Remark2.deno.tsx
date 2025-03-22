@@ -17,6 +17,7 @@ import rehypeShikiFromHighlighter from "@shikijs/rehype/core"
 import { transformerTwoslash } from "@shikijs/twoslash"
 import {
   myRemarkPlugin,
+  rehype_AddConsoleLogsToLines,
   rehypeAddIdToSectionForToc,
   remarkNestSections,
 } from "./remark_rehype/remarkNestSections.deno.ts"
@@ -59,6 +60,7 @@ const REEEE = await unified()
   } as Parameters<typeof rehypeExternalLinks>[0])
   .use(rehypeShikiFromHighlighter, SHIKI, {
     theme: "vitesse-dark",
+    addLanguageClass: true,
     transformers: [
       transformerTwoslash({
         explicitTrigger: true, // <--
@@ -66,6 +68,7 @@ const REEEE = await unified()
     ],
   } as Parameters<typeof rehypeShikiFromHighlighter>[1])
   .use(rehypeAddIdToSectionForToc)
+  .use(rehype_AddConsoleLogsToLines)
   .use(rehypeStringify, {
     allowDangerousHtml: true,
   } as Parameters<typeof rehypeStringify>[0])
@@ -85,7 +88,7 @@ const RemarkDaemon = _input
         REEEE.process(next)
           .then(i => {
             // console.log({ next, i: i.value })
-            sub.next(i.value)
+            sub.next(i.value as any)
             sub.complete()
           })
           .catch(ee => sub.error(ee))

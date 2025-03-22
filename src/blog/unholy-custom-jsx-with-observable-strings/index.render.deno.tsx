@@ -2,6 +2,9 @@ import { Render$ } from "~/lib/0_RenderBase.deno.tsx"
 import { FS } from "~/SITEMAP.deno.ts"
 const $ = Render$(import.meta.filename!)
 
+const F =
+  "src/blog/unholy-custom-jsx-with-observable-strings" as const
+
 export default $.SSGLayout({
   title:
     "True lazy rendering with JSX and RxJS Observables",
@@ -32,57 +35,28 @@ Subscribe to every next value of your html over time using...just rxjs.
 Here are 3 main demos demonstrating basic jsx, sync jsx, and async jsx.
 :::codes
 ~~~tsx
-// @@filename Basic Subscribe
-// @@log
-(<div>Hello World</div>).subscribe(console.log)
-// Outputs: "<div>Hello World</div>"
+// @@filename Basic
+// @@eval
+${FS["src/blog/unholy-custom-jsx-with-observable-strings/basic.deno.tsx"].readSync()}
 ~~~
 
-
-~~~tsx
+~~~tsx eval
 // @@filename Sync children
-// @@log
-const children = of("Hello World", "It was me, DIO");
-
-(<div>{children}</div>).pipe(toArray()).subscribe(console.log)
-// Outputs: ["<div>Hello World</div>", "<div>It was me, DIO</div>"]
+// @@eval
+${FS["src/blog/unholy-custom-jsx-with-observable-strings/sync.deno.tsx"].readSync()}
 ~~~
 
 ~~~tsx
-// @@filename Async children
-const fakeUserApiCall = () => new Promise(
-  res => setTimeout(
-    () => res({id: 0, name: "DIO"}), 
-    100
-  )
-);
-
-(
-  <div>
-    Hello World
-    <div>{
-      new Observable(sub => {
-        sub.next("Loading user...");
-        fakeUserApiCall().then(
-          i => sub.next(i) + sub.complete(), 
-          err => sub.error(err)
-        );
-        return () => {
-        }
-      })
-    }</div>
-  </div>
-).subscribe(
-  console.log
-)
-
-// Outputs: 
-// 1. <div> Hello World <div> Loading user... </div> </div>
-// 2. <div> Hello World <div> DIO </div> </div>
+// @@filename Async Observable
+// @@eval
+${FS["src/blog/unholy-custom-jsx-with-observable-strings/async.deno.tsx"].readSync()}
 ~~~
 
-
-
+~~~tsx
+// @@filename Async RxJS 
+// @@eval
+${FS["src/blog/unholy-custom-jsx-with-observable-strings/async.rxjs.deno.tsx"].readSync()}
+~~~
 
 :::
 `,

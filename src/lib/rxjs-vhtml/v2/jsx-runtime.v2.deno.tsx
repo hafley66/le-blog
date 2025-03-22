@@ -1,6 +1,13 @@
 import React from "react"
 import _ from "lodash"
-import { isObservable, merge, Observable, of } from "rxjs"
+import {
+  delay,
+  isObservable,
+  merge,
+  Observable,
+  of,
+  Subscription,
+} from "rxjs"
 import {
   filter,
   map,
@@ -63,8 +70,11 @@ export function jsx(
     if (typeof tag === "function") {
       return tag(propsWithChildren)
     }
-    const { children: _children, ...props } =
-      propsWithChildren || {}
+    const {
+      children: _children,
+      debug,
+      ...props
+    } = propsWithChildren || {}
 
     let childrenn = (
       !_children
@@ -76,11 +86,35 @@ export function jsx(
       .filter(Boolean)
       .flat()
 
+    const children$$ = new Observable<string>(S => {
+      const subs: Subscription[] = []
+      const latest = [] as string[]
+      let isObservableChildren = false
+      childrenn.forEach((it, index) => {
+        if (typeof it === "string") {
+          latest[index] = it
+        } else if (isObservable(it)) {
+          isObservableChildren = true
+          subs.push(
+            it.pipe(delay(1)).subscribe(next => {
+              latest[index] = next as string
+              S.next(latest.filter(Boolean).join(""))
+            }),
+          )
+        }
+      })
+      if (!isObservableChildren) {
+        S.next(latest.join(""))
+      }
+      return () => {
+        subs.forEach(i => i.unsubscribe())
+      }
+    })
+
     const attrObservables: Record<
       string,
       Observable<any>
     > = {}
-    const childrenObservables: Observable<string>[] = []
 
     if (props) {
       for (const key in props) {
@@ -123,34 +157,25 @@ export function jsx(
         }
       }
     }
-    // if (props.debug) {
-    //   console.log({ childrenn });
-    // }
-    childrenn.forEach((child, index) => {
-      childrenObservables.push(
-        resolveObservable(child, `child-${index}`),
-      )
-    })
 
     const attrs$ = Object.keys(attrObservables).length
       ? combinePartialRecord(attrObservables)
       : of({} as Record<string, string>)
 
-    const children$ = childrenObservables.length
-      ? combinePartialArray(childrenObservables).pipe(
-          map(resolvedChildren =>
-            resolvedChildren.filter(Boolean).join(""),
-          ),
-        )
-      : of()
+    const children$ = childrenn.length ? children$$ : of()
 
     const hasProps = !!Object.keys(attrObservables).length
     const hasChildren = !!childrenn.length
+
+    if (debug) {
+      console.log(tag, { hasProps, hasChildren })
+    }
 
     return merge(
       attrs$.pipe(map(i => ["props", i] as const)),
       children$.pipe(map(i => ["children", i] as const)),
     ).pipe(
+      debug ? TAG(tag + "") : i => i,
       scan(
         (state, event) => ({
           props:

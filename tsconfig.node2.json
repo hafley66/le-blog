@@ -3,10 +3,14 @@
     "target": "ESNext",
     "lib": [
       "ESNext",
-      "DOM"
+      "DOM",
+      "nodenext"
     ],
     "module": "ESNext",
     "skipLibCheck": true,
+    "rewriteRelativeImportExtensions": true,
+    "erasableSyntaxOnly": true,
+    "verbatimModuleSyntax": true,
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
@@ -17,14 +21,14 @@
     "strict": true,
     "noFallthroughCasesInSwitch": true,
     /* React */
-    "jsx": "react-jsx",
-		"jsxImportSource": "~/lib/rxjs-vhtml/v2",
-		"types": ["~/lib/rxjs-vhtml/v2"],
     "paths": {
       "~/*": [
         "./src/*"
       ]
-    }
+    },
+    "jsx": "react-jsx",
+		"jsxImportSource": "~/lib/rxjs-vhtml/v2",
+		"types": ["~/lib/rxjs-vhtml/v2"]
   },
   "include": [
     "vite.config.mts",
@@ -32,6 +36,7 @@
     "**/*.deno.*ts",
     "**/*.dual.ts",
     "**/*.dual.tsx",
-    "src/vite-env.d.ts"
+    "src/vite-env.d.ts",
+    "src/lib/rxjs-vhtml/index.deno.test.tsx"
   ]
 }

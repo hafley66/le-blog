@@ -67,30 +67,39 @@ ol {
 }
 
 :root {
-  --main-grid-template-columns: clamp(200px, 20vw, 350px) 1fr 1fr; /*1fr*/
-  --main-content-span: span 2; /*span 1*/
-  --main-toc-position: sticky; /*relative*/
-  --main-max-width: 100%;
+  --main-grid-template-columns: minmax(0, 60rem); /*1fr*/
+  --main-toc-position: relative;
   --TOC-line-height: 2.0;
   --TOC-max-width: 350px;
 
-  --SM-main-grid-template-columns: 1fr; /*1fr*/
-  --SM-main-content-span: span 1; /*span 1*/
-  --SM-main-toc-position: relative; /*relative*/
+  --layout-BIG: 
+    ". A ."
+    "B C D";
+
+  --layout-mid: 
+    ". A"
+    "B C";
+  --layout-small: 
+    "A"
+    "B"
+    "C";
+
+  --main-grid-areas: var(--layout-small);
 }
 
 /* The toc toggle is not checked so we show griddo */
 main.body-markdown {
+  width: 100%;
   display: grid;
   column-gap: 8px;
+  /* width: fit-content; */
   grid-template-columns: var(--main-grid-template-columns);
-  max-width: var(--main-max-width);
+  grid-template-areas:  var(--main-grid-areas);
   margin-left: auto;
   margin-right: auto;
 
   #title-and-description {
-    grid-column: 1 / -1;
-    justify-self: center;
+    grid-area: A;
 
     #h1-desc {
       margin-top: 12px;
@@ -102,9 +111,12 @@ main.body-markdown {
     text-align: right;
   }
 
+  #section-table-of-contents {
+    grid-area: B;
+  }
+
   #main-content-middle {
-    max-width: 60rem;
-    grid-column: var(--main-content-span);
+    grid-area: C;
   }
 }
 
@@ -127,13 +139,14 @@ main:not(.body-markdown) {
 }
 
 
-
 @media (width > 768px) {
-  main:has(#toc-toggle) {
-    --main-grid-template-columns: minmax(250px, 0.3fr) minmax(0, 1fr);
-    --main-content-span: span 1;
+  main:has(#toc-toggle:not(:checked)) {
+    /* width: 90vw; */
+    --main-grid-template-columns: 1fr minmax(0, 60rem);
+    --main-grid-areas: var(--layout-mid);
     --main-toc-position: sticky;
-    --main-max-width: 100%;
+    
+
     --TOC-max-width: 350px;
     --TOC-line-height: 2.0;
     --TOC-margin-bottom: 0px;
@@ -159,14 +172,10 @@ main:not(.body-markdown) {
 
 
   main:has(#toc-toggle:checked) {
-    --main-grid-template-columns: 100%;
-    --main-content-span: span 1;
-    --main-toc-position: relative;
-    --main-max-width: 60rem;
+    width: fit-content;
     --TOC-line-height: 2.0;
-    --TOC-max-width: 100%;
     --TOC-margin-bottom: 32px;
-    --TOC-justify-self: none;
+
     #toc-nav {
       position:relative;
       background: none;
@@ -174,28 +183,25 @@ main:not(.body-markdown) {
       -webkit-text-fill-color: unset;
     }
   }
+}
 
-  main:not(:has(#toc-toggle)) {
-    --main-grid-template-columns: 100%;
-    --main-content-span: span 1;
-    --main-toc-position: relative;
-    --main-max-width: 100%;
-    --TOC-line-height: 1.8;
-    --TOC-max-width: 100%;
-    --TOC-margin-bottom: 24px;
+
+@media (width > 1098px) {
+  main:has(#toc-toggle:not(:checked)) {
+    /* width: 100%; */
+    --main-grid-areas: var(--layout-BIG);
+    --main-grid-template-columns:  0.8fr minmax(0, 60rem) 0.8fr;
   }
-} 
+}
+
+
 @media (width <= 768px) {
   #toc-toggle {
     display: none;
   }
-  main:has(#toc-toggle#toc-toggle) {
-    --main-grid-template-columns: 100%;
-    --main-content-span: span 1;
-    --main-toc-position: relative;
-    --main-max-width: 100%;
+
+  main {
     --TOC-line-height: 1.8;
-    --TOC-max-width: 100%;
     --TOC-margin-bottom: 24px;
   }
 }
@@ -205,7 +211,6 @@ section + section {
 }
 
 #title-and-description {
-  max-width: 60rem;
   width: 100%;
 }
 

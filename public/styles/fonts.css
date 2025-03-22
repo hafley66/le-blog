@@ -252,8 +252,16 @@ h1, .h1 {
   }
 }
 
+:root {
+  --h2-height: calc(clamp(1.2rem, 2.5vw, 1.4rem) + 8px);
+  --h3-height: calc(clamp(1.1rem, 1.7vw, 1.3rem) + 8px);
+}
+
 h2, .h2 {
   /* font-size: calc(var(--h2-size) * 1rem); */
+  line-height: 1;
+  padding-top: 4px;
+  padding-bottom: 4px;
   font-size: clamp(1.2rem, 2.5vw, 1.4rem);
   font-weight: 600;
 }
@@ -270,16 +278,24 @@ h6 {
 
 h3 {
   font-size: clamp(1.1rem, 1.7vw, 1.3rem);
-
+  line-height: 1;
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
 
 h4 {
   font-size: calc(var(--h4-size) * 1rem);
+  line-height: 1;
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
 
 h5 {
   font-size: calc(var(--h5-size) * 1rem);
   font-weight: 500;
+  line-height: 1;
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
 
 h6 {
@@ -369,6 +385,7 @@ main.body-markdown {
     &::before {
       width: calc(
               var(--section-header-hr-stop) - var(--section-header-hr-start)
+            - 2px /* this is for the borders */
             );
       content: "";
       position: absolute;

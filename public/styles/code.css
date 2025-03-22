@@ -2,10 +2,11 @@
 .shiki {
   border: 1px solid var(--color-border);
   /* border-radius: 4px; */
-  padding: 4px 8px;
+  padding: 4px 0px;
 
   .code-scroller {
     overflow: auto;
+    padding-left: 4px;
   }
 }
 
@@ -21,6 +22,7 @@ code:not(:has(.line)):not(.twoslash-popup-code) {
   position: absolute;
   top: -1px;
   right: -1;
+  opacity: 0.7;
   /* padding: 12px 28px; */
   border: 1px solid white;
   height: 32px;
@@ -53,15 +55,39 @@ pre {
   margin-bottom: 0px;
 }
 
+h2 ~ .code-group {
+  .code-group-tabs {
+    position: sticky;
+    top: calc(var(--h2-height) + 8px);
+    z-index: 2;
+  }
+}
+
+h3 ~ .code-group {
+  .code-group-tabs {
+    position: sticky;
+    top: calc(var(--h3-height) + 8px);
+    z-index: 2;
+  }
+}
 
 .code-group {
   margin-top: 12px;
   .code-group-tabs { 
+    overflow: auto;
     display: flex; 
-    /* align-items: center; */
-    overflow-y: visible;
-    /* overflow-x: auto; */
-    max-width: 100%;
+    position: sticky;
+    top: calc(var(--h2-height) + 8px);
+    z-index: 2;
+
+    &::after {
+      content: "";
+      flex: 1 1 auto;
+      border: 1px solid white;
+      border-left: none;
+      background:var(--color-bg);
+    }
+
 
     input {
       opacity: 0;
@@ -71,8 +97,9 @@ pre {
     }
 
     label {
+      white-space: pre;
       position: relative;
-      flex: 1;
+      flex: 0 1 auto;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -103,7 +130,7 @@ pre {
           z-index: 10;
         }
       }
-      .centerino {padding-left: 6px;}
+      .centerino {padding-left: 6px; padding-right: 6px;}
     }
 
     input:checked + label {
@@ -111,12 +138,75 @@ pre {
       font-weight: 600;
     }
   }
-  
+  .shiki > button {
+    top: 0px;
+  }
   pre.shiki {
-    margin-top: unset;
+    margin-top: -1px; 
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
   }
 }
+.code-tabs-scroller {
+  overflow: auto;
+}
+
+pre.shiki:has(.console\.log-details) {
+  padding-bottom: 0px;
+}
+.console\.log-details {
+  margin-top: 8px;
+  /* margin-bottom: 8px; */
+  /* margin-left: -9px; */
+  width: calc(100%);
+  border-radius: 0px;
+  border-bottom: none;
+  border-right: none;
+  border-left: none;
 
 
+  summary {
+    padding-left: 4px;
+  }
+  summary:hover {
+    position: relative;
+    
+    &::before {
+      content: "";
+      cursor: pointer;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--color-sky-500);
+      mix-blend-mode: color-dodge;
+    }
+  }
+}
+
+pre.shiki .console\.log-output {
+  position: relative;
+  background: grey;
+  gap: 2px;
+  overflow: auto;
+
+  display: grid;
+  grid-template-columns: auto 1fr;
+  flex-direction: column;
+  align-items: start;
+  white-space: pre;
+  padding: 0px;
+  border-radius: 0px;
+  border-right: none;
+
+
+  .log-grid-heading,
+  .log-line {
+    padding: 4px;
+    background:white;
+    font-size: 12px;
+    font-style: italic;
+  }
+
+}

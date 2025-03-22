@@ -49,7 +49,15 @@
     "src/blog/1-vs-many/index.render.deno.tsx/index.render.deno.tsx",
     "src/tags/index.render.deno.tsx",
     "src/blog/translating-react-to-rxjs/index.render.deno.tsx",
-    "src/lib/remark_rehype/remark-plant-uml.deno.ts"
+    "src/lib/remark_rehype/remark-plant-uml.deno.ts",
+    "src/blog/index2.render.deno.tsx",
+    "src/blog/unholy-custom-jsx-with-observable-strings/basic.deno.tsx",
+    "src/blog/unholy-custom-jsx-with-observable-strings/async.deno.tsx",
+    "src/blog/unholy-custom-jsx-with-observable-strings/sync.deno.tsx",
+    "src/blog/unholy-custom-jsx-with-observable-strings/async.rxjs.deno.tsx",
+    "src/blog/make-your-own-sitemap-with-typescript/index.render.deno.tsx",
+    "src/blog/make-your-own-sitemap-with-typescript/src/blog/hello-world/index.render.deno.tsx",
+    "src/blog/make-your-own-sitemap-with-typescript/src/SITEMAP.deno.ts"
   ],
   "deno.config": "./deno.json",
   "files.exclude": {

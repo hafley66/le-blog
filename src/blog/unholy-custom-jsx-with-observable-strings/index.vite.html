@@ -34,55 +34,99 @@
       </div>
       <div class="hex-content-amoeba"></div>
       <span>rxjs</span>
-</a></div></div></section><details open="true" id="section-table-of-contents"><summary id="toc-header-contents"><h2 id="table-of-contents">Table of Contents</h2><input type="checkbox" id="toc-toggle"></summary><div class="fancy-hr"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 20"><circle cx="10" cy="10" r="7" style="fill:var(--color-text);" stroke-width="2"></circle><circle cx="30" cy="10" r="9" style="fill:var(--color-text);" stroke-width="2" fill="transparent"></circle><circle cx="50" cy="10" r="7" style="fill:var(--color-text);" stroke-width="2"></circle></svg></div><nav id="toc-nav"><div class="debug-slider"></div><ol debug="true"><li debug="true"><a href="#section-abstract">1.  Abstract</a></li></ol></nav></details><div id="main-content-middle"><section id="section-abstract"><h2 id="abstract"><a href="#abstract">1.  Abstract</a></h2><p>I created a jsx implementation that returns <code>Observable&#x3C;string></code> for static site generation(SSG). It uses a really simple technique to determine when a component is ready (first emit!). This round is for unsanitized html over time for my blog.</p><p>You can do both of these with this technique:
-Subscribe to every next value of your html over time using...just rxjs.</p><p>Here are 3 main demos demonstrating basic jsx, sync jsx, and async jsx.</p><div class="code-group code-group-1"><div class="code-group-tabs"><input type="radio" name="code-group-1" id="code-group-radio-2" checked="true"><label for="code-group-radio-2"><div class="centerino">Basic Subscribe
-</div></label><input type="radio" name="code-group-1" id="code-group-radio-3"><label for="code-group-radio-3"><div class="centerino">Sync children
-</div></label><input type="radio" name="code-group-1" id="code-group-radio-4"><label for="code-group-radio-4"><div class="centerino">Async children
-</div></label></div><pre class="shiki vitesse-dark" style="background-color:#121212;color:#dbd7caee" tabindex="0"><div class="code-scroller"><code><span class="line"><span style="color:#666666">(&#x3C;</span><span style="color:#4D9375">div</span><span style="color:#666666">></span><span style="color:#DBD7CAEE">Hello World</span><span style="color:#666666">&#x3C;/</span><span style="color:#4D9375">div</span><span style="color:#666666">>).</span><span style="color:#80A665">subscribe</span><span style="color:#666666">(</span><span style="color:#BD976A">console</span><span style="color:#666666">.</span><span style="color:#BD976A">log</span><span style="color:#666666">)</span></span>
-<span class="line"><span style="color:#758575DD">// Outputs: "&#x3C;div>Hello World&#x3C;/div>"</span></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><pre class="shiki vitesse-dark" style="background-color:#121212;color:#dbd7caee" tabindex="0"><div class="code-scroller"><code><span class="line"><span style="color:#CB7676">const</span><span style="color:#BD976A"> children</span><span style="color:#666666"> =</span><span style="color:#80A665"> of</span><span style="color:#666666">(</span><span style="color:#C98A7D77">"</span><span style="color:#C98A7D">Hello World</span><span style="color:#C98A7D77">"</span><span style="color:#666666">,</span><span style="color:#C98A7D77"> "</span><span style="color:#C98A7D">It was me, DIO</span><span style="color:#C98A7D77">"</span><span style="color:#666666">);</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#666666">(&#x3C;</span><span style="color:#4D9375">div</span><span style="color:#666666">>{</span><span style="color:#BD976A">children</span><span style="color:#666666">}&#x3C;/</span><span style="color:#4D9375">div</span><span style="color:#666666">>).</span><span style="color:#80A665">pipe</span><span style="color:#666666">(</span><span style="color:#80A665">toArray</span><span style="color:#666666">()).</span><span style="color:#80A665">subscribe</span><span style="color:#666666">(</span><span style="color:#BD976A">console</span><span style="color:#666666">.</span><span style="color:#BD976A">log</span><span style="color:#666666">)</span></span>
-<span class="line"><span style="color:#758575DD">// Outputs: ["&#x3C;div>Hello World&#x3C;/div>", "&#x3C;div>It was me, DIO&#x3C;/div>"]</span></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><pre class="shiki vitesse-dark" style="background-color:#121212;color:#dbd7caee" tabindex="0"><div class="code-scroller"><code><span class="line"><span style="color:#CB7676">const</span><span style="color:#80A665"> fakeUserApiCall</span><span style="color:#666666"> =</span><span style="color:#666666"> ()</span><span style="color:#666666"> =></span><span style="color:#CB7676"> new</span><span style="color:#B8A965"> Promise</span><span style="color:#666666">(</span></span>
-<span class="line"><span style="color:#BD976A">  res</span><span style="color:#666666"> =></span><span style="color:#80A665"> setTimeout</span><span style="color:#666666">(</span></span>
-<span class="line"><span style="color:#666666">    ()</span><span style="color:#666666"> =></span><span style="color:#80A665"> res</span><span style="color:#666666">({</span><span style="color:#B8A965">id</span><span style="color:#666666">:</span><span style="color:#4C9A91"> 0</span><span style="color:#666666">,</span><span style="color:#B8A965"> name</span><span style="color:#666666">:</span><span style="color:#C98A7D77"> "</span><span style="color:#C98A7D">DIO</span><span style="color:#C98A7D77">"</span><span style="color:#666666">}),</span><span style="color:#DBD7CAEE"> </span></span>
-<span class="line"><span style="color:#4C9A91">    100</span></span>
-<span class="line"><span style="color:#666666">  )</span></span>
-<span class="line"><span style="color:#666666">);</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#666666">(</span></span>
-<span class="line"><span style="color:#666666">  &#x3C;</span><span style="color:#4D9375">div</span><span style="color:#666666">></span></span>
-<span class="line"><span style="color:#DBD7CAEE">    Hello World</span></span>
-<span class="line"><span style="color:#666666">    &#x3C;</span><span style="color:#4D9375">div</span><span style="color:#666666">>{</span></span>
-<span class="line"><span style="color:#CB7676">      new</span><span style="color:#80A665"> Observable</span><span style="color:#666666">(</span><span style="color:#BD976A">sub</span><span style="color:#666666"> =></span><span style="color:#666666"> {</span></span>
-<span class="line"><span style="color:#BD976A">        sub</span><span style="color:#666666">.</span><span style="color:#80A665">next</span><span style="color:#666666">(</span><span style="color:#C98A7D77">"</span><span style="color:#C98A7D">Loading user...</span><span style="color:#C98A7D77">"</span><span style="color:#666666">);</span></span>
-<span class="line"><span style="color:#80A665">        fakeUserApiCall</span><span style="color:#666666">().</span><span style="color:#80A665">then</span><span style="color:#666666">(</span></span>
-<span class="line"><span style="color:#BD976A">          i</span><span style="color:#666666"> =></span><span style="color:#BD976A"> sub</span><span style="color:#666666">.</span><span style="color:#80A665">next</span><span style="color:#666666">(</span><span style="color:#BD976A">i</span><span style="color:#666666">)</span><span style="color:#CB7676"> +</span><span style="color:#BD976A"> sub</span><span style="color:#666666">.</span><span style="color:#80A665">complete</span><span style="color:#666666">(),</span><span style="color:#DBD7CAEE"> </span></span>
-<span class="line"><span style="color:#BD976A">          err</span><span style="color:#666666"> =></span><span style="color:#BD976A"> sub</span><span style="color:#666666">.</span><span style="color:#80A665">error</span><span style="color:#666666">(</span><span style="color:#BD976A">err</span><span style="color:#666666">)</span></span>
-<span class="line"><span style="color:#666666">        );</span></span>
-<span class="line"><span style="color:#4D9375">        return</span><span style="color:#666666"> ()</span><span style="color:#666666"> =></span><span style="color:#666666"> {</span></span>
-<span class="line"><span style="color:#666666">        }</span></span>
-<span class="line"><span style="color:#666666">      })</span></span>
-<span class="line"><span style="color:#666666">    }&#x3C;/</span><span style="color:#4D9375">div</span><span style="color:#666666">></span></span>
-<span class="line"><span style="color:#666666">  &#x3C;/</span><span style="color:#4D9375">div</span><span style="color:#666666">></span></span>
-<span class="line"><span style="color:#666666">).</span><span style="color:#80A665">subscribe</span><span style="color:#666666">(</span></span>
-<span class="line"><span style="color:#BD976A">  console</span><span style="color:#666666">.</span><span style="color:#BD976A">log</span></span>
+</a></div></div></section><details open="true" id="section-table-of-contents"><summary id="toc-header-contents"><h2 id="table-of-contents">Table of Contents</h2><input type="checkbox" id="toc-toggle"></summary><div class="fancy-hr"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 20"><circle cx="10" cy="10" r="7" style="fill:var(--color-text);" stroke-width="2"></circle><circle cx="30" cy="10" r="9" style="fill:var(--color-text);" stroke-width="2" fill="transparent"></circle><circle cx="50" cy="10" r="7" style="fill:var(--color-text);" stroke-width="2"></circle></svg></div><nav id="toc-nav"><ol><li><a href="#section-abstract">1.  Abstract</a></li></ol></nav></details><div id="main-content-middle"><section id="section-abstract"><h2 id="abstract"><a href="#abstract">1.  Abstract</a></h2><p>I created a jsx implementation that returns <code>Observable&#x3C;string></code> for static site generation(SSG). It uses a really simple technique to determine when a component is ready (first emit!). This round is for unsanitized html over time for my blog.</p><p>You can do both of these with this technique:
+Subscribe to every next value of your html over time using...just rxjs.</p><p>Here are 3 main demos demonstrating basic jsx, sync jsx, and async jsx.</p><div class="code-group code-group-3"><div class="code-group-tabs" data-sticky="1"><input type="radio" name="code-group-3" id="code-group-radio-7" checked="true"><label for="code-group-radio-7"><div class="centerino">Basic
+</div></label><input type="radio" name="code-group-3" id="code-group-radio-8"><label for="code-group-radio-8"><div class="centerino">Sync children
+</div></label><input type="radio" name="code-group-3" id="code-group-radio-9"><label for="code-group-radio-9"><div class="centerino">Async Observable
+</div></label><input type="radio" name="code-group-3" id="code-group-radio-10"><label for="code-group-radio-10"><div class="centerino">Async RxJS 
+</div></label></div><pre class="shiki vitesse-dark" style="background-color:#121212;color:#dbd7caee" tabindex="0"><div class="code-scroller"><code class="language-tsx"><span class="line"><span style="color:#4D9375">export</span><span style="color:#4D9375"> default</span><span style="color:#666666"> (&#x3C;</span><span style="color:#4D9375">div</span><span style="color:#666666">></span><span style="color:#DBD7CAEE">Hello World</span><span style="color:#666666">&#x3C;/</span><span style="color:#4D9375">div</span><span style="color:#666666">>).</span><span style="color:#80A665">subscribe</span><span style="color:#666666">(</span></span>
+<span class="line"><span style="color:#BD976A">  console</span><span style="color:#666666">.</span><span style="color:#BD976A">log</span><span style="color:#666666">,</span></span>
 <span class="line"><span style="color:#666666">)</span></span>
+<span class="line"><span style="color:#DBD7CAEE"> </span></span></code></div><button class="copy-to-clipboard caption">Copy</button><details class="console.log-details" open="1"><summary class="log-grid-heading">console.log[1]</summary><code class="console.log-output"><span class="log-line">log(1)</span><span class="log-line">&#x3C;div>Hello World&#x3C;/div></span></code></details></pre><pre class="shiki vitesse-dark" style="background-color:#121212;color:#dbd7caee" tabindex="0"><div class="code-scroller"><code class="language-tsx"><span class="line"><span style="color:#4D9375">import</span><span style="color:#666666"> {</span><span style="color:#BD976A"> of</span><span style="color:#666666"> }</span><span style="color:#4D9375"> from</span><span style="color:#C98A7D77"> "</span><span style="color:#C98A7D">rxjs</span><span style="color:#C98A7D77">"</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#758575DD">// Outputs: </span></span>
-<span class="line"><span style="color:#758575DD">// 1. &#x3C;div> Hello World &#x3C;div> Loading user... &#x3C;/div> &#x3C;/div></span></span>
-<span class="line"><span style="color:#758575DD">// 2. &#x3C;div> Hello World &#x3C;div> DIO &#x3C;/div> &#x3C;/div></span></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><style>
+<span class="line"><span style="color:#CB7676">const</span><span style="color:#BD976A"> children</span><span style="color:#666666"> =</span><span style="color:#80A665"> of</span><span style="color:#666666">(</span><span style="color:#C98A7D77">"</span><span style="color:#C98A7D">Hello World</span><span style="color:#C98A7D77">"</span><span style="color:#666666">,</span><span style="color:#C98A7D77"> "</span><span style="color:#C98A7D">It was me, DIO</span><span style="color:#C98A7D77">"</span><span style="color:#666666">)</span></span>
+<span class="line"><span style="color:#666666">;(&#x3C;</span><span style="color:#4D9375">div</span><span style="color:#666666">>{</span><span style="color:#BD976A">children</span><span style="color:#666666">}&#x3C;/</span><span style="color:#4D9375">div</span><span style="color:#666666">>).</span><span style="color:#80A665">subscribe</span><span style="color:#666666">(</span><span style="color:#BD976A">console</span><span style="color:#666666">.</span><span style="color:#BD976A">log</span><span style="color:#666666">)</span></span>
+<span class="line"><span style="color:#DBD7CAEE"> </span></span></code></div><button class="copy-to-clipboard caption">Copy</button><details class="console.log-details" open="1"><summary class="log-grid-heading">console.log[2]</summary><code class="console.log-output"><span class="log-line">log(1)</span><span class="log-line">&#x3C;div>Hello World&#x3C;/div></span><span class="log-line">log(2)</span><span class="log-line">&#x3C;div>It was me, DIO&#x3C;/div></span></code></details></pre><pre class="shiki vitesse-dark" style="background-color:#121212;color:#dbd7caee" tabindex="0"><div class="code-scroller"><code class="language-tsx"><span class="line"><span style="color:#4D9375">import</span><span style="color:#666666"> {</span><span style="color:#BD976A"> Observable</span><span style="color:#666666">,</span><span style="color:#BD976A"> timeInterval</span><span style="color:#666666"> }</span><span style="color:#4D9375"> from</span><span style="color:#C98A7D77"> "</span><span style="color:#C98A7D">rxjs</span><span style="color:#C98A7D77">"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#CB7676">type</span><span style="color:#5DA994"> User</span><span style="color:#666666"> =</span><span style="color:#666666"> {</span></span>
+<span class="line"><span style="color:#BD976A">  id</span><span style="color:#666666">: </span><span style="color:#5DA994">number</span></span>
+<span class="line"><span style="color:#BD976A">  name</span><span style="color:#666666">: </span><span style="color:#5DA994">string</span></span>
+<span class="line"><span style="color:#666666">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#CB7676">const</span><span style="color:#80A665"> fakeUserApiCall</span><span style="color:#666666"> =</span><span style="color:#666666"> ():</span><span style="color:#5DA994"> Promise</span><span style="color:#666666">&#x3C;</span><span style="color:#5DA994">User</span><span style="color:#666666">></span><span style="color:#666666"> =></span></span>
+<span class="line"><span style="color:#CB7676">  new</span><span style="color:#B8A965"> Promise</span><span style="color:#666666">(</span><span style="color:#BD976A">res</span><span style="color:#666666"> =></span></span>
+<span class="line"><span style="color:#80A665">    setTimeout</span><span style="color:#666666">(</span></span>
+<span class="line"><span style="color:#666666">      ()</span><span style="color:#666666"> =></span><span style="color:#80A665"> res</span><span style="color:#666666">({</span><span style="color:#B8A965"> id</span><span style="color:#666666">:</span><span style="color:#4C9A91"> 0</span><span style="color:#666666">,</span><span style="color:#B8A965"> name</span><span style="color:#666666">:</span><span style="color:#C98A7D77"> "</span><span style="color:#C98A7D">ZA WARUDO</span><span style="color:#C98A7D77">"</span><span style="color:#666666"> }),</span></span>
+<span class="line"><span style="color:#4C9A91">      100</span><span style="color:#666666">,</span></span>
+<span class="line"><span style="color:#666666">    ),</span></span>
+<span class="line"><span style="color:#666666">  )</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#CB7676">const</span><span style="color:#80A665"> Subscription</span><span style="color:#666666"> =</span><span style="color:#666666"> (</span></span>
+<span class="line"><span style="color:#666666">  &#x3C;</span><span style="color:#4D9375">div</span><span style="color:#666666">></span></span>
+<span class="line"><span style="color:#DBD7CAEE">    Hello</span><span style="color:#666666">&#x26;</span><span style="color:#C99076">nbsp</span><span style="color:#666666">;</span></span>
+<span class="line"><span style="color:#666666">    {</span></span>
+<span class="line"><span style="color:#CB7676">      new</span><span style="color:#80A665"> Observable</span><span style="color:#666666">&#x3C;</span><span style="color:#5DA994">string</span><span style="color:#666666">>(</span><span style="color:#BD976A">sub</span><span style="color:#666666"> =></span><span style="color:#666666"> {</span></span>
+<span class="line"><span style="color:#BD976A">        sub</span><span style="color:#666666">.</span><span style="color:#80A665">next</span><span style="color:#666666">(</span><span style="color:#C98A7D77">"</span><span style="color:#C98A7D">...</span><span style="color:#C98A7D77">"</span><span style="color:#666666">)</span></span>
+<span class="line"><span style="color:#80A665">        fakeUserApiCall</span><span style="color:#666666">().</span><span style="color:#80A665">then</span><span style="color:#666666">(</span></span>
+<span class="line"><span style="color:#BD976A">          i</span><span style="color:#666666"> =></span><span style="color:#666666"> {</span></span>
+<span class="line"><span style="color:#BD976A">            sub</span><span style="color:#666666">.</span><span style="color:#80A665">next</span><span style="color:#666666">(</span><span style="color:#BD976A">i</span><span style="color:#666666">.</span><span style="color:#BD976A">name</span><span style="color:#666666">)</span></span>
+<span class="line"><span style="color:#BD976A">            sub</span><span style="color:#666666">.</span><span style="color:#80A665">complete</span><span style="color:#666666">()</span></span>
+<span class="line"><span style="color:#666666">          },</span></span>
+<span class="line"><span style="color:#BD976A">          err</span><span style="color:#666666"> =></span><span style="color:#BD976A"> sub</span><span style="color:#666666">.</span><span style="color:#80A665">error</span><span style="color:#666666">(</span><span style="color:#BD976A">err</span><span style="color:#666666">),</span></span>
+<span class="line"><span style="color:#666666">        )</span></span>
+<span class="line"><span style="color:#4D9375">        return</span><span style="color:#666666"> ()</span><span style="color:#666666"> =></span><span style="color:#666666"> {}</span></span>
+<span class="line"><span style="color:#666666">      })</span></span>
+<span class="line"><span style="color:#666666">    }</span></span>
+<span class="line"><span style="color:#666666">  &#x3C;/</span><span style="color:#4D9375">div</span><span style="color:#666666">></span></span>
+<span class="line"><span style="color:#666666">)</span></span>
+<span class="line"><span style="color:#666666">  .</span><span style="color:#80A665">pipe</span><span style="color:#666666">(</span><span style="color:#80A665">timeInterval</span><span style="color:#666666">())</span></span>
+<span class="line"><span style="color:#666666">  .</span><span style="color:#80A665">subscribe</span><span style="color:#666666">(</span><span style="color:#BD976A">console</span><span style="color:#666666">.</span><span style="color:#BD976A">log</span><span style="color:#666666">)</span></span>
+<span class="line"><span style="color:#DBD7CAEE"> </span></span></code></div><button class="copy-to-clipboard caption">Copy</button><details class="console.log-details" open="1"><summary class="log-grid-heading">console.log[2]</summary><code class="console.log-output"><span class="log-line">log(1)</span><span class="log-line">TimeInterval { value: "&#x3C;div>Hello ...&#x3C;/div>", interval: 3 }</span><span class="log-line">log(2)</span><span class="log-line">TimeInterval { value: "&#x3C;div>Hello ZA WARUDO&#x3C;/div>", interval: 101 }</span></code></details></pre><pre class="shiki vitesse-dark" style="background-color:#121212;color:#dbd7caee" tabindex="0"><div class="code-scroller"><code class="language-tsx"><span class="line"><span style="color:#4D9375">import</span><span style="color:#666666"> {</span></span>
+<span class="line"><span style="color:#BD976A">  defer</span><span style="color:#666666">,</span></span>
+<span class="line"><span style="color:#BD976A">  from</span><span style="color:#666666">,</span></span>
+<span class="line"><span style="color:#BD976A">  map</span><span style="color:#666666">,</span></span>
+<span class="line"><span style="color:#BD976A">  startWith</span><span style="color:#666666">,</span></span>
+<span class="line"><span style="color:#BD976A">  timeInterval</span><span style="color:#666666">,</span></span>
+<span class="line"><span style="color:#666666">}</span><span style="color:#4D9375"> from</span><span style="color:#C98A7D77"> "</span><span style="color:#C98A7D">rxjs</span><span style="color:#C98A7D77">"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#CB7676">type</span><span style="color:#5DA994"> User</span><span style="color:#666666"> =</span><span style="color:#666666"> {</span></span>
+<span class="line"><span style="color:#BD976A">  id</span><span style="color:#666666">: </span><span style="color:#5DA994">number</span></span>
+<span class="line"><span style="color:#BD976A">  name</span><span style="color:#666666">: </span><span style="color:#5DA994">string</span></span>
+<span class="line"><span style="color:#666666">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#CB7676">const</span><span style="color:#80A665"> fakeUserApiCall</span><span style="color:#666666"> =</span><span style="color:#666666"> ():</span><span style="color:#5DA994"> Promise</span><span style="color:#666666">&#x3C;</span><span style="color:#5DA994">User</span><span style="color:#666666">></span><span style="color:#666666"> =></span></span>
+<span class="line"><span style="color:#CB7676">  new</span><span style="color:#B8A965"> Promise</span><span style="color:#666666">(</span><span style="color:#BD976A">res</span><span style="color:#666666"> =></span></span>
+<span class="line"><span style="color:#80A665">    setTimeout</span><span style="color:#666666">(</span></span>
+<span class="line"><span style="color:#666666">      ()</span><span style="color:#666666"> =></span><span style="color:#80A665"> res</span><span style="color:#666666">({</span><span style="color:#B8A965"> id</span><span style="color:#666666">:</span><span style="color:#4C9A91"> 0</span><span style="color:#666666">,</span><span style="color:#B8A965"> name</span><span style="color:#666666">:</span><span style="color:#C98A7D77"> "</span><span style="color:#C98A7D">ZA WARUDO</span><span style="color:#C98A7D77">"</span><span style="color:#666666"> }),</span></span>
+<span class="line"><span style="color:#4C9A91">      100</span><span style="color:#666666">,</span></span>
+<span class="line"><span style="color:#666666">    ),</span></span>
+<span class="line"><span style="color:#666666">  )</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#CB7676">const</span><span style="color:#80A665"> Subscription</span><span style="color:#666666"> =</span><span style="color:#666666"> (</span></span>
+<span class="line"><span style="color:#666666">  &#x3C;</span><span style="color:#4D9375">div</span><span style="color:#666666">></span></span>
+<span class="line"><span style="color:#DBD7CAEE">    Hello</span><span style="color:#666666">&#x26;</span><span style="color:#C99076">nbsp</span><span style="color:#666666">;</span></span>
+<span class="line"><span style="color:#666666">    {</span><span style="color:#80A665">defer</span><span style="color:#666666">(()</span><span style="color:#666666"> =></span><span style="color:#80A665"> from</span><span style="color:#666666">(</span><span style="color:#80A665">fakeUserApiCall</span><span style="color:#666666">())).</span><span style="color:#80A665">pipe</span><span style="color:#666666">(</span></span>
+<span class="line"><span style="color:#80A665">      map</span><span style="color:#666666">(</span><span style="color:#BD976A">i</span><span style="color:#666666"> =></span><span style="color:#BD976A"> i</span><span style="color:#666666">.</span><span style="color:#BD976A">name</span><span style="color:#666666">),</span></span>
+<span class="line"><span style="color:#80A665">      startWith</span><span style="color:#666666">(</span><span style="color:#C98A7D77">"</span><span style="color:#C98A7D">...</span><span style="color:#C98A7D77">"</span><span style="color:#666666">),</span></span>
+<span class="line"><span style="color:#666666">    )}</span></span>
+<span class="line"><span style="color:#666666">  &#x3C;/</span><span style="color:#4D9375">div</span><span style="color:#666666">></span></span>
+<span class="line"><span style="color:#666666">)</span></span>
+<span class="line"><span style="color:#666666">  .</span><span style="color:#80A665">pipe</span><span style="color:#666666">(</span><span style="color:#80A665">timeInterval</span><span style="color:#666666">())</span></span>
+<span class="line"><span style="color:#666666">  .</span><span style="color:#80A665">subscribe</span><span style="color:#666666">(</span><span style="color:#BD976A">console</span><span style="color:#666666">.</span><span style="color:#BD976A">log</span><span style="color:#666666">)</span></span>
+<span class="line"><span style="color:#DBD7CAEE"> </span></span></code></div><button class="copy-to-clipboard caption">Copy</button><details class="console.log-details" open="1"><summary class="log-grid-heading">console.log[2]</summary><code class="console.log-output"><span class="log-line">log(1)</span><span class="log-line">TimeInterval { value: "&#x3C;div>Hello ...&#x3C;/div>", interval: 3 }</span><span class="log-line">log(2)</span><span class="log-line">TimeInterval { value: "&#x3C;div>Hello ZA WARUDO&#x3C;/div>", interval: 102 }</span></code></details></pre><style>
 .code-group pre {display:none}
-.code-group-1 {
+.code-group-3 {
 
-  #code-group-radio-2+label {
+  #code-group-radio-7+label {
 
   }
 
-  #code-group-radio-2:checked+label {
+  #code-group-radio-7:checked+label {
     background:rgb(18, 18, 18);
     position: relative;
     z-index:1;
-
+    border-bottom: none;
+    
     &:hover {
       text-decoration: underline;
       color: white;
@@ -102,33 +146,23 @@ Subscribe to every next value of your html over time using...just rxjs.</p><p>He
       background: var(--color-red-600);
     }
 
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      right: 0;
-      height: 2px;
-      z-index: 10;
-      width: 100%; 
-      background: rgba(18, 18, 18, 1.0);;
-    }
   }
 
-  &:has(#code-group-radio-2:checked) pre:nth-child(2){ 
+  &:has(#code-group-radio-7:checked) pre:nth-child(2){ 
     display: block;
   }
   
 
-  #code-group-radio-3+label {
+  #code-group-radio-8+label {
 
   }
 
-  #code-group-radio-3:checked+label {
+  #code-group-radio-8:checked+label {
     background:rgb(18, 18, 18);
     position: relative;
     z-index:1;
-
+    border-bottom: none;
+    
     &:hover {
       text-decoration: underline;
       color: white;
@@ -148,33 +182,23 @@ Subscribe to every next value of your html over time using...just rxjs.</p><p>He
       background: var(--color-red-600);
     }
 
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      right: 0;
-      height: 2px;
-      z-index: 10;
-      width: 100%; 
-      background: rgba(18, 18, 18, 1.0);;
-    }
   }
 
-  &:has(#code-group-radio-3:checked) pre:nth-child(3){ 
+  &:has(#code-group-radio-8:checked) pre:nth-child(3){ 
     display: block;
   }
   
 
-  #code-group-radio-4+label {
+  #code-group-radio-9+label {
 
   }
 
-  #code-group-radio-4:checked+label {
+  #code-group-radio-9:checked+label {
     background:rgb(18, 18, 18);
     position: relative;
     z-index:1;
-
+    border-bottom: none;
+    
     &:hover {
       text-decoration: underline;
       color: white;
@@ -194,20 +218,45 @@ Subscribe to every next value of your html over time using...just rxjs.</p><p>He
       background: var(--color-red-600);
     }
 
-    &::after {
-      content: '';
+  }
+
+  &:has(#code-group-radio-9:checked) pre:nth-child(4){ 
+    display: block;
+  }
+  
+
+  #code-group-radio-10+label {
+
+  }
+
+  #code-group-radio-10:checked+label {
+    background:rgb(18, 18, 18);
+    position: relative;
+    z-index:1;
+    border-bottom: none;
+    
+    &:hover {
+      text-decoration: underline;
+      color: white;
+    }
+
+    border-top-color: var(--color-red-600);
+
+    &::before {
+      content: "";
       position: absolute;
-      bottom: -2px;
+      top: 0;
       left: 0;
       right: 0;
       height: 2px;
       z-index: 10;
       width: 100%; 
-      background: rgba(18, 18, 18, 1.0);;
+      background: var(--color-red-600);
     }
+
   }
 
-  &:has(#code-group-radio-4:checked) pre:nth-child(4){ 
+  &:has(#code-group-radio-10:checked) pre:nth-child(5){ 
     display: block;
   }
   

@@ -4,10 +4,10 @@
 		"build": "vite build",
 		"lint": "eslint .",
 		"preview": "vite preview",
-		"rolldown": "rolldown -c rolldown.config.mts",
-		"dev:server": "deno --env-file --watch-hmr --allow-all src/main_ssg.deno.ts",
+		"dev:server": "deno --env-file --allow-all src/main_ssg.deno.ts",
 		"postinstall": "deno run --allow-all npm:playwright install chromium",
 		"watch:sitemap": "deno run --allow-all src/lib/ridiculous_file_watchers/SITEMAP_generator.deno.ts",
+		"watch:sitemap2": "./src/bash/sitemap-watcher.bash",
 		"watch:deno-settings": "deno run --allow-all src/lib/ridiculous_file_watchers/fix-deno-vscode-settings.deno.ts"
 	},
 	"dependencies": {

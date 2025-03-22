@@ -1,7 +1,7 @@
-import { Hex } from "~/lib/Hex/index.dual.tsx"
 import { Observable } from "rxjs"
-import { RxJSXNode } from "~/lib/rxjs-vhtml/jsx-runtime"
 import { FS } from "~/SITEMAP.deno.ts"
+import { Hex } from "~/lib/Hex/index.dual.tsx"
+import { RxJSXNode } from "~/lib/rxjs-vhtml/jsx-runtime"
 
 export type LayoutProps = {
   url: string
@@ -243,12 +243,11 @@ export const TOC = (props: {
         </svg>
       </div>
       <nav id="toc-nav">
-        <div className="debug-slider"></div>
-        <ol debug>
+        <ol>
           {props.tocRoot.children.map(
             function renderTocItem(item: HeaderProps) {
               return (
-                <li key={item.id} debug>
+                <li key={item.id}>
                   <a href={`#section-${item.id}`}>
                     {item.value}
                   </a>

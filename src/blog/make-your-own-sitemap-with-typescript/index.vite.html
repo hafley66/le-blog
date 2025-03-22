@@ -1,0 +1,749 @@
+<html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"><meta charSet="UTF-8"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="stylesheet" href="/styles/colors.css"><link rel="stylesheet" href="/styles/fonts.css"><link rel="stylesheet" href="/styles/global.css"><link rel="stylesheet" href="/styles/nav_and_toc.css"><link rel="stylesheet" href="/styles/hex.css"><link rel="stylesheet" href="/styles/code.css"><link rel="stylesheet" href="/styles/img.css"><link rel="stylesheet" href="/shiki-twoslash.css"><title>Make Your Own Sitemap and Glob Import With Typescript</title></head><body class=""><header><nav id="primary-nav" aria-label="Primary navigation"><div class="nav-links" role="tablist"><a href="/home" role="tab" class="nav-link-anchor"><span class="nav-link ">Home</span></a><a href="/resume" role="tab" class="nav-link-anchor"><span class="nav-link ">Resume</span></a><a href="/blog" role="tab" aria-selected="true" class="nav-link-anchor"><span class="nav-link active">Blog</span></a><a href="/tags" role="tab" class="nav-link-anchor"><span class="nav-link ">Tags</span></a></div></nav></header><main class="body-markdown"><section id="title-and-description"><h1>Make Your Own Sitemap and Glob Import With Typescript</h1><sub>2025-02-25 by Chris Hafley</sub><div id="h1-desc">Sprinkle some meta programming to unroll the set of all possible imports. Stop relying on frameworks to provide this convenience.</div><div class="f-col f-a-center" id="tags" style="margin-bottom:24px;"><div class="responsive-hex-grid-3"><a class="hex-content caption" href="/tags/bash" style="--hex-color:var(--color-inferno-2);">
+      <div class="hex-content hex-shadow">
+        <div class="hex-content-amoeba"></div>
+      </div>
+      <div class="hex-content-amoeba"></div>
+      <span>bash</span>
+</a><a class="hex-content caption" href="/tags/globs" style="--hex-color:var(--color-inferno-4);">
+      <div class="hex-content hex-shadow">
+        <div class="hex-content-amoeba"></div>
+      </div>
+      <div class="hex-content-amoeba"></div>
+      <span>globs</span>
+</a><a class="hex-content caption" href="/tags/typescript" style="--hex-color:var(--color-inferno-6);">
+      <div class="hex-content hex-shadow">
+        <div class="hex-content-amoeba"></div>
+      </div>
+      <div class="hex-content-amoeba"></div>
+      <span>typescript</span>
+</a><a class="hex-content caption" href="/tags/go" style="--hex-color:var(--color-inferno-8);">
+      <div class="hex-content hex-shadow">
+        <div class="hex-content-amoeba"></div>
+      </div>
+      <div class="hex-content-amoeba"></div>
+      <span>go</span>
+</a><a class="hex-content caption" href="/tags/linux" style="--hex-color:var(--color-inferno-10);">
+      <div class="hex-content hex-shadow">
+        <div class="hex-content-amoeba"></div>
+      </div>
+      <div class="hex-content-amoeba"></div>
+      <span>linux</span>
+</a><a class="hex-content caption" href="/tags/metaprogramming" style="--hex-color:var(--color-inferno-12);">
+      <div class="hex-content hex-shadow">
+        <div class="hex-content-amoeba"></div>
+      </div>
+      <div class="hex-content-amoeba"></div>
+      <span>metaprogramming</span>
+</a><a class="hex-content caption" href="/tags/frameworks" style="--hex-color:var(--color-inferno-14);">
+      <div class="hex-content hex-shadow">
+        <div class="hex-content-amoeba"></div>
+      </div>
+      <div class="hex-content-amoeba"></div>
+      <span>frameworks</span>
+</a><a class="hex-content caption" href="/tags/diy" style="--hex-color:var(--color-inferno-16);">
+      <div class="hex-content hex-shadow">
+        <div class="hex-content-amoeba"></div>
+      </div>
+      <div class="hex-content-amoeba"></div>
+      <span>diy</span>
+</a></div></div></section><details open="true" id="section-table-of-contents"><summary id="toc-header-contents"><h2 id="table-of-contents">Table of Contents</h2><input type="checkbox" id="toc-toggle"></summary><div class="fancy-hr"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 20"><circle cx="10" cy="10" r="7" style="fill:var(--color-text);" stroke-width="2"></circle><circle cx="30" cy="10" r="9" style="fill:var(--color-text);" stroke-width="2" fill="transparent"></circle><circle cx="50" cy="10" r="7" style="fill:var(--color-text);" stroke-width="2"></circle></svg></div><nav id="toc-nav"><ol><li><a href="#section-abstract">1.  Abstract</a></li><li><a href="#section-start-with-a-single-dynamic-import">2.  Start with a single dynamic import</a></li></ol></nav></details><div id="main-content-middle"><section id="section-abstract"><h2 id="abstract"><a href="#abstract">1.  Abstract</a></h2><p>I present a tutorial for replacing vite's glob import and css imports with zero magic and standard tools like typescript. It results in a file that mimics the output of bash's <code>find</code> command into a typescript object.</p><div class="code-group code-group-1"><div class="code-group-tabs" data-sticky="1"><input type="radio" name="code-group-1" id="code-group-radio-2" checked="true"><label for="code-group-radio-2"><div class="centerino">fs
+</div></label><input type="radio" name="code-group-1" id="code-group-radio-3"><label for="code-group-radio-3"><div class="centerino">SITEMAP.deno.ts
+</div></label><input type="radio" name="code-group-1" id="code-group-radio-4"><label for="code-group-radio-4"><div class="centerino">index.render.deno.tsx
+</div></label></div><pre class="shiki vitesse-dark" style="background-color:#121212;color:#dbd7caee" tabindex="0"><div class="code-scroller"><code class="language-text"><span class="line"><span>src/</span></span>
+<span class="line"><span>  blog/</span></span>
+<span class="line"><span>    hello-world/</span></span>
+<span class="line"><span>      index.css</span></span>
+<span class="line"><span>      index.render.deno.tsx</span></span>
+<span class="line"><span>      example.png</span></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><pre class="shiki vitesse-dark" style="background-color:#121212;color:#dbd7caee" tabindex="0"><div class="code-scroller"><code class="language-ts"><span class="line"><span style="color:#4D9375">export</span><span style="color:#CB7676"> const </span><span style="color:#BD976A">FS</span><span style="color:#666666"> =</span><span style="color:#666666"> {</span></span>
+<span class="line"><span style="color:#C98A7D77">  "</span><span style="color:#C98A7D">src/blog/hello-world/index.css</span><span style="color:#C98A7D77">"</span><span style="color:#666666">: {</span></span>
+<span class="line"><span style="color:#B8A965">    path</span><span style="color:#666666">: </span><span style="color:#C98A7D77">"</span><span style="color:#C98A7D">src/blog/hello-world/index.css</span><span style="color:#C98A7D77">"</span><span style="color:#666666">,</span></span>
+<span class="line"><span style="color:#B8A965">    filename</span><span style="color:#666666">: </span><span style="color:#C98A7D77">"</span><span style="color:#C98A7D">index.css</span><span style="color:#C98A7D77">"</span><span style="color:#666666">,</span></span>
+<span class="line"><span style="color:#B8A965">    dirname</span><span style="color:#666666">:</span></span>
+<span class="line"><span style="color:#C98A7D77">      "</span><span style="color:#C98A7D">src/blog/hello-world</span><span style="color:#C98A7D77">"</span><span style="color:#666666">,</span></span>
+<span class="line"><span style="color:#B8A965">    super_extension</span><span style="color:#666666">: </span><span style="color:#C98A7D77">"</span><span style="color:#C98A7D">css</span><span style="color:#C98A7D77">"</span><span style="color:#666666">,</span></span>
+<span class="line"><span style="color:#B8A965">    extension</span><span style="color:#666666">: </span><span style="color:#C98A7D77">"</span><span style="color:#C98A7D">css</span><span style="color:#C98A7D77">"</span><span style="color:#666666">,</span></span>
+<span class="line"><span style="color:#B8A965">    importPath</span><span style="color:#666666">:</span></span>
+<span class="line"><span style="color:#C98A7D77">      "</span><span style="color:#C98A7D">~/blog/hello-world/index.css</span><span style="color:#C98A7D77">"</span><span style="color:#666666">,</span></span>
+<span class="line"><span style="color:#80A665">    readSync</span><span style="color:#666666">: () =></span></span>
+<span class="line"><span style="color:#BD976A">      Deno</span><span style="color:#666666">.</span><span style="color:#80A665">readTextFileSync</span><span style="color:#666666">(</span></span>
+<span class="line"><span style="color:#C98A7D77">        "</span><span style="color:#C98A7D">src/blog/hello-world/index.css</span><span style="color:#C98A7D77">"</span><span style="color:#666666">,</span></span>
+<span class="line"><span style="color:#666666">      ),</span></span>
+<span class="line"><span style="color:#80A665">    linkTag</span><span style="color:#666666">: () =></span></span>
+<span class="line"><span style="color:#C98A7D77">      "</span><span style="color:#C98A7D">&#x3C;link rel='stylesheet' href='/src/blog/hello-world/index.css'/></span><span style="color:#C98A7D77">"</span><span style="color:#666666">,</span></span>
+<span class="line"><span style="color:#B8A965">    publicPath</span><span style="color:#666666">:</span></span>
+<span class="line"><span style="color:#C98A7D77">      "</span><span style="color:#C98A7D">/src/blog/hello-world/index.css</span><span style="color:#C98A7D77">"</span><span style="color:#666666">,</span></span>
+<span class="line"><span style="color:#666666">  }</span></span>
+<span class="line"><span style="color:#C98A7D77">  "</span><span style="color:#C98A7D">src/blog/hello-world/index.render.deno.tsx</span><span style="color:#C98A7D77">"</span><span style="color:#666666">: {</span></span>
+<span class="line"><span style="color:#B8A965">    path</span><span style="color:#666666">: </span><span style="color:#C98A7D77">"</span><span style="color:#C98A7D">src/blog/hello-world/index.render.deno.tsx</span><span style="color:#C98A7D77">"</span><span style="color:#666666">,</span></span>
+<span class="line"><span style="color:#B8A965">    filename</span><span style="color:#666666">: </span><span style="color:#C98A7D77">"</span><span style="color:#C98A7D">index.render.deno.tsx</span><span style="color:#C98A7D77">"</span><span style="color:#666666">,</span></span>
+<span class="line"><span style="color:#B8A965">    dirname</span><span style="color:#666666">: </span><span style="color:#C98A7D77">"</span><span style="color:#C98A7D">src/blog/hello-world</span><span style="color:#C98A7D77">"</span><span style="color:#666666">,</span></span>
+<span class="line"><span style="color:#B8A965">    super_extension</span><span style="color:#666666">: </span><span style="color:#C98A7D77">"</span><span style="color:#C98A7D">render.deno.tsx</span><span style="color:#C98A7D77">"</span><span style="color:#666666">,</span></span>
+<span class="line"><span style="color:#B8A965">    extension</span><span style="color:#666666">: </span><span style="color:#C98A7D77">"</span><span style="color:#C98A7D">tsx</span><span style="color:#C98A7D77">"</span><span style="color:#666666">,</span></span>
+<span class="line"><span style="color:#B8A965">    importPath</span><span style="color:#666666">: </span><span style="color:#C98A7D77">"</span><span style="color:#C98A7D">~/blog/hello-world/index.render.deno.tsx</span><span style="color:#C98A7D77">"</span><span style="color:#666666">,</span></span>
+<span class="line"><span style="color:#80A665">    readSync</span><span style="color:#666666">: () =></span></span>
+<span class="line"><span style="color:#BD976A">      Deno</span><span style="color:#666666">.</span><span style="color:#80A665">readTextFileSync</span><span style="color:#666666">(</span></span>
+<span class="line"><span style="color:#C98A7D77">        "</span><span style="color:#C98A7D">src/blog/hello-world/larg-code-snippet.deno.tsx</span><span style="color:#C98A7D77">"</span><span style="color:#666666">,</span></span>
+<span class="line"><span style="color:#666666">      ),</span></span>
+<span class="line"><span style="color:#80A665">    dynamicImport</span><span style="color:#666666">: () =></span></span>
+<span class="line"><span style="color:#CB7676">      import</span><span style="color:#666666">(</span><span style="color:#C98A7D77">"</span><span style="color:#C98A7D">~/blog/hello-world/larg-code-snippet.deno.tsx</span><span style="color:#C98A7D77">"</span><span style="color:#666666">),</span></span>
+<span class="line"><span style="color:#666666">  }</span></span>
+<span class="line"><span style="color:#C98A7D77">  "</span><span style="color:#C98A7D">src/blog/hello-world/example.png</span><span style="color:#C98A7D77">"</span><span style="color:#666666">: {</span></span>
+<span class="line"><span style="color:#B8A965">    path</span><span style="color:#666666">: </span><span style="color:#C98A7D77">"</span><span style="color:#C98A7D">src/blog/hello-world/example.png</span><span style="color:#C98A7D77">"</span><span style="color:#666666">,</span></span>
+<span class="line"><span style="color:#B8A965">    filename</span><span style="color:#666666">: </span><span style="color:#C98A7D77">"</span><span style="color:#C98A7D">example.png</span><span style="color:#C98A7D77">"</span><span style="color:#666666">,</span></span>
+<span class="line"><span style="color:#B8A965">    dirname</span><span style="color:#666666">: </span><span style="color:#C98A7D77">"</span><span style="color:#C98A7D">src/blog/hello-world</span><span style="color:#C98A7D77">"</span><span style="color:#666666">,</span></span>
+<span class="line"><span style="color:#B8A965">    super_extension</span><span style="color:#666666">: </span><span style="color:#C98A7D77">"</span><span style="color:#C98A7D">png</span><span style="color:#C98A7D77">"</span><span style="color:#666666">,</span></span>
+<span class="line"><span style="color:#B8A965">    extension</span><span style="color:#666666">: </span><span style="color:#C98A7D77">"</span><span style="color:#C98A7D">png</span><span style="color:#C98A7D77">"</span><span style="color:#666666">,</span></span>
+<span class="line"><span style="color:#B8A965">    importPath</span><span style="color:#666666">:</span></span>
+<span class="line"><span style="color:#C98A7D77">      "</span><span style="color:#C98A7D">~/blog/hello-world/example.png</span><span style="color:#C98A7D77">"</span><span style="color:#666666">,</span></span>
+<span class="line"><span style="color:#80A665">    readSync</span><span style="color:#666666">: () =></span></span>
+<span class="line"><span style="color:#BD976A">      Deno</span><span style="color:#666666">.</span><span style="color:#80A665">readTextFileSync</span><span style="color:#666666">(</span></span>
+<span class="line"><span style="color:#C98A7D77">        "</span><span style="color:#C98A7D">src/blog/hello-world/example.png</span><span style="color:#C98A7D77">"</span><span style="color:#666666">,</span></span>
+<span class="line"><span style="color:#666666">      ),</span></span>
+<span class="line"><span style="color:#666666">  },</span></span>
+<span class="line"><span style="color:#666666">}</span><span style="color:#4D9375"> as</span><span style="color:#CB7676"> const</span></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><pre class="shiki vitesse-dark" style="background-color:#121212;color:#dbd7caee" tabindex="0"><div class="code-scroller"><code class="language-tsx"><span class="line"><span style="color:#4D9375">import</span><span style="color:#666666"> {</span><span style="color:#BD976A"> FS</span><span style="color:#666666"> }</span><span style="color:#4D9375"> from</span><span style="color:#C98A7D77"> '</span><span style="color:#C98A7D">~/SITEMAP.deno.ts</span><span style="color:#C98A7D77">'</span><span style="color:#666666">;</span></span>
+<span class="line"><span style="color:#4D9375">export</span><span style="color:#4D9375"> default</span><span style="color:#666666"> &#x3C;></span></span>
+<span class="line"><span style="color:#DBD7CAEE">  $</span><span style="color:#666666">{</span><span style="color:#BD976A">FS</span><span style="color:#666666">[</span><span style="color:#C98A7D77">'</span><span style="color:#C98A7D">src/blog/hello-world/example.css</span><span style="color:#C98A7D77">'</span><span style="color:#666666">].</span><span style="color:#80A665">linkTag</span><span style="color:#666666">()}</span></span>
+<span class="line"><span style="color:#666666">  &#x3C;</span><span style="color:#4D9375">p</span><span style="color:#666666">></span><span style="color:#DBD7CAEE">Hello World!</span><span style="color:#666666">&#x3C;/</span><span style="color:#4D9375">p</span><span style="color:#666666">></span></span>
+<span class="line"><span style="color:#666666">&#x3C;/></span></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><style>
+.code-group pre {display:none}
+.code-group-1 {
+
+  #code-group-radio-2+label {
+
+  }
+
+  #code-group-radio-2:checked+label {
+    background:rgb(18, 18, 18);
+    position: relative;
+    z-index:1;
+    border-bottom: none;
+    
+    &:hover {
+      text-decoration: underline;
+      color: white;
+    }
+
+    border-top-color: var(--color-red-600);
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      z-index: 10;
+      width: 100%; 
+      background: var(--color-red-600);
+    }
+
+  }
+
+  &:has(#code-group-radio-2:checked) pre:nth-child(2){ 
+    display: block;
+  }
+  
+
+  #code-group-radio-3+label {
+
+  }
+
+  #code-group-radio-3:checked+label {
+    background:rgb(18, 18, 18);
+    position: relative;
+    z-index:1;
+    border-bottom: none;
+    
+    &:hover {
+      text-decoration: underline;
+      color: white;
+    }
+
+    border-top-color: var(--color-red-600);
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      z-index: 10;
+      width: 100%; 
+      background: var(--color-red-600);
+    }
+
+  }
+
+  &:has(#code-group-radio-3:checked) pre:nth-child(3){ 
+    display: block;
+  }
+  
+
+  #code-group-radio-4+label {
+
+  }
+
+  #code-group-radio-4:checked+label {
+    background:rgb(18, 18, 18);
+    position: relative;
+    z-index:1;
+    border-bottom: none;
+    
+    &:hover {
+      text-decoration: underline;
+      color: white;
+    }
+
+    border-top-color: var(--color-red-600);
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      z-index: 10;
+      width: 100%; 
+      background: var(--color-red-600);
+    }
+
+  }
+
+  &:has(#code-group-radio-4:checked) pre:nth-child(4){ 
+    display: block;
+  }
+  
+} </style></div><p>Goals:</p><ol>
+<li>
+<p>Implement <a href="https://vite.dev/guide/features#glob-import" rel="nofollow noopener noreferrer" target="_blank">Vite's glob import</a> functionality using bash + typescript.</p>
+<ul>
+<li>NO MAGIC non-standard meta extensions</li>
+</ul>
+</li>
+<li>
+<p>Replace <code>astro.js</code>'s  css import for ssg with plain link tags</p>
+<ul>
+<li>this removes the magic css imports <code>import "index.css"</code></li>
+<li>SSG is just <strong>string concatenation</strong>
+<ul>
+<li>I am just going to inline the link to stylesheet for vite to pick up in html processing</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>You can create your own sitemap for the set of all files you could ever mention in your blog or code, that is also &#x26;<strong>fully typed</strong>.</p>
+<ul>
+<li>No need for content collections and zod when you can just have the types up front.</li>
+</ul>
+</li>
+</ol><p>This idea came from trying to use Astro.js to build my blog for static site generation (<em>SSG</em>). I was trying to make the tags and all posts page and I was stuck deciding between using astro jsx, react, md, or mdx as options. There is <em>so much</em> flexibility that it began to feel like a dislocated shoulder.</p><p>Another attribute of this technique is <em>no <em>implicit</em> magic</em>. We will not rely on framework specific import loaders or custom file type loaders.</p><p>At the end of the day, this is all string concatenation/meta-programming an html page, why add more implicit behavior to the fire.</p><p>Here is the end result: A typesafe object with constant strings of rootpaths to all relevant files.</p><div class="code-group code-group-2"><div class="code-group-tabs" data-sticky="1"><input type="radio" name="code-group-2" id="code-group-radio-5" checked="true"><label for="code-group-radio-5"><div class="centerino">TSX file
+</div></label><input type="radio" name="code-group-2" id="code-group-radio-6"><label for="code-group-radio-6"><div class="centerino">CSS file
+</div></label></div><pre class="shiki vitesse-dark" style="background-color:#121212;color:#dbd7caee" tabindex="0"><div class="code-scroller"><code class="language-tsx"><span class="line"><span style="color:#4D9375">import</span><span style="color:#666666"> {</span><span style="color:#BD976A"> FS</span><span style="color:#666666"> }</span><span style="color:#4D9375"> from</span><span style="color:#C98A7D77"> '</span><span style="color:#C98A7D">~/SITEMAP.deno.ts</span><span style="color:#C98A7D77">'</span></span>
+<span class="line"><span style="color:#CB7676">const</span><span style="color:#BD976A"> fullyTypedTsEntry</span><span style="color:#666666"> =</span><span style="color:#BD976A"> FS</span><span style="color:#666666">[</span><span style="color:#C98A7D77">"</span><span style="color:#C98A7D">src/blog/unholy-custom-jsx-with-observable-strings/basic.deno.tsx</span><span style="color:#C98A7D77">"</span><span style="color:#666666">]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#BD976A">console</span><span style="color:#666666">.</span><span style="color:#80A665">log</span><span style="color:#666666">(</span><span style="color:#BD976A">fullyTypedTsEntry</span><span style="color:#666666">.</span><span style="color:#80A665">readSync</span><span style="color:#666666">())</span></span>
+<span class="line"><span style="color:#BD976A">console</span><span style="color:#666666">.</span><span style="color:#80A665">log</span><span style="color:#666666">(</span><span style="color:#BD976A">fullyTypedTsEntry</span><span style="color:#666666">.</span><span style="color:#BD976A">importPath</span><span style="color:#666666">)</span></span>
+<span class="line"><span style="color:#BD976A">console</span><span style="color:#666666">.</span><span style="color:#80A665">log</span><span style="color:#666666">(</span><span style="color:#BD976A">fullyTypedTsEntry</span><span style="color:#666666">.</span><span style="color:#BD976A">extension</span><span style="color:#666666">)</span></span>
+<span class="line"><span style="color:#BD976A">console</span><span style="color:#666666">.</span><span style="color:#80A665">log</span><span style="color:#666666">(</span><span style="color:#BD976A">fullyTypedTsEntry</span><span style="color:#666666">.</span><span style="color:#BD976A">path</span><span style="color:#666666">)</span></span>
+<span class="line"><span style="color:#BD976A">console</span><span style="color:#666666">.</span><span style="color:#80A665">log</span><span style="color:#666666">((</span><span style="color:#4D9375">await</span><span style="color:#BD976A"> fullyTypedTsEntry</span><span style="color:#666666">.</span><span style="color:#80A665">dynamicImport</span><span style="color:#666666">()).</span><span style="color:#BD976A">default</span><span style="color:#666666">)</span></span></code></div><button class="copy-to-clipboard caption">Copy</button><details class="console.log-details" open="1"><summary class="log-grid-heading">console.log[6]</summary><code class="console.log-output"><span class="log-line">log(1)</span><span class="log-line">export default (&#x3C;div>Hello World&#x3C;/div>).subscribe(
+  console.log,
+)
+</span><span class="log-line">log(2)</span><span class="log-line">~/blog/unholy-custom-jsx-with-observable-strings/basic.deno.tsx</span><span class="log-line">log(3)</span><span class="log-line">tsx</span><span class="log-line">log(4)</span><span class="log-line">src/blog/unholy-custom-jsx-with-observable-strings/basic.deno.tsx</span><span class="log-line">log(5)</span><span class="log-line">&#x3C;div>Hello World&#x3C;/div></span><span class="log-line">log(6)</span><span class="log-line">&#x3C;ref *1> SafeSubscriber {
+  initialTeardown: undefined,
+  closed: false,
+  _parentage: null,
+  _finalizers: [
+    &#x3C;ref *2> OperatorSubscriber {
+      initialTeardown: undefined,
+      closed: false,
+      _parentage: [Circular *1],
+      _finalizers: [
+        OperatorSubscriber {
+          initialTeardown: undefined,
+          closed: false,
+          _parentage: [Circular *2],
+          _finalizers: [Array],
+          isStopped: false,
+          destination: [Circular *2],
+          onFinalize: undefined,
+          shouldUnsubscribe: undefined,
+          _next: [Function (anonymous)],
+          _error: [Function (anonymous)],
+          _complete: [Function (anonymous)]
+        }
+      ],
+      isStopped: false,
+      destination: [Circular *1],
+      onFinalize: undefined,
+      shouldUnsubscribe: undefined,
+      _next: [Function (anonymous)],
+      _error: [Function (anonymous)],
+      _complete: [Function (anonymous)]
+    }
+  ],
+  isStopped: false,
+  destination: ConsumerObserver {
+    partialObserver: {
+      next: [Function (anonymous)],
+      error: undefined,
+      complete: undefined
+    }
+  }
+}</span></code></details></pre><pre class="shiki vitesse-dark" style="background-color:#121212;color:#dbd7caee" tabindex="0"><div class="code-scroller"><code class="language-tsx"><span class="line"><span style="color:#4D9375">import</span><span style="color:#666666"> {</span><span style="color:#BD976A"> FS</span><span style="color:#666666"> }</span><span style="color:#4D9375"> from</span><span style="color:#C98A7D77"> '</span><span style="color:#C98A7D">~/SITEMAP.deno.ts</span><span style="color:#C98A7D77">'</span></span>
+<span class="line"><span style="color:#CB7676">const</span><span style="color:#BD976A"> fullyTypedCssEntry</span><span style="color:#666666"> =</span><span style="color:#BD976A"> FS</span><span style="color:#666666">[</span><span style="color:#C98A7D77">"</span><span style="color:#C98A7D">src/blog/make-your-own-sitemap-with-typescript/example.css</span><span style="color:#C98A7D77">"</span><span style="color:#666666">]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#BD976A">console</span><span style="color:#666666">.</span><span style="color:#80A665">log</span><span style="color:#666666">(</span><span style="color:#BD976A">fullyTypedCssEntry</span><span style="color:#666666">.</span><span style="color:#80A665">linkTag</span><span style="color:#666666">())</span></span>
+<span class="line"><span style="color:#BD976A">console</span><span style="color:#666666">.</span><span style="color:#80A665">log</span><span style="color:#666666">(</span><span style="color:#BD976A">fullyTypedCssEntry</span><span style="color:#666666">.</span><span style="color:#BD976A">publicPath</span><span style="color:#666666">)</span></span>
+<span class="line"><span style="color:#BD976A">console</span><span style="color:#666666">.</span><span style="color:#80A665">log</span><span style="color:#666666">(</span><span style="color:#BD976A">fullyTypedCssEntry</span><span style="color:#666666">.</span><span style="color:#BD976A">importPath</span><span style="color:#666666">)</span></span>
+<span class="line"><span style="color:#BD976A">console</span><span style="color:#666666">.</span><span style="color:#80A665">log</span><span style="color:#666666">(</span><span style="color:#BD976A">fullyTypedCssEntry</span><span style="color:#666666">.</span><span style="color:#BD976A">extension</span><span style="color:#666666">)</span></span>
+<span class="line"><span style="color:#BD976A">console</span><span style="color:#666666">.</span><span style="color:#80A665">log</span><span style="color:#666666">(</span><span style="color:#BD976A">fullyTypedCssEntry</span><span style="color:#666666">.</span><span style="color:#BD976A">path</span><span style="color:#666666">)</span></span></code></div><button class="copy-to-clipboard caption">Copy</button><details class="console.log-details" open="1"><summary class="log-grid-heading">console.log[5]</summary><code class="console.log-output"><span class="log-line">log(1)</span><span class="log-line">&#x3C;link rel='stylesheet' href='/blog/make-your-own-sitemap-with-typescript/example.css'/></span><span class="log-line">log(2)</span><span class="log-line">/blog/make-your-own-sitemap-with-typescript/example.css</span><span class="log-line">log(3)</span><span class="log-line">~/blog/make-your-own-sitemap-with-typescript/example.css</span><span class="log-line">log(4)</span><span class="log-line">css</span><span class="log-line">log(5)</span><span class="log-line">src/blog/make-your-own-sitemap-with-typescript/example.css</span></code></details></pre><style>
+.code-group pre {display:none}
+.code-group-2 {
+
+  #code-group-radio-5+label {
+
+  }
+
+  #code-group-radio-5:checked+label {
+    background:rgb(18, 18, 18);
+    position: relative;
+    z-index:1;
+    border-bottom: none;
+    
+    &:hover {
+      text-decoration: underline;
+      color: white;
+    }
+
+    border-top-color: var(--color-red-600);
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      z-index: 10;
+      width: 100%; 
+      background: var(--color-red-600);
+    }
+
+  }
+
+  &:has(#code-group-radio-5:checked) pre:nth-child(2){ 
+    display: block;
+  }
+  
+
+  #code-group-radio-6+label {
+
+  }
+
+  #code-group-radio-6:checked+label {
+    background:rgb(18, 18, 18);
+    position: relative;
+    z-index:1;
+    border-bottom: none;
+    
+    &:hover {
+      text-decoration: underline;
+      color: white;
+    }
+
+    border-top-color: var(--color-red-600);
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      z-index: 10;
+      width: 100%; 
+      background: var(--color-red-600);
+    }
+
+  }
+
+  &:has(#code-group-radio-6:checked) pre:nth-child(3){ 
+    display: block;
+  }
+  
+} </style></div><p>This is a very powerful feature for automatting or matching on specific filenames, for instance, when you want to import all your route handlers or other related shenanigans.</p><style>
+#section-abstract {
+  --section-header-hr-start: 0%;
+  --section-header-hr-stop: 50%;
+}
+</style></section>
+<section id="section-start-with-a-single-dynamic-import"><h2 id="start-with-a-single-dynamic-import"><a href="#start-with-a-single-dynamic-import">2.  Start with a single dynamic import</a></h2><p>A powerful feature of bundlers (webpack/vite/etc.) is <a href="https://tc39.es/ecma262/multipage/ecmascript-language-expressions.html#sec-import-calls" rel="nofollow noopener noreferrer" target="_blank">dynamic import</a>. There are also bundlers/frameworks that provide their own sense of <em>glob imports</em>, a bundler specific magic feature.</p><ol start="0">
+<li><a href="https://webpack.js.org/guides/code-splitting/#dynamic-imports" rel="nofollow noopener noreferrer" target="_blank">Webpack dynamic imports</a>
+<ul>
+<li>Has magic comments for features</li>
+</ul>
+</li>
+<li><a href="https://vite.dev/guide/features#dynamic-import" rel="nofollow noopener noreferrer" target="_blank">Vite has one here</a>
+<ul>
+<li>Has restraints on inputs</li>
+</ul>
+</li>
+<li><a href="https://rspack.dev/guide/optimization/code-splitting#dynamic-import" rel="nofollow noopener noreferrer" target="_blank">Rspack</a>
+<ul>
+<li>Has magic comment rules</li>
+</ul>
+</li>
+</ol><p>This feature is very useful for lazy/code splitting in bundlers as a performance optimization. However it requires hard strings that are reachable <em>by the bundler's config</em>. What I prefer is having a <em>typed dictionary</em> of the output of</p><style>
+#section-start-with-a-single-dynamic-import {
+  --section-header-hr-start: 50%;
+  --section-header-hr-stop: 100%;
+}
+</style></section></div></main><footer></footer><script>// Smooth scrolling for browsers that don't support CSS smooth scrolling
+;(() => {
+  /**
+   * @type {Record<string, {elem: HTMLElement, percent: number, lastEntry: null | IntersectionObserverEntry}>}
+   */
+  const byId = {}
+  window.sectionById = byId
+  /**
+   * @type {(typeof byId)[string]}
+   */
+  let top = null
+  /**
+   * @type {(typeof byId)[string]}
+   */
+  let bottom = null
+
+  window.addEventListener("DOMContentLoaded", () => {
+    /**
+     * @type {HTMLElement}
+     */
+    const nav = document.getElementById("toc-nav")
+    const li = nav?.querySelector("li a")
+
+    let liRatio = li.offsetHeight / nav.offsetHeight
+
+    window.addEventListener("resize", () => {
+      console.log("Resize detected")
+      liRatio = li.offsetHeight / nav.offsetHeight
+    })
+
+    const setEnds = (start, end) => {
+      start != null &&
+        nav.style.setProperty(
+          "--toc-scroll-start",
+          "" + (start * 100).toFixed(0) + "%",
+        )
+      end != null &&
+        nav.style.setProperty(
+          "--toc-scroll-end",
+          "" + (end * 100).toFixed(0) + "%",
+        )
+    }
+
+    // use elem, its the li
+    // now we have its offset from its parent
+    // get percent from parent 0 edge
+    // that is constant range start
+
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          const id = entry.target.getAttribute("id") ?? ""
+          let cache =
+            // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
+            (byId[id] ||= {
+              elem: document.querySelector(
+                `nav li a[href="#${id}"]`,
+              ),
+              percent: 0,
+              lastEntry: entry,
+            })
+          const elem = cache.elem
+          cache.lastEntry = entry
+          cache.percent = entry.intersectionRatio
+          if (entry.isIntersecting) {
+            if (entry.intersectionRatio === 1) {
+              // console.log("we are golden", cache)
+              // console.log("--", elem)
+              if (!top) {
+                // console.log("A)", elem)
+                top = cache
+              } else if (
+                top.lastEntry.intersectionRect.top >
+                  entry.intersectionRect.top ||
+                top.lastEntry.time < entry.time
+              ) {
+                // console.log("AA)", elem)
+                // this entry is above the previous top
+                top = cache
+              } else {
+                // console.log(
+                //   top.lastEntry,
+                //   "does not beat",
+                //   entry,
+                // )
+              }
+              // we take full percent of offset + offset+height of LI
+            } else if (
+              entry.intersectionRect.y ===
+                entry.rootBounds.y &&
+              entry.intersectionRect.bottom ===
+                entry.rootBounds.bottom
+            ) {
+              // console.log("B)", elem)
+              top = cache
+              bottom = cache
+              // console.log(
+              //   "this is both entering/exiting element",
+              //   cache,
+              // )
+            } else if (entry.intersectionRect.y === 0) {
+              // console.log(
+              //   "this is the leaving element",
+              //   cache,
+              // )
+              // console.log("C)", elem)
+              top = cache
+            } else {
+              // console.log(
+              //   "this is the entering element",
+              //   cache,
+              // )
+              // console.log("D)", elem)
+              bottom = cache
+            }
+            if (cache.percent === 0)
+              elem?.parentElement?.classList.add(
+                "viewtimeline-active",
+              )
+          } else {
+            elem?.parentElement?.classList.remove(
+              "viewtimeline-active",
+            )
+            cache.percent = 0
+          }
+          console.log(entry.boundingClientRect.top)
+          if (entry.boundingClientRect.top < 0) {
+            // we have passed the element and are exiting, which means we are stickied. we need to set the var for our mini gradient as a ratio of relative percent of top / height
+            const underWater =
+              Math.abs(entry.boundingClientRect.top) /
+              entry.boundingClientRect.height
+
+            entry.target.style.setProperty(
+              "--section-header-hr-progress",
+              underWater,
+            )
+          }
+        })
+        if (top && bottom) {
+          const a = top.elem // get corresponding LI's anchor
+          const percentFromNavTop =
+            a.offsetTop / a.offsetParent.offsetHeight // this is our base percent we are setting
+          // now calculate the intersection ratio relative to
+
+          const percentDiff =
+            (a.offsetHeight *
+              (1 - top.lastEntry.intersectionRatio)) /
+            a.offsetParent.offsetHeight
+
+          const b = bottom.elem
+          const percentFromNavTopToBottom =
+            (b.offsetTop + b.offsetHeight) /
+            b.offsetParent.offsetHeight // this is our base percent we are setting
+          // now calculate the intersection ratio relative to
+
+          const percentDiffB =
+            (b.offsetHeight *
+              (1 - bottom.lastEntry.intersectionRatio)) /
+            b.offsetParent.offsetHeight
+
+          // console.log({
+          //   top,
+          //   bottom,
+          //   percentFromNavTop,
+          //   percentFromNavTopToBottom,
+          //   percentDiff,
+          //   percentDiffB,
+          //   a,
+          //   b,
+          // })
+
+          setEnds(
+            percentFromNavTop + percentDiff,
+            percentFromNavTopToBottom - percentDiffB,
+          )
+        }
+        // console.log({ top, bottom })
+      },
+      {
+        threshold: Array.from(
+          { length: 10 },
+          (_, i) => i / 10,
+        ),
+      },
+    )
+
+    // Track all sections that have an `id` applied
+    document
+      .querySelectorAll("#main-content-middle section[id]")
+      .forEach(section => {
+        observer.observe(section)
+      })
+  })
+})()
+;
+;document.addEventListener("DOMContentLoaded", () => {
+  try {
+    const it = document.getElementById("toc-toggle")
+    if (it) {
+      it.checked = JSON.parse(
+        localStorage.tocChecked ?? "false",
+      )
+      it.addEventListener("change", e => {
+        localStorage.tocChecked = !!e.target.checked
+      })
+    }
+  } catch (e) {}
+  setTimeout(() => {
+    document.body.classList.toggle("ready")
+  }, 1)
+})
+;
+;function copyToClipboard(text) {
+  navigator.clipboard
+    .writeText(text)
+    .then(() => {
+      // Text copied successfully
+      console.log("Text copied to clipboard")
+    })
+    .catch(err => {
+      // Error copying text
+      console.error("Failed to copy text: ", err)
+    })
+}
+
+/**
+ * @param {HTMLElement} el
+ * @param {Window} win
+ */
+function selectElementText(el, win) {
+  win = win || window
+  let doc = win.document
+  /**
+   * @type {Selection}
+   */
+  let sel
+  /**
+   * @type {Range}
+   */
+  let range
+
+  if (win.getSelection && doc.createRange) {
+    sel = win.getSelection()
+    range = doc.createRange()
+    range.selectNodeContents(el)
+    sel.removeAllRanges()
+    sel.addRange(range)
+  } else if (doc.body.createTextRange) {
+    range = doc.body.createTextRange()
+    range.moveToElementText(el)
+    range.select()
+  }
+  console.log(sel.toString())
+  return sel.toString()
+}
+
+document.addEventListener("click", e => {
+  let target =
+    e.target.classList.contains("copy-to-clipboard") &&
+    e.target.parentElement.classList.contains("shiki")
+      ? e.target
+      : null
+  target = target?.parentElement.querySelector("code")
+  if (target) {
+    copyToClipboard(selectElementText(target))
+    window.getSelection().removeAllRanges()
+  }
+})
+;
+;let isZoomin = false
+let container = null
+const remove = () => {
+  if (!container) return
+  container?.remove()
+  container = null
+  const it = document.querySelector(".img-zoom")
+  it?.classList.toggle("img-zoom")
+  isZoomin = false
+}
+document.addEventListener("click", e => {
+  if (
+    isZoomin &&
+    e.target.classList.contains("img-zoom-clone-parent")
+  ) {
+    document
+      .querySelector(".img-zoom-clone-exit")
+      ?.dispatchEvent(
+        new MouseEvent("click", {
+          view: window,
+          bubbles: true,
+          cancelable: false,
+        }),
+      )
+  }
+
+  if (e.target.tagName === "IMG") {
+    if (e.target.classList.contains("img-zoom-clone")) {
+      return
+    }
+    if (!e.target.classList.contains("img-zoom")) {
+      /**
+       * @type {HTMLImageElement}
+       */
+      const orig = e.target
+      /**
+       * @type {HTMLImageElement}
+       */
+      const clone = e.target.cloneNode()
+      clone.classList.add("img-zoom-clone")
+
+      container = document.createElement("div")
+      container.classList.add("img-zoom-clone-parent")
+
+      const behind = document.createElement("div")
+      behind.classList.add("behind")
+
+      const exitButton = document.createElement("button")
+      exitButton.classList.add("img-zoom-clone-exit")
+      ;[exitButton, behind].forEach(i =>
+        i.addEventListener("click", remove),
+      )
+      isZoomin = true
+
+      exitButton.setAttribute("aria-role", "button")
+      exitButton.setAttribute("type", "button")
+      exitButton.innerHTML = "Close"
+
+      container.appendChild(behind)
+      container.appendChild(clone)
+      container.appendChild(exitButton)
+
+      document.body.appendChild(container)
+      e.target.classList.toggle("img-zoom")
+      requestAnimationFrame(() => {
+        exitButton.focus()
+      })
+    }
+  }
+})
+
+document.addEventListener("keyup", e => {
+  if (e.key === "Escape" && isZoomin) {
+    remove()
+  }
+})
+</script></body></html>
