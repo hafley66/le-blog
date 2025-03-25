@@ -19,6 +19,8 @@ _.watch.sitemap.get_file_metadata() {
     local linkTag=""
 
     local yee=$(pwd)
+    local markdownDemo=""
+    local frontendDemo=""
     # echo $yee
 
     if [[ -d "$filePath" ]]; then
@@ -36,8 +38,34 @@ _.watch.sitemap.get_file_metadata() {
         case "$extension" in
             ts|tsx|js|jsx)
                 dynamicImport="dynamicImport: () => import('$importPath'),";
-                linkTag="linkTag: () => \"<script type='module' src='$publicPath' />\",";
-                publicPath="";
+                linkTag="linkTag: () => \"<script type='module' src='$publicPath'></script>\",";
+                markdownDemo="markdownDemo: (diffName = '$filename') => \
+\`
+~~~$extension
+// @@filename \${diffName}
+// @eval
+\${readFileSync('$filePath').toString()}
+~~~
+
+
+<script type='module' src='$publicPath' demo-for='$filename'></script>
+
+
+\`,";
+                frontendDemo="frontendDemo: (diffName = '$filename') => \
+\`
+~~~$extension
+// @@filename \${diffName}
+// @@src $publicPath
+\${readFileSync('$filePath').toString()}
+~~~
+
+
+<script type='module' src='$publicPath' demo-for='$filename'></script>
+
+
+\`,";
+                publicPath="publicPath: '${publicPath}',";
                 ;;
             css)
                 linkTag="linkTag: () => \"<link rel='stylesheet' href='$publicPath'/>\",";
@@ -66,6 +94,8 @@ _.watch.sitemap.get_file_metadata() {
       $dynamicImport
       $linkTag
       $publicPath
+      $markdownDemo
+      $frontendDemo
   },
   "
 }
@@ -134,7 +164,18 @@ import { readFileSync } from 'node:fs';
             K in keyof FILESYSTEM as K extends \`\${string}\${T}\${string}\` ? K : never
           ]: FILESYSTEM[K];
         }
-      >[]
+      >[],
+      subFolder: <T extends string>(it: T) => {
+        return Object.fromEntries(
+          Object.entries(FS)
+            .filter(([k, v]) => k.startsWith(it))
+            .map(i => [i[0].replace(it, \"\"), i[1]] as const),
+          ) as unknown as {
+            [K in keyof FILESYSTEM as K extends \`\${T}\${infer U}\`
+              ? U
+              : never]: FILESYSTEM[K]
+          }
+        },
       };
       "
       # brew install flock

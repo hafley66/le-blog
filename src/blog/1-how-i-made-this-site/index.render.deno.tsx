@@ -4,18 +4,10 @@ const $ = Render$(import.meta.filename!)
 
 export default $.SSGLayout({
   title: "How I started this site as of 2025/02/27",
-  description: "",
+  description:
+    "Old fashioned porkbun and vultr on the rocks",
   date_created: "2025-02-25",
-  tags: [
-    "typescript",
-    "javascript",
-    "astro",
-    "vultr",
-    "bash",
-    "dns",
-    "vps",
-    "deployments",
-  ],
+  tags: ["astro", "vultr", "bash", "dns", "vps", "ssh"],
   ...$.md`
 ## Buy a domain
 I used [Porkbun](https://porkbun.com/), very easy to use. They also come with easy to use WHOIS protection, which is a big plus.

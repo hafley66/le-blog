@@ -1,5 +1,5 @@
 import _ from "lodash"
-import { combineLatest, map, switchMap } from "rxjs"
+import { combineLatest, filter, map, switchMap } from "rxjs"
 import { Render$ } from "~/lib/0_RenderBase.deno.tsx"
 import { deferFrom } from "~/lib/lib.dual.ts"
 import { FS, SITEMAP } from "~/SITEMAP.deno.ts"
@@ -23,7 +23,9 @@ const allRenders = combineLatest(
 ).pipe(
   map(i => {
     const blogs = i.filter(
-      i => i.importMetaFilename !== import.meta.filename!,
+      i =>
+        i.importMetaFilename !== import.meta.filename! &&
+        !!i.props.date_created,
     )
 
     const groups = {} as Record<

@@ -39,6 +39,7 @@ code:not(:has(.line)):not(.twoslash-popup-code) {
   &:hover{
     background: var(--color-pink-700);
     font-weight: 600;
+    opacity: 1;
     text-decoration: underline;
   }
   &:active{
@@ -58,7 +59,7 @@ pre {
 h2 ~ .code-group {
   .code-group-tabs {
     position: sticky;
-    top: calc(var(--h2-height) + 8px);
+    top: calc(var(--h2-height));
     z-index: 2;
   }
 }
@@ -66,18 +67,20 @@ h2 ~ .code-group {
 h3 ~ .code-group {
   .code-group-tabs {
     position: sticky;
-    top: calc(var(--h3-height) + 8px);
+    top: calc(var(--h3-height));
     z-index: 2;
   }
 }
 
 .code-group {
   margin-top: 12px;
+  margin-left: calc(var(--section-mx) * -1);
+  margin-right: calc(var(--section-mx) * -1);
   .code-group-tabs { 
     overflow: auto;
     display: flex; 
     position: sticky;
-    top: calc(var(--h2-height) + 8px);
+    top: calc(var(--h2-height));
     z-index: 2;
 
     &::after {
@@ -209,4 +212,9 @@ pre.shiki .console\.log-output {
     font-style: italic;
   }
 
+}
+
+iframe {
+  border: 1px solid var(--color-border);
+  border-top: none;
 }

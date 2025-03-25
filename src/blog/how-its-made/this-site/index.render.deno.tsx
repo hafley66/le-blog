@@ -8,7 +8,7 @@ export default $.SSGLayout({
   title: "How I made this site as of 2025/03/16",
   description:
     "Astro.js is cool but I don't like that much magic",
-  date_created: "2025-03-11",
+  // date_created: "2025-03-11",
   tags: [
     "typescript",
     "javascript",

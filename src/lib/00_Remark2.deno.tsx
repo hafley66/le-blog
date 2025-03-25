@@ -59,7 +59,7 @@ const REEEE = await unified()
     target: "_blank",
   } as Parameters<typeof rehypeExternalLinks>[0])
   .use(rehypeShikiFromHighlighter, SHIKI, {
-    theme: "vitesse-dark",
+    theme: "one-dark-pro",
     addLanguageClass: true,
     transformers: [
       transformerTwoslash({

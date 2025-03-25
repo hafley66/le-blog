@@ -289,6 +289,7 @@
   --color-bg-contrast: var(--color-text);
   --color-text-link: var(--color-blue-500);
   --color-resume-heading: var(--color-inferno-3);
+  --section-mx: 8px;
 }
 
 body {

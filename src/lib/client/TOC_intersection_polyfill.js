@@ -123,7 +123,7 @@
             )
             cache.percent = 0
           }
-          console.log(entry.boundingClientRect.top)
+          // console.log(entry.boundingClientRect.top)
           if (entry.boundingClientRect.top < 0) {
             // we have passed the element and are exiting, which means we are stickied. we need to set the var for our mini gradient as a ratio of relative percent of top / height
             const underWater =

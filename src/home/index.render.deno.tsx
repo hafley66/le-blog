@@ -7,16 +7,20 @@ export default $.SSGLayout({
   disable_toc: true,
   children: $.markdown`
 
-I'm Chris Hafley and this is my personal site/blog/portfolio/notebook/garden/living resume.
+I'm Chris Hafley, and this is my personal site/blog/portfolio/notebook/garden/living resume.
 
-I am a professional software engineer and am currently looking for a next role.
+I've been programming for 16 years, and in industry for ~10.
 
-I have tried to bake in as much app state using css instead of js and trying my best to uphold accessibility with native html.
+I love coding and working with others, and I intend to write a whole bunch of things on this site to try and help others and hopefully learn in the process.
 
-Here is my current professional highlights as a diagram:
+:::figure
+!["spongebob and patrick working hard"](../meme/spongebob-patrick-building.gif)
+::figurecaption[Rare footage of me constantly working on this site]{}
+:::
+`,
+})
 
-~~~d2
-tools: Tooling {
+const d2forlater = `tools: Tooling {
 
 }
 
@@ -39,7 +43,4 @@ ceo: Stakeholders {
 
 me.fe -> ux: Measure future design efforts
 me.fe -> ux: Help maintain consistency across designs
-me.fe -> ux
-~~~
-`,
-})
+me.fe -> ux`

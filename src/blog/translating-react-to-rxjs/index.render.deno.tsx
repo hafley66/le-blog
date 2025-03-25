@@ -5,7 +5,7 @@ const $ = Render$(import.meta.filename!)
 export default $.SSGLayout({
   title: "Translate React to RxJS",
   description: "Hope this helps someone",
-  date_created: "(Living Document)",
+  // date_created: "(Living Document)",
   tags: [
     "typescript",
     "javascript",

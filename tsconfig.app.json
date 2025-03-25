@@ -16,7 +16,8 @@
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
-    "jsxImportSource": "react",
+		"jsxImportSource": "~/lib/rxjs-vhtml/v2",
+		"types": ["~/lib/rxjs-vhtml/v2"],
     /* Linting */
     "strict": true,
     "allowJs": true,
@@ -31,7 +32,10 @@
     "**/*.dual.tsx",
     "**/*.dual.ts",
     "**/*.dual.js",
-    "**/*.dom.js"
+    "**/*.dom.js",
+    "**/*.dom.jsx",
+    "**/*.dom.tsx",
+    "**/*.dom.ts"
   ],
   "exclude": [
     "vite.config.mts",

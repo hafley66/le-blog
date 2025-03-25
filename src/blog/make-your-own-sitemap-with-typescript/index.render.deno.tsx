@@ -159,7 +159,7 @@ export default $.SSGLayout({
   description:
     "Sprinkle some meta programming to unroll the set of all possible imports. Stop relying on frameworks to provide this convenience.",
 
-  date_created: "2025-02-25",
+  // date_created: "2025-02-25",
   tags: [
     "bash",
     "globs",

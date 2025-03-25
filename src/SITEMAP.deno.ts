@@ -15,7 +15,24 @@ export const FS = {
     dynamicImport: () =>
       import("~/home/index.render.deno.tsx"),
     linkTag: () =>
-      "<script type='module' src='/home/index.render.deno.tsx' />",
+      "<script type='module' src='/home/index.render.deno.tsx'></script>",
+    publicPath: "/home/index.render.deno.tsx",
+    markdownDemo: (diffName = "index.render.deno.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/home/index.render.deno.tsx").toString()}
+~~~
+<script type='module' src='/home/index.render.deno.tsx' demo-for='index.render.deno.tsx'></script>
+`,
+    frontendDemo: (diffName = "index.render.deno.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @@src /home/index.render.deno.tsx
+${readFileSync("src/home/index.render.deno.tsx").toString()}
+~~~
+<script type='module' src='/home/index.render.deno.tsx' demo-for='index.render.deno.tsx'></script>
+`,
   },
 
   "src/main_ssg.deno.ts": {
@@ -29,7 +46,24 @@ export const FS = {
       readFileSync("src/main_ssg.deno.ts").toString(),
     dynamicImport: () => import("~/main_ssg.deno.ts"),
     linkTag: () =>
-      "<script type='module' src='/main_ssg.deno.ts' />",
+      "<script type='module' src='/main_ssg.deno.ts'></script>",
+    publicPath: "/main_ssg.deno.ts",
+    markdownDemo: (diffName = "main_ssg.deno.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/main_ssg.deno.ts").toString()}
+~~~
+<script type='module' src='/main_ssg.deno.ts' demo-for='main_ssg.deno.ts'></script>
+`,
+    frontendDemo: (diffName = "main_ssg.deno.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @@src /main_ssg.deno.ts
+${readFileSync("src/main_ssg.deno.ts").toString()}
+~~~
+<script type='module' src='/main_ssg.deno.ts' demo-for='main_ssg.deno.ts'></script>
+`,
   },
 
   "src/index.html": {
@@ -87,7 +121,24 @@ export const FS = {
     dynamicImport: () =>
       import("~/resume/index.render.deno.tsx"),
     linkTag: () =>
-      "<script type='module' src='/resume/index.render.deno.tsx' />",
+      "<script type='module' src='/resume/index.render.deno.tsx'></script>",
+    publicPath: "/resume/index.render.deno.tsx",
+    markdownDemo: (diffName = "index.render.deno.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/resume/index.render.deno.tsx").toString()}
+~~~
+<script type='module' src='/resume/index.render.deno.tsx' demo-for='index.render.deno.tsx'></script>
+`,
+    frontendDemo: (diffName = "index.render.deno.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @@src /resume/index.render.deno.tsx
+${readFileSync("src/resume/index.render.deno.tsx").toString()}
+~~~
+<script type='module' src='/resume/index.render.deno.tsx' demo-for='index.render.deno.tsx'></script>
+`,
   },
 
   "src/BASH.deno.ts": {
@@ -101,7 +152,24 @@ export const FS = {
       readFileSync("src/BASH.deno.ts").toString(),
     dynamicImport: () => import("~/BASH.deno.ts"),
     linkTag: () =>
-      "<script type='module' src='/BASH.deno.ts' />",
+      "<script type='module' src='/BASH.deno.ts'></script>",
+    publicPath: "/BASH.deno.ts",
+    markdownDemo: (diffName = "BASH.deno.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/BASH.deno.ts").toString()}
+~~~
+<script type='module' src='/BASH.deno.ts' demo-for='BASH.deno.ts'></script>
+`,
+    frontendDemo: (diffName = "BASH.deno.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @@src /BASH.deno.ts
+${readFileSync("src/BASH.deno.ts").toString()}
+~~~
+<script type='module' src='/BASH.deno.ts' demo-for='BASH.deno.ts'></script>
+`,
   },
 
   "src/markdown.deno.mts": {
@@ -128,7 +196,24 @@ export const FS = {
       readFileSync("src/shiki.deno.ts").toString(),
     dynamicImport: () => import("~/shiki.deno.ts"),
     linkTag: () =>
-      "<script type='module' src='/shiki.deno.ts' />",
+      "<script type='module' src='/shiki.deno.ts'></script>",
+    publicPath: "/shiki.deno.ts",
+    markdownDemo: (diffName = "shiki.deno.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/shiki.deno.ts").toString()}
+~~~
+<script type='module' src='/shiki.deno.ts' demo-for='shiki.deno.ts'></script>
+`,
+    frontendDemo: (diffName = "shiki.deno.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @@src /shiki.deno.ts
+${readFileSync("src/shiki.deno.ts").toString()}
+~~~
+<script type='module' src='/shiki.deno.ts' demo-for='shiki.deno.ts'></script>
+`,
   },
 
   "src/blog/how-its-made/this-site/index.render.deno.tsx": {
@@ -148,7 +233,25 @@ export const FS = {
         "~/blog/how-its-made/this-site/index.render.deno.tsx"
       ),
     linkTag: () =>
-      "<script type='module' src='/blog/how-its-made/this-site/index.render.deno.tsx' />",
+      "<script type='module' src='/blog/how-its-made/this-site/index.render.deno.tsx'></script>",
+    publicPath:
+      "/blog/how-its-made/this-site/index.render.deno.tsx",
+    markdownDemo: (diffName = "index.render.deno.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/blog/how-its-made/this-site/index.render.deno.tsx").toString()}
+~~~
+<script type='module' src='/blog/how-its-made/this-site/index.render.deno.tsx' demo-for='index.render.deno.tsx'></script>
+`,
+    frontendDemo: (diffName = "index.render.deno.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @@src /blog/how-its-made/this-site/index.render.deno.tsx
+${readFileSync("src/blog/how-its-made/this-site/index.render.deno.tsx").toString()}
+~~~
+<script type='module' src='/blog/how-its-made/this-site/index.render.deno.tsx' demo-for='index.render.deno.tsx'></script>
+`,
   },
 
   "src/blog/translating-react-to-rxjs/index.render.deno.tsx":
@@ -169,7 +272,29 @@ export const FS = {
           "~/blog/translating-react-to-rxjs/index.render.deno.tsx"
         ),
       linkTag: () =>
-        "<script type='module' src='/blog/translating-react-to-rxjs/index.render.deno.tsx' />",
+        "<script type='module' src='/blog/translating-react-to-rxjs/index.render.deno.tsx'></script>",
+      publicPath:
+        "/blog/translating-react-to-rxjs/index.render.deno.tsx",
+      markdownDemo: (
+        diffName = "index.render.deno.tsx",
+      ) => `
+~~~tsx
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/blog/translating-react-to-rxjs/index.render.deno.tsx").toString()}
+~~~
+<script type='module' src='/blog/translating-react-to-rxjs/index.render.deno.tsx' demo-for='index.render.deno.tsx'></script>
+`,
+      frontendDemo: (
+        diffName = "index.render.deno.tsx",
+      ) => `
+~~~tsx
+// @@filename ${diffName}
+// @@src /blog/translating-react-to-rxjs/index.render.deno.tsx
+${readFileSync("src/blog/translating-react-to-rxjs/index.render.deno.tsx").toString()}
+~~~
+<script type='module' src='/blog/translating-react-to-rxjs/index.render.deno.tsx' demo-for='index.render.deno.tsx'></script>
+`,
     },
 
   "src/blog/unholy-custom-jsx-with-observable-strings/async.rxjs.deno.tsx":
@@ -191,7 +316,25 @@ export const FS = {
           "~/blog/unholy-custom-jsx-with-observable-strings/async.rxjs.deno.tsx"
         ),
       linkTag: () =>
-        "<script type='module' src='/blog/unholy-custom-jsx-with-observable-strings/async.rxjs.deno.tsx' />",
+        "<script type='module' src='/blog/unholy-custom-jsx-with-observable-strings/async.rxjs.deno.tsx'></script>",
+      publicPath:
+        "/blog/unholy-custom-jsx-with-observable-strings/async.rxjs.deno.tsx",
+      markdownDemo: (diffName = "async.rxjs.deno.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/blog/unholy-custom-jsx-with-observable-strings/async.rxjs.deno.tsx").toString()}
+~~~
+<script type='module' src='/blog/unholy-custom-jsx-with-observable-strings/async.rxjs.deno.tsx' demo-for='async.rxjs.deno.tsx'></script>
+`,
+      frontendDemo: (diffName = "async.rxjs.deno.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @@src /blog/unholy-custom-jsx-with-observable-strings/async.rxjs.deno.tsx
+${readFileSync("src/blog/unholy-custom-jsx-with-observable-strings/async.rxjs.deno.tsx").toString()}
+~~~
+<script type='module' src='/blog/unholy-custom-jsx-with-observable-strings/async.rxjs.deno.tsx' demo-for='async.rxjs.deno.tsx'></script>
+`,
     },
 
   "src/blog/unholy-custom-jsx-with-observable-strings/sync.deno.tsx":
@@ -213,7 +356,185 @@ export const FS = {
           "~/blog/unholy-custom-jsx-with-observable-strings/sync.deno.tsx"
         ),
       linkTag: () =>
-        "<script type='module' src='/blog/unholy-custom-jsx-with-observable-strings/sync.deno.tsx' />",
+        "<script type='module' src='/blog/unholy-custom-jsx-with-observable-strings/sync.deno.tsx'></script>",
+      publicPath:
+        "/blog/unholy-custom-jsx-with-observable-strings/sync.deno.tsx",
+      markdownDemo: (diffName = "sync.deno.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/blog/unholy-custom-jsx-with-observable-strings/sync.deno.tsx").toString()}
+~~~
+<script type='module' src='/blog/unholy-custom-jsx-with-observable-strings/sync.deno.tsx' demo-for='sync.deno.tsx'></script>
+`,
+      frontendDemo: (diffName = "sync.deno.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @@src /blog/unholy-custom-jsx-with-observable-strings/sync.deno.tsx
+${readFileSync("src/blog/unholy-custom-jsx-with-observable-strings/sync.deno.tsx").toString()}
+~~~
+<script type='module' src='/blog/unholy-custom-jsx-with-observable-strings/sync.deno.tsx' demo-for='sync.deno.tsx'></script>
+`,
+    },
+
+  "src/blog/unholy-custom-jsx-with-observable-strings/state.1.dom.tsx":
+    {
+      path: "src/blog/unholy-custom-jsx-with-observable-strings/state.1.dom.tsx",
+      filename: "state.1.dom.tsx",
+      dirname:
+        "src/blog/unholy-custom-jsx-with-observable-strings",
+      super_extension: "1.dom.tsx",
+      extension: "tsx",
+      importPath:
+        "~/blog/unholy-custom-jsx-with-observable-strings/state.1.dom.tsx",
+      readSync: () =>
+        readFileSync(
+          "src/blog/unholy-custom-jsx-with-observable-strings/state.1.dom.tsx",
+        ).toString(),
+      dynamicImport: () =>
+        import(
+          "~/blog/unholy-custom-jsx-with-observable-strings/state.1.dom.tsx"
+        ),
+      linkTag: () =>
+        "<script type='module' src='/blog/unholy-custom-jsx-with-observable-strings/state.1.dom.tsx'></script>",
+      publicPath:
+        "/blog/unholy-custom-jsx-with-observable-strings/state.1.dom.tsx",
+      markdownDemo: (diffName = "state.1.dom.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/blog/unholy-custom-jsx-with-observable-strings/state.1.dom.tsx").toString()}
+~~~
+<script type='module' src='/blog/unholy-custom-jsx-with-observable-strings/state.1.dom.tsx' demo-for='state.1.dom.tsx'></script>
+`,
+      frontendDemo: (diffName = "state.1.dom.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @@src /blog/unholy-custom-jsx-with-observable-strings/state.1.dom.tsx
+${readFileSync("src/blog/unholy-custom-jsx-with-observable-strings/state.1.dom.tsx").toString()}
+~~~
+<script type='module' src='/blog/unholy-custom-jsx-with-observable-strings/state.1.dom.tsx' demo-for='state.1.dom.tsx'></script>
+`,
+    },
+
+  "src/blog/unholy-custom-jsx-with-observable-strings/5_interval.dom.tsx":
+    {
+      path: "src/blog/unholy-custom-jsx-with-observable-strings/5_interval.dom.tsx",
+      filename: "5_interval.dom.tsx",
+      dirname:
+        "src/blog/unholy-custom-jsx-with-observable-strings",
+      super_extension: "dom.tsx",
+      extension: "tsx",
+      importPath:
+        "~/blog/unholy-custom-jsx-with-observable-strings/5_interval.dom.tsx",
+      readSync: () =>
+        readFileSync(
+          "src/blog/unholy-custom-jsx-with-observable-strings/5_interval.dom.tsx",
+        ).toString(),
+      dynamicImport: () =>
+        import(
+          "~/blog/unholy-custom-jsx-with-observable-strings/5_interval.dom.tsx"
+        ),
+      linkTag: () =>
+        "<script type='module' src='/blog/unholy-custom-jsx-with-observable-strings/5_interval.dom.tsx'></script>",
+      publicPath:
+        "/blog/unholy-custom-jsx-with-observable-strings/5_interval.dom.tsx",
+      markdownDemo: (diffName = "5_interval.dom.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/blog/unholy-custom-jsx-with-observable-strings/5_interval.dom.tsx").toString()}
+~~~
+<script type='module' src='/blog/unholy-custom-jsx-with-observable-strings/5_interval.dom.tsx' demo-for='5_interval.dom.tsx'></script>
+`,
+      frontendDemo: (diffName = "5_interval.dom.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @@src /blog/unholy-custom-jsx-with-observable-strings/5_interval.dom.tsx
+${readFileSync("src/blog/unholy-custom-jsx-with-observable-strings/5_interval.dom.tsx").toString()}
+~~~
+<script type='module' src='/blog/unholy-custom-jsx-with-observable-strings/5_interval.dom.tsx' demo-for='5_interval.dom.tsx'></script>
+`,
+    },
+
+  "src/blog/unholy-custom-jsx-with-observable-strings/state.2.dom.tsx":
+    {
+      path: "src/blog/unholy-custom-jsx-with-observable-strings/state.2.dom.tsx",
+      filename: "state.2.dom.tsx",
+      dirname:
+        "src/blog/unholy-custom-jsx-with-observable-strings",
+      super_extension: "2.dom.tsx",
+      extension: "tsx",
+      importPath:
+        "~/blog/unholy-custom-jsx-with-observable-strings/state.2.dom.tsx",
+      readSync: () =>
+        readFileSync(
+          "src/blog/unholy-custom-jsx-with-observable-strings/state.2.dom.tsx",
+        ).toString(),
+      dynamicImport: () =>
+        import(
+          "~/blog/unholy-custom-jsx-with-observable-strings/state.2.dom.tsx"
+        ),
+      linkTag: () =>
+        "<script type='module' src='/blog/unholy-custom-jsx-with-observable-strings/state.2.dom.tsx'></script>",
+      publicPath:
+        "/blog/unholy-custom-jsx-with-observable-strings/state.2.dom.tsx",
+      markdownDemo: (diffName = "state.2.dom.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/blog/unholy-custom-jsx-with-observable-strings/state.2.dom.tsx").toString()}
+~~~
+<script type='module' src='/blog/unholy-custom-jsx-with-observable-strings/state.2.dom.tsx' demo-for='state.2.dom.tsx'></script>
+`,
+      frontendDemo: (diffName = "state.2.dom.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @@src /blog/unholy-custom-jsx-with-observable-strings/state.2.dom.tsx
+${readFileSync("src/blog/unholy-custom-jsx-with-observable-strings/state.2.dom.tsx").toString()}
+~~~
+<script type='module' src='/blog/unholy-custom-jsx-with-observable-strings/state.2.dom.tsx' demo-for='state.2.dom.tsx'></script>
+`,
+    },
+
+  "src/blog/unholy-custom-jsx-with-observable-strings/6_interval.dom.tsx":
+    {
+      path: "src/blog/unholy-custom-jsx-with-observable-strings/6_interval.dom.tsx",
+      filename: "6_interval.dom.tsx",
+      dirname:
+        "src/blog/unholy-custom-jsx-with-observable-strings",
+      super_extension: "dom.tsx",
+      extension: "tsx",
+      importPath:
+        "~/blog/unholy-custom-jsx-with-observable-strings/6_interval.dom.tsx",
+      readSync: () =>
+        readFileSync(
+          "src/blog/unholy-custom-jsx-with-observable-strings/6_interval.dom.tsx",
+        ).toString(),
+      dynamicImport: () =>
+        import(
+          "~/blog/unholy-custom-jsx-with-observable-strings/6_interval.dom.tsx"
+        ),
+      linkTag: () =>
+        "<script type='module' src='/blog/unholy-custom-jsx-with-observable-strings/6_interval.dom.tsx'></script>",
+      publicPath:
+        "/blog/unholy-custom-jsx-with-observable-strings/6_interval.dom.tsx",
+      markdownDemo: (diffName = "6_interval.dom.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/blog/unholy-custom-jsx-with-observable-strings/6_interval.dom.tsx").toString()}
+~~~
+<script type='module' src='/blog/unholy-custom-jsx-with-observable-strings/6_interval.dom.tsx' demo-for='6_interval.dom.tsx'></script>
+`,
+      frontendDemo: (diffName = "6_interval.dom.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @@src /blog/unholy-custom-jsx-with-observable-strings/6_interval.dom.tsx
+${readFileSync("src/blog/unholy-custom-jsx-with-observable-strings/6_interval.dom.tsx").toString()}
+~~~
+<script type='module' src='/blog/unholy-custom-jsx-with-observable-strings/6_interval.dom.tsx' demo-for='6_interval.dom.tsx'></script>
+`,
     },
 
   "src/blog/unholy-custom-jsx-with-observable-strings/basic.deno.tsx":
@@ -235,7 +556,25 @@ export const FS = {
           "~/blog/unholy-custom-jsx-with-observable-strings/basic.deno.tsx"
         ),
       linkTag: () =>
-        "<script type='module' src='/blog/unholy-custom-jsx-with-observable-strings/basic.deno.tsx' />",
+        "<script type='module' src='/blog/unholy-custom-jsx-with-observable-strings/basic.deno.tsx'></script>",
+      publicPath:
+        "/blog/unholy-custom-jsx-with-observable-strings/basic.deno.tsx",
+      markdownDemo: (diffName = "basic.deno.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/blog/unholy-custom-jsx-with-observable-strings/basic.deno.tsx").toString()}
+~~~
+<script type='module' src='/blog/unholy-custom-jsx-with-observable-strings/basic.deno.tsx' demo-for='basic.deno.tsx'></script>
+`,
+      frontendDemo: (diffName = "basic.deno.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @@src /blog/unholy-custom-jsx-with-observable-strings/basic.deno.tsx
+${readFileSync("src/blog/unholy-custom-jsx-with-observable-strings/basic.deno.tsx").toString()}
+~~~
+<script type='module' src='/blog/unholy-custom-jsx-with-observable-strings/basic.deno.tsx' demo-for='basic.deno.tsx'></script>
+`,
     },
 
   "src/blog/unholy-custom-jsx-with-observable-strings/async.deno.tsx":
@@ -257,7 +596,25 @@ export const FS = {
           "~/blog/unholy-custom-jsx-with-observable-strings/async.deno.tsx"
         ),
       linkTag: () =>
-        "<script type='module' src='/blog/unholy-custom-jsx-with-observable-strings/async.deno.tsx' />",
+        "<script type='module' src='/blog/unholy-custom-jsx-with-observable-strings/async.deno.tsx'></script>",
+      publicPath:
+        "/blog/unholy-custom-jsx-with-observable-strings/async.deno.tsx",
+      markdownDemo: (diffName = "async.deno.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/blog/unholy-custom-jsx-with-observable-strings/async.deno.tsx").toString()}
+~~~
+<script type='module' src='/blog/unholy-custom-jsx-with-observable-strings/async.deno.tsx' demo-for='async.deno.tsx'></script>
+`,
+      frontendDemo: (diffName = "async.deno.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @@src /blog/unholy-custom-jsx-with-observable-strings/async.deno.tsx
+${readFileSync("src/blog/unholy-custom-jsx-with-observable-strings/async.deno.tsx").toString()}
+~~~
+<script type='module' src='/blog/unholy-custom-jsx-with-observable-strings/async.deno.tsx' demo-for='async.deno.tsx'></script>
+`,
     },
 
   "src/blog/unholy-custom-jsx-with-observable-strings/index.render.deno.tsx":
@@ -279,7 +636,29 @@ export const FS = {
           "~/blog/unholy-custom-jsx-with-observable-strings/index.render.deno.tsx"
         ),
       linkTag: () =>
-        "<script type='module' src='/blog/unholy-custom-jsx-with-observable-strings/index.render.deno.tsx' />",
+        "<script type='module' src='/blog/unholy-custom-jsx-with-observable-strings/index.render.deno.tsx'></script>",
+      publicPath:
+        "/blog/unholy-custom-jsx-with-observable-strings/index.render.deno.tsx",
+      markdownDemo: (
+        diffName = "index.render.deno.tsx",
+      ) => `
+~~~tsx
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/blog/unholy-custom-jsx-with-observable-strings/index.render.deno.tsx").toString()}
+~~~
+<script type='module' src='/blog/unholy-custom-jsx-with-observable-strings/index.render.deno.tsx' demo-for='index.render.deno.tsx'></script>
+`,
+      frontendDemo: (
+        diffName = "index.render.deno.tsx",
+      ) => `
+~~~tsx
+// @@filename ${diffName}
+// @@src /blog/unholy-custom-jsx-with-observable-strings/index.render.deno.tsx
+${readFileSync("src/blog/unholy-custom-jsx-with-observable-strings/index.render.deno.tsx").toString()}
+~~~
+<script type='module' src='/blog/unholy-custom-jsx-with-observable-strings/index.render.deno.tsx' demo-for='index.render.deno.tsx'></script>
+`,
     },
 
   "src/blog/1-how-i-made-this-site/server_info.png": {
@@ -335,23 +714,25 @@ export const FS = {
         "~/blog/1-how-i-made-this-site/index.render.deno.tsx"
       ),
     linkTag: () =>
-      "<script type='module' src='/blog/1-how-i-made-this-site/index.render.deno.tsx' />",
-  },
-
-  "src/blog/2-auto-indexing-technique/index.html": {
-    path: "src/blog/2-auto-indexing-technique/index.html",
-    filename: "index.html",
-    dirname: "src/blog/2-auto-indexing-technique",
-    super_extension: "html",
-    extension: "html",
-    importPath:
-      "~/blog/2-auto-indexing-technique/index.html",
-    readSync: () =>
-      readFileSync(
-        "src/blog/2-auto-indexing-technique/index.html",
-      ).toString(),
-
-    public: "/blog/2-auto-indexing-technique/index.html",
+      "<script type='module' src='/blog/1-how-i-made-this-site/index.render.deno.tsx'></script>",
+    publicPath:
+      "/blog/1-how-i-made-this-site/index.render.deno.tsx",
+    markdownDemo: (diffName = "index.render.deno.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/blog/1-how-i-made-this-site/index.render.deno.tsx").toString()}
+~~~
+<script type='module' src='/blog/1-how-i-made-this-site/index.render.deno.tsx' demo-for='index.render.deno.tsx'></script>
+`,
+    frontendDemo: (diffName = "index.render.deno.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @@src /blog/1-how-i-made-this-site/index.render.deno.tsx
+${readFileSync("src/blog/1-how-i-made-this-site/index.render.deno.tsx").toString()}
+~~~
+<script type='module' src='/blog/1-how-i-made-this-site/index.render.deno.tsx' demo-for='index.render.deno.tsx'></script>
+`,
   },
 
   "src/blog/rxjs/recreate-react-query-with-rxjs/sample.deno.tsx":
@@ -373,7 +754,25 @@ export const FS = {
           "~/blog/rxjs/recreate-react-query-with-rxjs/sample.deno.tsx"
         ),
       linkTag: () =>
-        "<script type='module' src='/blog/rxjs/recreate-react-query-with-rxjs/sample.deno.tsx' />",
+        "<script type='module' src='/blog/rxjs/recreate-react-query-with-rxjs/sample.deno.tsx'></script>",
+      publicPath:
+        "/blog/rxjs/recreate-react-query-with-rxjs/sample.deno.tsx",
+      markdownDemo: (diffName = "sample.deno.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/blog/rxjs/recreate-react-query-with-rxjs/sample.deno.tsx").toString()}
+~~~
+<script type='module' src='/blog/rxjs/recreate-react-query-with-rxjs/sample.deno.tsx' demo-for='sample.deno.tsx'></script>
+`,
+      frontendDemo: (diffName = "sample.deno.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @@src /blog/rxjs/recreate-react-query-with-rxjs/sample.deno.tsx
+${readFileSync("src/blog/rxjs/recreate-react-query-with-rxjs/sample.deno.tsx").toString()}
+~~~
+<script type='module' src='/blog/rxjs/recreate-react-query-with-rxjs/sample.deno.tsx' demo-for='sample.deno.tsx'></script>
+`,
     },
 
   "src/blog/rxjs/recreate-react-query-with-rxjs/index.render.deno.tsx":
@@ -395,7 +794,29 @@ export const FS = {
           "~/blog/rxjs/recreate-react-query-with-rxjs/index.render.deno.tsx"
         ),
       linkTag: () =>
-        "<script type='module' src='/blog/rxjs/recreate-react-query-with-rxjs/index.render.deno.tsx' />",
+        "<script type='module' src='/blog/rxjs/recreate-react-query-with-rxjs/index.render.deno.tsx'></script>",
+      publicPath:
+        "/blog/rxjs/recreate-react-query-with-rxjs/index.render.deno.tsx",
+      markdownDemo: (
+        diffName = "index.render.deno.tsx",
+      ) => `
+~~~tsx
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/blog/rxjs/recreate-react-query-with-rxjs/index.render.deno.tsx").toString()}
+~~~
+<script type='module' src='/blog/rxjs/recreate-react-query-with-rxjs/index.render.deno.tsx' demo-for='index.render.deno.tsx'></script>
+`,
+      frontendDemo: (
+        diffName = "index.render.deno.tsx",
+      ) => `
+~~~tsx
+// @@filename ${diffName}
+// @@src /blog/rxjs/recreate-react-query-with-rxjs/index.render.deno.tsx
+${readFileSync("src/blog/rxjs/recreate-react-query-with-rxjs/index.render.deno.tsx").toString()}
+~~~
+<script type='module' src='/blog/rxjs/recreate-react-query-with-rxjs/index.render.deno.tsx' demo-for='index.render.deno.tsx'></script>
+`,
     },
 
   "src/blog/state-management-showdown/state-management-showdown-rxjs-vs-react-hooks/index.render.deno.tsx":
@@ -417,7 +838,29 @@ export const FS = {
           "~/blog/state-management-showdown/state-management-showdown-rxjs-vs-react-hooks/index.render.deno.tsx"
         ),
       linkTag: () =>
-        "<script type='module' src='/blog/state-management-showdown/state-management-showdown-rxjs-vs-react-hooks/index.render.deno.tsx' />",
+        "<script type='module' src='/blog/state-management-showdown/state-management-showdown-rxjs-vs-react-hooks/index.render.deno.tsx'></script>",
+      publicPath:
+        "/blog/state-management-showdown/state-management-showdown-rxjs-vs-react-hooks/index.render.deno.tsx",
+      markdownDemo: (
+        diffName = "index.render.deno.tsx",
+      ) => `
+~~~tsx
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/blog/state-management-showdown/state-management-showdown-rxjs-vs-react-hooks/index.render.deno.tsx").toString()}
+~~~
+<script type='module' src='/blog/state-management-showdown/state-management-showdown-rxjs-vs-react-hooks/index.render.deno.tsx' demo-for='index.render.deno.tsx'></script>
+`,
+      frontendDemo: (
+        diffName = "index.render.deno.tsx",
+      ) => `
+~~~tsx
+// @@filename ${diffName}
+// @@src /blog/state-management-showdown/state-management-showdown-rxjs-vs-react-hooks/index.render.deno.tsx
+${readFileSync("src/blog/state-management-showdown/state-management-showdown-rxjs-vs-react-hooks/index.render.deno.tsx").toString()}
+~~~
+<script type='module' src='/blog/state-management-showdown/state-management-showdown-rxjs-vs-react-hooks/index.render.deno.tsx' demo-for='index.render.deno.tsx'></script>
+`,
     },
 
   "src/blog/index.render.deno.tsx": {
@@ -434,7 +877,24 @@ export const FS = {
     dynamicImport: () =>
       import("~/blog/index.render.deno.tsx"),
     linkTag: () =>
-      "<script type='module' src='/blog/index.render.deno.tsx' />",
+      "<script type='module' src='/blog/index.render.deno.tsx'></script>",
+    publicPath: "/blog/index.render.deno.tsx",
+    markdownDemo: (diffName = "index.render.deno.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/blog/index.render.deno.tsx").toString()}
+~~~
+<script type='module' src='/blog/index.render.deno.tsx' demo-for='index.render.deno.tsx'></script>
+`,
+    frontendDemo: (diffName = "index.render.deno.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @@src /blog/index.render.deno.tsx
+${readFileSync("src/blog/index.render.deno.tsx").toString()}
+~~~
+<script type='module' src='/blog/index.render.deno.tsx' demo-for='index.render.deno.tsx'></script>
+`,
   },
 
   "src/blog/make-your-own-sitemap-with-typescript/example.css":
@@ -477,7 +937,29 @@ export const FS = {
           "~/blog/make-your-own-sitemap-with-typescript/index.render.deno.tsx"
         ),
       linkTag: () =>
-        "<script type='module' src='/blog/make-your-own-sitemap-with-typescript/index.render.deno.tsx' />",
+        "<script type='module' src='/blog/make-your-own-sitemap-with-typescript/index.render.deno.tsx'></script>",
+      publicPath:
+        "/blog/make-your-own-sitemap-with-typescript/index.render.deno.tsx",
+      markdownDemo: (
+        diffName = "index.render.deno.tsx",
+      ) => `
+~~~tsx
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/blog/make-your-own-sitemap-with-typescript/index.render.deno.tsx").toString()}
+~~~
+<script type='module' src='/blog/make-your-own-sitemap-with-typescript/index.render.deno.tsx' demo-for='index.render.deno.tsx'></script>
+`,
+      frontendDemo: (
+        diffName = "index.render.deno.tsx",
+      ) => `
+~~~tsx
+// @@filename ${diffName}
+// @@src /blog/make-your-own-sitemap-with-typescript/index.render.deno.tsx
+${readFileSync("src/blog/make-your-own-sitemap-with-typescript/index.render.deno.tsx").toString()}
+~~~
+<script type='module' src='/blog/make-your-own-sitemap-with-typescript/index.render.deno.tsx' demo-for='index.render.deno.tsx'></script>
+`,
     },
 
   "src/blog/make-your-own-sitemap-with-typescript/src/blog/hello-world/index.css":
@@ -501,26 +983,48 @@ export const FS = {
         "/blog/make-your-own-sitemap-with-typescript/src/blog/hello-world/index.css",
     },
 
-  "src/blog/make-your-own-sitemap-with-typescript/src/blog/hello-world/index.render.deno.tsx":
+  "src/blog/make-your-own-sitemap-with-typescript/src/blog/hello-world/index2.render.deno.tsx":
     {
-      path: "src/blog/make-your-own-sitemap-with-typescript/src/blog/hello-world/index.render.deno.tsx",
-      filename: "index.render.deno.tsx",
+      path: "src/blog/make-your-own-sitemap-with-typescript/src/blog/hello-world/index2.render.deno.tsx",
+      filename: "index2.render.deno.tsx",
       dirname:
         "src/blog/make-your-own-sitemap-with-typescript/src/blog/hello-world",
       super_extension: "render.deno.tsx",
       extension: "tsx",
       importPath:
-        "~/blog/make-your-own-sitemap-with-typescript/src/blog/hello-world/index.render.deno.tsx",
+        "~/blog/make-your-own-sitemap-with-typescript/src/blog/hello-world/index2.render.deno.tsx",
       readSync: () =>
         readFileSync(
-          "src/blog/make-your-own-sitemap-with-typescript/src/blog/hello-world/index.render.deno.tsx",
+          "src/blog/make-your-own-sitemap-with-typescript/src/blog/hello-world/index2.render.deno.tsx",
         ).toString(),
       dynamicImport: () =>
         import(
-          "~/blog/make-your-own-sitemap-with-typescript/src/blog/hello-world/index.render.deno.tsx"
+          "~/blog/make-your-own-sitemap-with-typescript/src/blog/hello-world/index2.render.deno.tsx"
         ),
       linkTag: () =>
-        "<script type='module' src='/blog/make-your-own-sitemap-with-typescript/src/blog/hello-world/index.render.deno.tsx' />",
+        "<script type='module' src='/blog/make-your-own-sitemap-with-typescript/src/blog/hello-world/index2.render.deno.tsx'></script>",
+      publicPath:
+        "/blog/make-your-own-sitemap-with-typescript/src/blog/hello-world/index2.render.deno.tsx",
+      markdownDemo: (
+        diffName = "index2.render.deno.tsx",
+      ) => `
+~~~tsx
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/blog/make-your-own-sitemap-with-typescript/src/blog/hello-world/index2.render.deno.tsx").toString()}
+~~~
+<script type='module' src='/blog/make-your-own-sitemap-with-typescript/src/blog/hello-world/index2.render.deno.tsx' demo-for='index2.render.deno.tsx'></script>
+`,
+      frontendDemo: (
+        diffName = "index2.render.deno.tsx",
+      ) => `
+~~~tsx
+// @@filename ${diffName}
+// @@src /blog/make-your-own-sitemap-with-typescript/src/blog/hello-world/index2.render.deno.tsx
+${readFileSync("src/blog/make-your-own-sitemap-with-typescript/src/blog/hello-world/index2.render.deno.tsx").toString()}
+~~~
+<script type='module' src='/blog/make-your-own-sitemap-with-typescript/src/blog/hello-world/index2.render.deno.tsx' demo-for='index2.render.deno.tsx'></script>
+`,
     },
 
   "src/blog/make-your-own-sitemap-with-typescript/src/blog/hello-world/example.png":
@@ -563,8 +1067,41 @@ export const FS = {
           "~/blog/make-your-own-sitemap-with-typescript/src/SITEMAP.deno.ts"
         ),
       linkTag: () =>
-        "<script type='module' src='/blog/make-your-own-sitemap-with-typescript/src/SITEMAP.deno.ts' />",
+        "<script type='module' src='/blog/make-your-own-sitemap-with-typescript/src/SITEMAP.deno.ts'></script>",
+      publicPath:
+        "/blog/make-your-own-sitemap-with-typescript/src/SITEMAP.deno.ts",
+      markdownDemo: (diffName = "SITEMAP.deno.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/blog/make-your-own-sitemap-with-typescript/src/SITEMAP.deno.ts").toString()}
+~~~
+<script type='module' src='/blog/make-your-own-sitemap-with-typescript/src/SITEMAP.deno.ts' demo-for='SITEMAP.deno.ts'></script>
+`,
+      frontendDemo: (diffName = "SITEMAP.deno.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @@src /blog/make-your-own-sitemap-with-typescript/src/SITEMAP.deno.ts
+${readFileSync("src/blog/make-your-own-sitemap-with-typescript/src/SITEMAP.deno.ts").toString()}
+~~~
+<script type='module' src='/blog/make-your-own-sitemap-with-typescript/src/SITEMAP.deno.ts' demo-for='SITEMAP.deno.ts'></script>
+`,
     },
+
+  "src/bash/_.watch.add-relative-fs-info.bash": {
+    path: "src/bash/_.watch.add-relative-fs-info.bash",
+    filename: "_.watch.add-relative-fs-info.bash",
+    dirname: "src/bash",
+    super_extension: "watch.add-relative-fs-info.bash",
+    extension: "bash",
+    importPath: "~/bash/_.watch.add-relative-fs-info.bash",
+    readSync: () =>
+      readFileSync(
+        "src/bash/_.watch.add-relative-fs-info.bash",
+      ).toString(),
+
+    public: "/bash/_.watch.add-relative-fs-info.bash",
+  },
 
   "src/bash/sitemap-watcher.bash": {
     path: "src/bash/sitemap-watcher.bash",
@@ -666,7 +1203,24 @@ export const FS = {
     dynamicImport: () =>
       import("~/tags/index.render.deno.tsx"),
     linkTag: () =>
-      "<script type='module' src='/tags/index.render.deno.tsx' />",
+      "<script type='module' src='/tags/index.render.deno.tsx'></script>",
+    publicPath: "/tags/index.render.deno.tsx",
+    markdownDemo: (diffName = "index.render.deno.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/tags/index.render.deno.tsx").toString()}
+~~~
+<script type='module' src='/tags/index.render.deno.tsx' demo-for='index.render.deno.tsx'></script>
+`,
+    frontendDemo: (diffName = "index.render.deno.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @@src /tags/index.render.deno.tsx
+${readFileSync("src/tags/index.render.deno.tsx").toString()}
+~~~
+<script type='module' src='/tags/index.render.deno.tsx' demo-for='index.render.deno.tsx'></script>
+`,
   },
 
   "src/vite-env.d.ts": {
@@ -680,7 +1234,24 @@ export const FS = {
       readFileSync("src/vite-env.d.ts").toString(),
     dynamicImport: () => import("~/vite-env.d.ts"),
     linkTag: () =>
-      "<script type='module' src='/vite-env.d.ts' />",
+      "<script type='module' src='/vite-env.d.ts'></script>",
+    publicPath: "/vite-env.d.ts",
+    markdownDemo: (diffName = "vite-env.d.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/vite-env.d.ts").toString()}
+~~~
+<script type='module' src='/vite-env.d.ts' demo-for='vite-env.d.ts'></script>
+`,
+    frontendDemo: (diffName = "vite-env.d.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @@src /vite-env.d.ts
+${readFileSync("src/vite-env.d.ts").toString()}
+~~~
+<script type='module' src='/vite-env.d.ts' demo-for='vite-env.d.ts'></script>
+`,
   },
 
   "src/unix_socket_test/c_child.deno.ts": {
@@ -697,7 +1268,24 @@ export const FS = {
     dynamicImport: () =>
       import("~/unix_socket_test/c_child.deno.ts"),
     linkTag: () =>
-      "<script type='module' src='/unix_socket_test/c_child.deno.ts' />",
+      "<script type='module' src='/unix_socket_test/c_child.deno.ts'></script>",
+    publicPath: "/unix_socket_test/c_child.deno.ts",
+    markdownDemo: (diffName = "c_child.deno.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/unix_socket_test/c_child.deno.ts").toString()}
+~~~
+<script type='module' src='/unix_socket_test/c_child.deno.ts' demo-for='c_child.deno.ts'></script>
+`,
+    frontendDemo: (diffName = "c_child.deno.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @@src /unix_socket_test/c_child.deno.ts
+${readFileSync("src/unix_socket_test/c_child.deno.ts").toString()}
+~~~
+<script type='module' src='/unix_socket_test/c_child.deno.ts' demo-for='c_child.deno.ts'></script>
+`,
   },
 
   "src/unix_socket_test/b_child.deno.ts": {
@@ -714,7 +1302,24 @@ export const FS = {
     dynamicImport: () =>
       import("~/unix_socket_test/b_child.deno.ts"),
     linkTag: () =>
-      "<script type='module' src='/unix_socket_test/b_child.deno.ts' />",
+      "<script type='module' src='/unix_socket_test/b_child.deno.ts'></script>",
+    publicPath: "/unix_socket_test/b_child.deno.ts",
+    markdownDemo: (diffName = "b_child.deno.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/unix_socket_test/b_child.deno.ts").toString()}
+~~~
+<script type='module' src='/unix_socket_test/b_child.deno.ts' demo-for='b_child.deno.ts'></script>
+`,
+    frontendDemo: (diffName = "b_child.deno.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @@src /unix_socket_test/b_child.deno.ts
+${readFileSync("src/unix_socket_test/b_child.deno.ts").toString()}
+~~~
+<script type='module' src='/unix_socket_test/b_child.deno.ts' demo-for='b_child.deno.ts'></script>
+`,
   },
 
   "src/unix_socket_test/test.deno.ts": {
@@ -731,7 +1336,24 @@ export const FS = {
     dynamicImport: () =>
       import("~/unix_socket_test/test.deno.ts"),
     linkTag: () =>
-      "<script type='module' src='/unix_socket_test/test.deno.ts' />",
+      "<script type='module' src='/unix_socket_test/test.deno.ts'></script>",
+    publicPath: "/unix_socket_test/test.deno.ts",
+    markdownDemo: (diffName = "test.deno.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/unix_socket_test/test.deno.ts").toString()}
+~~~
+<script type='module' src='/unix_socket_test/test.deno.ts' demo-for='test.deno.ts'></script>
+`,
+    frontendDemo: (diffName = "test.deno.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @@src /unix_socket_test/test.deno.ts
+${readFileSync("src/unix_socket_test/test.deno.ts").toString()}
+~~~
+<script type='module' src='/unix_socket_test/test.deno.ts' demo-for='test.deno.ts'></script>
+`,
   },
 
   "src/unix_socket_test/a_parent.deno.ts": {
@@ -748,7 +1370,24 @@ export const FS = {
     dynamicImport: () =>
       import("~/unix_socket_test/a_parent.deno.ts"),
     linkTag: () =>
-      "<script type='module' src='/unix_socket_test/a_parent.deno.ts' />",
+      "<script type='module' src='/unix_socket_test/a_parent.deno.ts'></script>",
+    publicPath: "/unix_socket_test/a_parent.deno.ts",
+    markdownDemo: (diffName = "a_parent.deno.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/unix_socket_test/a_parent.deno.ts").toString()}
+~~~
+<script type='module' src='/unix_socket_test/a_parent.deno.ts' demo-for='a_parent.deno.ts'></script>
+`,
+    frontendDemo: (diffName = "a_parent.deno.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @@src /unix_socket_test/a_parent.deno.ts
+${readFileSync("src/unix_socket_test/a_parent.deno.ts").toString()}
+~~~
+<script type='module' src='/unix_socket_test/a_parent.deno.ts' demo-for='a_parent.deno.ts'></script>
+`,
   },
 
   "src/lib/shiki/gen.deno.ts": {
@@ -762,7 +1401,24 @@ export const FS = {
       readFileSync("src/lib/shiki/gen.deno.ts").toString(),
     dynamicImport: () => import("~/lib/shiki/gen.deno.ts"),
     linkTag: () =>
-      "<script type='module' src='/lib/shiki/gen.deno.ts' />",
+      "<script type='module' src='/lib/shiki/gen.deno.ts'></script>",
+    publicPath: "/lib/shiki/gen.deno.ts",
+    markdownDemo: (diffName = "gen.deno.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/lib/shiki/gen.deno.ts").toString()}
+~~~
+<script type='module' src='/lib/shiki/gen.deno.ts' demo-for='gen.deno.ts'></script>
+`,
+    frontendDemo: (diffName = "gen.deno.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @@src /lib/shiki/gen.deno.ts
+${readFileSync("src/lib/shiki/gen.deno.ts").toString()}
+~~~
+<script type='module' src='/lib/shiki/gen.deno.ts' demo-for='gen.deno.ts'></script>
+`,
   },
 
   "src/lib/Hex/index.dual.tsx": {
@@ -776,7 +1432,24 @@ export const FS = {
       readFileSync("src/lib/Hex/index.dual.tsx").toString(),
     dynamicImport: () => import("~/lib/Hex/index.dual.tsx"),
     linkTag: () =>
-      "<script type='module' src='/lib/Hex/index.dual.tsx' />",
+      "<script type='module' src='/lib/Hex/index.dual.tsx'></script>",
+    publicPath: "/lib/Hex/index.dual.tsx",
+    markdownDemo: (diffName = "index.dual.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/lib/Hex/index.dual.tsx").toString()}
+~~~
+<script type='module' src='/lib/Hex/index.dual.tsx' demo-for='index.dual.tsx'></script>
+`,
+    frontendDemo: (diffName = "index.dual.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @@src /lib/Hex/index.dual.tsx
+${readFileSync("src/lib/Hex/index.dual.tsx").toString()}
+~~~
+<script type='module' src='/lib/Hex/index.dual.tsx' demo-for='index.dual.tsx'></script>
+`,
   },
 
   "src/lib/rxjs-vhtml/vhtml.deno.ts": {
@@ -793,7 +1466,264 @@ export const FS = {
     dynamicImport: () =>
       import("~/lib/rxjs-vhtml/vhtml.deno.ts"),
     linkTag: () =>
-      "<script type='module' src='/lib/rxjs-vhtml/vhtml.deno.ts' />",
+      "<script type='module' src='/lib/rxjs-vhtml/vhtml.deno.ts'></script>",
+    publicPath: "/lib/rxjs-vhtml/vhtml.deno.ts",
+    markdownDemo: (diffName = "vhtml.deno.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/lib/rxjs-vhtml/vhtml.deno.ts").toString()}
+~~~
+<script type='module' src='/lib/rxjs-vhtml/vhtml.deno.ts' demo-for='vhtml.deno.ts'></script>
+`,
+    frontendDemo: (diffName = "vhtml.deno.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @@src /lib/rxjs-vhtml/vhtml.deno.ts
+${readFileSync("src/lib/rxjs-vhtml/vhtml.deno.ts").toString()}
+~~~
+<script type='module' src='/lib/rxjs-vhtml/vhtml.deno.ts' demo-for='vhtml.deno.ts'></script>
+`,
+  },
+
+  "src/lib/rxjs-vhtml/v2/out/rxjs-vhtml/v2/jsx-runtime.d.ts":
+    {
+      path: "src/lib/rxjs-vhtml/v2/out/rxjs-vhtml/v2/jsx-runtime.d.ts",
+      filename: "jsx-runtime.d.ts",
+      dirname: "src/lib/rxjs-vhtml/v2/out/rxjs-vhtml/v2",
+      super_extension: "d.ts",
+      extension: "ts",
+      importPath:
+        "~/lib/rxjs-vhtml/v2/out/rxjs-vhtml/v2/jsx-runtime.d.ts",
+      readSync: () =>
+        readFileSync(
+          "src/lib/rxjs-vhtml/v2/out/rxjs-vhtml/v2/jsx-runtime.d.ts",
+        ).toString(),
+      dynamicImport: () =>
+        import(
+          "~/lib/rxjs-vhtml/v2/out/rxjs-vhtml/v2/jsx-runtime.d.ts"
+        ),
+      linkTag: () =>
+        "<script type='module' src='/lib/rxjs-vhtml/v2/out/rxjs-vhtml/v2/jsx-runtime.d.ts'></script>",
+      publicPath:
+        "/lib/rxjs-vhtml/v2/out/rxjs-vhtml/v2/jsx-runtime.d.ts",
+      markdownDemo: (diffName = "jsx-runtime.d.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/lib/rxjs-vhtml/v2/out/rxjs-vhtml/v2/jsx-runtime.d.ts").toString()}
+~~~
+<script type='module' src='/lib/rxjs-vhtml/v2/out/rxjs-vhtml/v2/jsx-runtime.d.ts' demo-for='jsx-runtime.d.ts'></script>
+`,
+      frontendDemo: (diffName = "jsx-runtime.d.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @@src /lib/rxjs-vhtml/v2/out/rxjs-vhtml/v2/jsx-runtime.d.ts
+${readFileSync("src/lib/rxjs-vhtml/v2/out/rxjs-vhtml/v2/jsx-runtime.d.ts").toString()}
+~~~
+<script type='module' src='/lib/rxjs-vhtml/v2/out/rxjs-vhtml/v2/jsx-runtime.d.ts' demo-for='jsx-runtime.d.ts'></script>
+`,
+    },
+
+  "src/lib/rxjs-vhtml/v2/out/rxjs-vhtml/v2/jsx-runtime.js":
+    {
+      path: "src/lib/rxjs-vhtml/v2/out/rxjs-vhtml/v2/jsx-runtime.js",
+      filename: "jsx-runtime.js",
+      dirname: "src/lib/rxjs-vhtml/v2/out/rxjs-vhtml/v2",
+      super_extension: "js",
+      extension: "js",
+      importPath:
+        "~/lib/rxjs-vhtml/v2/out/rxjs-vhtml/v2/jsx-runtime.js",
+      readSync: () =>
+        readFileSync(
+          "src/lib/rxjs-vhtml/v2/out/rxjs-vhtml/v2/jsx-runtime.js",
+        ).toString(),
+      dynamicImport: () =>
+        import(
+          "~/lib/rxjs-vhtml/v2/out/rxjs-vhtml/v2/jsx-runtime.js"
+        ),
+      linkTag: () =>
+        "<script type='module' src='/lib/rxjs-vhtml/v2/out/rxjs-vhtml/v2/jsx-runtime.js'></script>",
+      publicPath:
+        "/lib/rxjs-vhtml/v2/out/rxjs-vhtml/v2/jsx-runtime.js",
+      markdownDemo: (diffName = "jsx-runtime.js") => `
+~~~js
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/lib/rxjs-vhtml/v2/out/rxjs-vhtml/v2/jsx-runtime.js").toString()}
+~~~
+<script type='module' src='/lib/rxjs-vhtml/v2/out/rxjs-vhtml/v2/jsx-runtime.js' demo-for='jsx-runtime.js'></script>
+`,
+      frontendDemo: (diffName = "jsx-runtime.js") => `
+~~~js
+// @@filename ${diffName}
+// @@src /lib/rxjs-vhtml/v2/out/rxjs-vhtml/v2/jsx-runtime.js
+${readFileSync("src/lib/rxjs-vhtml/v2/out/rxjs-vhtml/v2/jsx-runtime.js").toString()}
+~~~
+<script type='module' src='/lib/rxjs-vhtml/v2/out/rxjs-vhtml/v2/jsx-runtime.js' demo-for='jsx-runtime.js'></script>
+`,
+    },
+
+  "src/lib/rxjs-vhtml/v2/out/rxjs-vhtml/v2/jsx-runtime.d.mts":
+    {
+      path: "src/lib/rxjs-vhtml/v2/out/rxjs-vhtml/v2/jsx-runtime.d.mts",
+      filename: "jsx-runtime.d.mts",
+      dirname: "src/lib/rxjs-vhtml/v2/out/rxjs-vhtml/v2",
+      super_extension: "d.mts",
+      extension: "mts",
+      importPath:
+        "~/lib/rxjs-vhtml/v2/out/rxjs-vhtml/v2/jsx-runtime.d.mts",
+      readSync: () =>
+        readFileSync(
+          "src/lib/rxjs-vhtml/v2/out/rxjs-vhtml/v2/jsx-runtime.d.mts",
+        ).toString(),
+
+      public:
+        "/lib/rxjs-vhtml/v2/out/rxjs-vhtml/v2/jsx-runtime.d.mts",
+    },
+
+  "src/lib/rxjs-vhtml/v2/out/rxjs-vhtml/vhtml.deno.js": {
+    path: "src/lib/rxjs-vhtml/v2/out/rxjs-vhtml/vhtml.deno.js",
+    filename: "vhtml.deno.js",
+    dirname: "src/lib/rxjs-vhtml/v2/out/rxjs-vhtml",
+    super_extension: "deno.js",
+    extension: "js",
+    importPath:
+      "~/lib/rxjs-vhtml/v2/out/rxjs-vhtml/vhtml.deno.js",
+    readSync: () =>
+      readFileSync(
+        "src/lib/rxjs-vhtml/v2/out/rxjs-vhtml/vhtml.deno.js",
+      ).toString(),
+    dynamicImport: () =>
+      import(
+        "~/lib/rxjs-vhtml/v2/out/rxjs-vhtml/vhtml.deno.js"
+      ),
+    linkTag: () =>
+      "<script type='module' src='/lib/rxjs-vhtml/v2/out/rxjs-vhtml/vhtml.deno.js'></script>",
+    publicPath:
+      "/lib/rxjs-vhtml/v2/out/rxjs-vhtml/vhtml.deno.js",
+    markdownDemo: (diffName = "vhtml.deno.js") => `
+~~~js
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/lib/rxjs-vhtml/v2/out/rxjs-vhtml/vhtml.deno.js").toString()}
+~~~
+<script type='module' src='/lib/rxjs-vhtml/v2/out/rxjs-vhtml/vhtml.deno.js' demo-for='vhtml.deno.js'></script>
+`,
+    frontendDemo: (diffName = "vhtml.deno.js") => `
+~~~js
+// @@filename ${diffName}
+// @@src /lib/rxjs-vhtml/v2/out/rxjs-vhtml/vhtml.deno.js
+${readFileSync("src/lib/rxjs-vhtml/v2/out/rxjs-vhtml/vhtml.deno.js").toString()}
+~~~
+<script type='module' src='/lib/rxjs-vhtml/v2/out/rxjs-vhtml/vhtml.deno.js' demo-for='vhtml.deno.js'></script>
+`,
+  },
+
+  "src/lib/rxjs-vhtml/v2/out/rxjs-vhtml/vhtml.deno.d.ts": {
+    path: "src/lib/rxjs-vhtml/v2/out/rxjs-vhtml/vhtml.deno.d.ts",
+    filename: "vhtml.deno.d.ts",
+    dirname: "src/lib/rxjs-vhtml/v2/out/rxjs-vhtml",
+    super_extension: "deno.d.ts",
+    extension: "ts",
+    importPath:
+      "~/lib/rxjs-vhtml/v2/out/rxjs-vhtml/vhtml.deno.d.ts",
+    readSync: () =>
+      readFileSync(
+        "src/lib/rxjs-vhtml/v2/out/rxjs-vhtml/vhtml.deno.d.ts",
+      ).toString(),
+    dynamicImport: () =>
+      import(
+        "~/lib/rxjs-vhtml/v2/out/rxjs-vhtml/vhtml.deno.d.ts"
+      ),
+    linkTag: () =>
+      "<script type='module' src='/lib/rxjs-vhtml/v2/out/rxjs-vhtml/vhtml.deno.d.ts'></script>",
+    publicPath:
+      "/lib/rxjs-vhtml/v2/out/rxjs-vhtml/vhtml.deno.d.ts",
+    markdownDemo: (diffName = "vhtml.deno.d.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/lib/rxjs-vhtml/v2/out/rxjs-vhtml/vhtml.deno.d.ts").toString()}
+~~~
+<script type='module' src='/lib/rxjs-vhtml/v2/out/rxjs-vhtml/vhtml.deno.d.ts' demo-for='vhtml.deno.d.ts'></script>
+`,
+    frontendDemo: (diffName = "vhtml.deno.d.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @@src /lib/rxjs-vhtml/v2/out/rxjs-vhtml/vhtml.deno.d.ts
+${readFileSync("src/lib/rxjs-vhtml/v2/out/rxjs-vhtml/vhtml.deno.d.ts").toString()}
+~~~
+<script type='module' src='/lib/rxjs-vhtml/v2/out/rxjs-vhtml/vhtml.deno.d.ts' demo-for='vhtml.deno.d.ts'></script>
+`,
+  },
+
+  "src/lib/rxjs-vhtml/v2/out/lib.dual.js": {
+    path: "src/lib/rxjs-vhtml/v2/out/lib.dual.js",
+    filename: "lib.dual.js",
+    dirname: "src/lib/rxjs-vhtml/v2/out",
+    super_extension: "dual.js",
+    extension: "js",
+    importPath: "~/lib/rxjs-vhtml/v2/out/lib.dual.js",
+    readSync: () =>
+      readFileSync(
+        "src/lib/rxjs-vhtml/v2/out/lib.dual.js",
+      ).toString(),
+    dynamicImport: () =>
+      import("~/lib/rxjs-vhtml/v2/out/lib.dual.js"),
+    linkTag: () =>
+      "<script type='module' src='/lib/rxjs-vhtml/v2/out/lib.dual.js'></script>",
+    publicPath: "/lib/rxjs-vhtml/v2/out/lib.dual.js",
+    markdownDemo: (diffName = "lib.dual.js") => `
+~~~js
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/lib/rxjs-vhtml/v2/out/lib.dual.js").toString()}
+~~~
+<script type='module' src='/lib/rxjs-vhtml/v2/out/lib.dual.js' demo-for='lib.dual.js'></script>
+`,
+    frontendDemo: (diffName = "lib.dual.js") => `
+~~~js
+// @@filename ${diffName}
+// @@src /lib/rxjs-vhtml/v2/out/lib.dual.js
+${readFileSync("src/lib/rxjs-vhtml/v2/out/lib.dual.js").toString()}
+~~~
+<script type='module' src='/lib/rxjs-vhtml/v2/out/lib.dual.js' demo-for='lib.dual.js'></script>
+`,
+  },
+
+  "src/lib/rxjs-vhtml/v2/out/lib.dual.d.ts": {
+    path: "src/lib/rxjs-vhtml/v2/out/lib.dual.d.ts",
+    filename: "lib.dual.d.ts",
+    dirname: "src/lib/rxjs-vhtml/v2/out",
+    super_extension: "dual.d.ts",
+    extension: "ts",
+    importPath: "~/lib/rxjs-vhtml/v2/out/lib.dual.d.ts",
+    readSync: () =>
+      readFileSync(
+        "src/lib/rxjs-vhtml/v2/out/lib.dual.d.ts",
+      ).toString(),
+    dynamicImport: () =>
+      import("~/lib/rxjs-vhtml/v2/out/lib.dual.d.ts"),
+    linkTag: () =>
+      "<script type='module' src='/lib/rxjs-vhtml/v2/out/lib.dual.d.ts'></script>",
+    publicPath: "/lib/rxjs-vhtml/v2/out/lib.dual.d.ts",
+    markdownDemo: (diffName = "lib.dual.d.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/lib/rxjs-vhtml/v2/out/lib.dual.d.ts").toString()}
+~~~
+<script type='module' src='/lib/rxjs-vhtml/v2/out/lib.dual.d.ts' demo-for='lib.dual.d.ts'></script>
+`,
+    frontendDemo: (diffName = "lib.dual.d.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @@src /lib/rxjs-vhtml/v2/out/lib.dual.d.ts
+${readFileSync("src/lib/rxjs-vhtml/v2/out/lib.dual.d.ts").toString()}
+~~~
+<script type='module' src='/lib/rxjs-vhtml/v2/out/lib.dual.d.ts' demo-for='lib.dual.d.ts'></script>
+`,
   },
 
   "src/lib/rxjs-vhtml/v2/jsx-runtime.mts": {
@@ -811,22 +1741,87 @@ export const FS = {
     public: "/lib/rxjs-vhtml/v2/jsx-runtime.mts",
   },
 
-  "src/lib/rxjs-vhtml/v2/jsx-runtime.v2.deno.tsx": {
-    path: "src/lib/rxjs-vhtml/v2/jsx-runtime.v2.deno.tsx",
-    filename: "jsx-runtime.v2.deno.tsx",
+  "src/lib/rxjs-vhtml/v2/package.json": {
+    path: "src/lib/rxjs-vhtml/v2/package.json",
+    filename: "package.json",
     dirname: "src/lib/rxjs-vhtml/v2",
-    super_extension: "v2.deno.tsx",
-    extension: "tsx",
-    importPath:
-      "~/lib/rxjs-vhtml/v2/jsx-runtime.v2.deno.tsx",
+    super_extension: "json",
+    extension: "json",
+    importPath: "~/lib/rxjs-vhtml/v2/package.json",
     readSync: () =>
       readFileSync(
-        "src/lib/rxjs-vhtml/v2/jsx-runtime.v2.deno.tsx",
+        "src/lib/rxjs-vhtml/v2/package.json",
+      ).toString(),
+
+    public: "/lib/rxjs-vhtml/v2/package.json",
+  },
+
+  "src/lib/rxjs-vhtml/v2/jsx-runtime.tsx": {
+    path: "src/lib/rxjs-vhtml/v2/jsx-runtime.tsx",
+    filename: "jsx-runtime.tsx",
+    dirname: "src/lib/rxjs-vhtml/v2",
+    super_extension: "tsx",
+    extension: "tsx",
+    importPath: "~/lib/rxjs-vhtml/v2/jsx-runtime.tsx",
+    readSync: () =>
+      readFileSync(
+        "src/lib/rxjs-vhtml/v2/jsx-runtime.tsx",
       ).toString(),
     dynamicImport: () =>
-      import("~/lib/rxjs-vhtml/v2/jsx-runtime.v2.deno.tsx"),
+      import("~/lib/rxjs-vhtml/v2/jsx-runtime.tsx"),
     linkTag: () =>
-      "<script type='module' src='/lib/rxjs-vhtml/v2/jsx-runtime.v2.deno.tsx' />",
+      "<script type='module' src='/lib/rxjs-vhtml/v2/jsx-runtime.tsx'></script>",
+    publicPath: "/lib/rxjs-vhtml/v2/jsx-runtime.tsx",
+    markdownDemo: (diffName = "jsx-runtime.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/lib/rxjs-vhtml/v2/jsx-runtime.tsx").toString()}
+~~~
+<script type='module' src='/lib/rxjs-vhtml/v2/jsx-runtime.tsx' demo-for='jsx-runtime.tsx'></script>
+`,
+    frontendDemo: (diffName = "jsx-runtime.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @@src /lib/rxjs-vhtml/v2/jsx-runtime.tsx
+${readFileSync("src/lib/rxjs-vhtml/v2/jsx-runtime.tsx").toString()}
+~~~
+<script type='module' src='/lib/rxjs-vhtml/v2/jsx-runtime.tsx' demo-for='jsx-runtime.tsx'></script>
+`,
+  },
+
+  "src/lib/rxjs-vhtml/vhtml.deno.js": {
+    path: "src/lib/rxjs-vhtml/vhtml.deno.js",
+    filename: "vhtml.deno.js",
+    dirname: "src/lib/rxjs-vhtml",
+    super_extension: "deno.js",
+    extension: "js",
+    importPath: "~/lib/rxjs-vhtml/vhtml.deno.js",
+    readSync: () =>
+      readFileSync(
+        "src/lib/rxjs-vhtml/vhtml.deno.js",
+      ).toString(),
+    dynamicImport: () =>
+      import("~/lib/rxjs-vhtml/vhtml.deno.js"),
+    linkTag: () =>
+      "<script type='module' src='/lib/rxjs-vhtml/vhtml.deno.js'></script>",
+    publicPath: "/lib/rxjs-vhtml/vhtml.deno.js",
+    markdownDemo: (diffName = "vhtml.deno.js") => `
+~~~js
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/lib/rxjs-vhtml/vhtml.deno.js").toString()}
+~~~
+<script type='module' src='/lib/rxjs-vhtml/vhtml.deno.js' demo-for='vhtml.deno.js'></script>
+`,
+    frontendDemo: (diffName = "vhtml.deno.js") => `
+~~~js
+// @@filename ${diffName}
+// @@src /lib/rxjs-vhtml/vhtml.deno.js
+${readFileSync("src/lib/rxjs-vhtml/vhtml.deno.js").toString()}
+~~~
+<script type='module' src='/lib/rxjs-vhtml/vhtml.deno.js' demo-for='vhtml.deno.js'></script>
+`,
   },
 
   "src/lib/rxjs-vhtml/index.deno.test.tsx": {
@@ -843,7 +1838,58 @@ export const FS = {
     dynamicImport: () =>
       import("~/lib/rxjs-vhtml/index.deno.test.tsx"),
     linkTag: () =>
-      "<script type='module' src='/lib/rxjs-vhtml/index.deno.test.tsx' />",
+      "<script type='module' src='/lib/rxjs-vhtml/index.deno.test.tsx'></script>",
+    publicPath: "/lib/rxjs-vhtml/index.deno.test.tsx",
+    markdownDemo: (diffName = "index.deno.test.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/lib/rxjs-vhtml/index.deno.test.tsx").toString()}
+~~~
+<script type='module' src='/lib/rxjs-vhtml/index.deno.test.tsx' demo-for='index.deno.test.tsx'></script>
+`,
+    frontendDemo: (diffName = "index.deno.test.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @@src /lib/rxjs-vhtml/index.deno.test.tsx
+${readFileSync("src/lib/rxjs-vhtml/index.deno.test.tsx").toString()}
+~~~
+<script type='module' src='/lib/rxjs-vhtml/index.deno.test.tsx' demo-for='index.deno.test.tsx'></script>
+`,
+  },
+
+  "src/lib/rxjs-vhtml/vhtml.deno.d.ts": {
+    path: "src/lib/rxjs-vhtml/vhtml.deno.d.ts",
+    filename: "vhtml.deno.d.ts",
+    dirname: "src/lib/rxjs-vhtml",
+    super_extension: "deno.d.ts",
+    extension: "ts",
+    importPath: "~/lib/rxjs-vhtml/vhtml.deno.d.ts",
+    readSync: () =>
+      readFileSync(
+        "src/lib/rxjs-vhtml/vhtml.deno.d.ts",
+      ).toString(),
+    dynamicImport: () =>
+      import("~/lib/rxjs-vhtml/vhtml.deno.d.ts"),
+    linkTag: () =>
+      "<script type='module' src='/lib/rxjs-vhtml/vhtml.deno.d.ts'></script>",
+    publicPath: "/lib/rxjs-vhtml/vhtml.deno.d.ts",
+    markdownDemo: (diffName = "vhtml.deno.d.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/lib/rxjs-vhtml/vhtml.deno.d.ts").toString()}
+~~~
+<script type='module' src='/lib/rxjs-vhtml/vhtml.deno.d.ts' demo-for='vhtml.deno.d.ts'></script>
+`,
+    frontendDemo: (diffName = "vhtml.deno.d.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @@src /lib/rxjs-vhtml/vhtml.deno.d.ts
+${readFileSync("src/lib/rxjs-vhtml/vhtml.deno.d.ts").toString()}
+~~~
+<script type='module' src='/lib/rxjs-vhtml/vhtml.deno.d.ts' demo-for='vhtml.deno.d.ts'></script>
+`,
   },
 
   "src/lib/fs_watcher.deno.ts": {
@@ -857,7 +1903,24 @@ export const FS = {
       readFileSync("src/lib/fs_watcher.deno.ts").toString(),
     dynamicImport: () => import("~/lib/fs_watcher.deno.ts"),
     linkTag: () =>
-      "<script type='module' src='/lib/fs_watcher.deno.ts' />",
+      "<script type='module' src='/lib/fs_watcher.deno.ts'></script>",
+    publicPath: "/lib/fs_watcher.deno.ts",
+    markdownDemo: (diffName = "fs_watcher.deno.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/lib/fs_watcher.deno.ts").toString()}
+~~~
+<script type='module' src='/lib/fs_watcher.deno.ts' demo-for='fs_watcher.deno.ts'></script>
+`,
+    frontendDemo: (diffName = "fs_watcher.deno.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @@src /lib/fs_watcher.deno.ts
+${readFileSync("src/lib/fs_watcher.deno.ts").toString()}
+~~~
+<script type='module' src='/lib/fs_watcher.deno.ts' demo-for='fs_watcher.deno.ts'></script>
+`,
   },
 
   "src/lib/remark_rehype/remark-plant-uml.deno.ts": {
@@ -877,7 +1940,29 @@ export const FS = {
         "~/lib/remark_rehype/remark-plant-uml.deno.ts"
       ),
     linkTag: () =>
-      "<script type='module' src='/lib/remark_rehype/remark-plant-uml.deno.ts' />",
+      "<script type='module' src='/lib/remark_rehype/remark-plant-uml.deno.ts'></script>",
+    publicPath:
+      "/lib/remark_rehype/remark-plant-uml.deno.ts",
+    markdownDemo: (
+      diffName = "remark-plant-uml.deno.ts",
+    ) => `
+~~~ts
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/lib/remark_rehype/remark-plant-uml.deno.ts").toString()}
+~~~
+<script type='module' src='/lib/remark_rehype/remark-plant-uml.deno.ts' demo-for='remark-plant-uml.deno.ts'></script>
+`,
+    frontendDemo: (
+      diffName = "remark-plant-uml.deno.ts",
+    ) => `
+~~~ts
+// @@filename ${diffName}
+// @@src /lib/remark_rehype/remark-plant-uml.deno.ts
+${readFileSync("src/lib/remark_rehype/remark-plant-uml.deno.ts").toString()}
+~~~
+<script type='module' src='/lib/remark_rehype/remark-plant-uml.deno.ts' demo-for='remark-plant-uml.deno.ts'></script>
+`,
   },
 
   "src/lib/remark_rehype/remarkNestSections.deno.ts": {
@@ -897,7 +1982,29 @@ export const FS = {
         "~/lib/remark_rehype/remarkNestSections.deno.ts"
       ),
     linkTag: () =>
-      "<script type='module' src='/lib/remark_rehype/remarkNestSections.deno.ts' />",
+      "<script type='module' src='/lib/remark_rehype/remarkNestSections.deno.ts'></script>",
+    publicPath:
+      "/lib/remark_rehype/remarkNestSections.deno.ts",
+    markdownDemo: (
+      diffName = "remarkNestSections.deno.ts",
+    ) => `
+~~~ts
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/lib/remark_rehype/remarkNestSections.deno.ts").toString()}
+~~~
+<script type='module' src='/lib/remark_rehype/remarkNestSections.deno.ts' demo-for='remarkNestSections.deno.ts'></script>
+`,
+    frontendDemo: (
+      diffName = "remarkNestSections.deno.ts",
+    ) => `
+~~~ts
+// @@filename ${diffName}
+// @@src /lib/remark_rehype/remarkNestSections.deno.ts
+${readFileSync("src/lib/remark_rehype/remarkNestSections.deno.ts").toString()}
+~~~
+<script type='module' src='/lib/remark_rehype/remarkNestSections.deno.ts' demo-for='remarkNestSections.deno.ts'></script>
+`,
   },
 
   "src/lib/lib.deno.ts": {
@@ -911,7 +2018,24 @@ export const FS = {
       readFileSync("src/lib/lib.deno.ts").toString(),
     dynamicImport: () => import("~/lib/lib.deno.ts"),
     linkTag: () =>
-      "<script type='module' src='/lib/lib.deno.ts' />",
+      "<script type='module' src='/lib/lib.deno.ts'></script>",
+    publicPath: "/lib/lib.deno.ts",
+    markdownDemo: (diffName = "lib.deno.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/lib/lib.deno.ts").toString()}
+~~~
+<script type='module' src='/lib/lib.deno.ts' demo-for='lib.deno.ts'></script>
+`,
+    frontendDemo: (diffName = "lib.deno.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @@src /lib/lib.deno.ts
+${readFileSync("src/lib/lib.deno.ts").toString()}
+~~~
+<script type='module' src='/lib/lib.deno.ts' demo-for='lib.deno.ts'></script>
+`,
   },
 
   "src/lib/lib.dom.ts": {
@@ -925,7 +2049,24 @@ export const FS = {
       readFileSync("src/lib/lib.dom.ts").toString(),
     dynamicImport: () => import("~/lib/lib.dom.ts"),
     linkTag: () =>
-      "<script type='module' src='/lib/lib.dom.ts' />",
+      "<script type='module' src='/lib/lib.dom.ts'></script>",
+    publicPath: "/lib/lib.dom.ts",
+    markdownDemo: (diffName = "lib.dom.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/lib/lib.dom.ts").toString()}
+~~~
+<script type='module' src='/lib/lib.dom.ts' demo-for='lib.dom.ts'></script>
+`,
+    frontendDemo: (diffName = "lib.dom.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @@src /lib/lib.dom.ts
+${readFileSync("src/lib/lib.dom.ts").toString()}
+~~~
+<script type='module' src='/lib/lib.dom.ts' demo-for='lib.dom.ts'></script>
+`,
   },
 
   "src/lib/leet/add-two-numbers.deno.ts": {
@@ -942,7 +2083,28 @@ export const FS = {
     dynamicImport: () =>
       import("~/lib/leet/add-two-numbers.deno.ts"),
     linkTag: () =>
-      "<script type='module' src='/lib/leet/add-two-numbers.deno.ts' />",
+      "<script type='module' src='/lib/leet/add-two-numbers.deno.ts'></script>",
+    publicPath: "/lib/leet/add-two-numbers.deno.ts",
+    markdownDemo: (
+      diffName = "add-two-numbers.deno.ts",
+    ) => `
+~~~ts
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/lib/leet/add-two-numbers.deno.ts").toString()}
+~~~
+<script type='module' src='/lib/leet/add-two-numbers.deno.ts' demo-for='add-two-numbers.deno.ts'></script>
+`,
+    frontendDemo: (
+      diffName = "add-two-numbers.deno.ts",
+    ) => `
+~~~ts
+// @@filename ${diffName}
+// @@src /lib/leet/add-two-numbers.deno.ts
+${readFileSync("src/lib/leet/add-two-numbers.deno.ts").toString()}
+~~~
+<script type='module' src='/lib/leet/add-two-numbers.deno.ts' demo-for='add-two-numbers.deno.ts'></script>
+`,
   },
 
   "src/lib/idea.deno.tsx": {
@@ -956,7 +2118,24 @@ export const FS = {
       readFileSync("src/lib/idea.deno.tsx").toString(),
     dynamicImport: () => import("~/lib/idea.deno.tsx"),
     linkTag: () =>
-      "<script type='module' src='/lib/idea.deno.tsx' />",
+      "<script type='module' src='/lib/idea.deno.tsx'></script>",
+    publicPath: "/lib/idea.deno.tsx",
+    markdownDemo: (diffName = "idea.deno.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/lib/idea.deno.tsx").toString()}
+~~~
+<script type='module' src='/lib/idea.deno.tsx' demo-for='idea.deno.tsx'></script>
+`,
+    frontendDemo: (diffName = "idea.deno.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @@src /lib/idea.deno.tsx
+${readFileSync("src/lib/idea.deno.tsx").toString()}
+~~~
+<script type='module' src='/lib/idea.deno.tsx' demo-for='idea.deno.tsx'></script>
+`,
   },
 
   "src/lib/0_RenderBase.deno.tsx": {
@@ -973,7 +2152,24 @@ export const FS = {
     dynamicImport: () =>
       import("~/lib/0_RenderBase.deno.tsx"),
     linkTag: () =>
-      "<script type='module' src='/lib/0_RenderBase.deno.tsx' />",
+      "<script type='module' src='/lib/0_RenderBase.deno.tsx'></script>",
+    publicPath: "/lib/0_RenderBase.deno.tsx",
+    markdownDemo: (diffName = "0_RenderBase.deno.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/lib/0_RenderBase.deno.tsx").toString()}
+~~~
+<script type='module' src='/lib/0_RenderBase.deno.tsx' demo-for='0_RenderBase.deno.tsx'></script>
+`,
+    frontendDemo: (diffName = "0_RenderBase.deno.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @@src /lib/0_RenderBase.deno.tsx
+${readFileSync("src/lib/0_RenderBase.deno.tsx").toString()}
+~~~
+<script type='module' src='/lib/0_RenderBase.deno.tsx' demo-for='0_RenderBase.deno.tsx'></script>
+`,
   },
 
   "src/lib/00_Remark2.deno.tsx": {
@@ -990,7 +2186,24 @@ export const FS = {
     dynamicImport: () =>
       import("~/lib/00_Remark2.deno.tsx"),
     linkTag: () =>
-      "<script type='module' src='/lib/00_Remark2.deno.tsx' />",
+      "<script type='module' src='/lib/00_Remark2.deno.tsx'></script>",
+    publicPath: "/lib/00_Remark2.deno.tsx",
+    markdownDemo: (diffName = "00_Remark2.deno.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/lib/00_Remark2.deno.tsx").toString()}
+~~~
+<script type='module' src='/lib/00_Remark2.deno.tsx' demo-for='00_Remark2.deno.tsx'></script>
+`,
+    frontendDemo: (diffName = "00_Remark2.deno.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @@src /lib/00_Remark2.deno.tsx
+${readFileSync("src/lib/00_Remark2.deno.tsx").toString()}
+~~~
+<script type='module' src='/lib/00_Remark2.deno.tsx' demo-for='00_Remark2.deno.tsx'></script>
+`,
   },
 
   "src/lib/0_Layout.dual.tsx": {
@@ -1004,7 +2217,24 @@ export const FS = {
       readFileSync("src/lib/0_Layout.dual.tsx").toString(),
     dynamicImport: () => import("~/lib/0_Layout.dual.tsx"),
     linkTag: () =>
-      "<script type='module' src='/lib/0_Layout.dual.tsx' />",
+      "<script type='module' src='/lib/0_Layout.dual.tsx'></script>",
+    publicPath: "/lib/0_Layout.dual.tsx",
+    markdownDemo: (diffName = "0_Layout.dual.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/lib/0_Layout.dual.tsx").toString()}
+~~~
+<script type='module' src='/lib/0_Layout.dual.tsx' demo-for='0_Layout.dual.tsx'></script>
+`,
+    frontendDemo: (diffName = "0_Layout.dual.tsx") => `
+~~~tsx
+// @@filename ${diffName}
+// @@src /lib/0_Layout.dual.tsx
+${readFileSync("src/lib/0_Layout.dual.tsx").toString()}
+~~~
+<script type='module' src='/lib/0_Layout.dual.tsx' demo-for='0_Layout.dual.tsx'></script>
+`,
   },
 
   "src/lib/ridiculous_file_watchers/fix-deno-vscode-settings.deno.ts":
@@ -1025,7 +2255,29 @@ export const FS = {
           "~/lib/ridiculous_file_watchers/fix-deno-vscode-settings.deno.ts"
         ),
       linkTag: () =>
-        "<script type='module' src='/lib/ridiculous_file_watchers/fix-deno-vscode-settings.deno.ts' />",
+        "<script type='module' src='/lib/ridiculous_file_watchers/fix-deno-vscode-settings.deno.ts'></script>",
+      publicPath:
+        "/lib/ridiculous_file_watchers/fix-deno-vscode-settings.deno.ts",
+      markdownDemo: (
+        diffName = "fix-deno-vscode-settings.deno.ts",
+      ) => `
+~~~ts
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/lib/ridiculous_file_watchers/fix-deno-vscode-settings.deno.ts").toString()}
+~~~
+<script type='module' src='/lib/ridiculous_file_watchers/fix-deno-vscode-settings.deno.ts' demo-for='fix-deno-vscode-settings.deno.ts'></script>
+`,
+      frontendDemo: (
+        diffName = "fix-deno-vscode-settings.deno.ts",
+      ) => `
+~~~ts
+// @@filename ${diffName}
+// @@src /lib/ridiculous_file_watchers/fix-deno-vscode-settings.deno.ts
+${readFileSync("src/lib/ridiculous_file_watchers/fix-deno-vscode-settings.deno.ts").toString()}
+~~~
+<script type='module' src='/lib/ridiculous_file_watchers/fix-deno-vscode-settings.deno.ts' demo-for='fix-deno-vscode-settings.deno.ts'></script>
+`,
     },
 
   "src/lib/ridiculous_file_watchers/SITEMAP_generator.deno.ts":
@@ -1046,7 +2298,29 @@ export const FS = {
           "~/lib/ridiculous_file_watchers/SITEMAP_generator.deno.ts"
         ),
       linkTag: () =>
-        "<script type='module' src='/lib/ridiculous_file_watchers/SITEMAP_generator.deno.ts' />",
+        "<script type='module' src='/lib/ridiculous_file_watchers/SITEMAP_generator.deno.ts'></script>",
+      publicPath:
+        "/lib/ridiculous_file_watchers/SITEMAP_generator.deno.ts",
+      markdownDemo: (
+        diffName = "SITEMAP_generator.deno.ts",
+      ) => `
+~~~ts
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/lib/ridiculous_file_watchers/SITEMAP_generator.deno.ts").toString()}
+~~~
+<script type='module' src='/lib/ridiculous_file_watchers/SITEMAP_generator.deno.ts' demo-for='SITEMAP_generator.deno.ts'></script>
+`,
+      frontendDemo: (
+        diffName = "SITEMAP_generator.deno.ts",
+      ) => `
+~~~ts
+// @@filename ${diffName}
+// @@src /lib/ridiculous_file_watchers/SITEMAP_generator.deno.ts
+${readFileSync("src/lib/ridiculous_file_watchers/SITEMAP_generator.deno.ts").toString()}
+~~~
+<script type='module' src='/lib/ridiculous_file_watchers/SITEMAP_generator.deno.ts' demo-for='SITEMAP_generator.deno.ts'></script>
+`,
     },
 
   "src/lib/lib.dual.ts": {
@@ -1060,7 +2334,24 @@ export const FS = {
       readFileSync("src/lib/lib.dual.ts").toString(),
     dynamicImport: () => import("~/lib/lib.dual.ts"),
     linkTag: () =>
-      "<script type='module' src='/lib/lib.dual.ts' />",
+      "<script type='module' src='/lib/lib.dual.ts'></script>",
+    publicPath: "/lib/lib.dual.ts",
+    markdownDemo: (diffName = "lib.dual.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/lib/lib.dual.ts").toString()}
+~~~
+<script type='module' src='/lib/lib.dual.ts' demo-for='lib.dual.ts'></script>
+`,
+    frontendDemo: (diffName = "lib.dual.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @@src /lib/lib.dual.ts
+${readFileSync("src/lib/lib.dual.ts").toString()}
+~~~
+<script type='module' src='/lib/lib.dual.ts' demo-for='lib.dual.ts'></script>
+`,
   },
 
   "src/lib/client/img-onclick.dom.js": {
@@ -1077,7 +2368,24 @@ export const FS = {
     dynamicImport: () =>
       import("~/lib/client/img-onclick.dom.js"),
     linkTag: () =>
-      "<script type='module' src='/lib/client/img-onclick.dom.js' />",
+      "<script type='module' src='/lib/client/img-onclick.dom.js'></script>",
+    publicPath: "/lib/client/img-onclick.dom.js",
+    markdownDemo: (diffName = "img-onclick.dom.js") => `
+~~~js
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/lib/client/img-onclick.dom.js").toString()}
+~~~
+<script type='module' src='/lib/client/img-onclick.dom.js' demo-for='img-onclick.dom.js'></script>
+`,
+    frontendDemo: (diffName = "img-onclick.dom.js") => `
+~~~js
+// @@filename ${diffName}
+// @@src /lib/client/img-onclick.dom.js
+${readFileSync("src/lib/client/img-onclick.dom.js").toString()}
+~~~
+<script type='module' src='/lib/client/img-onclick.dom.js' demo-for='img-onclick.dom.js'></script>
+`,
   },
 
   "src/lib/client/TOC_intersection_polyfill.js": {
@@ -1094,7 +2402,28 @@ export const FS = {
     dynamicImport: () =>
       import("~/lib/client/TOC_intersection_polyfill.js"),
     linkTag: () =>
-      "<script type='module' src='/lib/client/TOC_intersection_polyfill.js' />",
+      "<script type='module' src='/lib/client/TOC_intersection_polyfill.js'></script>",
+    publicPath: "/lib/client/TOC_intersection_polyfill.js",
+    markdownDemo: (
+      diffName = "TOC_intersection_polyfill.js",
+    ) => `
+~~~js
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/lib/client/TOC_intersection_polyfill.js").toString()}
+~~~
+<script type='module' src='/lib/client/TOC_intersection_polyfill.js' demo-for='TOC_intersection_polyfill.js'></script>
+`,
+    frontendDemo: (
+      diffName = "TOC_intersection_polyfill.js",
+    ) => `
+~~~js
+// @@filename ${diffName}
+// @@src /lib/client/TOC_intersection_polyfill.js
+${readFileSync("src/lib/client/TOC_intersection_polyfill.js").toString()}
+~~~
+<script type='module' src='/lib/client/TOC_intersection_polyfill.js' demo-for='TOC_intersection_polyfill.js'></script>
+`,
   },
 
   "src/lib/client/checkbox.init.dom.js": {
@@ -1111,7 +2440,24 @@ export const FS = {
     dynamicImport: () =>
       import("~/lib/client/checkbox.init.dom.js"),
     linkTag: () =>
-      "<script type='module' src='/lib/client/checkbox.init.dom.js' />",
+      "<script type='module' src='/lib/client/checkbox.init.dom.js'></script>",
+    publicPath: "/lib/client/checkbox.init.dom.js",
+    markdownDemo: (diffName = "checkbox.init.dom.js") => `
+~~~js
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/lib/client/checkbox.init.dom.js").toString()}
+~~~
+<script type='module' src='/lib/client/checkbox.init.dom.js' demo-for='checkbox.init.dom.js'></script>
+`,
+    frontendDemo: (diffName = "checkbox.init.dom.js") => `
+~~~js
+// @@filename ${diffName}
+// @@src /lib/client/checkbox.init.dom.js
+${readFileSync("src/lib/client/checkbox.init.dom.js").toString()}
+~~~
+<script type='module' src='/lib/client/checkbox.init.dom.js' demo-for='checkbox.init.dom.js'></script>
+`,
   },
 
   "src/lib/client/code-copy.init.dom.js": {
@@ -1128,7 +2474,24 @@ export const FS = {
     dynamicImport: () =>
       import("~/lib/client/code-copy.init.dom.js"),
     linkTag: () =>
-      "<script type='module' src='/lib/client/code-copy.init.dom.js' />",
+      "<script type='module' src='/lib/client/code-copy.init.dom.js'></script>",
+    publicPath: "/lib/client/code-copy.init.dom.js",
+    markdownDemo: (diffName = "code-copy.init.dom.js") => `
+~~~js
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/lib/client/code-copy.init.dom.js").toString()}
+~~~
+<script type='module' src='/lib/client/code-copy.init.dom.js' demo-for='code-copy.init.dom.js'></script>
+`,
+    frontendDemo: (diffName = "code-copy.init.dom.js") => `
+~~~js
+// @@filename ${diffName}
+// @@src /lib/client/code-copy.init.dom.js
+${readFileSync("src/lib/client/code-copy.init.dom.js").toString()}
+~~~
+<script type='module' src='/lib/client/code-copy.init.dom.js' demo-for='code-copy.init.dom.js'></script>
+`,
   },
 
   "src/lib/client/auto-sticky-stack.js": {
@@ -1145,7 +2508,24 @@ export const FS = {
     dynamicImport: () =>
       import("~/lib/client/auto-sticky-stack.js"),
     linkTag: () =>
-      "<script type='module' src='/lib/client/auto-sticky-stack.js' />",
+      "<script type='module' src='/lib/client/auto-sticky-stack.js'></script>",
+    publicPath: "/lib/client/auto-sticky-stack.js",
+    markdownDemo: (diffName = "auto-sticky-stack.js") => `
+~~~js
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/lib/client/auto-sticky-stack.js").toString()}
+~~~
+<script type='module' src='/lib/client/auto-sticky-stack.js' demo-for='auto-sticky-stack.js'></script>
+`,
+    frontendDemo: (diffName = "auto-sticky-stack.js") => `
+~~~js
+// @@filename ${diffName}
+// @@src /lib/client/auto-sticky-stack.js
+${readFileSync("src/lib/client/auto-sticky-stack.js").toString()}
+~~~
+<script type='module' src='/lib/client/auto-sticky-stack.js' demo-for='auto-sticky-stack.js'></script>
+`,
   },
 
   "src/lib/client/debug-range.js": {
@@ -1162,7 +2542,24 @@ export const FS = {
     dynamicImport: () =>
       import("~/lib/client/debug-range.js"),
     linkTag: () =>
-      "<script type='module' src='/lib/client/debug-range.js' />",
+      "<script type='module' src='/lib/client/debug-range.js'></script>",
+    publicPath: "/lib/client/debug-range.js",
+    markdownDemo: (diffName = "debug-range.js") => `
+~~~js
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/lib/client/debug-range.js").toString()}
+~~~
+<script type='module' src='/lib/client/debug-range.js' demo-for='debug-range.js'></script>
+`,
+    frontendDemo: (diffName = "debug-range.js") => `
+~~~js
+// @@filename ${diffName}
+// @@src /lib/client/debug-range.js
+${readFileSync("src/lib/client/debug-range.js").toString()}
+~~~
+<script type='module' src='/lib/client/debug-range.js' demo-for='debug-range.js'></script>
+`,
   },
 
   "src/SITEMAP.deno.ts": {
@@ -1176,7 +2573,24 @@ export const FS = {
       readFileSync("src/SITEMAP.deno.ts").toString(),
     dynamicImport: () => import("~/SITEMAP.deno.ts"),
     linkTag: () =>
-      "<script type='module' src='/SITEMAP.deno.ts' />",
+      "<script type='module' src='/SITEMAP.deno.ts'></script>",
+    publicPath: "/SITEMAP.deno.ts",
+    markdownDemo: (diffName = "SITEMAP.deno.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @eval
+${readFileSync("src/SITEMAP.deno.ts").toString()}
+~~~
+<script type='module' src='/SITEMAP.deno.ts' demo-for='SITEMAP.deno.ts'></script>
+`,
+    frontendDemo: (diffName = "SITEMAP.deno.ts") => `
+~~~ts
+// @@filename ${diffName}
+// @@src /SITEMAP.deno.ts
+${readFileSync("src/SITEMAP.deno.ts").toString()}
+~~~
+<script type='module' src='/SITEMAP.deno.ts' demo-for='SITEMAP.deno.ts'></script>
+`,
   },
 } as const
 export type FILESYSTEM = typeof FS
@@ -1205,4 +2619,15 @@ export const SITEMAP = {
         ? K
         : never]: FILESYSTEM[K]
     }>[],
+  subFolder: <T extends string>(it: T) => {
+    return Object.fromEntries(
+      Object.entries(FS)
+        .filter(([k, v]) => k.startsWith(it))
+        .map(i => [i[0].replace(it, ""), i[1]] as const),
+    ) as unknown as {
+      [K in keyof FILESYSTEM as K extends `${T}${infer U}`
+        ? U
+        : never]: FILESYSTEM[K]
+    }
+  },
 }

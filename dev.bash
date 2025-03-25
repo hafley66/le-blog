@@ -18,7 +18,7 @@ export CLICOLOR_FORCE=1
 # Note: If colors still don't show, the program itself may need to be configured
 # to force color output with its own flags (e.g. --color=always)
 
-(pnpm dev | sed "s/^/${GREEN}[1]${NC} /") &
+# (pnpm dev | sed "s/^/${GREEN}[1]${NC} /") &
 (pnpm dev:server | sed "s/^/${CYAN}[2]${NC} /") &
 # (pnpm watch:sitemap2 | sed "s/^/${LIGHT_MAGENTA}[3]${NC} /") &
 (pnpm watch:deno-settings | sed "s/^/${BLUE}[4]${NC} /") &

@@ -53,3 +53,15 @@ img:not(.img-zoom-clone):not([id^="rehype-mermaid"]) {
 body:has(.img-zoom-clone-exit) {
   
 }
+
+figure {
+  display: flex;
+  flex-direction: column;
+}
+
+figurecaption {
+  width: 100%;
+  text-align: center;
+  margin-left: 10px;
+  margin-right: 10px;
+}

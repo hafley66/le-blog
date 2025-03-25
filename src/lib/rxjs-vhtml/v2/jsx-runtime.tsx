@@ -68,6 +68,7 @@ export function jsx(
 
   try {
     if (typeof tag === "function") {
+      // @ts-ignore
       return tag(propsWithChildren)
     }
     const {
@@ -229,9 +230,9 @@ export default jsx
 export type RxJSXNode =
   | string
   | string[]
-  | Element
-  | Element[]
-  | (string | Element)[]
+  | JSX.Element
+  | JSX.Element[]
+  | (string | JSX.Element)[]
 
 export namespace RxJSX {
   export type Node = RxJSXNode

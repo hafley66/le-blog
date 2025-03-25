@@ -57,7 +57,14 @@
     "src/blog/unholy-custom-jsx-with-observable-strings/async.rxjs.deno.tsx",
     "src/blog/make-your-own-sitemap-with-typescript/index.render.deno.tsx",
     "src/blog/make-your-own-sitemap-with-typescript/src/blog/hello-world/index.render.deno.tsx",
-    "src/blog/make-your-own-sitemap-with-typescript/src/SITEMAP.deno.ts"
+    "src/blog/make-your-own-sitemap-with-typescript/src/SITEMAP.deno.ts",
+    "src/blog/make-your-own-sitemap-with-typescript/src/blog/hello-world/index2.render.deno.tsx",
+    "src/blog/unholy-custom-jsx-with-observable-strings/5_interval.deno.tsx",
+    "src/blog/unholy-custom-jsx-with-observable-strings/5_interval.dual.tsx",
+    "src/lib/lib.dual.d.ts",
+    "src/lib/rxjs-vhtml/v2/out/lib.dual.d.ts",
+    "src/lib/rxjs-vhtml/v2/out/rxjs-vhtml/vhtml.deno.d.ts",
+    "src/lib/rxjs-vhtml/vhtml.deno.d.ts"
   ],
   "deno.config": "./deno.json",
   "files.exclude": {

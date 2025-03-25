@@ -183,7 +183,6 @@
   }
 
   &[open] #toc-header-contents h2::after {
-    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="20,30 50,70 80,30" fill="black"/></svg>');
   }
 
 
@@ -199,7 +198,6 @@
     h2::after {
       content: " ";
       pointer-events: all;
-      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="30,20 70,50 30,80" style="fill: black"/></svg>');
       filter: var(--inline-svg-filter);
       width: clamp(1.1rem, 1.8vw, 1.4rem);
       height: clamp(1.1rem, 1.8vw, 1.4rem);
@@ -258,7 +256,7 @@
 }
 
 
-details {
+.console\.log-details {
   border: 1px solid var(--color-border);
   border-radius: 4px;
 }

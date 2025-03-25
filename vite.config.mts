@@ -54,6 +54,39 @@ export default defineConfig(async it => {
         ],
       ]),
   )
+
+  const input = {
+    ...(it.command === "build"
+      ? await Promise.all(
+          Object.entries(htmlFiles).map(([k, v]) =>
+            link(
+              `${process.cwd()}/${v}`,
+              `${process.cwd()}/${v.replace("index.vite.html", "index.html")}`,
+            ),
+          ),
+        ).then(() => {
+          return Object.fromEntries(
+            Object.entries(htmlFiles).map(
+              i =>
+                [
+                  i[0],
+                  i[1].replace("vite.html", "html"),
+                ] as const,
+            ),
+          )
+        })
+      : htmlFiles),
+    ...Object.fromEntries(
+      glob
+        .sync("src/**/*.dom.*ts*", {
+          ignore: ["dist/**", "node_modules/**"],
+        })
+        .map(i => [i, i]),
+    ),
+  }
+
+  console.log({ input })
+
   return {
     root: "src",
     publicDir: `${process.cwd()}/public`,
@@ -77,27 +110,7 @@ export default defineConfig(async it => {
       copyPublicDir: true,
       target: "ES2024",
       rollupOptions: {
-        input:
-          it.command === "build"
-            ? await Promise.all(
-                Object.entries(htmlFiles).map(([k, v]) =>
-                  link(
-                    `${process.cwd()}/${v}`,
-                    `${process.cwd()}/${v.replace("index.vite.html", "index.html")}`,
-                  ),
-                ),
-              ).then(() => {
-                return Object.fromEntries(
-                  Object.entries(htmlFiles).map(
-                    i =>
-                      [
-                        i[0],
-                        i[1].replace("vite.html", "html"),
-                      ] as const,
-                  ),
-                )
-              })
-            : htmlFiles,
+        input,
         // output: {
         //   manualChunks: id => {
         //     if (id.includes("node_modules")) {
@@ -111,6 +124,13 @@ export default defineConfig(async it => {
       proxy: {
         ...serverRewrites,
       },
+    },
+    esbuild: {
+      jsx: "automatic",
+      jsxDev: false,
+      jsxImportSource: "~/lib/rxjs-vhtml/v2",
+      // jsxInject: `import { jsx } from '~/lib/rxjs-vhtml/v2/jsx-runtime'`,
+      // jsxFactory: "jsx",
     },
 
     resolve: {

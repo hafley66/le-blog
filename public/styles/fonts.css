@@ -253,17 +253,27 @@ h1, .h1 {
 }
 
 :root {
-  --h2-height: calc(clamp(1.2rem, 2.5vw, 1.4rem) + 8px);
-  --h3-height: calc(clamp(1.1rem, 1.7vw, 1.3rem) + 8px);
+  --h2-height: calc(clamp(1.4rem, 1.6vw, 1.8rem) + 16px);
+  --h3-height: calc(clamp(20px, 1.4vw, 1.6rem) + 16px);
 }
 
 h2, .h2 {
   /* font-size: calc(var(--h2-size) * 1rem); */
   line-height: 1;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  font-size: clamp(1.2rem, 2.5vw, 1.4rem);
+  font-size: clamp(1.4rem, 1.6vw, 1.8rem);
   font-weight: 600;
+  &:not(:has(a)){
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+  &:has(a) {
+    padding: 0;
+    a {
+      padding-top: 8px;
+      padding-bottom: 8px;
+      padding-left: 8px;
+    }
+  }
 }
 
 h2,
@@ -277,17 +287,36 @@ h6 {
 }
 
 h3 {
-  font-size: clamp(1.1rem, 1.7vw, 1.3rem);
+  font-size: clamp(20px, 1.4vw, 1.6rem);
   line-height: 1;
-  padding-top: 4px;
-  padding-bottom: 4px;
+  &:not(:has(a)){
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+  &:has(a) {
+    padding: 0;
+    a {
+      padding-top: 8px;
+      padding-bottom: 8px;
+      padding-left: 16px;
+    }
+  }
 }
 
 h4 {
   font-size: calc(var(--h4-size) * 1rem);
   line-height: 1;
-  padding-top: 4px;
-  padding-bottom: 4px;
+  &:not(:has(a)){
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+  &:has(a) {
+    padding: 0;
+    a {
+      padding-top: 8px;
+      padding-bottom: 8px;
+    }
+  }
 }
 
 h5 {
@@ -382,21 +411,24 @@ hr {
 /* Counter for headings */
 main.body-markdown {
   section[id] :is(h2, h3, h4, h5, h6) {
+    margin-left: calc(var(--section-mx) * -1);
+    margin-right: calc(var(--section-mx) * -1);
     &::before {
-      width: calc(
+      width: 
+      var(--section-header-hr-stop);
+      
+      /* calc(
               var(--section-header-hr-stop) - var(--section-header-hr-start)
-            - 2px /* this is for the borders */
-            );
-      content: "";
-      position: absolute;
-      left: var(--section-header-hr-start);
-      background: var(--color-zinc-500);
-      border: 1px solid white;
-      height: 8px;
-      bottom: -9px;
-      z-index: 1;
-      border-bottom-right-radius: 10px;
-      border-bottom-left-radius: 10px;
+            - 2px
+            ); */
+      /* left: var(--section-header-hr-start); */
+      /* background: var(--color-zinc-500); */
+      /* border: 1px solid white; */
+      /* height: 8px; */
+      /* bottom: -9px; */
+      /* z-index: 1; */
+      /* border-bottom-right-radius: 10px; */
+      /* border-bottom-left-radius: 10px; */
     }
   }
   #main-content-middle {
@@ -434,11 +466,30 @@ main.body-markdown {
     &::after {
       content: "";
       position: absolute;
-      bottom: 0;
+      bottom: -3px;
+      left: -8px;
+      right: -8px;
+      border-top: 3px solid var(--color-border);
+      background: var(--color-bg);
+      height: 0px;
+      z-index: -1;
+      /* width: 100%; */
+    }
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
       left: 0;
-      background: var(--color-border);
-      height: 1px;
-      width: 100%;
+      border-top: 1px solid var(--color-border);
+      border-left: 1px solid var(--color-border);
+      /* width: 50%; */
+      height: 100%;
+      z-index: -1;
     }
   }
+}
+
+.marker {
+  font-size: 80%;
+  margin-right: -4px;
 }

@@ -10,6 +10,7 @@ import mermaid from "@shikijs/langs/mermaid"
 import nord from "@shikijs/themes/nord"
 import vitesseDark from "@shikijs/themes/vitesse-dark"
 import vitesseLight from "@shikijs/themes/vitesse-light"
+import oneDarkPro from "@shikijs/themes/one-dark-pro"
 
 import { createHighlighterCore } from "shiki/core"
 import { createOnigurumaEngine } from "shiki/engine/oniguruma"
@@ -33,10 +34,11 @@ const engine = await createOnigurumaEngine(
 export const SHIKI_THEMES = {
   light: vitesseLight,
   dark: vitesseDark,
+  oneDarkPro,
 }
 
 export const SHIKI = await createHighlighterCore({
   langs: SHIKI_LANGS,
-  themes: [vitesseDark, vitesseLight],
+  themes: [vitesseDark, vitesseLight, oneDarkPro],
   engine, // if a resolved engine passed in, the rest can still be synced.
 })

@@ -64,7 +64,7 @@ export const PrimaryNavigation = (props: {
     { href: "/resume", label: "Resume" },
     { href: "/blog", label: "Blog" },
     // { href: "/snippets", label: "Snipts" },
-    { href: "/tags", label: "Tags" },
+    // { href: "/tags", label: "Tags" },
   ]
 
   const { pathname } = URL.parse(
@@ -118,6 +118,11 @@ export const Layout = (
           type="image/svg+xml"
           href="/favicon.svg"
         />
+        <script>
+          {`window.resizeIframe = function resizeIframe(obj) {
+          obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
+          }`}
+        </script>
         <link rel="stylesheet" href="/styles/colors.css" />
         <link rel="stylesheet" href="/styles/fonts.css" />
         <link rel="stylesheet" href="/styles/global.css" />

@@ -16,7 +16,9 @@ import { $$ } from "~/BASH.deno.ts"
 import { lastValueFrom } from "rxjs"
 import { visitParents } from "unist-util-visit-parents"
 import { writeFile } from "node:fs/promises"
+
 const evalLogs: Record<string, string[]> = {}
+const demoLogs: Record<string, string> = {}
 export function remarkNestSections(
   props: { enableNesting: boolean } = {
     enableNesting: false,
@@ -133,6 +135,10 @@ export const rehypeAddIdToSectionForToc = () => {
           headerId = _.kebabCase(
             text?.value.replace(/^(\d+\.)+/gi, ""),
           )
+          const marker = text?.value
+            .match(/^((\d+\.)+) /gi)?.[0]
+            .trim()
+          // console.log({ marker })
           // console.log({ heading, text, headerId });
           if (
             heading?.type === "element" &&
@@ -147,8 +153,21 @@ export const rehypeAddIdToSectionForToc = () => {
                 properties: {
                   href: `#${headerId}`,
                 },
-                children: [text],
+                children: [
+                  h(
+                    "span",
+                    { class: "marker" },
+                    { type: "text", value: marker },
+                  ),
+                  ((text.value = text.value.replace(
+                    marker,
+                    "",
+                  )),
+                  text),
+                  h("div", { class: "flair-a" }, []),
+                ],
               },
+              h("div", { class: "flair-h" }, []),
             ]
           }
 
@@ -180,6 +199,10 @@ export const rehypeAddIdToSectionForToc = () => {
               },
             ],
           })
+
+          node.children.push(
+            h("div", { class: "flair-section" }, []),
+          )
         }
       },
     )
@@ -209,6 +232,7 @@ export function myRemarkPlugin() {
         node.type === "containerDirective" &&
         node.name === "codes"
       ) {
+        let srcToId = {} as Record<string, string>
         const enhanced = node.children
           .filter(i => i.type === "code")
           .map(i => {
@@ -244,10 +268,13 @@ export function myRemarkPlugin() {
           })
           .map(node => {
             if (node.value.match(/@@eval/gi)) {
+              const isFrontend =
+                node.value.match(/@@eval-frontend/gi)
               node.value = node.value?.replace(
                 /(.*@@eval.*\n)/i,
                 "",
               )
+
               let key = `${+new Date()}`
               if (key in evalLogs) {
                 key += `-${_.uniqueId()}`
@@ -256,17 +283,17 @@ export function myRemarkPlugin() {
               const id = key
 
               const script = `
-/** @jsxImportSource ~/lib/rxjs-vhtml/v2 */
-/** @jsxImportSourceTypes ~/lib/rxjs-vhtml/v2 */
 // ${id}
-const log = console.log.bind(console);
+${`const log = console.log.bind(console);
 console.log = (...args: any[]) => {
   log(...args)
   log('øøø')
   return;
 };
-;${node.value};
+;`}${node.value};
 `
+              if (isFrontend) {
+              }
               const name = `${import.meta.dirname!}/temp/${id}.${node.lang!}`
 
               // console.log("Writing...", name, node.meta)
@@ -303,6 +330,41 @@ console.log = (...args: any[]) => {
                   }),
               )
             }
+            if (node.value.match(/@@demo/gi)) {
+              node.value = node.value?.replace(
+                /(.*@@demo.*\n)/i,
+                "",
+              )
+              let key = `${+new Date()}`
+              if (key in demoLogs) {
+                key += `-${_.uniqueId()}`
+              }
+              demoLogs[key] = key
+              const id = key
+              demoLogs[`//${id}`] = key
+              node.value += `
+//${id}`
+            }
+            if (node.value.includes("--cut--")) {
+              const indexOf =
+                node.value.indexOf("// --cut--")
+
+              node.value = node.value.substring(0, indexOf)
+            }
+            if (node.value.includes("// @@src ")) {
+              const maybe =
+                node.value.match(/(.* @@src .*\n)/i)?.[1]
+              const filename = maybe?.split("@@src ")[1]
+              if (filename) {
+                srcToId[node.id!] = filename.trim()
+                node.value = node.value?.replace(
+                  /(.* @@src .*\n)/i,
+                  "",
+                )
+              }
+              // node.src = filename
+            }
+            node.value = node.value.trim()
             return node
           })
 
@@ -315,6 +377,7 @@ console.log = (...args: any[]) => {
               hProperties: {
                 class: "code-group-tabs",
                 "data-sticky": "1",
+                id: radioName,
               },
               hName: "div",
               hChildren: [
@@ -357,13 +420,106 @@ console.log = (...args: any[]) => {
                         },
                       ],
                     },
-                  ]
+                  ].filter(Boolean)
                 }),
               ],
             },
           },
+          // @ts-ignore
           ...enhanced,
           {
+            type: "element",
+            data: {
+              hName: "div",
+              hProperties: {
+                class: "demo-iframe",
+                id: "demo-iframe-" + radioName,
+              },
+            },
+          },
+          {
+            type: "element" as const,
+            data: { hName: "script" },
+            value: `
+            //${JSON.stringify(srcToId)}
+document.addEventListener('DOMContentLoaded', () => {
+  const tabs = document.getElementById("${radioName}");
+  const demoContainer = document.getElementById("${"demo-iframe-" + radioName}");
+  const toDemoArea = (src) => {
+    demoContainer.children[0]?.remove();
+    const iframe = document.createElement('iframe');
+    iframe.style.width = 'calc(100%)';
+    iframe.onload=function(){ window.resizeIframe(this)};
+    
+    iframe.onload = function() {
+      const iframeWindow = iframe.contentWindow;
+      const doc = iframe.contentDocument || iframeWindow.document;
+
+      doc.open();
+      doc.write(\`
+        <html style='height: fit-content;'>
+          <head>
+            <style>
+            <\\/style>
+          <\\/head>
+          <body style='margin: 4px; height: fit-content;'>
+          <\\/body>
+          <script type="module" src="\${src}"><\\/script>
+          <script>
+            console.log("WTF");
+              (function() {
+                const observer = new MutationObserver(() => {
+                  // Adjust the height of the parent iframe based on the body's height
+                  window.frameElement.style.height = (document.documentElement.offsetHeight + 1) +'px';
+                });
+
+                // Start observing changes in the body element
+                observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+
+                // Initial setting of height
+                window.frameElement.style.height = (document.documentElement.offsetHeight + 1) + 'px';
+              })();
+            <\\/script>
+        <\\/html>
+      \`);
+      doc.close();
+    };
+    // iframe.style.cssText="width:100%;";
+    demoContainer.appendChild(iframe);
+    // const doc = iframe.contentDocument || iframe.contentWindow?.document;
+    // doc.open();
+    // doc.write(\`
+    //   
+    //   <head></head>
+    //   
+    //     
+    //   </body>
+    //   </html>
+    // \`);
+    // doc.close();
+  };
+
+${Object.entries(srcToId)
+  .map(([k, v], index) => {
+    return `
+  const id${index} = document.getElementById('${k}');
+  id${index}.addEventListener('input', e => {
+    if(e.target.checked) {
+      toDemoArea("${v}")
+    }
+  });
+  if(id${index}.checked) {
+    console.log("I am checked...", id${index});
+    toDemoArea("${v}")
+  }
+  `
+  })
+  .join("\n")}
+});
+`,
+          },
+          {
+            // @ts-ignore
             type: "element",
             data: { hName: "style" },
             value: `
@@ -387,7 +543,7 @@ ${enhanced
       color: white;
     }
 
-    border-top-color: var(--color-red-600);
+    border-top-color: var(--color-blue-500);
 
     &::before {
       content: "";
@@ -395,10 +551,10 @@ ${enhanced
       top: 0;
       left: 0;
       right: 0;
-      height: 2px;
+      height: 6px;
       z-index: 10;
       width: 100%; 
-      background: var(--color-red-600);
+      background: var(--color-blue-500);
     }
 
   }
