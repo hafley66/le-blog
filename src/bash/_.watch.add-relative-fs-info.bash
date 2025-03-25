@@ -76,9 +76,7 @@ _.watch.sitemap.check() {
       echo "A-${#stringBuilder}"
       while IFS= read -r file; do
           stringBuilder+=$'\n'"$(_.watch.sitemap.get_file_metadata $file)"
-          echo "B-${#stringBuilder}"
 
-          finale+=""
           stringToRender=$(echo -e "$finale" | sed '/^$/d') # Remove empty lines
           echo "Writing..."
           biome=$(realpath "$SCRIPT_DIR/../..")

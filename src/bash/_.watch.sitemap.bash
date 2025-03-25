@@ -24,6 +24,11 @@ _.watch.sitemap.get_file_metadata() {
     # echo $yee
 
     if [[ -d "$filePath" ]]; then
+        echo "\
+import { SITEMAP } from '~/SITEMAP.deno.ts'
+
+export const SUB = SITEMAP.subFolder('$filePath');
+        " > "$filePath/SITEMAP.deno.ts"
         return
     else
         isDirectory=false
