@@ -2,18 +2,13 @@ import _ from "lodash"
 import { combineLatest, filter, map, switchMap } from "rxjs"
 import { Render$ } from "~/lib/0_RenderBase.deno.tsx"
 import { deferFrom } from "~/lib/lib.dual.ts"
-import { FS, SITEMAP } from "~/SITEMAP.deno.ts"
+import { SUB } from "~/blog/SITEMAP.deno.ts"
 const $ = Render$(import.meta.filename!)
 
 const allRenders = combineLatest(
-  SITEMAP.includes("render.deno.ts" as const)
-    .filter(i => i.path.startsWith("src/blog"))
+  SUB.includes("render.deno.ts")
     .filter(
-      i =>
-        i.path !== "src/blog/index.render.deno.tsx" &&
-        i.path !== "src/resume/index.render.deno.tsx" &&
-        i.path !== "src/home/index.render.deno.tsx" &&
-        i.path !== "src/tags/index.render.deno.tsx",
+      i => i.path !== "src/blog/index.render.deno.tsx",
     )
     .map(i =>
       deferFrom(() =>

@@ -1,5 +1,5 @@
 import { Render$ } from "~/lib/0_RenderBase.deno.tsx"
-import { FS, SITEMAP } from "~/SITEMAP.deno.ts"
+import { SUB as FS } from "~/blog/unholy-custom-jsx-with-observable-strings/SITEMAP.deno.ts"
 const $ = Render$(import.meta.filename!)
 
 const F =
@@ -38,37 +38,50 @@ Here are 4 main demos demonstrating basic jsx, sync jsx, and async jsx with obse
 ~~~tsx
 // @@filename Basic
 // @@eval
-${FS["src/blog/unholy-custom-jsx-with-observable-strings/basic.deno.tsx"].readSync()}
+${FS["basic.deno.tsx"].readSync()}
 ~~~
 
 ~~~tsx eval
 // @@filename Sync children
 // @@eval
-${FS["src/blog/unholy-custom-jsx-with-observable-strings/sync.deno.tsx"].readSync()}
+${FS["sync.deno.tsx"].readSync()}
 ~~~
 
 ~~~tsx
 // @@filename Async Observable
 // @@eval
-${FS["src/blog/unholy-custom-jsx-with-observable-strings/async.deno.tsx"].readSync()}
+${FS["async.deno.tsx"].readSync()}
 ~~~
 
 ~~~tsx
 // @@filename Async RxJS 
 // @@eval
-${FS["src/blog/unholy-custom-jsx-with-observable-strings/async.rxjs.deno.tsx"].readSync()}
+${FS["async.rxjs.deno.tsx"].readSync()}
 ~~~
 
 :::
 
 ## Basics
-In this jsx transform, thie children types are \`Array<string | number | boolean | Observable<string | number | boolean>>\`.
+In this jsx transform, thie children types are 
+
+~~~ts
+type Element = Array<
+  | string 
+  | number 
+  | boolean 
+  | Observable<
+      | string 
+      | number 
+      | boolean
+    >
+  >
+~~~
 
 This means you can do anything with rxjs as a child, so long as it results in a string over time.
 
 :::codes
-${FS["src/blog/unholy-custom-jsx-with-observable-strings/5_interval.dom.tsx"].frontendDemo()}
-${FS["src/blog/unholy-custom-jsx-with-observable-strings/6_interval.dom.tsx"].frontendDemo()}
+${FS["5_interval.dom.tsx"].frontendDemo()}
+${FS["6_interval.dom.tsx"].frontendDemo()}
 :::
 
 
@@ -79,8 +92,8 @@ For idiomatic RxJS, I heavily urge you to avoid BehaviorSubject as much as possi
 Just know that using it will delay you from understanding everything you see as state is really just some other observable somewhere else.
 
 :::codes
-${FS["src/blog/unholy-custom-jsx-with-observable-strings/state.1.dom.tsx"].frontendDemo("With BehaviorSubject")}
-${FS["src/blog/unholy-custom-jsx-with-observable-strings/state.2.dom.tsx"].frontendDemo("Without BehaviorSubject")}
+${FS["state.1.dom.tsx"].frontendDemo("With BehaviorSubject")}
+${FS["state.2.dom.tsx"].frontendDemo("Without BehaviorSubject")}
 :::
 
 `,

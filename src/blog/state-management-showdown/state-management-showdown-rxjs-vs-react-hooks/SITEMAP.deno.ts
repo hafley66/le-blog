@@ -1,0 +1,4 @@
+import { SITEMAP } from '~/SITEMAP.deno.ts'
+
+export const SUB = SITEMAP.subFolder('src/blog/state-management-showdown/state-management-showdown-rxjs-vs-react-hooks/')
+

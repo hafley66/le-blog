@@ -21,14 +21,19 @@ _.watch.sitemap.get_file_metadata() {
     local yee=$(pwd)
     local markdownDemo=""
     local frontendDemo=""
+    local clazz='Path'
     # echo $yee
+
+    if [[ $1 =~ 'DS_Store' ]]; then
+      return
+    fi
 
     if [[ -d "$filePath" ]]; then
         echo "\
 import { SITEMAP } from '~/SITEMAP.deno.ts'
 
-export const SUB = SITEMAP.subFolder('$filePath');
-        " > "$filePath/SITEMAP.deno.ts"
+export const SUB = SITEMAP.subFolder('$filePath/')
+" > "$filePath/SITEMAP.deno.ts"
         return
     else
         isDirectory=false
@@ -38,71 +43,43 @@ export const SUB = SITEMAP.subFolder('$filePath');
         super_extension="${filename#*.}"
         importPath="${relativePath/src/'~'}"
         publicPath="/${relativePath/src\//}"
-        readSync="readSync: () => readFileSync('$filePath').toString(),"
+
 
         case "$extension" in
             ts|tsx|js|jsx)
-                dynamicImport="dynamicImport: () => import('$importPath'),";
-                linkTag="linkTag: () => \"<script type='module' src='$publicPath'></script>\",";
-                markdownDemo="markdownDemo: (diffName = '$filename') => \
-\`
-~~~$extension
-// @@filename \${diffName}
-// @eval
-\${readFileSync('$filePath').toString()}
-~~~
-
-
-<script type='module' src='$publicPath' demo-for='$filename'></script>
-
-
-\`,";
-                frontendDemo="frontendDemo: (diffName = '$filename') => \
-\`
-~~~$extension
-// @@filename \${diffName}
-// @@src $publicPath
-\${readFileSync('$filePath').toString()}
-~~~
-
-
-<script type='module' src='$publicPath' demo-for='$filename'></script>
-
-
-\`,";
-                publicPath="publicPath: '${publicPath}',";
+                dynamicImport=", () => import('$importPath')";
+                clazz='JSPath'
                 ;;
             css)
-                linkTag="linkTag: () => \"<link rel='stylesheet' href='$publicPath'/>\",";
-                publicPath="publicPath: '${publicPath}',";
                 ;;
             png|jpeg|jpg|gif)
-                linkTag="imgTag: (alt: string) => \`<img alt=\"\${alt}\" src='$publicPath' />\`,";
-                publicPath="publicPath: '${publicPath}',";
                 ;;
             *)
-              publicPath="public: '${publicPath}',";
               ;;
         esac
     fi
 
-        
     echo "\
-  '$relativePath': {
-      'path': '$relativePath',
-      'filename': '${filename:-null}',
-      'dirname': '${dirname:-null}',
-      'super_extension': '${super_extension:-null}',
-      'extension': '${extension:-null}',
-      'importPath': '$importPath',
-      $readSync
-      $dynamicImport
-      $linkTag
-      $publicPath
-      $markdownDemo
-      $frontendDemo
-  },
-  "
+    '$relativePath': new $clazz('$relativePath', '$dirname', '$filename', '$extension'$dynamicImport),
+    "
+    
+
+  # echo "\
+  # '$relativePath': {
+  #     'path': '$relativePath',
+  #     'filename': '${filename:-null}',
+  #     'dirname': '${dirname:-null}',
+  #     'super_extension': '${super_extension:-null}',
+  #     'extension': '${extension:-null}',
+  #     'importPath': '$importPath',
+  #     $readSync
+  #     $dynamicImport
+  #     $linkTag
+  #     $publicPath
+  #     $markdownDemo
+  #     $frontendDemo
+  # },
+  # "
 }
 
 
@@ -111,12 +88,26 @@ _.watch.sitemap.check() {
   filesString=$(find ${1:-src} \
     -not -path '*/temp/*' \
     -not -name '*.vite.html' \
+    -not -name '*DS_store*' \
+    -not -name '*SITEMAP.deno*' \
     \( -name '*.ts' \
     -o -name '*.js' \
     -o -name '*.jsx' \
     -o -name '*.tsx' \
     -o -name '*.md' \
-    -o -name '*.css' -o -name '*.html' -o -name '*.json' -o -name '*.jsonc' -o -name '*.mts' -o -name '*.jpg' -o -name '*.png' -o -name '*.svg' -o -name '*.gif' -o -name '*.mp4' -o -name '*.sh' -o -name '*.bash' \
+    -o -name '*.css' \
+    -o -name '*.html' \
+    -o -name '*.json' \
+    -o -name '*.jsonc' \
+    -o -name '*.mts' \
+    -o -name '*.jpg' \
+    -o -name '*.png' \
+    -o -name '*.svg' \
+    -o -name '*.gif' \
+    -o -name '*.mp4' \
+    -o -name '*.sh' \
+    -o -name '*.bash' \
+    -o -d \
     \) )  # Get the list of files
 
 
@@ -132,56 +123,15 @@ _.watch.sitemap.check() {
 
       finale+="\
 
-import { readFileSync } from 'node:fs';
-
-      type Imploder<T> = T[keyof T];
-
+import {Path, JSPath, SITEMAP_PART} from './lib/path_helpers.deno.ts';
       export const FS = {
       $stringBuilder
       } as const;
 
-      export type FILESYSTEM = typeof FS;
+export type FILESYSTEM = typeof FS;
+export type FILESYSTEM = typeof FS
+export const SITEMAP = new SITEMAP_PART<FILESYSTEM>(FS)
 
-      export const SITEMAP = {
-      startsWith: <T extends string>(it: T) => (
-        Object.entries(FS).filter(([k, v]) => k.startsWith(it)).map(i => i[1])
-      ) as unknown as Imploder<
-        {
-          [
-            K in keyof FILESYSTEM as K extends \`\${T}\${string}\` ? K : never
-          ]: FILESYSTEM[K];
-        }
-      >[],
-      endsWith: <T extends string>(it: T) => (
-        Object.entries(FS).filter(([k, v]) => k.endsWith(it)).map(i => i[1])
-      ) as unknown as Imploder<
-        {
-          [
-            K in keyof FILESYSTEM as K extends \`\${string}\${T}\` ? K : never
-          ]: FILESYSTEM[K];
-        }
-      >[],
-      includes: <T extends string>(it: T) => (
-        Object.entries(FS).filter(([k, v]) => k.includes(it)).map(i => i[1])
-      ) as unknown as Imploder<
-        {
-          [
-            K in keyof FILESYSTEM as K extends \`\${string}\${T}\${string}\` ? K : never
-          ]: FILESYSTEM[K];
-        }
-      >[],
-      subFolder: <T extends string>(it: T) => {
-        return Object.fromEntries(
-          Object.entries(FS)
-            .filter(([k, v]) => k.startsWith(it))
-            .map(i => [i[0].replace(it, \"\"), i[1]] as const),
-          ) as unknown as {
-            [K in keyof FILESYSTEM as K extends \`\${T}\${infer U}\`
-              ? U
-              : never]: FILESYSTEM[K]
-          }
-        },
-      };
       "
       # brew install flock
       stringToRender=$(echo -e "$finale" | sed '/^$/d') # Remove empty lines

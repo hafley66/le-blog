@@ -1,5 +1,5 @@
 import { Render$ } from "~/lib/0_RenderBase.deno.tsx"
-import { FS } from "~/SITEMAP.deno.ts"
+import { SUB } from "./SITEMAP.deno.ts"
 const $ = Render$(import.meta.filename!)
 
 export default $.SSGLayout({
@@ -25,7 +25,7 @@ Lets imagine we have an async calculator API for math with \`async add\` and \`a
 
 ~~~tsx
 // @@filename 
-${FS["src/blog/rxjs/recreate-react-query-with-rxjs/sample.deno.tsx"].readSync()}
+${SUB["sample.deno.tsx"].readSync()}
 ~~~
 
 :::codes

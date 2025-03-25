@@ -75,6 +75,9 @@ _.watch.sitemap.check() {
       finale=""
       echo "A-${#stringBuilder}"
       while IFS= read -r file; do
+        last_import_line=$(grep -n "^import" | tail -n 1 | cut -d: -f1)
+        grep -n "const DIR"  ./src/lib/0_Layout.dual.tsx
+        if [ ! $file =~ DIRNAME ]
           stringBuilder+=$'\n'"$(_.watch.sitemap.get_file_metadata $file)"
 
           stringToRender=$(echo -e "$finale" | sed '/^$/d') # Remove empty lines
