@@ -14,7 +14,7 @@ export class Path<
     public ext: Ext,
   ) {}
 
-  readSync = () => readFileSync(this.path)
+  readSync = () => readFileSync(this.path).toString()
 
   get publicPath() {
     return this.path.replace("src/", "/")

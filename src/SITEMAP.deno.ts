@@ -3,7 +3,6 @@ import {
   JSPath,
   SITEMAP_PART,
 } from "./lib/path_helpers.deno.ts"
-type Imploder<T> = T[keyof T]
 export const FS = {
   "src/home/profession.mermaid": new Path(
     "src/home/profession.mermaid",
@@ -781,14 +780,6 @@ export const FS = {
     "debug-range.js",
     "js",
     () => import("~/lib/client/debug-range.js"),
-  ),
-
-  "src/SITEMAP2.deno.ts": new JSPath(
-    "src/SITEMAP2.deno.ts",
-    "src",
-    "SITEMAP2.deno.ts",
-    "ts",
-    () => import("~/SITEMAP2.deno.ts"),
   ),
 
   "src/pages/about.astro": new Path(

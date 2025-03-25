@@ -113,6 +113,7 @@
     "**/CVS": true,
     "**/.DS_Store": true,
     "**/Thumbs.db": true,
-    "src/**/index.vite.html": true
+    "src/**/index.vite.html": true,
+    "src/*/**/SITEMAP.deno.ts": true
   }
 }

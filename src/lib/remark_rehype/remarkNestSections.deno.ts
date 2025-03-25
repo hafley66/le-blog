@@ -533,7 +533,7 @@ ${enhanced
   }
 
   #${i.id}:checked+label {
-    background:rgb(18, 18, 18);
+    background:#282c34;
     position: relative;
     z-index:1;
     border-bottom: none;

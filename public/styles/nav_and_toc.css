@@ -195,13 +195,13 @@
       background: rgb(63, 63, 63);
     }
     
-    h2::after {
+    /* h2::after {
       content: " ";
       pointer-events: all;
       filter: var(--inline-svg-filter);
       width: clamp(1.1rem, 1.8vw, 1.4rem);
       height: clamp(1.1rem, 1.8vw, 1.4rem);
-    }
+    } */
 
     h2 {
       margin-top: 0px;

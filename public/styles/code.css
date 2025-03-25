@@ -52,7 +52,7 @@ code:not(:has(.line)):not(.twoslash-popup-code) {
 .shiki {position: relative;}
 
 pre {
-  margin-top: 32px;
+  margin-top: 16px;
   margin-bottom: 0px;
 }
 

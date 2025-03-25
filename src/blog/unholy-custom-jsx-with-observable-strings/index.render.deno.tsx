@@ -1,7 +1,7 @@
 import { Render$ } from "~/lib/0_RenderBase.deno.tsx"
-import { SUB as FS } from "~/blog/unholy-custom-jsx-with-observable-strings/SITEMAP.deno.ts"
+import { SUB } from "~/blog/unholy-custom-jsx-with-observable-strings/SITEMAP.deno.ts"
 const $ = Render$(import.meta.filename!)
-
+const { fs: FS } = SUB
 const F =
   "src/blog/unholy-custom-jsx-with-observable-strings" as const
 // SITEMAP.startsWith(F);

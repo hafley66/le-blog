@@ -25,7 +25,7 @@ Lets imagine we have an async calculator API for math with \`async add\` and \`a
 
 ~~~tsx
 // @@filename 
-${SUB["sample.deno.tsx"].readSync()}
+${SUB.fs["sample.deno.tsx"].readSync()}
 ~~~
 
 :::codes

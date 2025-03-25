@@ -129,7 +129,6 @@ import {Path, JSPath, SITEMAP_PART} from './lib/path_helpers.deno.ts';
       } as const;
 
 export type FILESYSTEM = typeof FS;
-export type FILESYSTEM = typeof FS
 export const SITEMAP = new SITEMAP_PART<FILESYSTEM>(FS)
 
       "

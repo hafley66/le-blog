@@ -275,7 +275,7 @@ aside:empty {
 .fancy-hr {
   position: relative;
   border: none;
-  height: 1px;
+  height: 2px;
   background: linear-gradient(
     to right,
     var(--color-border) 0%,
