@@ -387,6 +387,7 @@ console.log = (...args: any[]) => {
                       type: "element" as const,
                       tagName: "input",
                       properties: {
+                        "data-scroll-to-me": `.${radioName}`,
                         type: "radio",
                         name: radioName,
                         id: i.id,
@@ -403,7 +404,9 @@ console.log = (...args: any[]) => {
                     {
                       type: "element" as const,
                       tagName: "label",
-                      properties: { for: i.id },
+                      properties: {
+                        for: i.id,
+                      },
                       children: [
                         {
                           type: "element",
@@ -466,7 +469,6 @@ document.addEventListener('DOMContentLoaded', () => {
           <\\/body>
           <script type="module" src="\${src}"><\\/script>
           <script>
-            console.log("WTF");
               (function() {
                 const observer = new MutationObserver(() => {
                   // Adjust the height of the parent iframe based on the body's height

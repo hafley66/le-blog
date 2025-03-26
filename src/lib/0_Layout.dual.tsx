@@ -181,6 +181,7 @@ export const Layout = (
             FS["src/lib/client/checkbox.init.dom.js"],
           FS["src/lib/client/code-copy.init.dom.js"],
           FS["src/lib/client/img-onclick.dom.js"],
+          FS["src/lib/client/on-click-scroll.dom.js"],
         ]
           .filter(Boolean)
           // biome-ignore lint/complexity/useOptionalChain: ts

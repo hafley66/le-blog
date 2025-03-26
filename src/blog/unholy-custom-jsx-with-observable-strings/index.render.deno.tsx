@@ -7,14 +7,17 @@ const F =
 // SITEMAP.startsWith(F);
 export default $.SSGLayout({
   title:
-    "True lazy rendering with JSX and RxJS Observables",
+    "(DRAFT) True lazy rendering with JSX and RxJS Observables (DRAFT)",
   description: (
-    <em>
-      <blockquote>
-        "Do you think God stays in heaven because he too
-        lives in fear of what he's created?"
-      </blockquote>
-    </em>
+    <div className="f-col">
+      <strong>DRAFT!!!</strong>
+      <em>
+        <blockquote>
+          "Do you think God stays in heaven because he too
+          lives in fear of what he's created?"
+        </blockquote>
+      </em>
+    </div>
   ),
   date_created: "2025-02-25",
   tags: [
@@ -79,12 +82,20 @@ type Element = Array<
 
 This means you can do anything with rxjs as a child, so long as it results in a string over time.
 
+### Counter Demo
+To demonstrate what I mean as fast as possible, we can take \`RsJS.interval\` function and use it to create an inline timer that fires its next value every 1 second.
 :::codes
 ${FS["5_interval.dom.tsx"].frontendDemo()}
 ${FS["6_interval.dom.tsx"].frontendDemo()}
 :::
 
+### Mic Check 1-2-3, For + If
+Okay and lets make sure that doing regular array map's into jsx work as expected, as well as conditionals.
 
+:::codes
+${FS["7.array_map.dom.tsx"].frontendDemo("Array Map")}
+${FS["8.conditional.dom.tsx"].frontendDemo("Conditional Render")}
+:::
 
 ## State
 For idiomatic RxJS, I heavily urge you to avoid BehaviorSubject as much as possible. BUT, it exists for a reason, and when you are starting out, you will want to use it all the time.

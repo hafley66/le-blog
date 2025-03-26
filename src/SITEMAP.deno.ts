@@ -177,6 +177,18 @@ export const FS = {
         ),
     ),
 
+  "src/blog/unholy-custom-jsx-with-observable-strings/8.conditional.dom.tsx":
+    new JSPath(
+      "src/blog/unholy-custom-jsx-with-observable-strings/8.conditional.dom.tsx",
+      "src/blog/unholy-custom-jsx-with-observable-strings",
+      "8.conditional.dom.tsx",
+      "tsx",
+      () =>
+        import(
+          "~/blog/unholy-custom-jsx-with-observable-strings/8.conditional.dom.tsx"
+        ),
+    ),
+
   "src/blog/unholy-custom-jsx-with-observable-strings/6_interval.dom.tsx":
     new JSPath(
       "src/blog/unholy-custom-jsx-with-observable-strings/6_interval.dom.tsx",
@@ -198,6 +210,18 @@ export const FS = {
       () =>
         import(
           "~/blog/unholy-custom-jsx-with-observable-strings/basic.deno.tsx"
+        ),
+    ),
+
+  "src/blog/unholy-custom-jsx-with-observable-strings/7.array_map.dom.tsx":
+    new JSPath(
+      "src/blog/unholy-custom-jsx-with-observable-strings/7.array_map.dom.tsx",
+      "src/blog/unholy-custom-jsx-with-observable-strings",
+      "7.array_map.dom.tsx",
+      "tsx",
+      () =>
+        import(
+          "~/blog/unholy-custom-jsx-with-observable-strings/7.array_map.dom.tsx"
         ),
     ),
 
@@ -739,6 +763,14 @@ export const FS = {
     "img-onclick.dom.js",
     "js",
     () => import("~/lib/client/img-onclick.dom.js"),
+  ),
+
+  "src/lib/client/on-click-scroll.dom.js": new JSPath(
+    "src/lib/client/on-click-scroll.dom.js",
+    "src/lib/client",
+    "on-click-scroll.dom.js",
+    "js",
+    () => import("~/lib/client/on-click-scroll.dom.js"),
   ),
 
   "src/lib/client/TOC_intersection_polyfill.js": new JSPath(

@@ -48,9 +48,9 @@
       </div>
       <div class="hex-content-amoeba"></div>
       <span>diy</span>
-</a></div></div></section><details open="true" id="section-table-of-contents"><summary id="toc-header-contents"><h2 id="table-of-contents">Table of Contents</h2><input type="checkbox" id="toc-toggle"></summary><div class="fancy-hr"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 20"><circle cx="10" cy="10" r="7" style="fill:var(--color-text);" stroke-width="2"></circle><circle cx="30" cy="10" r="9" style="fill:var(--color-text);" stroke-width="2" fill="transparent"></circle><circle cx="50" cy="10" r="7" style="fill:var(--color-text);" stroke-width="2"></circle></svg></div><nav id="toc-nav"><ol><li><a href="#section-abstract">1.  Abstract</a></li><li><a href="#section-start-with-a-single-dynamic-import">2.  Start with a single dynamic import</a></li></ol></nav></details><div id="main-content-middle"><section id="section-abstract"><h2 id="abstract"><a href="#abstract"><span class="marker">1.</span>  Abstract<div class="flair-a"></div></a><div class="flair-h"></div></h2><p>I present a tutorial for replacing vite's glob import and css imports with zero magic and standard tools like typescript. It results in a file that mimics the output of bash's <code>find</code> command into a typescript object.</p><div class="code-group code-group-4"><div class="code-group-tabs" data-sticky="1" id="code-group-4"><input type="radio" name="code-group-4" id="code-group-radio-10" checked="true"><label for="code-group-radio-10"><div class="centerino">fs
-</div></label><input type="radio" name="code-group-4" id="code-group-radio-11"><label for="code-group-radio-11"><div class="centerino">SITEMAP.deno.ts
-</div></label><input type="radio" name="code-group-4" id="code-group-radio-12"><label for="code-group-radio-12"><div class="centerino">index.render.deno.tsx
+</a></div></div></section><details open="true" id="section-table-of-contents"><summary id="toc-header-contents"><h2 id="table-of-contents">Table of Contents</h2><input type="checkbox" id="toc-toggle"></summary><div class="fancy-hr"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 20"><circle cx="10" cy="10" r="7" style="fill:var(--color-text);" stroke-width="2"></circle><circle cx="30" cy="10" r="9" style="fill:var(--color-text);" stroke-width="2" fill="transparent"></circle><circle cx="50" cy="10" r="7" style="fill:var(--color-text);" stroke-width="2"></circle></svg></div><nav id="toc-nav"><ol><li><a href="#section-abstract">1.  Abstract</a></li><li><a href="#section-start-with-a-single-dynamic-import">2.  Start with a single dynamic import</a></li></ol></nav></details><div id="main-content-middle"><section id="section-abstract"><h2 id="abstract"><a href="#abstract"><span class="marker">1.</span>  Abstract<div class="flair-a"></div></a><div class="flair-h"></div></h2><p>I present a tutorial for replacing vite's glob import and css imports with zero magic and standard tools like typescript. It results in a file that mimics the output of bash's <code>find</code> command into a typescript object.</p><div class="code-group code-group-5"><div class="code-group-tabs" data-sticky="1" id="code-group-5"><input data-scroll-to-me=".code-group-5" type="radio" name="code-group-5" id="code-group-radio-12" checked="true"><label for="code-group-radio-12"><div class="centerino">fs
+</div></label><input data-scroll-to-me=".code-group-5" type="radio" name="code-group-5" id="code-group-radio-13"><label for="code-group-radio-13"><div class="centerino">SITEMAP.deno.ts
+</div></label><input data-scroll-to-me=".code-group-5" type="radio" name="code-group-5" id="code-group-radio-14"><label for="code-group-radio-14"><div class="centerino">index.render.deno.tsx
 </div></label></div><pre class="shiki one-dark-pro" style="background-color:#282c34;color:#abb2bf" tabindex="0"><div class="code-scroller"><code class="language-text"><span class="line"><span>src/</span></span>
 <span class="line"><span>  blog/</span></span>
 <span class="line"><span>    hello-world/</span></span>
@@ -106,11 +106,11 @@
 <span class="line"><span style="color:#C678DD">export</span><span style="color:#C678DD"> default</span><span style="color:#ABB2BF"> &#x3C;></span></span>
 <span class="line"><span style="color:#ABB2BF">  $</span><span style="color:#C678DD">{</span><span style="color:#E5C07B">FS</span><span style="color:#ABB2BF">[</span><span style="color:#98C379">'src/blog/hello-world/example.css'</span><span style="color:#ABB2BF">].</span><span style="color:#61AFEF">linkTag</span><span style="color:#ABB2BF">()</span><span style="color:#C678DD">}</span></span>
 <span class="line"><span style="color:#ABB2BF">  &#x3C;</span><span style="color:#E06C75">p</span><span style="color:#ABB2BF">>Hello World!&#x3C;/</span><span style="color:#E06C75">p</span><span style="color:#ABB2BF">></span></span>
-<span class="line"><span style="color:#ABB2BF">&#x3C;/></span></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><div class="demo-iframe" id="demo-iframe-code-group-4"></div><script>
+<span class="line"><span style="color:#ABB2BF">&#x3C;/></span></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><div class="demo-iframe" id="demo-iframe-code-group-5"></div><script>
             //{}
 document.addEventListener('DOMContentLoaded', () => {
-  const tabs = document.getElementById("code-group-4");
-  const demoContainer = document.getElementById("demo-iframe-code-group-4");
+  const tabs = document.getElementById("code-group-5");
+  const demoContainer = document.getElementById("demo-iframe-code-group-5");
   const toDemoArea = (src) => {
     demoContainer.children[0]?.remove();
     const iframe = document.createElement('iframe');
@@ -132,7 +132,6 @@ document.addEventListener('DOMContentLoaded', () => {
           <\/body>
           <script type="module" src="${src}"><\/script>
           <script>
-            console.log("WTF");
               (function() {
                 const observer = new MutationObserver(() => {
                   // Adjust the height of the parent iframe based on the body's height
@@ -169,79 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script><style>
 .code-group pre {display:none}
-.code-group-4 {
-
-  #code-group-radio-10+label {
-
-  }
-
-  #code-group-radio-10:checked+label {
-    background:#282c34;
-    position: relative;
-    z-index:1;
-    border-bottom: none;
-    
-    &:hover {
-      text-decoration: underline;
-      color: white;
-    }
-
-    border-top-color: var(--color-blue-500);
-
-    &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 6px;
-      z-index: 10;
-      width: 100%; 
-      background: var(--color-blue-500);
-    }
-
-  }
-
-  &:has(#code-group-radio-10:checked) pre:nth-child(2){ 
-    display: block;
-  }
-  
-
-  #code-group-radio-11+label {
-
-  }
-
-  #code-group-radio-11:checked+label {
-    background:#282c34;
-    position: relative;
-    z-index:1;
-    border-bottom: none;
-    
-    &:hover {
-      text-decoration: underline;
-      color: white;
-    }
-
-    border-top-color: var(--color-blue-500);
-
-    &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 6px;
-      z-index: 10;
-      width: 100%; 
-      background: var(--color-blue-500);
-    }
-
-  }
-
-  &:has(#code-group-radio-11:checked) pre:nth-child(3){ 
-    display: block;
-  }
-  
+.code-group-5 {
 
   #code-group-radio-12+label {
 
@@ -274,7 +201,79 @@ document.addEventListener('DOMContentLoaded', () => {
 
   }
 
-  &:has(#code-group-radio-12:checked) pre:nth-child(4){ 
+  &:has(#code-group-radio-12:checked) pre:nth-child(2){ 
+    display: block;
+  }
+  
+
+  #code-group-radio-13+label {
+
+  }
+
+  #code-group-radio-13:checked+label {
+    background:#282c34;
+    position: relative;
+    z-index:1;
+    border-bottom: none;
+    
+    &:hover {
+      text-decoration: underline;
+      color: white;
+    }
+
+    border-top-color: var(--color-blue-500);
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      z-index: 10;
+      width: 100%; 
+      background: var(--color-blue-500);
+    }
+
+  }
+
+  &:has(#code-group-radio-13:checked) pre:nth-child(3){ 
+    display: block;
+  }
+  
+
+  #code-group-radio-14+label {
+
+  }
+
+  #code-group-radio-14:checked+label {
+    background:#282c34;
+    position: relative;
+    z-index:1;
+    border-bottom: none;
+    
+    &:hover {
+      text-decoration: underline;
+      color: white;
+    }
+
+    border-top-color: var(--color-blue-500);
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      z-index: 10;
+      width: 100%; 
+      background: var(--color-blue-500);
+    }
+
+  }
+
+  &:has(#code-group-radio-14:checked) pre:nth-child(4){ 
     display: block;
   }
   
@@ -302,8 +301,8 @@ document.addEventListener('DOMContentLoaded', () => {
 <li>No need for content collections and zod when you can just have the types up front.</li>
 </ul>
 </li>
-</ol><p>This idea came from trying to use Astro.js to build my blog for static site generation (<em>SSG</em>). I was trying to make the tags and all posts page and I was stuck deciding between using astro jsx, react, md, or mdx as options. There is <em>so much</em> flexibility that it began to feel like a dislocated shoulder.</p><p>Another attribute of this technique is <em>no <em>implicit</em> magic</em>. We will not rely on framework specific import loaders or custom file type loaders.</p><p>At the end of the day, this is all string concatenation/meta-programming an html page, why add more implicit behavior to the fire.</p><p>Here is the end result: A typesafe object with constant strings of rootpaths to all relevant files.</p><div class="code-group code-group-5"><div class="code-group-tabs" data-sticky="1" id="code-group-5"><input type="radio" name="code-group-5" id="code-group-radio-13" checked="true"><label for="code-group-radio-13"><div class="centerino">TSX file
-</div></label><input type="radio" name="code-group-5" id="code-group-radio-14"><label for="code-group-radio-14"><div class="centerino">CSS file
+</ol><p>This idea came from trying to use Astro.js to build my blog for static site generation (<em>SSG</em>). I was trying to make the tags and all posts page and I was stuck deciding between using astro jsx, react, md, or mdx as options. There is <em>so much</em> flexibility that it began to feel like a dislocated shoulder.</p><p>Another attribute of this technique is <em>no <em>implicit</em> magic</em>. We will not rely on framework specific import loaders or custom file type loaders.</p><p>At the end of the day, this is all string concatenation/meta-programming an html page, why add more implicit behavior to the fire.</p><p>Here is the end result: A typesafe object with constant strings of rootpaths to all relevant files.</p><div class="code-group code-group-6"><div class="code-group-tabs" data-sticky="1" id="code-group-6"><input data-scroll-to-me=".code-group-6" type="radio" name="code-group-6" id="code-group-radio-15" checked="true"><label for="code-group-radio-15"><div class="centerino">TSX file
+</div></label><input data-scroll-to-me=".code-group-6" type="radio" name="code-group-6" id="code-group-radio-16"><label for="code-group-radio-16"><div class="centerino">CSS file
 </div></label></div><pre class="shiki one-dark-pro" style="background-color:#282c34;color:#abb2bf" tabindex="0"><div class="code-scroller"><code class="language-tsx"><span class="line"><span style="color:#C678DD">import</span><span style="color:#ABB2BF"> { </span><span style="color:#E06C75">FS</span><span style="color:#ABB2BF"> } </span><span style="color:#C678DD">from</span><span style="color:#98C379"> '~/SITEMAP.deno.ts'</span></span>
 <span class="line"><span style="color:#C678DD">const</span><span style="color:#E5C07B"> fullyTypedTsEntry</span><span style="color:#56B6C2"> =</span><span style="color:#E5C07B"> FS</span><span style="color:#ABB2BF">[</span><span style="color:#98C379">"src/blog/unholy-custom-jsx-with-observable-strings/basic.deno.tsx"</span><span style="color:#ABB2BF">]</span></span>
 <span class="line"></span>
@@ -362,11 +361,11 @@ document.addEventListener('DOMContentLoaded', () => {
 <span class="line"><span style="color:#E5C07B">console</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">log</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">fullyTypedCssEntry</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">publicPath</span><span style="color:#ABB2BF">)</span></span>
 <span class="line"><span style="color:#E5C07B">console</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">log</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">fullyTypedCssEntry</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">importPath</span><span style="color:#ABB2BF">)</span></span>
 <span class="line"><span style="color:#E5C07B">console</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">log</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">fullyTypedCssEntry</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">extension</span><span style="color:#ABB2BF">)</span></span>
-<span class="line"><span style="color:#E5C07B">console</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">log</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">fullyTypedCssEntry</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">path</span><span style="color:#ABB2BF">)</span></span></code></div><button class="copy-to-clipboard caption">Copy</button><details class="console.log-details" open="1"><summary class="log-grid-heading">console.log[5]</summary><code class="console.log-output"><span class="log-line">log(1)</span><span class="log-line">&#x3C;link rel='stylesheet' href='/blog/make-your-own-sitemap-with-typescript/example.css'/></span><span class="log-line">log(2)</span><span class="log-line">/blog/make-your-own-sitemap-with-typescript/example.css</span><span class="log-line">log(3)</span><span class="log-line">~/blog/make-your-own-sitemap-with-typescript/example.css</span><span class="log-line">log(4)</span><span class="log-line">undefined</span><span class="log-line">log(5)</span><span class="log-line">src/blog/make-your-own-sitemap-with-typescript/example.css</span></code></details></pre><div class="demo-iframe" id="demo-iframe-code-group-5"></div><script>
+<span class="line"><span style="color:#E5C07B">console</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">log</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">fullyTypedCssEntry</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">path</span><span style="color:#ABB2BF">)</span></span></code></div><button class="copy-to-clipboard caption">Copy</button><details class="console.log-details" open="1"><summary class="log-grid-heading">console.log[5]</summary><code class="console.log-output"><span class="log-line">log(1)</span><span class="log-line">&#x3C;link rel='stylesheet' href='/blog/make-your-own-sitemap-with-typescript/example.css'/></span><span class="log-line">log(2)</span><span class="log-line">/blog/make-your-own-sitemap-with-typescript/example.css</span><span class="log-line">log(3)</span><span class="log-line">~/blog/make-your-own-sitemap-with-typescript/example.css</span><span class="log-line">log(4)</span><span class="log-line">undefined</span><span class="log-line">log(5)</span><span class="log-line">src/blog/make-your-own-sitemap-with-typescript/example.css</span></code></details></pre><div class="demo-iframe" id="demo-iframe-code-group-6"></div><script>
             //{}
 document.addEventListener('DOMContentLoaded', () => {
-  const tabs = document.getElementById("code-group-5");
-  const demoContainer = document.getElementById("demo-iframe-code-group-5");
+  const tabs = document.getElementById("code-group-6");
+  const demoContainer = document.getElementById("demo-iframe-code-group-6");
   const toDemoArea = (src) => {
     demoContainer.children[0]?.remove();
     const iframe = document.createElement('iframe');
@@ -388,7 +387,6 @@ document.addEventListener('DOMContentLoaded', () => {
           <\/body>
           <script type="module" src="${src}"><\/script>
           <script>
-            console.log("WTF");
               (function() {
                 const observer = new MutationObserver(() => {
                   // Adjust the height of the parent iframe based on the body's height
@@ -425,13 +423,13 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script><style>
 .code-group pre {display:none}
-.code-group-5 {
+.code-group-6 {
 
-  #code-group-radio-13+label {
+  #code-group-radio-15+label {
 
   }
 
-  #code-group-radio-13:checked+label {
+  #code-group-radio-15:checked+label {
     background:#282c34;
     position: relative;
     z-index:1;
@@ -458,16 +456,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   }
 
-  &:has(#code-group-radio-13:checked) pre:nth-child(2){ 
+  &:has(#code-group-radio-15:checked) pre:nth-child(2){ 
     display: block;
   }
   
 
-  #code-group-radio-14+label {
+  #code-group-radio-16+label {
 
   }
 
-  #code-group-radio-14:checked+label {
+  #code-group-radio-16:checked+label {
     background:#282c34;
     position: relative;
     z-index:1;
@@ -494,7 +492,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   }
 
-  &:has(#code-group-radio-14:checked) pre:nth-child(3){ 
+  &:has(#code-group-radio-16:checked) pre:nth-child(3){ 
     display: block;
   }
   
@@ -869,5 +867,34 @@ document.addEventListener("keyup", e => {
   if (e.key === "Escape" && isZoomin) {
     remove()
   }
+})
+;
+;document.addEventListener("DOMContentLoaded", function () {
+  const element = document.querySelector(
+    "[data-scroll-to-me]",
+  )
+  document.addEventListener(
+    "click",
+    e => {
+      /**
+       * @type {HTMLElement}
+       */
+      let h = e.target
+      if (h.matches("[data-scroll-to-me]")) {
+        /**
+         * @type {HTMLElement}
+         */
+        const it = document.querySelector(
+          h.dataset.scrollToMe,
+        )
+        if (it)
+          setTimeout(
+            () => it.scrollIntoView({ behavior: "smooth" }),
+            16,
+          )
+      }
+    },
+    { capture: true },
+  )
 })
 </script></body></html>

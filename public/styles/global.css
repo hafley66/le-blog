@@ -4,6 +4,7 @@
 
 html {
   line-height: 1.6;
+  scroll-padding-top: 60px;
 }
 
 body {

@@ -1,6 +1,6 @@
 <html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"><meta charSet="UTF-8"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><script>window.resizeIframe = function resizeIframe(obj) {
           obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
-          }</script><link rel="stylesheet" href="/styles/colors.css"><link rel="stylesheet" href="/styles/fonts.css"><link rel="stylesheet" href="/styles/global.css"><link rel="stylesheet" href="/styles/nav_and_toc.css"><link rel="stylesheet" href="/styles/hex.css"><link rel="stylesheet" href="/styles/code.css"><link rel="stylesheet" href="/styles/img.css"><link rel="stylesheet" href="/shiki-twoslash.css"><title>True lazy rendering with JSX and RxJS Observables</title></head><body class=""><header><nav id="primary-nav" aria-label="Primary navigation"><div class="nav-links" role="tablist"><a href="/home" role="tab" class="nav-link-anchor"><span class="nav-link ">Home</span></a><a href="/resume" role="tab" class="nav-link-anchor"><span class="nav-link ">Resume</span></a><a href="/blog" role="tab" aria-selected="true" class="nav-link-anchor"><span class="nav-link active">Blog</span></a></div></nav></header><main class="body-markdown"><section id="title-and-description"><h1>True lazy rendering with JSX and RxJS Observables</h1><sub>2025-02-25 by Chris Hafley</sub><div id="h1-desc"><em><blockquote>"Do you think God stays in heaven because he too lives in fear of what he's created?"</blockquote></em></div><div class="f-col f-a-center" id="tags" style="margin-bottom:24px;"><div class="responsive-hex-grid-3"><a class="hex-content caption" href="/tags/typescript" style="--hex-color:var(--color-inferno-2);">
+          }</script><link rel="stylesheet" href="/styles/colors.css"><link rel="stylesheet" href="/styles/fonts.css"><link rel="stylesheet" href="/styles/global.css"><link rel="stylesheet" href="/styles/nav_and_toc.css"><link rel="stylesheet" href="/styles/hex.css"><link rel="stylesheet" href="/styles/code.css"><link rel="stylesheet" href="/styles/img.css"><link rel="stylesheet" href="/shiki-twoslash.css"><title>(DRAFT) True lazy rendering with JSX and RxJS Observables (DRAFT)</title></head><body class=""><header><nav id="primary-nav" aria-label="Primary navigation"><div class="nav-links" role="tablist"><a href="/home" role="tab" class="nav-link-anchor"><span class="nav-link ">Home</span></a><a href="/resume" role="tab" class="nav-link-anchor"><span class="nav-link ">Resume</span></a><a href="/blog" role="tab" aria-selected="true" class="nav-link-anchor"><span class="nav-link active">Blog</span></a></div></nav></header><main class="body-markdown"><section id="title-and-description"><h1>(DRAFT) True lazy rendering with JSX and RxJS Observables (DRAFT)</h1><sub>2025-02-25 by Chris Hafley</sub><div id="h1-desc"><div class="f-col"><strong>DRAFT!!!</strong><em><blockquote>"Do you think God stays in heaven because he too lives in fear of what he's created?"</blockquote></em></div></div><div class="f-col f-a-center" id="tags" style="margin-bottom:24px;"><div class="responsive-hex-grid-3"><a class="hex-content caption" href="/tags/typescript" style="--hex-color:var(--color-inferno-2);">
       <div class="hex-content hex-shadow">
         <div class="hex-content-amoeba"></div>
       </div>
@@ -36,11 +36,11 @@
       </div>
       <div class="hex-content-amoeba"></div>
       <span>rxjs</span>
-</a></div></div></section><details open="true" id="section-table-of-contents"><summary id="toc-header-contents"><h2 id="table-of-contents">Table of Contents</h2><input type="checkbox" id="toc-toggle"></summary><div class="fancy-hr"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 20"><circle cx="10" cy="10" r="7" style="fill:var(--color-text);" stroke-width="2"></circle><circle cx="30" cy="10" r="9" style="fill:var(--color-text);" stroke-width="2" fill="transparent"></circle><circle cx="50" cy="10" r="7" style="fill:var(--color-text);" stroke-width="2"></circle></svg></div><nav id="toc-nav"><ol><li><a href="#section-abstract">1.  Abstract</a></li><li><a href="#section-basics">2.  Basics</a></li><li><a href="#section-state">3.  State</a></li></ol></nav></details><div id="main-content-middle"><section id="section-abstract"><h2 id="abstract"><a href="#abstract"><span class="marker">1.</span>  Abstract<div class="flair-a"></div></a><div class="flair-h"></div></h2><p>I created a jsx implementation that returns <code>Observable&#x3C;string></code> for static site generation(SSG). It uses a really simple technique to determine when a component is ready (first emit!). This round is for unsanitized html over time for my blog.</p><p>You can do both of these with this technique:
-Subscribe to every next value of your html over time using...just rxjs.</p><p>Here are 4 main demos demonstrating basic jsx, sync jsx, and async jsx with observables, and async jsx with rxjs.</p><div class="code-group code-group-1"><div class="code-group-tabs" data-sticky="1" id="code-group-1"><input type="radio" name="code-group-1" id="code-group-radio-2" checked="true"><label for="code-group-radio-2"><div class="centerino">Basic
-</div></label><input type="radio" name="code-group-1" id="code-group-radio-3"><label for="code-group-radio-3"><div class="centerino">Sync children
-</div></label><input type="radio" name="code-group-1" id="code-group-radio-4"><label for="code-group-radio-4"><div class="centerino">Async Observable
-</div></label><input type="radio" name="code-group-1" id="code-group-radio-5"><label for="code-group-radio-5"><div class="centerino">Async RxJS 
+</a></div></div></section><details open="true" id="section-table-of-contents"><summary id="toc-header-contents"><h2 id="table-of-contents">Table of Contents</h2><input type="checkbox" id="toc-toggle"></summary><div class="fancy-hr"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 20"><circle cx="10" cy="10" r="7" style="fill:var(--color-text);" stroke-width="2"></circle><circle cx="30" cy="10" r="9" style="fill:var(--color-text);" stroke-width="2" fill="transparent"></circle><circle cx="50" cy="10" r="7" style="fill:var(--color-text);" stroke-width="2"></circle></svg></div><nav id="toc-nav"><ol><li><a href="#section-abstract">1.  Abstract</a></li><li><a href="#section-basics">2.  Basics</a><ol><li><a href="#section-counter-demo">2.1.  Counter Demo</a></li><li><a href="#section-mic-check-1-2-3-for-if">2.2.  Mic Check 1-2-3, For + If</a></li></ol></li><li><a href="#section-state">3.  State</a></li></ol></nav></details><div id="main-content-middle"><section id="section-abstract"><h2 id="abstract"><a href="#abstract"><span class="marker">1.</span>  Abstract<div class="flair-a"></div></a><div class="flair-h"></div></h2><p>I created a jsx implementation that returns <code>Observable&#x3C;string></code> for static site generation(SSG). It uses a really simple technique to determine when a component is ready (first emit!). This round is for unsanitized html over time for my blog.</p><p>You can do both of these with this technique:
+Subscribe to every next value of your html over time using...just rxjs.</p><p>Here are 4 main demos demonstrating basic jsx, sync jsx, and async jsx with observables, and async jsx with rxjs.</p><div class="code-group code-group-1"><div class="code-group-tabs" data-sticky="1" id="code-group-1"><input data-scroll-to-me=".code-group-1" type="radio" name="code-group-1" id="code-group-radio-2" checked="true"><label for="code-group-radio-2"><div class="centerino">Basic
+</div></label><input data-scroll-to-me=".code-group-1" type="radio" name="code-group-1" id="code-group-radio-3"><label for="code-group-radio-3"><div class="centerino">Sync children
+</div></label><input data-scroll-to-me=".code-group-1" type="radio" name="code-group-1" id="code-group-radio-4"><label for="code-group-radio-4"><div class="centerino">Async Observable
+</div></label><input data-scroll-to-me=".code-group-1" type="radio" name="code-group-1" id="code-group-radio-5"><label for="code-group-radio-5"><div class="centerino">Async RxJS 
 </div></label></div><pre class="shiki one-dark-pro" style="background-color:#282c34;color:#abb2bf" tabindex="0"><div class="code-scroller"><code class="language-tsx"><span class="line"><span style="color:#C678DD">export</span><span style="color:#C678DD"> default</span><span style="color:#ABB2BF"> (&#x3C;</span><span style="color:#E06C75">div</span><span style="color:#ABB2BF">>Hello World&#x3C;/</span><span style="color:#E06C75">div</span><span style="color:#ABB2BF">>).</span><span style="color:#61AFEF">subscribe</span><span style="color:#ABB2BF">(</span></span>
 <span class="line"><span style="color:#E5C07B">  console</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">log</span><span style="color:#ABB2BF">,</span></span>
 <span class="line"><span style="color:#ABB2BF">)</span></span></code></div><button class="copy-to-clipboard caption">Copy</button><details class="console.log-details" open="1"><summary class="log-grid-heading">console.log[1]</summary><code class="console.log-output"><span class="log-line">log(1)</span><span class="log-line">&#x3C;div>Hello World&#x3C;/div></span></code></details></pre><pre class="shiki one-dark-pro" style="background-color:#282c34;color:#abb2bf" tabindex="0"><div class="code-scroller"><code class="language-tsx"><span class="line"><span style="color:#C678DD">import</span><span style="color:#ABB2BF"> { </span><span style="color:#E06C75">of</span><span style="color:#ABB2BF"> } </span><span style="color:#C678DD">from</span><span style="color:#98C379"> "rxjs"</span></span>
@@ -80,7 +80,7 @@ Subscribe to every next value of your html over time using...just rxjs.</p><p>He
 <span class="line"><span style="color:#ABB2BF">  &#x3C;/</span><span style="color:#E06C75">div</span><span style="color:#ABB2BF">></span></span>
 <span class="line"><span style="color:#ABB2BF">)</span></span>
 <span class="line"><span style="color:#ABB2BF">  .</span><span style="color:#61AFEF">pipe</span><span style="color:#ABB2BF">(</span><span style="color:#61AFEF">timeInterval</span><span style="color:#ABB2BF">())</span></span>
-<span class="line"><span style="color:#ABB2BF">  .</span><span style="color:#61AFEF">subscribe</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">console</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">log</span><span style="color:#ABB2BF">)</span></span></code></div><button class="copy-to-clipboard caption">Copy</button><details class="console.log-details" open="1"><summary class="log-grid-heading">console.log[2]</summary><code class="console.log-output"><span class="log-line">log(1)</span><span class="log-line">TimeInterval { value: "&#x3C;div>Hello ...&#x3C;/div>", interval: 4 }</span><span class="log-line">log(2)</span><span class="log-line">TimeInterval { value: "&#x3C;div>Hello ZA WARUDO&#x3C;/div>", interval: 102 }</span></code></details></pre><pre class="shiki one-dark-pro" style="background-color:#282c34;color:#abb2bf" tabindex="0"><div class="code-scroller"><code class="language-tsx"><span class="line"><span style="color:#C678DD">import</span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#ABB2BF">  .</span><span style="color:#61AFEF">subscribe</span><span style="color:#ABB2BF">(</span><span style="color:#E5C07B">console</span><span style="color:#ABB2BF">.</span><span style="color:#E06C75">log</span><span style="color:#ABB2BF">)</span></span></code></div><button class="copy-to-clipboard caption">Copy</button><details class="console.log-details" open="1"><summary class="log-grid-heading">console.log[2]</summary><code class="console.log-output"><span class="log-line">log(1)</span><span class="log-line">TimeInterval { value: "&#x3C;div>Hello ...&#x3C;/div>", interval: 4 }</span><span class="log-line">log(2)</span><span class="log-line">TimeInterval { value: "&#x3C;div>Hello ZA WARUDO&#x3C;/div>", interval: 100 }</span></code></details></pre><pre class="shiki one-dark-pro" style="background-color:#282c34;color:#abb2bf" tabindex="0"><div class="code-scroller"><code class="language-tsx"><span class="line"><span style="color:#C678DD">import</span><span style="color:#ABB2BF"> {</span></span>
 <span class="line"><span style="color:#E06C75">  defer</span><span style="color:#ABB2BF">,</span></span>
 <span class="line"><span style="color:#E06C75">  from</span><span style="color:#ABB2BF">,</span></span>
 <span class="line"><span style="color:#E06C75">  map</span><span style="color:#ABB2BF">,</span></span>
@@ -137,7 +137,6 @@ document.addEventListener('DOMContentLoaded', () => {
           <\/body>
           <script type="module" src="${src}"><\/script>
           <script>
-            console.log("WTF");
               (function() {
                 const observer = new MutationObserver(() => {
                   // Adjust the height of the parent iframe based on the body's height
@@ -321,8 +320,8 @@ document.addEventListener('DOMContentLoaded', () => {
   
 } </style></div><style>
 #section-abstract {
-  --section-header-hr-start: -7.105427357601002e-15%;
-  --section-header-hr-stop: 33.33333333333333%;
+  --section-header-hr-start: 0%;
+  --section-header-hr-stop: 20%;
 }
 </style><div class="flair-section"></div></section>
 <section id="section-basics"><h2 id="basics"><a href="#basics"><span class="marker">2.</span>  Basics<div class="flair-a"></div></a><div class="flair-h"></div></h2><p>In this jsx transform, thie children types are</p><pre class="shiki one-dark-pro" style="background-color:#282c34;color:#abb2bf" tabindex="0"><div class="code-scroller"><code class="language-ts"><span class="line"><span style="color:#C678DD">type</span><span style="color:#E5C07B"> Element</span><span style="color:#56B6C2"> =</span><span style="color:#E5C07B"> Array</span><span style="color:#ABB2BF">&#x3C;</span></span>
@@ -334,8 +333,14 @@ document.addEventListener('DOMContentLoaded', () => {
 <span class="line"><span style="color:#ABB2BF">      | </span><span style="color:#E5C07B">number</span><span style="color:#ABB2BF"> </span></span>
 <span class="line"><span style="color:#ABB2BF">      | </span><span style="color:#E5C07B">boolean</span></span>
 <span class="line"><span style="color:#ABB2BF">    ></span></span>
-<span class="line"><span style="color:#ABB2BF">  ></span></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><p>This means you can do anything with rxjs as a child, so long as it results in a string over time.</p><div class="code-group code-group-2"><div class="code-group-tabs" data-sticky="1" id="code-group-2"><input type="radio" name="code-group-2" id="code-group-radio-6" checked="true"><label for="code-group-radio-6"><div class="centerino">5_interval.dom.tsx
-</div></label><input type="radio" name="code-group-2" id="code-group-radio-7"><label for="code-group-radio-7"><div class="centerino">6_interval.dom.tsx
+<span class="line"><span style="color:#ABB2BF">  ></span></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><p>This means you can do anything with rxjs as a child, so long as it results in a string over time.</p><style>
+#section-basics {
+  --section-header-hr-start: 20%;
+  --section-header-hr-stop: 40%;
+}
+</style><div class="flair-section"></div></section>
+<section id="section-counter-demo"><h3 id="counter-demo"><a href="#counter-demo"><span class="marker">2.1.</span>  Counter Demo<div class="flair-a"></div></a><div class="flair-h"></div></h3><p>To demonstrate what I mean as fast as possible, we can take <code>RsJS.interval</code> function and use it to create an inline timer that fires its next value every 1 second.</p><div class="code-group code-group-2"><div class="code-group-tabs" data-sticky="1" id="code-group-2"><input data-scroll-to-me=".code-group-2" type="radio" name="code-group-2" id="code-group-radio-6" checked="true"><label for="code-group-radio-6"><div class="centerino">5_interval.dom.tsx
+</div></label><input data-scroll-to-me=".code-group-2" type="radio" name="code-group-2" id="code-group-radio-7"><label for="code-group-radio-7"><div class="centerino">6_interval.dom.tsx
 </div></label></div><pre class="shiki one-dark-pro" style="background-color:#282c34;color:#abb2bf" tabindex="0"><div class="code-scroller"><code class="language-tsx"><span class="line"><span style="color:#C678DD">import</span><span style="color:#ABB2BF"> { </span><span style="color:#E06C75">interval</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">map</span><span style="color:#ABB2BF"> } </span><span style="color:#C678DD">from</span><span style="color:#98C379"> "rxjs"</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#C678DD">export</span><span style="color:#C678DD"> const</span><span style="color:#61AFEF"> main</span><span style="color:#56B6C2"> =</span><span style="color:#ABB2BF"> (</span></span>
@@ -376,7 +381,6 @@ document.addEventListener('DOMContentLoaded', () => {
           <\/body>
           <script type="module" src="${src}"><\/script>
           <script>
-            console.log("WTF");
               (function() {
                 const observer = new MutationObserver(() => {
                   // Adjust the height of the parent iframe based on the body's height
@@ -510,15 +514,37 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
 } </style></div><style>
-#section-basics {
-  --section-header-hr-start: 33.33333333333332%;
-  --section-header-hr-stop: 66.66666666666666%;
+#section-counter-demo {
+  --section-header-hr-start: 40%;
+  --section-header-hr-stop: 60%;
 }
 </style><div class="flair-section"></div></section>
-<section id="section-state"><h2 id="state"><a href="#state"><span class="marker">3.</span>  State<div class="flair-a"></div></a><div class="flair-h"></div></h2><p>For idiomatic RxJS, I heavily urge you to avoid BehaviorSubject as much as possible. BUT, it exists for a reason, and when you are starting out, you will want to use it all the time.</p><p>Just know that using it will delay you from understanding everything you see as state is really just some other observable somewhere else.</p><div class="code-group code-group-3"><div class="code-group-tabs" data-sticky="1" id="code-group-3"><input type="radio" name="code-group-3" id="code-group-radio-8" checked="true"><label for="code-group-radio-8"><div class="centerino">With BehaviorSubject
-</div></label><input type="radio" name="code-group-3" id="code-group-radio-9"><label for="code-group-radio-9"><div class="centerino">Without BehaviorSubject
-</div></label></div><pre class="shiki one-dark-pro" style="background-color:#282c34;color:#abb2bf" tabindex="0"><div class="code-scroller"><code class="language-tsx"><span class="line"></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><pre class="shiki one-dark-pro" style="background-color:#282c34;color:#abb2bf" tabindex="0"><div class="code-scroller"><code class="language-tsx"><span class="line"></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><div class="demo-iframe" id="demo-iframe-code-group-3"></div><script>
-            //{"code-group-radio-8":"/blog/unholy-custom-jsx-with-observable-strings/state.1.dom.tsx","code-group-radio-9":"/blog/unholy-custom-jsx-with-observable-strings/state.2.dom.tsx"}
+<section id="section-mic-check-1-2-3-for-if"><h3 id="mic-check-1-2-3-for-if"><a href="#mic-check-1-2-3-for-if"><span class="marker">2.2.</span>  Mic Check 1-2-3, For + If<div class="flair-a"></div></a><div class="flair-h"></div></h3><p>Okay and lets make sure that doing regular array map's into jsx work as expected, as well as conditionals.</p><div class="code-group code-group-3"><div class="code-group-tabs" data-sticky="1" id="code-group-3"><input data-scroll-to-me=".code-group-3" type="radio" name="code-group-3" id="code-group-radio-8" checked="true"><label for="code-group-radio-8"><div class="centerino">Array Map
+</div></label><input data-scroll-to-me=".code-group-3" type="radio" name="code-group-3" id="code-group-radio-9"><label for="code-group-radio-9"><div class="centerino">Conditional Render
+</div></label></div><pre class="shiki one-dark-pro" style="background-color:#282c34;color:#abb2bf" tabindex="0"><div class="code-scroller"><code class="language-tsx"><span class="line"><span style="color:#C678DD">const</span><span style="color:#E5C07B"> navItems</span><span style="color:#56B6C2"> =</span><span style="color:#ABB2BF"> [</span></span>
+<span class="line"><span style="color:#98C379">  "home"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#98C379">  "resume"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#98C379">  "blog"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#98C379">  "tags"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#98C379">  "projects"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#ABB2BF">]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">export</span><span style="color:#C678DD"> const</span><span style="color:#61AFEF"> main</span><span style="color:#56B6C2"> =</span><span style="color:#ABB2BF"> (</span></span>
+<span class="line"><span style="color:#ABB2BF">  &#x3C;</span><span style="color:#E06C75">nav</span><span style="color:#D19A66;font-style:italic"> style</span><span style="color:#56B6C2">=</span><span style="color:#C678DD">{</span><span style="color:#ABB2BF">{ </span><span style="color:#E06C75">background</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"purple"</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">color</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"white"</span><span style="color:#ABB2BF"> }</span><span style="color:#C678DD">}</span><span style="color:#ABB2BF">></span></span>
+<span class="line"><span style="color:#ABB2BF">    Primary Nav:</span></span>
+<span class="line"><span style="color:#ABB2BF">    &#x3C;</span><span style="color:#E06C75">ul</span><span style="color:#ABB2BF">></span></span>
+<span class="line"><span style="color:#C678DD">      {</span><span style="color:#E5C07B">navItems</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">map</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">it</span><span style="color:#C678DD"> =></span><span style="color:#ABB2BF"> (</span></span>
+<span class="line"><span style="color:#ABB2BF">        &#x3C;</span><span style="color:#E06C75">li</span><span style="color:#D19A66;font-style:italic"> key</span><span style="color:#56B6C2">=</span><span style="color:#C678DD">{</span><span style="color:#E06C75">it</span><span style="color:#C678DD">}</span><span style="color:#ABB2BF">></span><span style="color:#C678DD">{</span><span style="color:#E06C75">it</span><span style="color:#C678DD">}</span><span style="color:#ABB2BF">&#x3C;/</span><span style="color:#E06C75">li</span><span style="color:#ABB2BF">></span></span>
+<span class="line"><span style="color:#ABB2BF">      ))</span><span style="color:#C678DD">}</span></span>
+<span class="line"><span style="color:#ABB2BF">    &#x3C;/</span><span style="color:#E06C75">ul</span><span style="color:#ABB2BF">></span></span>
+<span class="line"><span style="color:#ABB2BF">  &#x3C;/</span><span style="color:#E06C75">nav</span><span style="color:#ABB2BF">></span></span>
+<span class="line"><span style="color:#ABB2BF">)</span></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><pre class="shiki one-dark-pro" style="background-color:#282c34;color:#abb2bf" tabindex="0"><div class="code-scroller"><code class="language-tsx"><span class="line"><span style="color:#C678DD">export</span><span style="color:#C678DD"> const</span><span style="color:#61AFEF"> main</span><span style="color:#56B6C2"> =</span><span style="color:#ABB2BF"> (</span></span>
+<span class="line"><span style="color:#ABB2BF">  &#x3C;</span><span style="color:#E06C75">div</span><span style="color:#D19A66;font-style:italic"> style</span><span style="color:#56B6C2">=</span><span style="color:#C678DD">{</span><span style="color:#ABB2BF">{ </span><span style="color:#E06C75">background</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"red"</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">color</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"white"</span><span style="color:#ABB2BF"> }</span><span style="color:#C678DD">}</span><span style="color:#ABB2BF">></span></span>
+<span class="line"><span style="color:#C678DD">    {</span><span style="color:#D19A66">true</span><span style="color:#C678DD"> ?</span><span style="color:#98C379"> "Yes "</span><span style="color:#C678DD"> :</span><span style="color:#98C379"> "No "</span><span style="color:#C678DD">}</span></span>
+<span class="line"><span style="color:#C678DD">    {</span><span style="color:#D19A66">false</span><span style="color:#C678DD"> ?</span><span style="color:#98C379"> "Yay "</span><span style="color:#C678DD"> :</span><span style="color:#98C379"> "Nay "</span><span style="color:#C678DD">}</span></span>
+<span class="line"><span style="color:#ABB2BF">  &#x3C;/</span><span style="color:#E06C75">div</span><span style="color:#ABB2BF">></span></span>
+<span class="line"><span style="color:#ABB2BF">)</span></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><div class="demo-iframe" id="demo-iframe-code-group-3"></div><script>
+            //{"code-group-radio-8":"/blog/unholy-custom-jsx-with-observable-strings/7.array_map.dom.tsx","code-group-radio-9":"/blog/unholy-custom-jsx-with-observable-strings/8.conditional.dom.tsx"}
 document.addEventListener('DOMContentLoaded', () => {
   const tabs = document.getElementById("code-group-3");
   const demoContainer = document.getElementById("demo-iframe-code-group-3");
@@ -543,7 +569,6 @@ document.addEventListener('DOMContentLoaded', () => {
           <\/body>
           <script type="module" src="${src}"><\/script>
           <script>
-            console.log("WTF");
               (function() {
                 const observer = new MutationObserver(() => {
                   // Adjust the height of the parent iframe based on the body's height
@@ -580,24 +605,24 @@ document.addEventListener('DOMContentLoaded', () => {
   const id0 = document.getElementById('code-group-radio-8');
   id0.addEventListener('input', e => {
     if(e.target.checked) {
-      toDemoArea("/blog/unholy-custom-jsx-with-observable-strings/state.1.dom.tsx")
+      toDemoArea("/blog/unholy-custom-jsx-with-observable-strings/7.array_map.dom.tsx")
     }
   });
   if(id0.checked) {
     console.log("I am checked...", id0);
-    toDemoArea("/blog/unholy-custom-jsx-with-observable-strings/state.1.dom.tsx")
+    toDemoArea("/blog/unholy-custom-jsx-with-observable-strings/7.array_map.dom.tsx")
   }
   
 
   const id1 = document.getElementById('code-group-radio-9');
   id1.addEventListener('input', e => {
     if(e.target.checked) {
-      toDemoArea("/blog/unholy-custom-jsx-with-observable-strings/state.2.dom.tsx")
+      toDemoArea("/blog/unholy-custom-jsx-with-observable-strings/8.conditional.dom.tsx")
     }
   });
   if(id1.checked) {
     console.log("I am checked...", id1);
-    toDemoArea("/blog/unholy-custom-jsx-with-observable-strings/state.2.dom.tsx")
+    toDemoArea("/blog/unholy-custom-jsx-with-observable-strings/8.conditional.dom.tsx")
   }
   
 });
@@ -677,8 +702,174 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
 } </style></div><style>
+#section-mic-check-1-2-3-for-if {
+  --section-header-hr-start: 60%;
+  --section-header-hr-stop: 80%;
+}
+</style><div class="flair-section"></div></section>
+<section id="section-state"><h2 id="state"><a href="#state"><span class="marker">3.</span>  State<div class="flair-a"></div></a><div class="flair-h"></div></h2><p>For idiomatic RxJS, I heavily urge you to avoid BehaviorSubject as much as possible. BUT, it exists for a reason, and when you are starting out, you will want to use it all the time.</p><p>Just know that using it will delay you from understanding everything you see as state is really just some other observable somewhere else.</p><div class="code-group code-group-4"><div class="code-group-tabs" data-sticky="1" id="code-group-4"><input data-scroll-to-me=".code-group-4" type="radio" name="code-group-4" id="code-group-radio-10" checked="true"><label for="code-group-radio-10"><div class="centerino">With BehaviorSubject
+</div></label><input data-scroll-to-me=".code-group-4" type="radio" name="code-group-4" id="code-group-radio-11"><label for="code-group-radio-11"><div class="centerino">Without BehaviorSubject
+</div></label></div><pre class="shiki one-dark-pro" style="background-color:#282c34;color:#abb2bf" tabindex="0"><div class="code-scroller"><code class="language-tsx"><span class="line"></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><pre class="shiki one-dark-pro" style="background-color:#282c34;color:#abb2bf" tabindex="0"><div class="code-scroller"><code class="language-tsx"><span class="line"></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><div class="demo-iframe" id="demo-iframe-code-group-4"></div><script>
+            //{"code-group-radio-10":"/blog/unholy-custom-jsx-with-observable-strings/state.1.dom.tsx","code-group-radio-11":"/blog/unholy-custom-jsx-with-observable-strings/state.2.dom.tsx"}
+document.addEventListener('DOMContentLoaded', () => {
+  const tabs = document.getElementById("code-group-4");
+  const demoContainer = document.getElementById("demo-iframe-code-group-4");
+  const toDemoArea = (src) => {
+    demoContainer.children[0]?.remove();
+    const iframe = document.createElement('iframe');
+    iframe.style.width = 'calc(100%)';
+    iframe.onload=function(){ window.resizeIframe(this)};
+    
+    iframe.onload = function() {
+      const iframeWindow = iframe.contentWindow;
+      const doc = iframe.contentDocument || iframeWindow.document;
+
+      doc.open();
+      doc.write(`
+        <html style='height: fit-content;'>
+          <head>
+            <style>
+            <\/style>
+          <\/head>
+          <body style='margin: 4px; height: fit-content;'>
+          <\/body>
+          <script type="module" src="${src}"><\/script>
+          <script>
+              (function() {
+                const observer = new MutationObserver(() => {
+                  // Adjust the height of the parent iframe based on the body's height
+                  window.frameElement.style.height = (document.documentElement.offsetHeight + 1) +'px';
+                });
+
+                // Start observing changes in the body element
+                observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+
+                // Initial setting of height
+                window.frameElement.style.height = (document.documentElement.offsetHeight + 1) + 'px';
+              })();
+            <\/script>
+        <\/html>
+      `);
+      doc.close();
+    };
+    // iframe.style.cssText="width:100%;";
+    demoContainer.appendChild(iframe);
+    // const doc = iframe.contentDocument || iframe.contentWindow?.document;
+    // doc.open();
+    // doc.write(`
+    //   
+    //   <head></head>
+    //   
+    //     
+    //   </body>
+    //   </html>
+    // `);
+    // doc.close();
+  };
+
+
+  const id0 = document.getElementById('code-group-radio-10');
+  id0.addEventListener('input', e => {
+    if(e.target.checked) {
+      toDemoArea("/blog/unholy-custom-jsx-with-observable-strings/state.1.dom.tsx")
+    }
+  });
+  if(id0.checked) {
+    console.log("I am checked...", id0);
+    toDemoArea("/blog/unholy-custom-jsx-with-observable-strings/state.1.dom.tsx")
+  }
+  
+
+  const id1 = document.getElementById('code-group-radio-11');
+  id1.addEventListener('input', e => {
+    if(e.target.checked) {
+      toDemoArea("/blog/unholy-custom-jsx-with-observable-strings/state.2.dom.tsx")
+    }
+  });
+  if(id1.checked) {
+    console.log("I am checked...", id1);
+    toDemoArea("/blog/unholy-custom-jsx-with-observable-strings/state.2.dom.tsx")
+  }
+  
+});
+</script><style>
+.code-group pre {display:none}
+.code-group-4 {
+
+  #code-group-radio-10+label {
+
+  }
+
+  #code-group-radio-10:checked+label {
+    background:#282c34;
+    position: relative;
+    z-index:1;
+    border-bottom: none;
+    
+    &:hover {
+      text-decoration: underline;
+      color: white;
+    }
+
+    border-top-color: var(--color-blue-500);
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      z-index: 10;
+      width: 100%; 
+      background: var(--color-blue-500);
+    }
+
+  }
+
+  &:has(#code-group-radio-10:checked) pre:nth-child(2){ 
+    display: block;
+  }
+  
+
+  #code-group-radio-11+label {
+
+  }
+
+  #code-group-radio-11:checked+label {
+    background:#282c34;
+    position: relative;
+    z-index:1;
+    border-bottom: none;
+    
+    &:hover {
+      text-decoration: underline;
+      color: white;
+    }
+
+    border-top-color: var(--color-blue-500);
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      z-index: 10;
+      width: 100%; 
+      background: var(--color-blue-500);
+    }
+
+  }
+
+  &:has(#code-group-radio-11:checked) pre:nth-child(3){ 
+    display: block;
+  }
+  
+} </style></div><style>
 #section-state {
-  --section-header-hr-start: 66.66666666666666%;
+  --section-header-hr-start: 80%;
   --section-header-hr-stop: 100%;
 }
 </style><div class="flair-section"></div></section></div></main><footer></footer><script>// Smooth scrolling for browsers that don't support CSS smooth scrolling
@@ -1025,5 +1216,34 @@ document.addEventListener("keyup", e => {
   if (e.key === "Escape" && isZoomin) {
     remove()
   }
+})
+;
+;document.addEventListener("DOMContentLoaded", function () {
+  const element = document.querySelector(
+    "[data-scroll-to-me]",
+  )
+  document.addEventListener(
+    "click",
+    e => {
+      /**
+       * @type {HTMLElement}
+       */
+      let h = e.target
+      if (h.matches("[data-scroll-to-me]")) {
+        /**
+         * @type {HTMLElement}
+         */
+        const it = document.querySelector(
+          h.dataset.scrollToMe,
+        )
+        if (it)
+          setTimeout(
+            () => it.scrollIntoView({ behavior: "smooth" }),
+            16,
+          )
+      }
+    },
+    { capture: true },
+  )
 })
 </script></body></html>

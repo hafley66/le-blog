@@ -1,11 +1,8 @@
-import { interval, map } from "rxjs"
-
 export const main = (
   <div style={{ background: "red", color: "white" }}>
-    {interval(1000).pipe(map(String))}
-    &nbsp;seconds since mount/subscribe
+    {true ? "Yes " : "No "}
+    {false ? "Yay " : "Nay "}
   </div>
 )
-
 // --cut--
 main.subscribe(n => (document.body.innerHTML = n))

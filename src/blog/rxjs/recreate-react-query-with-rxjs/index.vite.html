@@ -57,8 +57,8 @@
 <span class="line"><span style="color:#C678DD">    return</span><span style="color:#E5C07B"> Promise</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">resolve</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">x</span><span style="color:#56B6C2"> -</span><span style="color:#E06C75"> y</span><span style="color:#ABB2BF">)</span></span>
 <span class="line"><span style="color:#ABB2BF">  },</span></span>
 <span class="line"><span style="color:#ABB2BF">}</span></span>
-<span class="line"><span style="color:#ABB2BF"> </span></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><div class="code-group code-group-0"><div class="code-group-tabs" data-sticky="1" id="code-group-0"><input type="radio" name="code-group-0" id="code-group-radio-0" checked="true"><label for="code-group-radio-0"><div class="centerino">basic useQuery
-</div></label><input type="radio" name="code-group-0" id="code-group-radio-1"><label for="code-group-radio-1"><div class="centerino">useEffect + state
+<span class="line"><span style="color:#ABB2BF"> </span></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><div class="code-group code-group-0"><div class="code-group-tabs" data-sticky="1" id="code-group-0"><input data-scroll-to-me=".code-group-0" type="radio" name="code-group-0" id="code-group-radio-0" checked="true"><label for="code-group-radio-0"><div class="centerino">basic useQuery
+</div></label><input data-scroll-to-me=".code-group-0" type="radio" name="code-group-0" id="code-group-radio-1"><label for="code-group-radio-1"><div class="centerino">useEffect + state
 </div></label></div><pre class="shiki one-dark-pro" style="background-color:#282c34;color:#abb2bf" tabindex="0"><div class="code-scroller"><code class="language-tsx"><span class="line"></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><pre class="shiki one-dark-pro" style="background-color:#282c34;color:#abb2bf" tabindex="0"><div class="code-scroller"><code class="language-tsx"><span class="line"></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><div class="demo-iframe" id="demo-iframe-code-group-0"></div><script>
             //{}
 document.addEventListener('DOMContentLoaded', () => {
@@ -85,7 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
           <\/body>
           <script type="module" src="${src}"><\/script>
           <script>
-            console.log("WTF");
               (function() {
                 const observer = new MutationObserver(() => {
                   // Adjust the height of the parent iframe based on the body's height
@@ -544,5 +543,34 @@ document.addEventListener("keyup", e => {
   if (e.key === "Escape" && isZoomin) {
     remove()
   }
+})
+;
+;document.addEventListener("DOMContentLoaded", function () {
+  const element = document.querySelector(
+    "[data-scroll-to-me]",
+  )
+  document.addEventListener(
+    "click",
+    e => {
+      /**
+       * @type {HTMLElement}
+       */
+      let h = e.target
+      if (h.matches("[data-scroll-to-me]")) {
+        /**
+         * @type {HTMLElement}
+         */
+        const it = document.querySelector(
+          h.dataset.scrollToMe,
+        )
+        if (it)
+          setTimeout(
+            () => it.scrollIntoView({ behavior: "smooth" }),
+            16,
+          )
+      }
+    },
+    { capture: true },
+  )
 })
 </script></body></html>
