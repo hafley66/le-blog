@@ -35,7 +35,9 @@
     "**/*.dom.js",
     "**/*.dom.jsx",
     "**/*.dom.tsx",
-    "**/*.dom.ts"
+    "**/*.dom.ts",
+    "src/lib/rxjs-vhtml/v2/types.dom.events.deno.ts",
+    "src/lib/rxjs-vhtml/v2/jsx-runtime.tsx"
   ],
   "exclude": [
     "vite.config.mts",
@@ -43,6 +45,6 @@
     "**/*.deno.tsx",
     "dist",
     "node_modules",
-    "src/vite-env.d.ts"
+    "src/vite-env.d.ts",
   ]
 }

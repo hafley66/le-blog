@@ -7,6 +7,7 @@ import {
   debounceTime,
   from,
   map,
+  of,
   pipe,
   switchMap,
   takeUntil,
@@ -21,6 +22,7 @@ import {
   TOC,
 } from "./0_Layout.dual.tsx"
 import { Remark } from "./00_Remark2.deno.tsx"
+import { deferFrom } from "~/lib/lib.dual.ts"
 
 const MARKDOWN_REGEX_TO_NAIVELY_SPLIT_HEADERS__BEWARE_HASH_COMMENTS =
   /(#{2,} .+?)\n([\s\S]*?)(?=\n#{2,} |\n*$|$)/g
@@ -73,7 +75,9 @@ export const Render$ = (importMetaFilename: string) => {
     strings: TemplateStringsArray,
     ...values: any[]
   ) => {
-    return from(Remark(strings.join("\n")))
+    return from(
+      Remark(strings.join("\n"), importMetaFilename),
+    )
   }
 
   const md = (
@@ -87,6 +91,13 @@ export const Render$ = (importMetaFilename: string) => {
       build.push(n + (other ?? ""))
     }
     const it = build.join(" ")
+
+    if (!it.trim()) {
+      return {
+        toc: of(""),
+        children: of(""),
+      }
+    }
     const sections = [
       ...it.matchAll(
         MARKDOWN_REGEX_TO_NAIVELY_SPLIT_HEADERS__BEWARE_HASH_COMMENTS,
@@ -121,7 +132,18 @@ ${it.body}
       byId,
       stack,
     }
-    const out = from(Remark(ConstructedMarkdown.join("\n")))
+    const out = deferFrom(() =>
+      Remark(
+        ConstructedMarkdown.join("\n"),
+        importMetaFilename,
+      ),
+    ).pipe(
+      catchError(err => {
+        console.log("OI", importMetaFilename)
+        console.error(err)
+        return of("")
+      }),
+    )
 
     Object.assign(out, meta)
 

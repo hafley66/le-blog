@@ -1,21 +1,20 @@
 import React from "react";
 import { Observable } from "rxjs";
-export declare function jsx(tag: string, propsWithChildren: JSX.IntrinsicElements[keyof JSX.IntrinsicElements] | null): Observable<string>;
+export declare function jsx(tag: string | ((props: any) => Observable<string>), propsWithChildren: JSX.IntrinsicElements[keyof JSX.IntrinsicElements] | null): Observable<string>;
 export declare const jsxs: typeof jsx;
 export default jsx;
-export type RxJSXNode = string | string[] | Element | Element[] | (string | Element)[];
+export type Prims = number | string | boolean | Observable<string | number | boolean>;
+export type Node$ = Prims | Prims[];
+export type RxJSXNode = Node$;
 export declare namespace RxJSX {
     type Node = RxJSXNode;
-    type FC<T extends Record<string, any>> = Props$<T> & {
+    type FC<T extends Record<string, any>> = (props: T & {
         id?: string;
         style?: React.CSSProperties | Observable<React.CSSProperties>;
         className?: string | number | Observable<string | number>;
         children?: RxJSXNode;
-    };
+    }) => JSX.Element;
 }
-export type Props$<T extends Record<string, any | Observable<any>>> = {
-    [K in keyof T]: T[K] extends Observable<any> ? T[K] : Observable<T[K]>;
-};
 export declare namespace JSX {
     type Element = Observable<string>;
     interface CSSProperties extends React.CSSProperties {
@@ -23,7 +22,7 @@ export declare namespace JSX {
     interface IntrinsicElements {
         [key: string]: {
             id?: string;
-            style?: CSSProperties | Observable<CSSProperties>;
+            style?: string | CSSProperties | Observable<CSSProperties>;
             className?: string | number | Observable<string | number>;
             children?: RxJSXNode;
         } & {

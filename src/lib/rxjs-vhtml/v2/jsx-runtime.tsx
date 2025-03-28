@@ -1,12 +1,12 @@
-import React from "react"
 import _ from "lodash"
+import React from "react"
 import {
+  Observable,
+  Subscription,
   delay,
   isObservable,
   merge,
-  Observable,
   of,
-  Subscription,
 } from "rxjs"
 import {
   filter,
@@ -16,11 +16,11 @@ import {
   tap,
 } from "rxjs/operators"
 import {
+  TAG,
   combinePartialArray,
   combinePartialRecord,
-  TAG,
 } from "../../lib.dual.ts"
-import { Attributes, vhtml } from "../vhtml.deno.ts"
+import { vhtml } from "../vhtml.deno.ts"
 
 const { isEmpty } = _
 
@@ -40,7 +40,7 @@ function styleToString(style: JSX.CSSProperties): string {
 }
 
 export function jsx(
-  tag: string,
+  tag: string | ((props: any) => Observable<string>),
   propsWithChildren:
     | JSX.IntrinsicElements[keyof JSX.IntrinsicElements]
     | null,
@@ -51,19 +51,38 @@ export function jsx(
   ): Observable<any> {
     if (isObservable(value)) {
       return value.pipe(
-        map(v =>
-          v == null
+        map(v => {
+          // console.log(value, v)
+          return v === null || v === undefined
             ? ""
-            : Array.isArray(v)
-              ? (console.log(tag, meta),
-                combinePartialArray(
-                  v.map(i => (isObservable(i) ? i : of(i))),
-                )).pipe(map(partial => partial.join("")))
-              : String(v),
-        ),
+            : v === 0
+              ? "0"
+              : Array.isArray(v)
+                ? (console.log(tag, meta),
+                  combinePartialArray(
+                    v.map(i =>
+                      isObservable(i) ? i : of(i),
+                    ),
+                  )).pipe(
+                    map(partial =>
+                      partial
+                        .map(i => (i === 0 ? "0" : i))
+                        .join(""),
+                    ),
+                  )
+                : v === 0
+                  ? "0"
+                  : String(v)
+        }),
       )
     }
-    return of(value == null ? "" : String(value))
+    return of(
+      value === null || value === undefined
+        ? ""
+        : value === 0
+          ? "0"
+          : String(value),
+    )
   }
 
   try {
@@ -74,8 +93,11 @@ export function jsx(
     const {
       children: _children,
       debug,
+      "data-root-id": rootId = Math.random() + "",
       ...props
     } = propsWithChildren || {}
+
+    // console.log({ _children })
 
     let childrenn = (
       !_children
@@ -96,10 +118,23 @@ export function jsx(
           latest[index] = it
         } else if (isObservable(it)) {
           isObservableChildren = true
+          // @ts-ignore
+          it.rootId = rootId
           subs.push(
             it.pipe(delay(1)).subscribe(next => {
               latest[index] = next as string
-              S.next(latest.filter(Boolean).join(""))
+              S.next(
+                latest
+                  .map(v =>
+                    v === 0
+                      ? "0"
+                      : v === null || v === undefined
+                        ? ""
+                        : v,
+                  )
+                  .filter(Boolean)
+                  .join(""),
+              )
             }),
           )
         }
@@ -111,7 +146,7 @@ export function jsx(
         subs.forEach(i => i.unsubscribe())
       }
     })
-
+    // ../../../../node_modules/.bin/tsc --emitDeclarationOnly --declaration  --allowImportingTsExtensions --jsx react-jsx --esModuleInterop --outDir ./out  ./jsx-runtime.mts
     const attrObservables: Record<
       string,
       Observable<any>
@@ -212,6 +247,7 @@ export function jsx(
             tag,
             {
               ...i.props,
+              // "data-root-id": it.rootId,
             },
             i.children,
           ) as string,
@@ -226,18 +262,20 @@ export function jsx(
 
 export const jsxs = jsx
 export default jsx
-
-export type RxJSXNode =
+export type Prims =
+  | number
   | string
-  | string[]
-  | JSX.Element
-  | JSX.Element[]
-  | (string | JSX.Element)[]
+  | boolean
+  | Observable<string | number | boolean>
+
+export type Node$ = Prims | Prims[]
+
+export type RxJSXNode = Node$
 
 export namespace RxJSX {
   export type Node = RxJSXNode
-  export type FC<T extends Record<string, any>> =
-    Props$<T> & {
+  export type FC<T extends Record<string, any>> = (
+    props: T & {
       id?: string
       style?:
         | React.CSSProperties
@@ -247,16 +285,17 @@ export namespace RxJSX {
         | number
         | Observable<string | number>
       children?: RxJSXNode
-    }
+    },
+  ) => JSX.Element
 }
 
-export type Props$<
-  T extends Record<string, any | Observable<any>>,
-> = {
-  [K in keyof T]: T[K] extends Observable<any>
-    ? T[K]
-    : Observable<T[K]>
-}
+// export type Props$<
+//   T extends Record<string, any | Observable<any>>,
+// > = {
+//   [K in keyof T]: T[K] extends Observable<any>
+//     ? T[K]
+//     : Observable<T[K]>
+// }
 
 export namespace JSX {
   export type Element = Observable<string>
@@ -267,7 +306,10 @@ export namespace JSX {
   export interface IntrinsicElements {
     [key: string]: {
       id?: string
-      style?: CSSProperties | Observable<CSSProperties>
+      style?:
+        | string
+        | CSSProperties
+        | Observable<CSSProperties>
       className?:
         | string
         | number

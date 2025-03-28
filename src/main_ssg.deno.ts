@@ -1,30 +1,41 @@
 import {
+  catchError,
   debounceTime,
   merge,
-  share,
+  of,
   switchMap,
   tap,
 } from "rxjs"
-import {
-  deferFrom,
-  makeWatcher$,
-} from "~/lib/fs_watcher.deno.ts"
+import { deferFrom } from "~/lib/fs_watcher.deno.ts"
 import path from "node:path"
 import _ from "lodash"
 import { SITEMAP } from "~/SITEMAP.deno.ts"
 import { createServer } from "vite"
-// const denoRenderWatcher$ = makeWatcher$(
-//   process.cwd(),
-//   "**/*/*render.deno.{ts,tsx}",
-// )
-//   .pipe(share());
 
 const allRenders = SITEMAP.includes(
   "render.deno.ts" as const,
 ).map(i =>
   deferFrom(() =>
-    i.dynamicImport().then(i => i.default),
-  ).pipe(switchMap(i => i)),
+    i
+      .dynamicImport()
+      .then(i => [i, i.default] as const)
+      .catch(err => {
+        console.log("HEY, this threw bro", i.path)
+        console.error(err)
+        return [i, of({})] as const
+      }),
+  ).pipe(
+    switchMap(([path, i]) =>
+      i.pipe(
+        // @ts-ignore
+        catchError(err => {
+          console.log("HEY, this threw bro", path.path)
+          console.error(err)
+          return of("")
+        }),
+      ),
+    ),
+  ),
 )
 
 // const mdWatcher$ = makeWatcher$(search, ".md")

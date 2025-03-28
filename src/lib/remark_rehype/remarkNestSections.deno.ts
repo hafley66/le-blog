@@ -462,6 +462,17 @@ document.addEventListener('DOMContentLoaded', () => {
       doc.write(\`
         <html style='height: fit-content;'>
           <head>
+          <link rel="stylesheet" href="/styles/colors.css" />
+          <link rel="stylesheet" href="/styles/fonts.css" />
+          <link rel="stylesheet" href="/styles/global.css" />
+          <link
+            rel="stylesheet"
+            href="/styles/nav_and_toc.css"
+          />
+          <link rel="stylesheet" href="/styles/hex.css" />
+          <link rel="stylesheet" href="/styles/code.css" />
+          <link rel="stylesheet" href="/styles/img.css" />
+          <link rel="stylesheet" href="/shiki-twoslash.css" />
             <style>
             <\\/style>
           <\\/head>

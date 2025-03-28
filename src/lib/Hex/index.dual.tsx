@@ -1,6 +1,3 @@
-/** @jsxImportSource ~/lib/rxjs-vhtml */
-/** @jsxImportSourceTypes ~/lib/rxjs-vhtml */
-
 import { Observable, of } from "rxjs"
 
 export const Hex: {

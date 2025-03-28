@@ -1,0 +1,27 @@
+{
+	"tag": {},
+	"task": {},
+	"board": {
+		"main": {
+			"key": "main",
+			"value": "Website Board"
+		}
+	},
+	"status": {
+		"0. Planning": {
+			"key": "0. Planning"
+		},
+		"1. Ready": {
+			"key": "1. Ready"
+		},
+		"2. In Progress": {
+			"key": "2. In Progress"
+		},
+		"3. Done": {
+			"key": "3. Done"
+		},
+		"4. Published": {
+			"key": "4. Published"
+		}
+	}
+}

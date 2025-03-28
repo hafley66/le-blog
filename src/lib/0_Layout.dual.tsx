@@ -1,7 +1,7 @@
 import { Observable } from "rxjs"
 import { FS } from "~/SITEMAP.deno.ts"
 import { Hex } from "~/lib/Hex/index.dual.tsx"
-import { RxJSXNode } from "~/lib/rxjs-vhtml/jsx-runtime"
+import { RxJSXNode } from "~/lib/rxjs-vhtml/v2/jsx-runtime.tsx"
 
 export type LayoutProps = {
   url: string

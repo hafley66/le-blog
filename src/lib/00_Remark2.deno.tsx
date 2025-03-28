@@ -1,5 +1,3 @@
-/** @jsxImportSource ./rxjs-vhtml */
-/** @jsxImportSourceTypes ./rxjs-vhtml */
 import remarkGfm from "remark-gfm"
 import rehypeStringify from "rehype-stringify"
 import remarkParse from "remark-parse"
@@ -23,15 +21,20 @@ import {
 } from "./remark_rehype/remarkNestSections.deno.ts"
 import {
   BehaviorSubject,
+  catchError,
+  finalize,
   Observable,
+  of,
   scan,
   shareReplay,
   Subject,
+  tap,
 } from "rxjs"
 
 import _ from "lodash"
 import { SHIKI } from "~/shiki.deno.ts"
 import { remarkPlantUML } from "~/lib/remark_rehype/remark-plant-uml.deno.ts"
+import { TAG } from "~/lib/lib.dual.ts"
 
 const REEEE = await unified()
   .use(remarkParse)
@@ -74,30 +77,50 @@ const REEEE = await unified()
   } as Parameters<typeof rehypeStringify>[0])
 
 let remarkCalls = 0
-const _input = new Subject<string>()
+const _input = new Subject<[string, string?]>()
 const _cache = new BehaviorSubject(
   {} as Record<string, Observable<string>>,
 )
 
 const RemarkDaemon = _input
   .pipe(
-    scan((state, next) => {
+    scan((state, [next, filename], index) => {
+      console.log(`[${index}] processing next`, filename)
       if (state[next]) return state
       state[next] = new Observable<string>(sub => {
-        // console.log("processing next")
         REEEE.process(next)
           .then(i => {
+            console.log(
+              `/[${index}] Output of...`,
+              filename,
+            )
             // console.log({ next, i: i.value })
             sub.next(i.value as any)
             sub.complete()
           })
-          .catch(ee => sub.error(ee))
+          .catch(ee => {
+            console.log("Whelp...", filename, ee)
+            sub.next(ee)
+          })
         return () => {}
       }).pipe(
+        catchError(err => {
+          console.log("Whelp 2", filename)
+          console.error(err)
+          return of("")
+        }),
         shareReplay({ bufferSize: 1, refCount: true }),
       )
       return state
     }, _cache.value),
+    catchError(err => {
+      console.log("Whelp 3")
+      console.error(err)
+      return of({})
+    }),
+    tap({
+      finalize: () => "MOTHER FUCKER",
+    }),
   )
   .subscribe(_cache)
 
@@ -107,11 +130,18 @@ export const Remark = (
         val: string
       }
     | string,
+  forFilename?: string,
 ) => {
   const id = remarkCalls++
-  // console.log("Calling remark", props, id)
+  console.log(
+    "Calling remark",
+    forFilename,
+    // @ts-ignore
+    props?.val?.length || props?.length,
+    id,
+  )
   const value =
     typeof props === "string" ? props : props.val
-  _input.next(value)
+  _input.next([value, forFilename] as const)
   return _cache.value[value]
 }

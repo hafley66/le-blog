@@ -215,24 +215,23 @@ export function combinePartialArray<
     ? U | undefined
     : never
 }> {
-  const isArray = sources;
-    // @ts-ignore im done fighting you TS
-    return merge(
-      ...isArray.map((source, index) =>
-        source.pipe(map(value => ({ index, value }))),
-      ),
-    ).pipe(
-      scan((acc, { index, value }) => {
-        const newAcc = [...acc]
-        newAcc[index] = value
-        return newAcc
-      }, Array(isArray.length).fill(undefined)),
-    )
+  const isArray = sources
+  // @ts-ignore im done fighting you TS
+  return merge(
+    ...isArray.map((source, index) =>
+      source.pipe(map(value => ({ index, value }))),
+    ),
+  ).pipe(
+    scan((acc, { index, value }) => {
+      const newAcc = [...acc]
+      newAcc[index] = value
+      return newAcc
+    }, Array(isArray.length).fill(undefined)),
+  )
 }
 
-
 export function combinePartialRecord<
-  T extends Record<string, Observable<any>>
+  T extends Record<string, Observable<any>>,
 >(
   sources: T,
 ): Observable<{

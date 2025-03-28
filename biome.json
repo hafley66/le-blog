@@ -5,6 +5,9 @@
 		"clientKind": "git",
 		"useIgnoreFile": false
 	},
+	"files": {
+		"include": ["./**/*"]
+	},
 	"organizeImports": { "enabled": false },
 	"linter": {
 		"enabled": true,
@@ -27,7 +30,8 @@
 			},
 			"suspicious": {
 				"noAssignInExpressions": "warn",
-				"noExplicitAny": "warn"
+				"noExplicitAny": "warn",
+				"noFallthroughSwitchClause": "off"
 			}
 		}
 	},

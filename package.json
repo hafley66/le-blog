@@ -19,6 +19,8 @@
 		"@shikijs/themes": "^2.5.0",
 		"@shikijs/transformers": "^3.2.1",
 		"@shikijs/twoslash": "^3.2.1",
+		"@trpc/client": "^11.0.0",
+		"@trpc/server": "^11.0.0",
 		"@types/jquery": "^3.5.32",
 		"@types/lodash": "^4.17.16",
 		"@types/markdown-it": "^14.1.2",
@@ -79,6 +81,7 @@
 		"unist-util-visit-parents": "^6.0.1",
 		"vhtml": "^2.2.0",
 		"vite-plugin-virtual": "^0.4.0",
+		"zod": "^3.24.2",
 		"zx": "^8.4.1"
 	},
 	"devDependencies": {

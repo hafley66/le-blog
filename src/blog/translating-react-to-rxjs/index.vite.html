@@ -78,6 +78,17 @@ document.addEventListener('DOMContentLoaded', () => {
       doc.write(`
         <html style='height: fit-content;'>
           <head>
+          <link rel="stylesheet" href="/styles/colors.css" />
+          <link rel="stylesheet" href="/styles/fonts.css" />
+          <link rel="stylesheet" href="/styles/global.css" />
+          <link
+            rel="stylesheet"
+            href="/styles/nav_and_toc.css"
+          />
+          <link rel="stylesheet" href="/styles/hex.css" />
+          <link rel="stylesheet" href="/styles/code.css" />
+          <link rel="stylesheet" href="/styles/img.css" />
+          <link rel="stylesheet" href="/shiki-twoslash.css" />
             <style>
             <\/style>
           <\/head>
@@ -563,11 +574,13 @@ document.addEventListener("keyup", e => {
         const it = document.querySelector(
           h.dataset.scrollToMe,
         )
-        if (it)
+        if (it) {
+          console.log({ it })
           setTimeout(
-            () => it.scrollIntoView({ behavior: "smooth" }),
+            () => it.scrollIntoView({ behavior: "auto" }),
             16,
           )
+        }
       }
     },
     { capture: true },

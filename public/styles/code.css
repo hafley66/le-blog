@@ -145,7 +145,7 @@ h3 ~ .code-group {
     top: 0px;
   }
   pre.shiki {
-    margin-top: -1px; 
+    margin-top: -2px; 
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
   }

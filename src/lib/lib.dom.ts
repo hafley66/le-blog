@@ -5,10 +5,17 @@ import {
   Observable,
   pairwise,
   scan,
+  share,
   shareReplay,
   startWith,
   tap,
 } from "rxjs"
+import jsx from "~/lib/rxjs-vhtml/v2/jsx-runtime"
+import {
+  HtmlEvent,
+  HEvents,
+  HtmlEventIndex$,
+} from "./rxjs-vhtml/v2/types.dom.events.dom"
 
 /**
  * This was copied pasted from my own personal lib,
@@ -43,6 +50,91 @@ export function fromEventDelegate<
       return target?.matches(selector)
     }),
   )
+}
+export interface TaggedComponent<
+  T extends string | ((...args: any[]) => any),
+  Selector extends string = "",
+> {
+  (
+    props: T extends (...args: any[]) => any
+      ? Parameters<T>[0]
+      : any,
+  ): Observable<string>
+  selector: Selector
+  $: HtmlEventIndex$
+}
+
+export function withSelector<
+  T extends string | ((...args: any[]) => any),
+  ClassName extends string = "",
+>(
+  Tag: T,
+  selector: ClassName,
+): TaggedComponent<T, ClassName> {
+  const it = (
+    props: T extends (...args: any[]) => any
+      ? Parameters<T>[0]
+      : any,
+  ) => {
+    return jsx(Tag, {
+      ...props,
+      ...(selector.startsWith(".")
+        ? {
+            className: [
+              selector.replace(".", ""),
+              props.className,
+            ],
+          }
+        : selector.startsWith("#")
+          ? {
+              id: selector.replace("#", ""),
+            }
+          : {}),
+    })
+  }
+
+  it.selector = selector
+  const eventStreamCache = {} as Record<string, any>
+
+  it.$ = new Proxy(eventStreamCache, {
+    get(target, p: HtmlEvent, receiver) {
+      if (p in target) return target[p]
+      // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
+      return (eventStreamCache[p] ||= fromEventDelegate(
+        selector,
+        p as HtmlEvent,
+      )).pipe(share())
+    },
+  }) as unknown as HtmlEventIndex$
+
+  return it
+}
+export function withClass<
+  T extends string | ((...args: any[]) => any),
+  ID extends string = "",
+>(
+  Tag: T,
+  className: ID,
+): TaggedComponent<T, `#${ID}`> & { className: ID } {
+  const it = withSelector(Tag, `.${className}`)
+  // @ts-ignore
+  it.className = className
+  // @ts-ignore
+  return it
+}
+
+export function withId<
+  T extends string | ((...args: any[]) => any),
+  ID extends string = "",
+>(
+  Tag: T,
+  id: ID,
+): TaggedComponent<T, `#${ID}`> & { id: ID } {
+  const it = withSelector(Tag, `#${id}`)
+  // @ts-ignore
+  it.id = id
+  // @ts-ignore
+  return it
 }
 
 export function fromInputDelegate(selector: string) {
@@ -107,3 +199,5 @@ export const mouseMove$ = fromEvent<MouseEvent>(
   startWith({ x: 0, y: 0, currentX: 0, currentY: 0 }),
   shareReplay({ refCount: true, bufferSize: 1 }),
 )
+
+export type HTMLElementEventMapCopy = HTMLElementEventMap

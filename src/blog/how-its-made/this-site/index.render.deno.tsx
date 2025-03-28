@@ -1,6 +1,3 @@
-/** @jsxImportSource ~/lib/rxjs-vhtml */
-/** @jsxImportSourceTypes ~/lib/rxjs-vhtml */
-
 import { Render$ } from "~/lib/0_RenderBase.deno.tsx"
 const $ = Render$(import.meta.filename!)
 

@@ -16,11 +16,13 @@ document.addEventListener("DOMContentLoaded", function () {
         const it = document.querySelector(
           h.dataset.scrollToMe,
         )
-        if (it)
+        if (it) {
+          console.log({ it })
           setTimeout(
-            () => it.scrollIntoView({ behavior: "smooth" }),
+            () => it.scrollIntoView({ behavior: "auto" }),
             16,
           )
+        }
       }
     },
     { capture: true },

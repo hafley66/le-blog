@@ -56,9 +56,6 @@ export class JSPath<
 // @eval
 ${this.readSync()}
 ~~~
-
-<script type='module' src='${this.publicPath}' demo-for='${this.filename}'></script>
-
 `
   frontendDemo = (diffName: string = this.filename) => `
 

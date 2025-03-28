@@ -1,3 +1,5 @@
+import { ConnectableObservable } from "rxjs"
+
 const emptyTags: string[] = [
   "area",
   "base",
@@ -15,12 +17,12 @@ const emptyTags: string[] = [
   "source",
   "track",
   "wbr",
-];
+]
 
 const esc = (str: string): string => {
   // Normally we'd escape special characters, but as per original, it's a passthrough
-  return str;
-};
+  return str
+}
 
 const map: Record<string, string> = {
   "&": "amp",
@@ -28,20 +30,20 @@ const map: Record<string, string> = {
   ">": "gt",
   '"': "quot",
   "'": "apos",
-};
+}
 
-const setInnerHTMLAttr = "dangerouslySetInnerHTML";
+const setInnerHTMLAttr = "dangerouslySetInnerHTML"
 const DOMAttributeNames: Record<string, string> = {
   className: "class",
   htmlFor: "for",
-};
+}
 
-const sanitized: Record<string, boolean> = {};
+const sanitized: Record<string, boolean> = {}
 
 export interface Attributes {
-  [key: string]: any;
-  children?: any[];
-  dangerouslySetInnerHTML?: { __html: string };
+  [key: string]: any
+  children?: any[]
+  dangerouslySetInnerHTML?: { __html: string }
 }
 
 export function vhtml(
@@ -49,60 +51,67 @@ export function vhtml(
   attrs?: Attributes,
   ...children: any[]
 ): string {
-  const stack: any[] = [];
-  let s = "";
+  const stack: any[] = []
+  let s = ""
 
-  attrs = attrs || {};
+  attrs = attrs || {}
 
   for (let i = children.length - 1; i >= 0; i--) {
-    stack.push(children[i]);
+    stack.push(children[i])
   }
 
   if (typeof name === "function") {
-    attrs.children = stack.reverse();
-    return name(attrs);
+    attrs.children = stack.reverse()
+    return name(attrs)
   }
 
   if (name) {
-    s += "<" + name;
+    s += "<" + name
     for (const _i in attrs) {
       if (
         attrs[_i] !== false &&
         attrs[_i] != null &&
         _i !== setInnerHTMLAttr
       ) {
-        s += " " +
-          (DOMAttributeNames[_i] ? DOMAttributeNames[_i] : esc(_i)) +
+        s +=
+          " " +
+          (DOMAttributeNames[_i]
+            ? DOMAttributeNames[_i]
+            : esc(_i)) +
           '="' +
           esc(attrs[_i]) +
-          '"';
+          '"'
       }
     }
-    s += ">";
+    s += ">"
   }
 
   if (!emptyTags.includes(name)) {
     if (attrs[setInnerHTMLAttr]) {
-      s += attrs[setInnerHTMLAttr].__html;
+      s += attrs[setInnerHTMLAttr].__html
     } else {
       while (stack.length) {
-        const child = stack.pop();
-        if (child) {
+        const child = stack.pop()
+        if (child !== null || child !== undefined) {
           if (Array.isArray(child)) {
-            for (let _i2 = child.length - 1; _i2 >= 0; _i2--) {
-              stack.push(child[_i2]);
+            for (
+              let _i2 = child.length - 1;
+              _i2 >= 0;
+              _i2--
+            ) {
+              stack.push(child[_i2])
             }
           } else {
-            s += child;
+            s += child
           }
         }
       }
     }
-    s += name ? "</" + name + ">" : "";
+    s += name ? "</" + name + ">" : ""
   }
 
-  sanitized[s] = true;
-  return s;
+  sanitized[s] = true
+  return s
 }
 
-export default vhtml;
+export default vhtml

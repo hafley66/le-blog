@@ -16,29 +16,27 @@ export default $.SSGLayout({
     "rxjs-share",
     "react-hooks",
   ],
-  ...$.md`
-
-## The basic useQuery
-One way to describe useQuery is as replacement for useEffect, if useEffect had a cache-by-dependency-array and a return value of its current state. 
-
-Lets imagine we have an async calculator API for math with \`async add\` and \`async sub\`.
-
-~~~tsx
-// @@filename 
-${SUB.fs["sample.deno.tsx"].readSync()}
-~~~
-
-:::codes
-~~~tsx
-// @@filename basic useQuery
-
-~~~
-
-~~~tsx
-// @@filename useEffect + state
-
-~~~
-:::
-
-`,
+  ...$.md``,
 })
+
+// ## The basic useQuery
+// One way to describe useQuery is as replacement for useEffect, if useEffect had a cache-by-dependency-array and a return value of its current state.
+
+// Lets imagine we have an async calculator API for math with \`async add\` and \`async sub\`.
+
+// ~~~tsx
+// // @@filename
+// ${SUB.fs["sample.deno.tsx"].readSync()}
+// ~~~
+
+// :::codes
+// ~~~tsx
+// // @@filename basic useQuery
+
+// ~~~
+
+// ~~~tsx
+// // @@filename useEffect + state
+
+// ~~~
+// :::
