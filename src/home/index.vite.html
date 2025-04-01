@@ -1,9 +1,9 @@
 <html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"><meta charSet="UTF-8"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><script>window.resizeIframe = function resizeIframe(obj) {
           obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
-          }</script><link rel="stylesheet" href="/styles/colors.css"><link rel="stylesheet" href="/styles/fonts.css"><link rel="stylesheet" href="/styles/global.css"><link rel="stylesheet" href="/styles/nav_and_toc.css"><link rel="stylesheet" href="/styles/hex.css"><link rel="stylesheet" href="/styles/code.css"><link rel="stylesheet" href="/styles/img.css"><link rel="stylesheet" href="/shiki-twoslash.css"><title>Hello World</title></head><body class="ready"><header><nav id="primary-nav" aria-label="Primary navigation"><div class="nav-links" role="tablist"><a href="/home" role="tab" aria-selected="true" class="nav-link-anchor"><span class="nav-link active">Home</span></a><a href="/resume" role="tab" class="nav-link-anchor"><span class="nav-link ">Resume</span></a><a href="/blog" role="tab" class="nav-link-anchor"><span class="nav-link ">Blog</span></a></div></nav></header><main class=""><section id="title-and-description"><h1>Hello World</h1></section><div id="main-content-middle"><p>I'm Chris Hafley, and this is my personal site/blog/portfolio/notebook/garden/living resume.</p>
+          }</script><link rel="stylesheet" href="/styles/colors.css"><link rel="stylesheet" href="/styles/fonts.css"><link rel="stylesheet" href="/styles/global.css"><link rel="stylesheet" href="/styles/nav_and_toc.css"><link rel="stylesheet" href="/styles/hex.css"><link rel="stylesheet" href="/styles/code.css"><link rel="stylesheet" href="/styles/img.css"><link rel="stylesheet" href="/shiki-twoslash.css"><title>Hello World</title></head><body class="ready"><header><nav id="primary-nav" aria-label="Primary navigation"><div class="nav-links" role="tablist"><a href="/home" role="tab" aria-selected="true" class="nav-link-anchor"><span class="nav-link active">Home</span></a><a href="/resume" role="tab" class="nav-link-anchor"><span class="nav-link ">Resume</span></a><a href="/blog" role="tab" class="nav-link-anchor"><span class="nav-link ">Blog</span></a></div></nav></header><main class=""><section id="title-and-description"><h1>Hello World</h1></section><div id="main-content-middle"><div style="text-align:center;"><p>I'm Chris Hafley, and this is my personal site/blog/portfolio/notebook/garden/living resume.</p>
 <p>I've been programming for 16 years, and in industry for ~10.</p>
 <p>I love coding and working with others, and I intend to write a whole bunch of things on this site to try and help others and hopefully learn in the process.</p>
-<figure><p><img src="../meme/spongebob-patrick-building.gif" alt="&#x22;spongebob and patrick working hard&#x22;"></p><figurecaption>Rare footage of me constantly working on this site</figurecaption></figure></div></main><footer></footer><script>function copyToClipboard(text) {
+<figure><figurecaption>Rare footage of me constantly working on this site's remark.js custom plugin</figurecaption></figure></div><script type="module" src="/apps/task/frontend/index.dom.tsx" demo-for="index.dom.tsx"></script></div></main><footer></footer><script>function copyToClipboard(text) {
   navigator.clipboard
     .writeText(text)
     .then(() => {
@@ -136,35 +136,12 @@ document.addEventListener("keyup", e => {
     remove()
   }
 })
-;
-;document.addEventListener("DOMContentLoaded", function () {
-  const element = document.querySelector(
-    "[data-scroll-to-me]",
-  )
-  document.addEventListener(
-    "click",
-    e => {
-      /**
-       * @type {HTMLElement}
-       */
-      let h = e.target
-      if (h.matches("[data-scroll-to-me]")) {
-        /**
-         * @type {HTMLElement}
-         */
-        const it = document.querySelector(
-          h.dataset.scrollToMe,
-        )
-        if (it) {
-          console.log({ it })
-          setTimeout(
-            () => it.scrollIntoView({ behavior: "auto" }),
-            16,
-          )
-        }
-      }
-    },
-    { capture: true },
-  )
-})
-</script></body></html>
+</script>
+    
+    <script type='module' src='/lib/client/invokers.dom.js' demo-for='invokers.dom.js'></script>
+    
+    
+    
+    <script type='module' src='/lib/client/dialog-closeby-attribute-polyfill.dom.js' demo-for='dialog-closeby-attribute-polyfill.dom.js'></script>
+    
+    <script type="module" src="/lib/client/on-click-scroll.dom.ts" defer="true"></script></body></html>

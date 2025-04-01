@@ -25,7 +25,7 @@ Once your instance is created, it will have an ip4 address ready to go. You will
 
 ## Update Porkbun DNS
 Once in [Porkbun Portal](https://porkbun.com/account/domainsSpeedy), 
-look for your domain name, and click on its ~Details~. 
+look for your domain name, and click on its \`Details\`. 
 What expands below is a lot of config options. 
 Find the ever so tiny button next to the words \`DNS Records\`.
 
@@ -34,7 +34,7 @@ Find the ever so tiny button next to the words \`DNS Records\`.
 ### Ensure 2 A records
 Take your IP from vultr and make sure there are 2 A records, both pointing to the ip address. 
 1. Have one for your domain
-2. And have another for ~www.<your-domain>~
+2. And have another for \`www.<your-domain>\`
 3. Both answer sections should be your vultr ip4 address
 
 ## SSH time
@@ -84,10 +84,21 @@ During that install time, I was having second thoughts thanks to Apple not suppo
 Anyways, I can't really link anything for you here, I recommend surfing the web for your situation.
 
 ### Bash time
+Now you can add this script to your \`~/.bash_profile\`, and when you are ready to deploy your app, you can just sync with rsync and you are good to go.
 
 ~~~bash 
 ${FS["src/bash/rsync-it.bash"].readSync()}
 ~~~
+
+Is it dangerous? Hmmmmmmaybe. 
+
+Does it work? Oh yea. 
+
+Am I scared of destroying my site? No, yay git. 
+
+Do I need to run this code in 2 universes? MMMMMNot yet.
+
+Good luck!
 
 `,
 })

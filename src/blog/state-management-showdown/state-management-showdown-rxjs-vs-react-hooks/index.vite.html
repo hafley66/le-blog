@@ -381,35 +381,12 @@ document.addEventListener("keyup", e => {
     remove()
   }
 })
-;
-;document.addEventListener("DOMContentLoaded", function () {
-  const element = document.querySelector(
-    "[data-scroll-to-me]",
-  )
-  document.addEventListener(
-    "click",
-    e => {
-      /**
-       * @type {HTMLElement}
-       */
-      let h = e.target
-      if (h.matches("[data-scroll-to-me]")) {
-        /**
-         * @type {HTMLElement}
-         */
-        const it = document.querySelector(
-          h.dataset.scrollToMe,
-        )
-        if (it) {
-          console.log({ it })
-          setTimeout(
-            () => it.scrollIntoView({ behavior: "auto" }),
-            16,
-          )
-        }
-      }
-    },
-    { capture: true },
-  )
-})
-</script></body></html>
+</script>
+    
+    <script type='module' src='/lib/client/invokers.dom.js' demo-for='invokers.dom.js'></script>
+    
+    
+    
+    <script type='module' src='/lib/client/dialog-closeby-attribute-polyfill.dom.js' demo-for='dialog-closeby-attribute-polyfill.dom.js'></script>
+    
+    <script type="module" src="/lib/client/on-click-scroll.dom.ts" defer="true"></script></body></html>

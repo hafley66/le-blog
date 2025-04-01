@@ -1,27 +1,75 @@
-{
-	"tag": {},
-	"task": {},
-	"board": {
-		"main": {
-			"key": "main",
-			"value": "Website Board"
-		}
-	},
-	"status": {
-		"0. Planning": {
-			"key": "0. Planning"
-		},
-		"1. Ready": {
-			"key": "1. Ready"
-		},
-		"2. In Progress": {
-			"key": "2. In Progress"
-		},
-		"3. Done": {
-			"key": "3. Done"
-		},
-		"4. Published": {
-			"key": "4. Published"
-		}
-	}
-}
+[
+  {
+    "uuid": "0195f318-851f-738c-8207-4e2ca263e0a0",
+    "title": "Post about React.useEffect/useState vs new Observable/Subscriber.next",
+    "description": "Show how useEffect and useState can be made into a hook that looks awfully alot like the form of new Observable",
+    "parent": "/blog",
+    "tags": [
+      "rxjs",
+      "react",
+      "useEffect",
+      "useState",
+      "Observable"
+    ],
+    "created_at": 1743540225311,
+    "updated_at": 0,
+    "status": 0,
+    "index": 1
+  },
+  {
+    "uuid": "0195f31a-9423-719b-a13f-6537ec34173f",
+    "title": "RxJS.BehaviorSubject vs React.useState",
+    "description": "Describe the differences between useState and its patterns and how to achieve using just BehaviorSubject",
+    "parent": "/blog/rxjs",
+    "tags": [
+      "rxjs",
+      "react",
+      "state"
+    ],
+    "created_at": 1743540360226,
+    "updated_at": 0,
+    "status": 0,
+    "index": 2
+  },
+  {
+    "uuid": "0195f31b-4915-7118-816b-a6d25180ff65",
+    "title": "RxJS.Subject vs Redux Dispatch",
+    "description": "React has no true analog to subject except useReducer, highlight vs dispatch instead",
+    "parent": "/blog/rxjs",
+    "tags": [],
+    "created_at": 1743540406549,
+    "updated_at": 0,
+    "status": 0,
+    "index": 3
+  },
+  {
+    "uuid": "0195f31c-212a-7497-9d9f-573e1a931a5e",
+    "title": "RxJS.Observable vs EventEmitter techniques",
+    "description": "Explain state machine of observables vs emitters",
+    "parent": "",
+    "tags": [
+      "events",
+      "rxjs",
+      "observable",
+      "technique"
+    ],
+    "created_at": 1743540461866,
+    "updated_at": 0,
+    "status": 0,
+    "index": 4
+  },
+  {
+    "uuid": "0195f34a-626b-7288-acb6-8df72bc2545e",
+    "title": "wwasd",
+    "description": "w",
+    "parent": "",
+    "tags": [
+      "cacaw",
+      "you fools"
+    ],
+    "created_at": 1743543493227,
+    "updated_at": 0,
+    "status": 0,
+    "index": 5
+  }
+]

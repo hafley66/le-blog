@@ -181,12 +181,21 @@ export const Layout = (
             FS["src/lib/client/checkbox.init.dom.js"],
           FS["src/lib/client/code-copy.init.dom.js"],
           FS["src/lib/client/img-onclick.dom.js"],
-          FS["src/lib/client/on-click-scroll.dom.js"],
         ]
           .filter(Boolean)
           // biome-ignore lint/complexity/useOptionalChain: ts
           .map(i => i && i.readSync())
           .join(";\n;")}</script>`}
+        {FS["src/lib/client/invokers.dom.js"].demoScript()}
+        {FS[
+          "src/lib/client/dialog-closeby-attribute-polyfill.dom.js"
+        ].demoScript()}
+        {/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
+        <script
+          type="module"
+          src="/lib/client/on-click-scroll.dom.ts"
+          defer
+        ></script>
       </body>
     </html>
   )

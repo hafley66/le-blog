@@ -4,7 +4,7 @@ const $ = Render$(import.meta.filename!)
 const { fs: FS } = SUB
 const F =
   "src/blog/unholy-custom-jsx-with-observable-strings" as const
-// SITEMAP.startsWith(F);
+
 export default $.SSGLayout({
   title:
     "(DRAFT) True lazy rendering with JSX and RxJS Observables (DRAFT)",
@@ -52,37 +52,7 @@ RxJS is fundamentally the reverse order of how you do things in other libraries,
 
 I truly hope that this is a starting point for some devs to build intuition or interest in RxJS, and more importantly, Observable's as a standard data structure.
 
-### Basic Demos
-Here are 4 intro demos demonstrating basic jsx, sync jsx, and async jsx with observables, and async jsx with rxjs.
-
-The console.logs represent the value of html emitted over time.
-:::codes
-${FS["intro/basic.deno.tsx"].markdownDemo("Basic")}
-${FS["intro/sync.deno.tsx"].markdownDemo("Sync children")}
-${FS["intro/async.deno.tsx"].markdownDemo("Async Observable")}
-${FS["intro/async.rxjs.deno.tsx"].markdownDemo("Async RxJS")}
-:::
-
-## JSX.Element Type
-In this jsx transform, thie children types are 
-
-~~~ts
-export namespace JSX {
-  type Element = Observable<string>
-}
-~~~
-
-That means every __JSX Expression__ is:
-1. pipe-able
-    - You can throttle/debounce re-renders intuitively
-    - The end result of your intense chains/compositions of rxjs can be the output for jsx
-    - Align them to any scheduler
-    - Memo-ize freely with \`distinct\` operators
-2. subscribe-able
-    - You can do whatever you want with the html string produced by the jsx
-    - In the following demo's, I simply subscribe and assign to the iframe's body.innerHTML
-
-## Comparisons with React
+### Comparisons with React
 1. Components
     - Components are __run once__
         - Unlike React, more like Solid.js
@@ -124,6 +94,37 @@ That means every __JSX Expression__ is:
     - Running on the server is easy, I do it for the demos that output console.logs to the page.
     - Its just a string output, so you do what you want with it. 
     - Some day I'll make a better situations but for now it works fine for my blog.
+
+### Basic Demos
+Here are 4 intro demos demonstrating basic jsx, sync jsx, and async jsx with observables, and async jsx with rxjs.
+
+The console.logs represent the value of html emitted over time.
+:::codes
+${FS["intro/basic.deno.tsx"].markdownDemo("Basic")}
+${FS["intro/sync.deno.tsx"].markdownDemo("Sync children")}
+${FS["intro/async.deno.tsx"].markdownDemo("Async Observable")}
+${FS["intro/async.rxjs.deno.tsx"].markdownDemo("Async RxJS")}
+:::
+
+
+## JSX.Element Type
+In this jsx transform, thie children types are 
+
+~~~ts
+export namespace JSX {
+  type Element = Observable<string>
+}
+~~~
+
+That means every __JSX Expression__ is:
+1. pipe-able
+    - You can throttle/debounce re-renders intuitively
+    - The end result of your intense chains/compositions of rxjs can be the output for jsx
+    - Align them to any scheduler
+    - Memo-ize freely with \`distinct\` operators
+2. subscribe-able
+    - You can do whatever you want with the html string produced by the jsx
+    - In the following demo's, I simply subscribe and assign to the iframe's body.innerHTML
 
 ## Components
 In this style, a component is any function that returns an observable. 
@@ -186,9 +187,9 @@ export const Component = (props: Props) => {
 
 However there is 1 problem, our RxJSX props never get redefined. If we want to react to changes in isRed, we must change a few things:
 
-1. We must pass isRed as isRed$
-  - \`$\` at the end of a variable is RxJS __convention__ for indicating an observable value.
-  - You dont have to do this if you are in typescript, but it can save a headache or two from time to time.
+1. We can pass isRed as isRed$
+    - \`$\` at the end of a variable is RxJS __convention__ for indicating an observable value.
+    - You dont have to do this if you are in typescript, but it can save a headache or two from time to time.
 2. This is not unlike \`Signal\`s in Solid.js and in general, there is no auto-reacting.
 
 :::codes 
@@ -210,8 +211,6 @@ export const Component = (props: Props) => {
     Hello World
   </div>
 }
-
-
 ~~~
 
 ~~~tsx
@@ -233,7 +232,7 @@ export const Component = (props: Props) => {
 
 ## Props
 
-### Counter Demo
+## Counter Demo
 Here are some demo's of this technique **without DOM events and state**. This is what we can achieve with just a few functions from rxjs itself.
 
 If you don't know rxjs, dont panic, just know that \`interval\` is like \`setTimeout\` + \`setState\`.
@@ -274,7 +273,7 @@ This works well __when the element already exists__. That is, you must have a re
 Here are some examples
 :::codes
 ~~~ts
-import {fromEvent} from 'rxjs'
+import { fromEvent } from 'rxjs'
 
 document.body
 ~~~

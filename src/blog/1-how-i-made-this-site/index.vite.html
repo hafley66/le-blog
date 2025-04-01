@@ -56,7 +56,7 @@ Once you go through this and get an instance, you must ssh into it with vultr's 
 }
 </style><div class="flair-section"></div></section>
 <section id="section-update-porkbun-dns"><h2 id="update-porkbun-dns"><a href="#update-porkbun-dns"><span class="marker">4.</span>  Update Porkbun DNS<div class="flair-a"></div></a><div class="flair-h"></div></h2><p>Once in <a href="https://porkbun.com/account/domainsSpeedy" rel="nofollow noopener noreferrer" target="_blank">Porkbun Portal</a>,
-look for your domain name, and click on its <del>Details</del>.
+look for your domain name, and click on its <code>Details</code>.
 What expands below is a lot of config options.
 Find the ever so tiny button next to the words <code>DNS Records</code>.</p><p><img src="./porkbun.png" alt="screenshot of porkbun portal and where to click"></p><style>
 #section-update-porkbun-dns {
@@ -66,7 +66,7 @@ Find the ever so tiny button next to the words <code>DNS Records</code>.</p><p><
 </style><div class="flair-section"></div></section>
 <section id="section-ensure-2-a-records"><h3 id="ensure-2-a-records"><a href="#ensure-2-a-records"><span class="marker">4.1.</span>  Ensure 2 A records<div class="flair-a"></div></a><div class="flair-h"></div></h3><p>Take your IP from vultr and make sure there are 2 A records, both pointing to the ip address.</p><ol>
 <li>Have one for your domain</li>
-<li>And have another for <del><a href="http://www" rel="nofollow noopener noreferrer" target="_blank">www</a>.<your-domain></your-domain></del></li>
+<li>And have another for <code>www.&#x3C;your-domain></code></li>
 <li>Both answer sections should be your vultr ip4 address</li>
 </ol><style>
 #section-ensure-2-a-records {
@@ -118,7 +118,7 @@ Vultr has great instance setups, so I can skip docker if I need to, or use it to
   --section-header-hr-stop: 90%;
 }
 </style><div class="flair-section"></div></section>
-<section id="section-bash-time"><h3 id="bash-time"><a href="#bash-time"><span class="marker">7.2.</span>  Bash time<div class="flair-a"></div></a><div class="flair-h"></div></h3><pre class="shiki one-dark-pro" style="background-color:#282c34;color:#abb2bf" tabindex="0"><div class="code-scroller"><code class="language-bash"><span class="line"><span style="color:#7F848E;font-style:italic">#!/usr/bin/env bash</span></span>
+<section id="section-bash-time"><h3 id="bash-time"><a href="#bash-time"><span class="marker">7.2.</span>  Bash time<div class="flair-a"></div></a><div class="flair-h"></div></h3><p>Now you can add this script to your <code>~/.bash_profile</code>, and when you are ready to deploy your app, you can just sync with rsync and you are good to go.</p><pre class="shiki one-dark-pro" style="background-color:#282c34;color:#abb2bf" tabindex="0"><div class="code-scroller"><code class="language-bash"><span class="line"><span style="color:#7F848E;font-style:italic">#!/usr/bin/env bash</span></span>
 <span class="line"><span style="color:#C678DD">export</span><span style="color:#E06C75"> LE_BLOG</span><span style="color:#56B6C2">=</span><span style="color:#ABB2BF">~/</span><span style="color:#E06C75">projects</span><span style="color:#ABB2BF">/</span><span style="color:#E06C75">le-blog</span><span style="color:#ABB2BF">/</span></span>
 <span class="line"><span style="color:#C678DD">export</span><span style="color:#E06C75"> LE_BLOG_TARGET</span><span style="color:#56B6C2">=</span><span style="color:#ABB2BF">/</span><span style="color:#E06C75">var</span><span style="color:#ABB2BF">/</span><span style="color:#E06C75">www</span><span style="color:#ABB2BF">/</span><span style="color:#E06C75">html</span></span>
 <span class="line"></span>
@@ -138,7 +138,7 @@ Vultr has great instance setups, so I can skip docker if I need to, or use it to
 <span class="line"><span style="color:#D19A66">    -avz</span><span style="color:#56B6C2"> \</span></span>
 <span class="line"><span style="color:#E06C75">    $LE_BLOG</span><span style="color:#98C379"> root@hafley.codes:</span><span style="color:#E06C75">$LE_BLOG_TARGET</span></span>
 <span class="line"><span style="color:#ABB2BF">}</span></span>
-<span class="line"><span style="color:#ABB2BF"> </span></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><style>
+<span class="line"><span style="color:#ABB2BF"> </span></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><p>Is it dangerous? Hmmmmmmaybe.</p><p>Does it work? Oh yea.</p><p>Am I scared of destroying my site? No, yay git.</p><p>Do I need to run this code in 2 universes? MMMMMNot yet.</p><p>Good luck!</p><style>
 #section-bash-time {
   --section-header-hr-start: 90%;
   --section-header-hr-stop: 100%;
@@ -488,35 +488,12 @@ document.addEventListener("keyup", e => {
     remove()
   }
 })
-;
-;document.addEventListener("DOMContentLoaded", function () {
-  const element = document.querySelector(
-    "[data-scroll-to-me]",
-  )
-  document.addEventListener(
-    "click",
-    e => {
-      /**
-       * @type {HTMLElement}
-       */
-      let h = e.target
-      if (h.matches("[data-scroll-to-me]")) {
-        /**
-         * @type {HTMLElement}
-         */
-        const it = document.querySelector(
-          h.dataset.scrollToMe,
-        )
-        if (it) {
-          console.log({ it })
-          setTimeout(
-            () => it.scrollIntoView({ behavior: "auto" }),
-            16,
-          )
-        }
-      }
-    },
-    { capture: true },
-  )
-})
-</script></body></html>
+</script>
+    
+    <script type='module' src='/lib/client/invokers.dom.js' demo-for='invokers.dom.js'></script>
+    
+    
+    
+    <script type='module' src='/lib/client/dialog-closeby-attribute-polyfill.dom.js' demo-for='dialog-closeby-attribute-polyfill.dom.js'></script>
+    
+    <script type="module" src="/lib/client/on-click-scroll.dom.ts" defer="true"></script></body></html>

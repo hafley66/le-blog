@@ -132,7 +132,11 @@
     "src/blog/rxjs/dom-events/index.render.deno.tsx",
     "src/blog/rxjs/dom-events/SITEMAP.deno.ts",
     "src/blog/rxjs/dom-events/vanilla/SITEMAP.deno.ts",
-    "src/blog/rxjs/vs-react/SITEMAP.deno.ts"
+    "src/blog/rxjs/vs-react/SITEMAP.deno.ts",
+    "src/lib/ts_experiments/tuple_mapping.deno.ts",
+    "src/lib/form_helpers/types.dual.ts",
+    "src/lib/form_helpers/SITEMAP.deno.ts",
+    "src/lib/ts_experiments/SITEMAP.deno.ts"
   ],
   "deno.config": "./deno.json",
   "files.exclude": {

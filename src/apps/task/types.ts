@@ -3,12 +3,13 @@ export type Task = {
   uuid: string
   title: string
   description: string
-  parent: string | ""
+  parent?: string | ""
   created_at: number | 0
   updated_at: number | 0
-  board: string
-  status: string
+  // board: string
+  status: number
   tags: string[]
+  index: number
 }
 
 export const taskCU = z.object({
@@ -17,8 +18,11 @@ export const taskCU = z.object({
   description: z.string(),
   parent: z.optional(z.string()),
   tags: z.array(z.string()),
-  board: z.optional(z.string()),
-  status: z.optional(z.string()),
+  // board: z.optional(z.string()),
+  created_at: z.number(),
+  updated_at: z.number(),
+  status: z.number(),
+  index: z.number(),
 })
 
 export const taskR = taskCU.extend({
@@ -40,9 +44,4 @@ export type Tag = {
   key: string
 }
 
-export type TaskDB = {
-  tag: Record<string, Tag>
-  task: Record<string, Task>
-  board: Record<string, Board>
-  state: Record<string, Status>
-}
+export type TaskDB = Task[]

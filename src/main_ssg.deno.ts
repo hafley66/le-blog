@@ -11,6 +11,7 @@ import path from "node:path"
 import _ from "lodash"
 import { SITEMAP } from "~/SITEMAP.deno.ts"
 import { createServer } from "vite"
+import { trpcServer } from "~/apps/trpc.listen.deno.ts"
 
 const allRenders = SITEMAP.includes(
   "render.deno.ts" as const,
@@ -69,6 +70,8 @@ Deno.serve(
     return new Response("Hello, World!")
   },
 )
+
+trpcServer.listen(4041)
 
 const server = await createServer({})
 await server.listen()

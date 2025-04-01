@@ -48,7 +48,8 @@
       </div>
       <div class="hex-content-amoeba"></div>
       <span>diy</span>
-</a></div></div></section><details open="true" id="section-table-of-contents"><summary id="toc-header-contents"><h2 id="table-of-contents">Table of Contents</h2><input type="checkbox" id="toc-toggle"></summary><div class="fancy-hr"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 20"><circle cx="10" cy="10" r="7" style="fill:var(--color-text);" stroke-width="2"></circle><circle cx="30" cy="10" r="9" style="fill:var(--color-text);" stroke-width="2" fill="transparent"></circle><circle cx="50" cy="10" r="7" style="fill:var(--color-text);" stroke-width="2"></circle></svg></div><nav id="toc-nav"><ol><li><a href="#section-start-with-a-single-dynamic-import">1.  Start with a single dynamic import</a></li></ol></nav></details><div id="main-content-middle"><section id="section-start-with-a-single-dynamic-import"><h2 id="start-with-a-single-dynamic-import"><a href="#start-with-a-single-dynamic-import"><span class="marker">1.</span>  Start with a single dynamic import<div class="flair-a"></div></a><div class="flair-h"></div></h2><p>A powerful feature of bundlers (webpack/vite/etc.) is <a href="https://tc39.es/ecma262/multipage/ecmascript-language-expressions.html#sec-import-calls" rel="nofollow noopener noreferrer" target="_blank">dynamic import</a>. There are also bundlers/frameworks that provide their own sense of <em>glob imports</em>, a bundler specific magic feature.</p><ol start="0">
+</a></div></div></section><details open="true" id="section-table-of-contents"><summary id="toc-header-contents"><h2 id="table-of-contents">Table of Contents</h2><input type="checkbox" id="toc-toggle"></summary><div class="fancy-hr"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 20"><circle cx="10" cy="10" r="7" style="fill:var(--color-text);" stroke-width="2"></circle><circle cx="30" cy="10" r="9" style="fill:var(--color-text);" stroke-width="2" fill="transparent"></circle><circle cx="50" cy="10" r="7" style="fill:var(--color-text);" stroke-width="2"></circle></svg></div><nav id="toc-nav"><ol><li><a href="#section-start-with-a-single-dynamic-import">1.  Start with a single dynamic import</a></li></ol></nav></details><div id="main-content-middle"><section id="section-start-with-a-single-dynamic-import"><h2 id="start-with-a-single-dynamic-import"><a href="#start-with-a-single-dynamic-import"><span class="marker">1.</span>  Start with a single dynamic import<div class="flair-a"></div></a><div class="flair-h"></div></h2><p>A powerful feature of bundlers (webpack/vite/etc.) is <a href="https://tc39.es/ecma262/multipage/ecmascript-language-expressions.html#sec-import-calls" rel="nofollow noopener noreferrer" target="_blank">dynamic import</a>.
+There are also bundlers/frameworks that provide their own sense of <em>glob imports</em>, a bundler specific magic feature.</p><ol start="0">
 <li><a href="https://webpack.js.org/guides/code-splitting/#dynamic-imports" rel="nofollow noopener noreferrer" target="_blank">Webpack dynamic imports</a>
 <ul>
 <li>Has magic comments for features</li>
@@ -64,7 +65,7 @@
 <li>Has magic comment rules</li>
 </ul>
 </li>
-</ol><p>This feature is very useful for lazy/code splitting in bundlers as a performance optimization. However it requires hard strings that are reachable <em>by the bundler's config</em>. What I prefer is having a <em>typed dictionary</em> of the output of</p><style>
+</ol><p>This feature is very useful for lazy/code splitting in bundlers as a performance optimization. However it requires hard strings that are reachable <em>by the bundler's config</em>. What I prefer is having a <em>typed dictionary</em> of</p><style>
 #section-start-with-a-single-dynamic-import {
   --section-header-hr-start: 0%;
   --section-header-hr-stop: 100%;
@@ -414,35 +415,12 @@ document.addEventListener("keyup", e => {
     remove()
   }
 })
-;
-;document.addEventListener("DOMContentLoaded", function () {
-  const element = document.querySelector(
-    "[data-scroll-to-me]",
-  )
-  document.addEventListener(
-    "click",
-    e => {
-      /**
-       * @type {HTMLElement}
-       */
-      let h = e.target
-      if (h.matches("[data-scroll-to-me]")) {
-        /**
-         * @type {HTMLElement}
-         */
-        const it = document.querySelector(
-          h.dataset.scrollToMe,
-        )
-        if (it) {
-          console.log({ it })
-          setTimeout(
-            () => it.scrollIntoView({ behavior: "auto" }),
-            16,
-          )
-        }
-      }
-    },
-    { capture: true },
-  )
-})
-</script></body></html>
+</script>
+    
+    <script type='module' src='/lib/client/invokers.dom.js' demo-for='invokers.dom.js'></script>
+    
+    
+    
+    <script type='module' src='/lib/client/dialog-closeby-attribute-polyfill.dom.js' demo-for='dialog-closeby-attribute-polyfill.dom.js'></script>
+    
+    <script type="module" src="/lib/client/on-click-scroll.dom.ts" defer="true"></script></body></html>

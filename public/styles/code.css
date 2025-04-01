@@ -16,6 +16,10 @@ code:not(:has(.line)):not(.twoslash-popup-code) {
   padding: 0px 4px;
   border-radius: 4px;
   color: var(--color-text-contrast);
+  word-break: break-word;
+  @media (width <= 480px) {
+    font-size: 12px;
+  }
 }
 
 .shiki > button {
@@ -76,6 +80,8 @@ h3 ~ .code-group {
   margin-top: 12px;
   margin-left: calc(var(--section-mx) * -1);
   margin-right: calc(var(--section-mx) * -1);
+  scroll-padding-top: 60px;
+  
   .code-group-tabs { 
     overflow: auto;
     display: flex; 

@@ -786,6 +786,18 @@ export const FS = {
     () => import("~/lib/fs_watcher.deno.ts"),
   ),
 
+  "src/lib/ts_experiments/tuple_mapping.deno.ts":
+    new JSPath(
+      "src/lib/ts_experiments/tuple_mapping.deno.ts",
+      "src/lib/ts_experiments",
+      "tuple_mapping.deno.ts",
+      "ts",
+      () =>
+        import(
+          "~/lib/ts_experiments/tuple_mapping.deno.ts"
+        ),
+    ),
+
   "src/lib/remark_rehype/remark-plant-uml.deno.ts":
     new JSPath(
       "src/lib/remark_rehype/remark-plant-uml.deno.ts",
@@ -938,12 +950,24 @@ export const FS = {
     () => import("~/lib/client/img-onclick.dom.js"),
   ),
 
-  "src/lib/client/on-click-scroll.dom.js": new JSPath(
-    "src/lib/client/on-click-scroll.dom.js",
+  "src/lib/client/dialog-closeby-attribute-polyfill.dom.js":
+    new JSPath(
+      "src/lib/client/dialog-closeby-attribute-polyfill.dom.js",
+      "src/lib/client",
+      "dialog-closeby-attribute-polyfill.dom.js",
+      "js",
+      () =>
+        import(
+          "~/lib/client/dialog-closeby-attribute-polyfill.dom.js"
+        ),
+    ),
+
+  "src/lib/client/invokers.dom.js": new JSPath(
+    "src/lib/client/invokers.dom.js",
     "src/lib/client",
-    "on-click-scroll.dom.js",
+    "invokers.dom.js",
     "js",
-    () => import("~/lib/client/on-click-scroll.dom.js"),
+    () => import("~/lib/client/invokers.dom.js"),
   ),
 
   "src/lib/client/TOC_intersection_polyfill.js": new JSPath(
@@ -961,6 +985,14 @@ export const FS = {
     "checkbox.init.dom.js",
     "js",
     () => import("~/lib/client/checkbox.init.dom.js"),
+  ),
+
+  "src/lib/client/on-click-scroll.dom.ts": new JSPath(
+    "src/lib/client/on-click-scroll.dom.ts",
+    "src/lib/client",
+    "on-click-scroll.dom.ts",
+    "ts",
+    () => import("~/lib/client/on-click-scroll.dom.ts"),
   ),
 
   "src/lib/client/code-copy.init.dom.js": new JSPath(
@@ -985,6 +1017,30 @@ export const FS = {
     "debug-range.js",
     "js",
     () => import("~/lib/client/debug-range.js"),
+  ),
+
+  "src/lib/form_helpers/with.forms.dom.ts": new JSPath(
+    "src/lib/form_helpers/with.forms.dom.ts",
+    "src/lib/form_helpers",
+    "with.forms.dom.ts",
+    "ts",
+    () => import("~/lib/form_helpers/with.forms.dom.ts"),
+  ),
+
+  "src/lib/form_helpers/types.dual.ts": new JSPath(
+    "src/lib/form_helpers/types.dual.ts",
+    "src/lib/form_helpers",
+    "types.dual.ts",
+    "ts",
+    () => import("~/lib/form_helpers/types.dual.ts"),
+  ),
+
+  "src/lib/form_helpers/with.dom.ts": new JSPath(
+    "src/lib/form_helpers/with.dom.ts",
+    "src/lib/form_helpers",
+    "with.dom.ts",
+    "ts",
+    () => import("~/lib/form_helpers/with.dom.ts"),
   ),
 
   "src/pages/about.astro": new Path(
@@ -1046,12 +1102,45 @@ export const FS = {
     () => import("~/apps/trpc.deno.ts"),
   ),
 
+  "src/apps/task/frontend/api.dom.ts": new JSPath(
+    "src/apps/task/frontend/api.dom.ts",
+    "src/apps/task/frontend",
+    "api.dom.ts",
+    "ts",
+    () => import("~/apps/task/frontend/api.dom.ts"),
+  ),
+
   "src/apps/task/frontend/index.dom.tsx": new JSPath(
     "src/apps/task/frontend/index.dom.tsx",
     "src/apps/task/frontend",
     "index.dom.tsx",
     "tsx",
     () => import("~/apps/task/frontend/index.dom.tsx"),
+  ),
+
+  "src/apps/task/frontend/drag_handlers.dom.ts": new JSPath(
+    "src/apps/task/frontend/drag_handlers.dom.ts",
+    "src/apps/task/frontend",
+    "drag_handlers.dom.ts",
+    "ts",
+    () =>
+      import("~/apps/task/frontend/drag_handlers.dom.ts"),
+  ),
+
+  "src/apps/task/frontend/forms.dom.tsx": new JSPath(
+    "src/apps/task/frontend/forms.dom.tsx",
+    "src/apps/task/frontend",
+    "forms.dom.tsx",
+    "tsx",
+    () => import("~/apps/task/frontend/forms.dom.tsx"),
+  ),
+
+  "src/apps/task/frontend/components.dom.tsx": new JSPath(
+    "src/apps/task/frontend/components.dom.tsx",
+    "src/apps/task/frontend",
+    "components.dom.tsx",
+    "tsx",
+    () => import("~/apps/task/frontend/components.dom.tsx"),
   ),
 
   "src/apps/task/types.ts": new JSPath(
@@ -1075,6 +1164,14 @@ export const FS = {
     "index.trpc.deno.ts",
     "ts",
     () => import("~/apps/task/api/index.trpc.deno.ts"),
+  ),
+
+  "src/apps/trpc.client.dom.ts": new JSPath(
+    "src/apps/trpc.client.dom.ts",
+    "src/apps",
+    "trpc.client.dom.ts",
+    "ts",
+    () => import("~/apps/trpc.client.dom.ts"),
   ),
 } as const
 export type FILESYSTEM = typeof FS

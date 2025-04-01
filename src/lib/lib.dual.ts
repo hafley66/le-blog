@@ -2,9 +2,11 @@ import {
   Observable,
   ObservableInput,
   animationFrameScheduler,
+  combineLatest,
   defer,
   from,
   interval,
+  isObservable,
   map,
   merge,
   of,
@@ -13,7 +15,9 @@ import {
   startWith,
   tap,
 } from "rxjs"
+import _ from "lodash"
 
+const { mapValues } = _
 /**
  * Merges multiple observables into a single observable, while preserving the key-value pairs of the original observables.
  *
@@ -252,5 +256,58 @@ export function combinePartialRecord<
     scan((acc, { key, value }) => {
       return { ...acc, [key]: value }
     }, {} as any),
+  )
+}
+
+export const typeSafeObjectFromEntries = <
+  const T extends ReadonlyArray<
+    readonly [PropertyKey, any]
+  >,
+>(
+  entries: T,
+): {
+  [K in T[number] as K[0]]: Extract<T[number], K>[1]
+} => {
+  return Object.fromEntries(entries) as {
+    [K in T[number] as K[0]]: K[1]
+  }
+}
+
+const myObject = typeSafeObjectFromEntries([
+  ["a", 5],
+  ["b", "hello"],
+  ["c", false],
+]) // { a: 5; b: "hello"; c: false } ✅
+
+//
+// Object.entries
+// (add const param for less broader types (ie. string -> "apple") -> const T extends Record<PropertyKey, unknown>)
+//
+
+export const typeSafeObjectEntries = <
+  T extends Record<PropertyKey, unknown>,
+>(
+  obj: T,
+): { [K in keyof T]: [K, T[K]] }[keyof T][] => {
+  return Object.entries(obj) as {
+    [K in keyof T]: [K, T[K]]
+  }[keyof T][]
+}
+
+export function AND_THEN<
+  T extends Record<string | number, Observable<any> | any>,
+>(
+  combo: T,
+): Observable<{
+  [K in keyof T]: T[K] extends Observable<infer U>
+    ? U
+    : T[K]
+}> & { _: T } {
+  // @ts-ignore
+  return Object.assign(
+    combineLatest(
+      mapValues(combo, v => (isObservable(v) ? v : of(v))),
+    ),
+    { _: combo },
   )
 }

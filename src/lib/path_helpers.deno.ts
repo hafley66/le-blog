@@ -1,4 +1,5 @@
 import { readFileSync } from "node:fs"
+import jsx from "~/lib/rxjs-vhtml/v2/jsx-runtime.tsx"
 type Imploder<T> = T[keyof T]
 
 export class Path<
@@ -52,10 +53,11 @@ export class JSPath<
   markdownDemo = (diffName: string = this.filename) => `
 
 ~~~${this.ext}
+// @@eval
 // @@filename ${diffName}
-// @eval
 ${this.readSync()}
 ~~~
+
 `
   frontendDemo = (diffName: string = this.filename) => `
 
@@ -70,6 +72,23 @@ ${this.readSync()}
 `
   override linkTag = (alt?: string) =>
     `<script type='module' src='${this.publicPath}'></script>`
+
+  demoScript = () => {
+    return `
+    
+    <script type='module' src='${this.publicPath}' demo-for='${this.filename}'></script>
+    
+    `
+  }
+
+  demoScript$ = () => {
+    return jsx("script", {
+      type: "module",
+      src: this.publicPath,
+      "demo-for": this.filename,
+      children: [],
+    })
+  }
 }
 
 export class SITEMAP_PART<

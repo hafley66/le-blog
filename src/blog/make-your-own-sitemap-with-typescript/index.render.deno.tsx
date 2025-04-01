@@ -24,7 +24,8 @@ export default $.SSGLayout({
   ],
   ...$.md`
   ## Start with a single dynamic import
-  A powerful feature of bundlers (webpack/vite/etc.) is [dynamic import](https://tc39.es/ecma262/multipage/ecmascript-language-expressions.html#sec-import-calls). There are also bundlers/frameworks that provide their own sense of _glob imports_, a bundler specific magic feature.
+  A powerful feature of bundlers (webpack/vite/etc.) is [dynamic import](https://tc39.es/ecma262/multipage/ecmascript-language-expressions.html#sec-import-calls). 
+  There are also bundlers/frameworks that provide their own sense of _glob imports_, a bundler specific magic feature.
   
   0. [Webpack dynamic imports](https://webpack.js.org/guides/code-splitting/#dynamic-imports) 
       - Has magic comments for features
@@ -33,6 +34,6 @@ export default $.SSGLayout({
   2. [Rspack](https://rspack.dev/guide/optimization/code-splitting#dynamic-import)
       - Has magic comment rules
   
-  This feature is very useful for lazy/code splitting in bundlers as a performance optimization. However it requires hard strings that are reachable _by the bundler's config_. What I prefer is having a *typed dictionary* of the output of 
+  This feature is very useful for lazy/code splitting in bundlers as a performance optimization. However it requires hard strings that are reachable _by the bundler's config_. What I prefer is having a *typed dictionary* of 
 `,
 })

@@ -16,6 +16,7 @@ body {
   font-family: "Inter", sans-serif;
 }
 
+.body-markdown{
 ul,
 ol {
   margin-left: 1.4rem;
@@ -44,6 +45,7 @@ ol {
   ol ol ol {
     margin-left: 0.6rem;
   }
+}
 }
 
 .f-a-center {
@@ -323,3 +325,37 @@ body:has(#section-table-of-contents):not(.ready) {
 }
 
 .viewtimeline-active a {color: var(--active-link-toc-color);}
+
+body:has(dialog:open) {
+  overflow: hidden;
+  /* padding-right: 16px; */
+}
+
+
+.with-form-standard-layout { 
+  display: grid;
+  grid-template-columns: auto 1fr;
+  & .with-form-error {
+    margin: 0px;
+    margin-top: -6px;
+    font-size: 13px;
+    padding: 0px;
+    grid-column: 2;
+    color: var(--color-red-600);
+  }
+}
+
+dialog:open {
+  max-height: 95vh;
+  
+  form {
+    max-height: 90vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    & > *:nth-child(2) {
+      overflow-y: auto;
+    }
+  }
+}
+
+/* button[disabled]  */

@@ -5,7 +5,7 @@ import {
   scan,
   startWith,
 } from "rxjs"
-import { withId } from "~/lib/lib.dom"
+import { withId } from "~/lib/form_helpers/with.dom"
 import { RxJSX } from "~/lib/rxjs-vhtml/v2/jsx-runtime"
 
 const MyButton: RxJSX.FC<{ name: string }> = props => (

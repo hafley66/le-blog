@@ -1,7 +1,5 @@
-import { SUB } from "~/blog/unholy-custom-jsx-with-observable-strings/SITEMAP.deno.ts"
 import { Render$ } from "~/lib/0_RenderBase.deno.tsx"
 const $ = Render$(import.meta.filename!)
-const { fs: FS } = SUB
 
 export default $.SSGLayout({
   title: "(DRAFT) ",
@@ -26,5 +24,6 @@ export default $.SSGLayout({
     "rxjs",
   ],
   ...$.md`
+
 `,
 })
