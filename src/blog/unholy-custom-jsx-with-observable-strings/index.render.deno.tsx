@@ -133,104 +133,106 @@ This also means that we dont call functions more than once!
 This framework is like solid.js and vue hooks, where we are declaring everything once, then re-evaluating when necessary by means of RxJS and Observables.
 
 Here is a basic, re-usable component comparison:
+${
+  // :::codes
+  // ~~~tsx
+  // // @@filename RxJSX
+  // export const Component = () => {
+  //   return <div>Hello World</div>
+  // }
+  // ~~~
 
-:::codes 
-~~~tsx
-// @@filename RxJSX
-export const Component = () => {
-  return <div>Hello World</div>
+  // ~~~tsx
+  // // @@filename React
+  // export const Component = () => {
+  //   return <div>Hello World</div>
+  // }
+  // ~~~
+  // :::
+
+  // ### Add static props and styling
+  // Now we can leverage props for dynamic styling
+
+  // :::codes
+  // ~~~tsx
+  // // @@filename RxJSX
+  // type Props = {
+  //   isRed?: boolean
+  // }
+
+  // export const Component = (props: Props) => {
+  //   return <div style={{
+  //     background: props.isRed ? 'red' : undefined
+  //   }}>
+  //     Hello World
+  //   </div>
+  // }
+  // ~~~
+
+  // ~~~tsx
+  // // @@filename React
+  // type Props = {
+  //   isRed?: boolean
+  // }
+
+  // export const Component = (props: Props) => {
+  //   return <div style={{
+  //     background: props.isRed ? 'red' : undefined
+  //   }}>
+  //     Hello World
+  //   </div>
+  // }
+  // ~~~
+  // :::
+  ""
 }
-~~~
-
-~~~tsx
-// @@filename React
-export const Component = () => {
-  return <div>Hello World</div>
-}
-~~~
-:::
-
-### Add static props and styling
-Now we can leverage props for dynamic styling
-
-:::codes 
-~~~tsx
-// @@filename RxJSX
-type Props = {
-  isRed?: boolean
-}
-
-export const Component = (props: Props) => {
-  return <div style={{
-    background: props.isRed ? 'red' : undefined
-  }}>
-    Hello World
-  </div>
-}
-~~~
-
-~~~tsx
-// @@filename React
-type Props = {
-  isRed?: boolean
-}
-
-export const Component = (props: Props) => {
-  return <div style={{
-    background: props.isRed ? 'red' : undefined
-  }}>
-    Hello World
-  </div>
-}
-~~~
-:::
-
 However there is 1 problem, our RxJSX props never get redefined. If we want to react to changes in isRed, we must change a few things:
 
 1. We can pass isRed as isRed$
     - \`$\` at the end of a variable is RxJS __convention__ for indicating an observable value.
     - You dont have to do this if you are in typescript, but it can save a headache or two from time to time.
 2. This is not unlike \`Signal\`s in Solid.js and in general, there is no auto-reacting.
+${
+  // :::codes
+  // ~~~tsx
+  // // @@filename RxJSX
+  // // @@eval
+  // import { map } from 'rxjs';
 
-:::codes 
-~~~tsx
-// @@filename RxJSX
-// @@eval
-import { map } from 'rxjs';
+  // type Props = {
+  //   isRed$?: boolean
+  // }
 
-type Props = {
-  isRed$?: boolean
+  // export const Component = (props: Props) => {
+  //   return <div style={{
+  //     background: props.isRed$.pipe(
+  //       map(isRed => isRed ? 'red' : undefined)
+  //     )
+  //   }}>
+  //     Hello World
+  //   </div>
+  // }
+  // ~~~
+
+  // ~~~tsx
+  // // @@filename React
+  // type Props = {
+  //   isRed?: boolean
+  // }
+
+  // export const Component = (props: Props) => {
+  //   return <div style={{
+  //     background: props.isRed ? 'red' : undefined
+  //   }}>
+  //     Hello World
+  //   </div>
+  // }
+  // ~~~
+  // :::
+
+  // ## Props
+  ""
 }
-
-export const Component = (props: Props) => {
-  return <div style={{
-    background: props.isRed$.pipe(
-      map(isRed => isRed ? 'red' : undefined)
-    )
-  }}>
-    Hello World
-  </div>
-}
-~~~
-
-~~~tsx
-// @@filename React
-type Props = {
-  isRed?: boolean
-}
-
-export const Component = (props: Props) => {
-  return <div style={{
-    background: props.isRed ? 'red' : undefined
-  }}>
-    Hello World
-  </div>
-}
-~~~
-:::
-
-
-## Props
 
 ## Counter Demo
 Here are some demo's of this technique **without DOM events and state**. This is what we can achieve with just a few functions from rxjs itself.

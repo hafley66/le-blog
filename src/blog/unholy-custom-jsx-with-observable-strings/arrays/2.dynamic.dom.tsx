@@ -1,5 +1,3 @@
-import { registerRxJSXDemo } from "~/lib/remark_rehype/demo-runner.dom"
-
 const navItems = [
   "home",
   "resume",
@@ -8,7 +6,7 @@ const navItems = [
   "projects",
 ]
 
-export const main = (
+export default () => (
   <nav style={{ background: "purple", color: "white" }}>
     Primary Nav:
     <ul>
@@ -18,5 +16,3 @@ export const main = (
     </ul>
   </nav>
 )
-
-registerRxJSXDemo(import.meta.filename, () => main)

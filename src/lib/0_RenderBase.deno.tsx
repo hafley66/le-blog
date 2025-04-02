@@ -2,10 +2,14 @@ import _ from "lodash"
 
 import {
   MonoTypeOperatorFunction,
+  Observable,
   Subject,
   catchError,
+  combineLatest,
+  combineLatestWith,
   debounceTime,
   from,
+  isObservable,
   map,
   of,
   pipe,
@@ -23,6 +27,7 @@ import {
 } from "./0_Layout.dual.tsx"
 import { Remark } from "./00_Remark2.deno.tsx"
 import { deferFrom } from "~/lib/lib.dual.ts"
+import { v7 } from "uuid"
 
 const MARKDOWN_REGEX_TO_NAIVELY_SPLIT_HEADERS__BEWARE_HASH_COMMENTS =
   /(#{2,} .+?)\n([\s\S]*?)(?=\n#{2,} |\n*$|$)/g
@@ -82,13 +87,23 @@ export const Render$ = (importMetaFilename: string) => {
 
   const md = (
     strings: TemplateStringsArray,
-    ...values: any[]
+    ...values: (Observable<string> | string)[]
   ) => {
+    const build = [] as string[]
+    const record = Object.fromEntries(
+      values.map(
+        (i, index) =>
+          [v7(), isObservable(i) ? i : of(i)] as const,
+      ),
+    )
+
     let i = 0
-    let build = [] as string[]
     for (const n of strings) {
-      const other = values[i++]
-      build.push(n + (other ?? ""))
+      const index = i
+      i++
+      build.push(
+        `${n}\n\n\n<div id="${record[index]}"/>\n\n\n`,
+      )
     }
     const it = build.join(" ")
 
@@ -138,6 +153,21 @@ ${it.body}
         importMetaFilename,
       ),
     ).pipe(
+      combineLatestWith(
+        values.length ? combineLatest(record) : of(null),
+      ),
+      map(
+        ([compiled, next]) =>
+          Object.entries(next ?? {}).reduce(
+            (html, [id, value]) => {
+              return html.replace(
+                `<div id="${id}"/>`,
+                value,
+              )
+            },
+            compiled,
+          ) || compiled,
+      ),
       catchError(err => {
         console.log("OI", importMetaFilename)
         console.error(err)
