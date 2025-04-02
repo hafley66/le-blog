@@ -69,9 +69,9 @@ export const PrimaryNavigation = (props: {
   url: string
 }) => {
   const links = [
-    { href: "/home", label: "Home" },
-    { href: "/resume", label: "Resume" },
-    { href: "/blog", label: "Blog" },
+    { href: "/home/index.html", label: "Home" },
+    { href: "/resume/index.html", label: "Resume" },
+    { href: "/blog/index.html", label: "Blog" },
     // { href: "/snippets", label: "Snipts" },
     // { href: "/tags", label: "Tags" },
   ]
