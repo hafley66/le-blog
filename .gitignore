@@ -22,5 +22,6 @@ dist-ssr
 *.sln
 *.sw?
 src/lib/**/temp
-./src/_html/
-./src/**/*.vite.html
+_html/
+**/*.vite.html
+**/*/index.html

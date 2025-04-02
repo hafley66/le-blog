@@ -1,4 +1,7 @@
-import { Observable } from "rxjs"
+import { mkdirSync } from "node:fs"
+import { writeFile } from "node:fs/promises"
+import path from "node:path"
+import { lastValueFrom, Observable, tap } from "rxjs"
 import { FS } from "~/SITEMAP.deno.ts"
 import { Hex } from "~/lib/Hex/index.dual.tsx"
 import { RxJSXNode } from "~/lib/rxjs-vhtml/v2/jsx-runtime.tsx"
@@ -281,4 +284,56 @@ export const TOC = (props: {
       </nav>
     </details>
   )
+}
+
+export function toDemoLayoutHtml(src: string) {
+  return lastValueFrom(
+    <html style="height: fit-content;">
+      <head>
+        <link rel="stylesheet" href="/styles/colors.css" />
+        <link rel="stylesheet" href="/styles/fonts.css" />
+        <link rel="stylesheet" href="/styles/global.css" />
+        <link
+          rel="stylesheet"
+          href="/styles/nav_and_toc.css"
+        />
+        <link rel="stylesheet" href="/styles/hex.css" />
+        <link rel="stylesheet" href="/styles/code.css" />
+        <link rel="stylesheet" href="/styles/img.css" />
+        <link rel="stylesheet" href="/shiki-twoslash.css" />
+      </head>
+      <body style="margin: 4px; height: fit-content;"></body>
+      <script type="module" src={src}></script>
+      <script>
+        {`(function() {
+      const observer = new MutationObserver(() => {
+        // Adjust the height of the parent iframe based on the body's height
+        window.frameElement.style.height = (document.documentElement.offsetHeight + 1) +'px';
+      });
+
+      // Start observing changes in the body element
+      observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+
+      // Initial setting of height
+      window.frameElement.style.height = (document.documentElement.offsetHeight + 1) + 'px';
+    })();`}
+      </script>
+    </html>,
+  ).then(val => {
+    val
+    const dir =
+      process.cwd() +
+      "/lib/remark_rehype/__demo_iframes__" +
+      path.dirname(src)
+    const file =
+      process.cwd() +
+      "/lib/remark_rehype/__demo_iframes__" +
+      path.dirname(src) +
+      "/" +
+      path.basename(src) +
+      ".vite.html"
+    console.log({ dir, file })
+    mkdirSync(dir)
+    return writeFile(file, val)
+  })
 }

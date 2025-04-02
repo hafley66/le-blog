@@ -58,10 +58,19 @@ export default defineConfig(async it => {
   const input = {
     ...(it.command === "build"
       ? await Promise.all(
-          Object.entries(htmlFiles).map(([k, v]) =>
-            link(
-              `${process.cwd()}/${v}`,
-              `${process.cwd()}/${v.replace("index.vite.html", "index.html")}`,
+          Object.entries(htmlFiles).map(
+            ([k, v]) => (
+              existsSync(
+                `${process.cwd()}/${v.replace("index.vite.html", "index.html")}`,
+              )
+                ? rmSync(
+                    `${process.cwd()}/${v.replace("index.vite.html", "index.html")}`,
+                  )
+                : null,
+              link(
+                `${process.cwd()}/${v}`,
+                `${process.cwd()}/${v.replace("index.vite.html", "index.html")}`,
+              )
             ),
           ),
         ).then(() => {
@@ -102,13 +111,15 @@ export default defineConfig(async it => {
         },
       },
     ],
+
     build: {
       emptyOutDir: true,
-      assetsDir: "assets",
+      assetsDir: "",
       outDir: `${process.cwd()}/dist`,
       minify: false,
       copyPublicDir: true,
       target: "ES2024",
+
       rollupOptions: {
         input,
         // output: {

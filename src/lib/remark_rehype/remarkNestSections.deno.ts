@@ -16,6 +16,7 @@ import { $$ } from "~/BASH.deno.ts"
 import { lastValueFrom } from "rxjs"
 import { visitParents } from "unist-util-visit-parents"
 import { writeFile } from "node:fs/promises"
+import { toDemoLayoutHtml } from "~/lib/0_Layout.dual.tsx"
 
 const evalLogs: Record<string, string[]> = {}
 const demoLogs: Record<string, string> = {}
@@ -457,46 +458,8 @@ document.addEventListener('DOMContentLoaded', () => {
     iframe.onload = function() {
       const iframeWindow = iframe.contentWindow;
       const doc = iframe.contentDocument || iframeWindow.document;
-
-      doc.open();
-      doc.write(\`
-        <html style='height: fit-content;'>
-          <head>
-          <link rel="stylesheet" href="/styles/colors.css" />
-          <link rel="stylesheet" href="/styles/fonts.css" />
-          <link rel="stylesheet" href="/styles/global.css" />
-          <link
-            rel="stylesheet"
-            href="/styles/nav_and_toc.css"
-          />
-          <link rel="stylesheet" href="/styles/hex.css" />
-          <link rel="stylesheet" href="/styles/code.css" />
-          <link rel="stylesheet" href="/styles/img.css" />
-          <link rel="stylesheet" href="/shiki-twoslash.css" />
-            <style>
-            <\\/style>
-          <\\/head>
-          <body style='margin: 4px; height: fit-content;'>
-          <\\/body>
-          <script type="module" src="\${src}"><\\/script>
-          <script>
-              (function() {
-                const observer = new MutationObserver(() => {
-                  // Adjust the height of the parent iframe based on the body's height
-                  window.frameElement.style.height = (document.documentElement.offsetHeight + 1) +'px';
-                });
-
-                // Start observing changes in the body element
-                observer.observe(document.body, { childList: true, subtree: true, attributes: true });
-
-                // Initial setting of height
-                window.frameElement.style.height = (document.documentElement.offsetHeight + 1) + 'px';
-              })();
-            <\\/script>
-        <\\/html>
-      \`);
-      doc.close();
     };
+    iframe.src=src;
     // iframe.style.cssText="width:100%;";
     demoContainer.appendChild(iframe);
     // const doc = iframe.contentDocument || iframe.contentWindow?.document;
@@ -514,6 +477,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 ${Object.entries(srcToId)
   .map(([k, v], index) => {
+    promises.push(toDemoLayoutHtml(v))
     return `
   const id${index} = document.getElementById('${k}');
   id${index}.addEventListener('input', e => {

@@ -85,15 +85,15 @@ const _cache = new BehaviorSubject(
 const RemarkDaemon = _input
   .pipe(
     scan((state, [next, filename], index) => {
-      console.log(`[${index}] processing next`, filename)
+      // console.log(`[${index}] processing next`, filename)
       if (state[next]) return state
       state[next] = new Observable<string>(sub => {
         REEEE.process(next)
           .then(i => {
-            console.log(
-              `/[${index}] Output of...`,
-              filename,
-            )
+            // console.log(
+            //   `/[${index}] Output of...`,
+            //   filename,
+            // )
             // console.log({ next, i: i.value })
             sub.next(i.value as any)
             sub.complete()
@@ -133,13 +133,13 @@ export const Remark = (
   forFilename?: string,
 ) => {
   const id = remarkCalls++
-  console.log(
-    "Calling remark",
-    forFilename,
-    // @ts-ignore
-    props?.val?.length || props?.length,
-    id,
-  )
+  // console.log(
+  //   "Calling remark",
+  //   forFilename,
+  //   // @ts-ignore
+  //   props?.val?.length || props?.length,
+  //   id,
+  // )
   const value =
     typeof props === "string" ? props : props.val
   _input.next([value, forFilename] as const)
