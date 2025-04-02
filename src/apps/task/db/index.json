@@ -125,8 +125,8 @@
     ],
     "created_at": 1743550420892,
     "updated_at": 0,
-    "status": 3,
-    "index": 2
+    "status": 4,
+    "index": 8
   },
   {
     "uuid": "0195f3b4-ccba-7516-9847-86b319afb86d",
@@ -182,8 +182,8 @@
     ],
     "created_at": 1743551473367,
     "updated_at": 0,
-    "status": 3,
-    "index": 0
+    "status": 4,
+    "index": 7
   },
   {
     "uuid": "0195f3c6-2a09-7334-a451-abf7d83a85cb",
@@ -297,7 +297,7 @@
     "created_at": 1743559899342,
     "updated_at": 0,
     "status": 4,
-    "index": 5
+    "index": 6
   },
   {
     "uuid": "0195f446-02a5-778c-84d3-fa8e0c9e3e31",
@@ -312,7 +312,7 @@
     "created_at": 1743559983781,
     "updated_at": 0,
     "status": 4,
-    "index": 4
+    "index": 5
   },
   {
     "uuid": "0195f453-e74e-76d0-9575-c80933fa1bfd",
@@ -336,8 +336,8 @@
     "tags": [],
     "created_at": 1743620120346,
     "updated_at": 0,
-    "status": 3,
-    "index": 1
+    "status": 4,
+    "index": 4
   },
   {
     "uuid": "0195f8bc-088e-75b8-9601-dbc51b669f62",

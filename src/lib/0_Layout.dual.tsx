@@ -86,7 +86,9 @@ export const PrimaryNavigation = (props: {
     if (href === "/") {
       return pathname === href
     }
-    return pathname.startsWith(href)
+    return pathname.includes(
+      href.replace("/index.html", ""),
+    )
   }
   return (
     <nav id="primary-nav" aria-label="Primary navigation">
