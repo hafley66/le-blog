@@ -59,78 +59,7 @@
 <span class="line"><span style="color:#ABB2BF">}</span></span>
 <span class="line"><span style="color:#ABB2BF"> </span></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><div class="code-group code-group-0"><div class="code-group-tabs" data-sticky="1" id="code-group-0"><input data-scroll-to-me=".code-group-0" type="radio" name="code-group-0" id="code-group-radio-0" checked="true"><label for="code-group-radio-0"><div class="centerino">basic useQuery
 </div></label><input data-scroll-to-me=".code-group-0" type="radio" name="code-group-0" id="code-group-radio-1"><label for="code-group-radio-1"><div class="centerino">useEffect + state
-</div></label></div><pre class="shiki one-dark-pro" style="background-color:#282c34;color:#abb2bf" tabindex="0"><div class="code-scroller"><code class="language-tsx"><span class="line"></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><pre class="shiki one-dark-pro" style="background-color:#282c34;color:#abb2bf" tabindex="0"><div class="code-scroller"><code class="language-tsx"><span class="line"></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><div class="demo-iframe" id="demo-iframe-code-group-0"></div><script>
-            //{}
-document.addEventListener('DOMContentLoaded', () => {
-  const tabs = document.getElementById("code-group-0");
-  const demoContainer = document.getElementById("demo-iframe-code-group-0");
-  const toDemoArea = (src) => {
-    demoContainer.children[0]?.remove();
-    const iframe = document.createElement('iframe');
-    iframe.style.width = 'calc(100%)';
-    iframe.onload=function(){ window.resizeIframe(this)};
-    
-    iframe.onload = function() {
-      const iframeWindow = iframe.contentWindow;
-      const doc = iframe.contentDocument || iframeWindow.document;
-
-      doc.open();
-      doc.write(`
-        <html style='height: fit-content;'>
-          <head>
-          <link rel="stylesheet" href="/styles/colors.css" />
-          <link rel="stylesheet" href="/styles/fonts.css" />
-          <link rel="stylesheet" href="/styles/global.css" />
-          <link
-            rel="stylesheet"
-            href="/styles/nav_and_toc.css"
-          />
-          <link rel="stylesheet" href="/styles/hex.css" />
-          <link rel="stylesheet" href="/styles/code.css" />
-          <link rel="stylesheet" href="/styles/img.css" />
-          <link rel="stylesheet" href="/shiki-twoslash.css" />
-            <style>
-            <\/style>
-          <\/head>
-          <body style='margin: 4px; height: fit-content;'>
-          <\/body>
-          <script type="module" src="${src}"><\/script>
-          <script>
-              (function() {
-                const observer = new MutationObserver(() => {
-                  // Adjust the height of the parent iframe based on the body's height
-                  window.frameElement.style.height = (document.documentElement.offsetHeight + 1) +'px';
-                });
-
-                // Start observing changes in the body element
-                observer.observe(document.body, { childList: true, subtree: true, attributes: true });
-
-                // Initial setting of height
-                window.frameElement.style.height = (document.documentElement.offsetHeight + 1) + 'px';
-              })();
-            <\/script>
-        <\/html>
-      `);
-      doc.close();
-    };
-    // iframe.style.cssText="width:100%;";
-    demoContainer.appendChild(iframe);
-    // const doc = iframe.contentDocument || iframe.contentWindow?.document;
-    // doc.open();
-    // doc.write(`
-    //   
-    //   <head></head>
-    //   
-    //     
-    //   </body>
-    //   </html>
-    // `);
-    // doc.close();
-  };
-
-
-});
-</script><style>
+</div></label></div><pre class="shiki one-dark-pro" style="background-color:#282c34;color:#abb2bf" tabindex="0"><div class="code-scroller"><code class="language-tsx"><span class="line"></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><pre class="shiki one-dark-pro" style="background-color:#282c34;color:#abb2bf" tabindex="0"><div class="code-scroller"><code class="language-tsx"><span class="line"></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><div class="demo-iframe" id="demo-iframe-code-group-0"></div><script type="module"></script><style>
 .code-group pre {display:none}
 .code-group-0 {
 

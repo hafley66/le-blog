@@ -1,4 +1,5 @@
 import { interval, map } from "rxjs"
+import { registerRxJSXDemo } from "~/lib/remark_rehype/demo-runner.dom"
 
 export const Ellapsed = () => {
   const start = +new Date()
@@ -14,7 +15,4 @@ export const Ellapsed = () => {
   )
 }
 
-// --cut--
-;(<Ellapsed />).subscribe(
-  n => (document.body.innerHTML = n),
-)
+registerRxJSXDemo(import.meta.filename, Ellapsed)

@@ -1,4 +1,5 @@
 import { interval, map, startWith } from "rxjs"
+import { registerRxJSXDemo } from "~/lib/remark_rehype/demo-runner.dom"
 
 export const main = (
   <div style={{ background: "red", color: "white" }}>
@@ -10,5 +11,4 @@ export const main = (
   </div>
 )
 
-// --cut--
-main.subscribe(n => (document.body.innerHTML = n))
+registerRxJSXDemo(import.meta.filename, () => main)

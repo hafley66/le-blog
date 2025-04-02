@@ -136,7 +136,14 @@
     "src/lib/ts_experiments/tuple_mapping.deno.ts",
     "src/lib/form_helpers/types.dual.ts",
     "src/lib/form_helpers/SITEMAP.deno.ts",
-    "src/lib/ts_experiments/SITEMAP.deno.ts"
+    "src/lib/ts_experiments/SITEMAP.deno.ts",
+    "src/lib/remark_rehype/__demo_iframes__/SITEMAP.deno.ts",
+    "src/lib/remark_rehype/__demo_iframes__/blog/SITEMAP.deno.ts",
+    "src/lib/remark_rehype/__demo_iframes__/blog/unholy-custom-jsx-with-observable-strings/SITEMAP.deno.ts",
+    "src/lib/remark_rehype/__demo_iframes__/blog/unholy-custom-jsx-with-observable-strings/arrays/SITEMAP.deno.ts",
+    "src/lib/remark_rehype/__demo_iframes__/blog/unholy-custom-jsx-with-observable-strings/counter/SITEMAP.deno.ts",
+    "src/lib/remark_rehype/__demo_iframes__/blog/unholy-custom-jsx-with-observable-strings/state/SITEMAP.deno.ts",
+    "src/lib/remark_rehype/demo-runner.dual.ts"
   ],
   "deno.config": "./deno.json",
   "files.exclude": {

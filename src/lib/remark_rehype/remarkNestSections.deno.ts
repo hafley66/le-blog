@@ -17,6 +17,11 @@ import { lastValueFrom } from "rxjs"
 import { visitParents } from "unist-util-visit-parents"
 import { writeFile } from "node:fs/promises"
 import { toDemoLayoutHtml } from "~/lib/0_Layout.dual.tsx"
+import path from "node:path"
+import {
+  DATA_DEMO_ROOT,
+  DATA_DEMO_TARGET,
+} from "~/lib/remark_rehype/demo-runner.dual.ts"
 
 const evalLogs: Record<string, string[]> = {}
 const demoLogs: Record<string, string> = {}
@@ -438,14 +443,32 @@ console.log = (...args: any[]) => {
               hProperties: {
                 class: "demo-iframe",
                 id: "demo-iframe-" + radioName,
+                [DATA_DEMO_TARGET]: true,
               },
             },
           },
+          ...Object.entries(srcToId).map(([key, src]) => {
+            return {
+              type: "element" as const,
+              data: {
+                hName: "script",
+                hProperties: { type: "module", src },
+              },
+            }
+          }),
           {
             type: "element" as const,
-            data: { hName: "script" },
+            data: {
+              hName: "script",
+              hProperties: { type: "module" },
+            },
             value: `
             //${JSON.stringify(srcToId)}
+${Object.entries(srcToId)
+  .map(([k, v]) => {
+    return `import '${v}';`
+  })
+  .join("\n")}
 document.addEventListener('DOMContentLoaded', () => {
   const tabs = document.getElementById("${radioName}");
   const demoContainer = document.getElementById("${"demo-iframe-" + radioName}");
@@ -477,17 +500,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
 ${Object.entries(srcToId)
   .map(([k, v], index) => {
-    promises.push(toDemoLayoutHtml(v))
+    // promises.push(toDemoLayoutHtml(v))
+    const dir = `/lib/remark_rehype/__demo_iframes__${path.dirname(v)}`
+    const file = `${dir}/${path.basename(v)}.vite.html`
     return `
   const id${index} = document.getElementById('${k}');
   id${index}.addEventListener('input', e => {
     if(e.target.checked) {
-      toDemoArea("${v}")
+      toDemoArea("${file}")
     }
   });
   if(id${index}.checked) {
     console.log("I am checked...", id${index});
-    toDemoArea("${v}")
+    toDemoArea("${file}")
   }
   `
   })
@@ -550,6 +575,7 @@ ${enhanced
           hName: "div",
           hProperties: {
             class: "code-group " + radioName,
+            [DATA_DEMO_ROOT]: true,
             ...node.attributes,
           },
         }

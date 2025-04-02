@@ -1,7 +1,13 @@
 import { mkdirSync } from "node:fs"
+import { mkdir } from "node:fs/promises"
 import { writeFile } from "node:fs/promises"
 import path from "node:path"
-import { lastValueFrom, Observable, tap } from "rxjs"
+import {
+  firstValueFrom,
+  lastValueFrom,
+  Observable,
+  tap,
+} from "rxjs"
 import { FS } from "~/SITEMAP.deno.ts"
 import { Hex } from "~/lib/Hex/index.dual.tsx"
 import { RxJSXNode } from "~/lib/rxjs-vhtml/v2/jsx-runtime.tsx"
@@ -199,6 +205,12 @@ export const Layout = (
           src="/lib/client/on-click-scroll.dom.ts"
           defer
         ></script>
+        {/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
+        <script
+          type="module"
+          src="/lib/remark_rehype/demo-runner.daemon.dom.ts"
+          defer
+        ></script>
       </body>
     </html>
   )
@@ -287,7 +299,7 @@ export const TOC = (props: {
 }
 
 export function toDemoLayoutHtml(src: string) {
-  return lastValueFrom(
+  return firstValueFrom(
     <html style="height: fit-content;">
       <head>
         <link rel="stylesheet" href="/styles/colors.css" />
@@ -319,21 +331,13 @@ export function toDemoLayoutHtml(src: string) {
     })();`}
       </script>
     </html>,
-  ).then(val => {
-    val
-    const dir =
-      process.cwd() +
-      "/lib/remark_rehype/__demo_iframes__" +
-      path.dirname(src)
-    const file =
-      process.cwd() +
-      "/lib/remark_rehype/__demo_iframes__" +
-      path.dirname(src) +
-      "/" +
-      path.basename(src) +
-      ".vite.html"
-    console.log({ dir, file })
-    mkdirSync(dir)
-    return writeFile(file, val)
-  })
+  )
+    .then(val => {
+      val
+      const dir = `${process.cwd()}/src/lib/remark_rehype/__demo_iframes__${path.dirname(src)}`
+      const file = `${process.cwd()}/src/lib/remark_rehype/__demo_iframes__${path.dirname(src)}/${path.basename(src)}.vite.html`
+      mkdirSync(dir, { recursive: true })
+      return writeFile(file, val)
+    })
+    .catch(err => console.error(err))
 }

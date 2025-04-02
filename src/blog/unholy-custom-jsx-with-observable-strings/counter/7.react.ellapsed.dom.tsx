@@ -1,6 +1,6 @@
 /** @jsxImportSource react */
 import React, { useState } from "react"
-import { createRoot } from "react-dom/client"
+import { registerReactDemo } from "~/lib/remark_rehype/demo-runner.dom"
 
 const Elapsed = () => {
   const [state, setState] = useState(0)
@@ -21,6 +21,4 @@ const Elapsed = () => {
   )
 }
 
-// --cut--
-const root = createRoot(document.body)
-root.render(<Elapsed />)
+registerReactDemo(import.meta.filename, Elapsed)

@@ -1,6 +1,7 @@
 import { BehaviorSubject, Observable } from "rxjs"
 import { withId } from "~/lib/form_helpers/with.dom"
-import { JSX, RxJSX } from "~/lib/rxjs-vhtml/v2/jsx-runtime"
+import { registerRxJSXDemo } from "~/lib/remark_rehype/demo-runner.dom"
+import { RxJSX } from "~/lib/rxjs-vhtml/v2/jsx-runtime"
 
 const MyButton: RxJSX.FC<{ name: string }> = props => (
   <button
@@ -38,5 +39,4 @@ const main = (
   </div>
 )
 
-// --cut--
-main.subscribe(n => (document.body.innerHTML = n))
+registerRxJSXDemo(import.meta.filename, () => main)

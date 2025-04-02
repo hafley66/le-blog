@@ -798,6 +798,26 @@ export const FS = {
         ),
     ),
 
+  "src/lib/remark_rehype/demo-runner.daemon.dom.ts":
+    new JSPath(
+      "src/lib/remark_rehype/demo-runner.daemon.dom.ts",
+      "src/lib/remark_rehype",
+      "demo-runner.daemon.dom.ts",
+      "ts",
+      () =>
+        import(
+          "~/lib/remark_rehype/demo-runner.daemon.dom.ts"
+        ),
+    ),
+
+  "src/lib/remark_rehype/demo-runner.dom.ts": new JSPath(
+    "src/lib/remark_rehype/demo-runner.dom.ts",
+    "src/lib/remark_rehype",
+    "demo-runner.dom.ts",
+    "ts",
+    () => import("~/lib/remark_rehype/demo-runner.dom.ts"),
+  ),
+
   "src/lib/remark_rehype/remark-plant-uml.deno.ts":
     new JSPath(
       "src/lib/remark_rehype/remark-plant-uml.deno.ts",
@@ -809,6 +829,14 @@ export const FS = {
           "~/lib/remark_rehype/remark-plant-uml.deno.ts"
         ),
     ),
+
+  "src/lib/remark_rehype/demo-runner.dual.ts": new JSPath(
+    "src/lib/remark_rehype/demo-runner.dual.ts",
+    "src/lib/remark_rehype",
+    "demo-runner.dual.ts",
+    "ts",
+    () => import("~/lib/remark_rehype/demo-runner.dual.ts"),
+  ),
 
   "src/lib/remark_rehype/remarkNestSections.deno.ts":
     new JSPath(

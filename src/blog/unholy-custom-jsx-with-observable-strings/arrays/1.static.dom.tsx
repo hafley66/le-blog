@@ -1,3 +1,5 @@
+import { registerRxJSXDemo } from "~/lib/remark_rehype/demo-runner.dom"
+
 const navItems = [
   "home",
   "resume",
@@ -16,5 +18,5 @@ export const main = (
     </ul>
   </nav>
 )
-// --cut--
-main.subscribe(n => (document.body.innerHTML = n))
+
+registerRxJSXDemo(import.meta.filename, () => main)
