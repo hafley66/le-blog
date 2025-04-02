@@ -251,3 +251,5 @@ iframe {
   border: 1px solid var(--color-border);
   border-top: none;
 }
+
+.code-group pre {display:none}

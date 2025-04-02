@@ -1,3 +1,4 @@
+// @@filename Sync RxJSX
 import { of } from "rxjs"
 
 const children = of("Hello World", "It was me, DIO")

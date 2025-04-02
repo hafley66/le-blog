@@ -102,10 +102,179 @@ Here are 4 intro demos demonstrating basic jsx, sync jsx, and async jsx with obs
 The console.logs represent the value of html emitted over time.
 ${<CodeTabs folder={SUB.path! + "intro/"} index={0} />}
 
-${FS["intro/basic.deno.tsx"].markdownDemo("Basic")}
-${FS["intro/sync.deno.tsx"].markdownDemo("Sync children")}
-${FS["intro/async.deno.tsx"].markdownDemo("Async Observable")}
-${FS["intro/async.rxjs.deno.tsx"].markdownDemo("Async RxJS")}
+## JSX.Element Type
+In this jsx transform, thie children types are 
+
+~~~ts
+export namespace JSX {
+  type Element = Observable<string>
+}
+~~~
+
+That means every __JSX Expression__ is:
+1. pipe-able
+    - You can throttle/debounce re-renders intuitively
+    - The end result of your intense chains/compositions of rxjs can be the output for jsx
+    - Align them to any scheduler
+    - Memo-ize freely with \`distinct\` operators
+2. subscribe-able
+    - You can do whatever you want with the html string produced by the jsx
+    - In the following demo's, I simply subscribe and assign to the iframe's body.innerHTML
+
+## Components
+In this style, a component is any function that returns an observable. 
+
+This also means that we dont call functions more than once! 
+This framework is like solid.js and vue hooks, where we are declaring everything once, then re-evaluating when necessary by means of RxJS and Observables.
+
+Here is a basic, re-usable component comparison:
+
+:::codes 
+~~~tsx
+// @@filename RxJSX
+export const Component = () => {
+  return <div>Hello World</div>
+}
+~~~
+
+~~~tsx
+// @@filename React
+export const Component = () => {
+  return <div>Hello World</div>
+}
+~~~
+:::
+
+### Add static props and styling
+Now we can leverage props for dynamic styling
+
+:::codes 
+~~~tsx
+// @@filename RxJSX
+type Props = {
+  isRed?: boolean
+}
+
+export const Component = (props: Props) => {
+  return <div style={{
+    background: props.isRed ? 'red' : undefined
+  }}>
+    Hello World
+  </div>
+}
+~~~
+
+~~~tsx
+// @@filename React
+type Props = {
+  isRed?: boolean
+}
+
+export const Component = (props: Props) => {
+  return <div style={{
+    background: props.isRed ? 'red' : undefined
+  }}>
+    Hello World
+  </div>
+}
+~~~
+:::
+
+However there is 1 problem, our RxJSX props never get redefined. If we want to react to changes in isRed, we must change a few things:
+
+1. We can pass isRed as isRed$
+    - \`$\` at the end of a variable is RxJS __convention__ for indicating an observable value.
+    - You dont have to do this if you are in typescript, but it can save a headache or two from time to time.
+2. This is not unlike \`Signal\`s in Solid.js and in general, there is no auto-reacting.
+
+:::codes 
+~~~tsx
+// @@filename RxJSX
+// @@eval
+import { map } from 'rxjs';
+
+type Props = {
+  isRed$?: boolean
+}
+
+export const Component = (props: Props) => {
+  return <div style={{
+    background: props.isRed$.pipe(
+      map(isRed => isRed ? 'red' : undefined)
+    )
+  }}>
+    Hello World
+  </div>
+}
+~~~
+
+~~~tsx
+// @@filename React
+type Props = {
+  isRed?: boolean
+}
+
+export const Component = (props: Props) => {
+  return <div style={{
+    background: props.isRed ? 'red' : undefined
+  }}>
+    Hello World
+  </div>
+}
+~~~
+:::
+
+
+## Props
+
+## Counter Demo
+Here are some demo's of this technique **without DOM events and state**. This is what we can achieve with just a few functions from rxjs itself.
+
+If you don't know rxjs, dont panic, just know that \`interval\` is like \`setTimeout\` + \`setState\`.
+1. You give it the interval in milliseconds as first arg
+2. It will count, __starting from zero__, forever
+3. It's also __lazy__ like \`setInterval\`, it will not emit a value right away
+    - This is why you see \`.pipe(startWith(0))\`
+    - Imagine this is the first arg to useState, so we already have a value on initial render.
+4. It feels backwards for some things, but that is a virtue in RxJS style of composition.
+
+${<CodeTabs folder={SUB.path + "counter"} />}
+
+## Children
+
+### Arrays
+
+### Conditionals
+Okay and lets make sure that doing regular array map's into jsx work as expected, as well as conditionals.
+
+:::codes
+${FS["arrays/1.static.dom.tsx"].frontendDemo("Static Array")}
+${FS["arrays/2.dynamic.dom.tsx"].frontendDemo("Observable Array")}
+${FS["arrays/3.promise.dom.tsx"].frontendDemo("Promised Array")}
+:::
+
+## Events
+This is easily the hardest part of designing this jsx transform. 
+
+For starters, RxJS already has a built in shortcut, called \`fromEvent\`, which takes an HTMLElement, and an event string.
+
+This works well __when the element already exists__. That is, you must have a reference to the element before calling it.
+
+Here are some examples
+:::codes
+~~~ts
+import { fromEvent } from 'rxjs'
+
+document.body
+~~~
+:::
+
+## State
+For idiomatic RxJS, I heavily urge you to avoid BehaviorSubject as much as possible. BUT, it exists for a reason, and when you are starting out, you will want to use it all the time.
+
+Just know that using it will delay you from understanding everything you see as state is really just some other observable somewhere else.
+
+${<CodeTabs folder={SUB.path + "state"} />}
 
 `,
 })

@@ -1,6 +1,6 @@
+// @@filename With BehaviorSubject
 import { BehaviorSubject, Observable } from "rxjs"
 import { withId } from "~/lib/form_helpers/with.dom"
-import { registerRxJSXDemo } from "~/lib/remark_rehype/demo-runner.dom"
 
 import { RxJSX } from "~/lib/rxjs-vhtml/v2/jsx-runtime"
 
@@ -25,7 +25,7 @@ Interactive.subOne.$.click.subscribe(() => {
   state.next(state.value - 1)
 })
 
-const main = (
+export default () => (
   <div style="display: flex; flex-direction: column;">
     <Interactive.addOne
       style={{
@@ -48,5 +48,3 @@ const main = (
     <div>Result: {state}</div>
   </div>
 )
-
-registerRxJSXDemo(import.meta.filename, () => main)

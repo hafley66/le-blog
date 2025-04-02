@@ -99,7 +99,7 @@ export class SITEMAP_PART<
 > {
   constructor(
     public fs: FILESYSTEM,
-    public path?: string,
+    public path = "",
   ) {}
   startsWith<T extends string>(it: T) {
     return Object.entries(this.fs)

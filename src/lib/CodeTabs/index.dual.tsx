@@ -2,6 +2,7 @@ import { writeFile } from "node:fs/promises"
 import path from "node:path"
 import {
   catchError,
+  combineLatest,
   map,
   of,
   switchMap,
@@ -16,7 +17,6 @@ import { v7 } from "uuid"
 import { mkdirSync } from "node:fs"
 
 export type CodeTabsProps = {
-  index?: number
   mapping?: Record<string, string>
   folder: string
 }
@@ -30,18 +30,11 @@ export type CodeTabsProps = {
  * @param props
  */
 export const CodeTabs = ({
-  index,
   mapping,
   folder,
 }: CodeTabsProps) => {
-  const radioName = `code-group-${folder ? path.dirname(folder) : index}`
-  console.log(
-    "The fuck",
-    index,
-    radioName,
-    folder,
-    path.dirname(folder),
-  )
+  !folder.endsWith("/") && (folder = folder + "/")
+  const radioName = `code-group-${path.dirname(folder)}`
   const files = SITEMAP.subFolder(folder).includes<
     "deno.ts" | "deno.tsx" | "dom.ts" | "dom.tsx"
   >(/\.(dom|deno)\.tsx?$/)
@@ -53,7 +46,6 @@ export const CodeTabs = ({
           i => [i.path, i.readSync()] as const,
         ) as [string, string][])
       : []
-  const id = `code-group-radio-${index}`
   const tempDir = `${import.meta.dirname!}/temp/${folder}`
 
   const configs = true_mapping.map((i, cIndex) => {
@@ -63,24 +55,26 @@ export const CodeTabs = ({
     let enableEval = false
 
     let evalType: "" | "back" | "front" | string = ""
-    console.log({ filename, content })
-    ;[content, filename] = eatAtAt("filename", i[1])
-    console.log({ filename })
-    ;[content, evalType, enableEval] = eatAtAt("eval", i[1])
-    console.log({ filename })
-
+    console.log({ filename, content: content.length })
+    ;[content, filename] = eatAtAt("filename", content)
+    console.log({ filename, content: content.length })
+    ;[content, evalType, enableEval] = eatAtAt(
+      "eval",
+      content,
+    )
+    console.log({ filename, content: content.length })
+    filename ||= fspath
     const cleanExt = path.extname(fspath).slice(1)
 
     mkdirSync(tempDir, { recursive: true })
 
-    evalType = enableEval
-      ? fspath.includes(".deno.")
-        ? "back"
-        : fspath.includes(".dom.")
-          ? "front"
-          : evalType.trim()
-      : ""
-    const itemId = `${id}-${cIndex}`
+    evalType = fspath.includes(".deno.")
+      ? "back"
+      : fspath.includes(".dom.")
+        ? "front"
+        : evalType.trim()
+
+    const itemId = fspath
     const out = {
       itemId,
       path: i[0],
@@ -89,7 +83,7 @@ export const CodeTabs = ({
       evalType,
       renderCss: () => {
         return `
-  &:has(#${cssEscapeSimple(id)}:checked) { 
+  &:has(#${cssEscapeSimple(itemId)}:checked) { 
     & pre:nth-child(${cIndex + 2}){
       & + .console\\.log-details {
         display: block;
@@ -105,36 +99,48 @@ export const CodeTabs = ({
           <input
             key={itemId}
             type="radio"
-            name={path.basename(fspath)}
-            id={fspath}
-            value={folder}
+            value={path.basename(fspath)}
+            id={itemId}
+            name={folder}
             className="code-tabs-radio-input"
-            {...{ "data-scroll-to-me": `.${radioName}` }}
-            checked={index === 0 ? "true" : undefined}
+            {...{
+              "data-scroll-to-me": `${folder}`,
+            }}
+            checked={cIndex === 0 ? "true" : undefined}
           />,
           <label key={itemId + "2"} for={itemId}>
-            <div className="centerino">{filename}</div>
+            <div className="centerino">
+              {path.basename(filename)}
+            </div>
           </label>,
         ]
       },
       renderCode: () => {
         return [
-          <Shiki code={content} lang={cleanExt} />,
-          // "derp",
-          evalType === "backend"
-            ? runBackendDemo({
-                tempDir,
-                code: content,
-                lang: cleanExt,
-              })
-            : "",
+          combineLatest([
+            Shiki({ code: content, lang: cleanExt }),
+            evalType === "back"
+              ? runBackendDemo({
+                  tempDir,
+                  code: content,
+                  lang: cleanExt,
+                })
+              : of(""),
+          ]).pipe(
+            map(([shiki, logs]) =>
+              shiki.replace(
+                "</code></pre>",
+                logs + "</code></pre>",
+              ),
+            ),
+          ),
         ]
       },
       renderInlineListener: () =>
         evalType === "front"
-          ? `import("${filename}").then(({default: def}) => {
-  window.demoRunner.registry["${filename}"] = def;
-  ${cIndex === 0 ? `window.demoRunner.activate("${filename}");` : ""}
+          ? `import("${fspath.replace("src/", "~/")}").then(({default: def}) => {
+  window.demoRunner.registry["${fspath}"] = def;
+  ${cIndex === 0 ? `window.demoRunner.activate("${fspath}");` : ""}
 });`
           : "",
     }
@@ -146,7 +152,7 @@ export const CodeTabs = ({
     .filter(Boolean)
 
   return (
-    <div className={`code-group ${radioName}`}>
+    <div className={`code-group`} id={folder}>
       <div
         id={radioName}
         className={`code-group-tabs`}
@@ -178,6 +184,7 @@ export const CodeTabs = ({
   }
 </style>
 `}
+      <div className="code-group-demo-area"></div>
     </div>
   )
 }
@@ -196,7 +203,7 @@ function eatAtAt(atat: string, target: string) {
       true,
     ] as const
   }
-  return [atat, "", false] as const
+  return [target, "", false] as const
 }
 
 function runBackendDemo(props: {
@@ -240,7 +247,7 @@ function runBackendDemo(props: {
       ),
     ),
   )
-  return lines$.pipe(map(i => <Logs logs={i} />))
+  return lines$.pipe(switchMap(i => <Logs logs={i} />))
 }
 
 const Logs = ({ logs }: { logs: string[] }) => (
@@ -255,17 +262,24 @@ const Logs = ({ logs }: { logs: string[] }) => (
           key="A"
         >{`(${index + 1})`}</span>,
         <span className="log-line" key="B">
-          {i}
+          {escapeHTML(i)}
         </span>,
       ])}
     </code>
   </details>
 )
 
-function cssEscapeSimple(str: string) {
-  return `${str.replace(/[^a-zA-Z0-9_-]/g, c => `\\${c}`)}`
+function cssEscapeSimple(str: string, double = false) {
+  return `${str.replace(/[^a-zA-Z0-9_-]/g, c => (double ? `\\\\${c}` : `\\${c}`))}`
 }
 
-function toSimpleCssSelector(s: string) {
-  return `${s.replaceAll(/[^a-zA-Z0-9_-]/g, c => "-_-")}`
-}
+const list = {
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  "'": "&#39;",
+  '"': "&quot;",
+} as any
+
+const escapeHTML = (str: string) =>
+  str.replace(/[&<>'"]/g, tag => list[tag])

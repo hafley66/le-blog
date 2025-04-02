@@ -1,5 +1,8 @@
 import { compute } from "compute-scroll-into-view"
 
+function cssEscapeSimple(str: string) {
+  return `${str.replace(/[^a-zA-Z0-9_-]/g, c => `\\${c}`)}`
+}
 const getScrollPaddings = (target: Element) => {
   const computedStyle = window.getComputedStyle(target)
   return {
@@ -58,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
       let h = e.target as HTMLElement
       if (!(h instanceof HTMLElement)) return
       if (h.matches("[data-scroll-to-me]")) {
-        const it = document.querySelector(
+        const it = document.getElementById(
           h.dataset.scrollToMe ?? "",
         )
         if (it && it instanceof HTMLElement) {

@@ -145,6 +145,11 @@ export const Layout = (
         <link rel="stylesheet" href="/shiki-twoslash.css" />
 
         <title>{props.title}</title>
+        <script
+          type="module"
+          src="/lib/remark_rehype/demo-runner.daemon.dom.ts"
+          defer
+        ></script>
       </head>
       <body className={props.disable_toc ? "ready" : ""}>
         <header>
@@ -206,11 +211,6 @@ export const Layout = (
           defer
         ></script>
         {/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
-        <script
-          type="module"
-          src="/lib/remark_rehype/demo-runner.daemon.dom.ts"
-          defer
-        ></script>
       </body>
     </html>
   )

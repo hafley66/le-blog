@@ -126,39 +126,39 @@ export const FS = {
         ),
     ),
 
-  "src/blog/unholy-custom-jsx-with-observable-strings/intro/async.rxjs.deno.tsx":
+  "src/blog/unholy-custom-jsx-with-observable-strings/intro/1.sync.deno.tsx":
     new JSPath(
-      "src/blog/unholy-custom-jsx-with-observable-strings/intro/async.rxjs.deno.tsx",
+      "src/blog/unholy-custom-jsx-with-observable-strings/intro/1.sync.deno.tsx",
       "src/blog/unholy-custom-jsx-with-observable-strings/intro",
-      "async.rxjs.deno.tsx",
+      "1.sync.deno.tsx",
       "tsx",
       () =>
         import(
-          "~/blog/unholy-custom-jsx-with-observable-strings/intro/async.rxjs.deno.tsx"
+          "~/blog/unholy-custom-jsx-with-observable-strings/intro/1.sync.deno.tsx"
         ),
     ),
 
-  "src/blog/unholy-custom-jsx-with-observable-strings/intro/sync.deno.tsx":
+  "src/blog/unholy-custom-jsx-with-observable-strings/intro/4.async.rxjs.deno.tsx":
     new JSPath(
-      "src/blog/unholy-custom-jsx-with-observable-strings/intro/sync.deno.tsx",
+      "src/blog/unholy-custom-jsx-with-observable-strings/intro/4.async.rxjs.deno.tsx",
       "src/blog/unholy-custom-jsx-with-observable-strings/intro",
-      "sync.deno.tsx",
+      "4.async.rxjs.deno.tsx",
       "tsx",
       () =>
         import(
-          "~/blog/unholy-custom-jsx-with-observable-strings/intro/sync.deno.tsx"
+          "~/blog/unholy-custom-jsx-with-observable-strings/intro/4.async.rxjs.deno.tsx"
         ),
     ),
 
-  "src/blog/unholy-custom-jsx-with-observable-strings/intro/basic.deno.tsx":
+  "src/blog/unholy-custom-jsx-with-observable-strings/intro/2.basic.deno.tsx":
     new JSPath(
-      "src/blog/unholy-custom-jsx-with-observable-strings/intro/basic.deno.tsx",
+      "src/blog/unholy-custom-jsx-with-observable-strings/intro/2.basic.deno.tsx",
       "src/blog/unholy-custom-jsx-with-observable-strings/intro",
-      "basic.deno.tsx",
+      "2.basic.deno.tsx",
       "tsx",
       () =>
         import(
-          "~/blog/unholy-custom-jsx-with-observable-strings/intro/basic.deno.tsx"
+          "~/blog/unholy-custom-jsx-with-observable-strings/intro/2.basic.deno.tsx"
         ),
     ),
 
@@ -849,14 +849,6 @@ export const FS = {
           "~/lib/remark_rehype/remarkNestSections.deno.ts"
         ),
     ),
-
-  "src/lib/CodeTabs/listener.dom.js": new JSPath(
-    "src/lib/CodeTabs/listener.dom.js",
-    "src/lib/CodeTabs",
-    "listener.dom.js",
-    "js",
-    () => import("~/lib/CodeTabs/listener.dom.js"),
-  ),
 
   "src/lib/CodeTabs/index.dual.tsx": new JSPath(
     "src/lib/CodeTabs/index.dual.tsx",

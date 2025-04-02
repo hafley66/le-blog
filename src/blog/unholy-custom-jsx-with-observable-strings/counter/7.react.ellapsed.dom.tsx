@@ -1,6 +1,5 @@
 /** @jsxImportSource react */
 import React, { useState } from "react"
-import { registerReactDemo } from "~/lib/remark_rehype/demo-runner.dom"
 
 const Elapsed = () => {
   const [state, setState] = useState(0)
@@ -21,4 +20,4 @@ const Elapsed = () => {
   )
 }
 
-registerReactDemo(import.meta.filename, Elapsed)
+export default () => <Elapsed />

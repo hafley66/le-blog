@@ -1,4 +1,3 @@
-import _ from "lodash"
 import React from "react"
 import {
   Observable,
@@ -23,7 +22,15 @@ import {
 } from "../../lib.dual.ts"
 import { vhtml } from "../vhtml.deno.ts"
 
-const { isEmpty } = _
+const isEmpty = (value: any) => {
+  return (
+    value == null || // From standard.js: Always use === - but obj == null is allowed to check null || undefined
+    (typeof value === "object" &&
+      Object.keys(value).length === 0) ||
+    (typeof value === "string" && value.trim().length === 0)
+  )
+}
+
 let ROOT_ID = 0
 function styleToString(style: JSX.CSSProperties): string {
   return Object.entries(style)

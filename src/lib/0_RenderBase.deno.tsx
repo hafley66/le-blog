@@ -103,13 +103,13 @@ export const Render$ = (importMetaFilename: string) => {
             ? ""
             : typeof it === "string"
               ? it
-              : `\n\n\n<div id="${obs[i][0]}"></div>\n\n\n`
+              : `\n\n\n<div id="${obs.find(x => x[1] === it)?.[0]}"></div>\n\n\n`
         }`,
       )
       i++
     }
     const it = build.join(" ")
-    console.log({ importMetaFilename, it: obs.length })
+    // console.log({ importMetaFilename, it: obs.length })
     if (!it.trim()) {
       return {
         toc: of(""),
@@ -145,7 +145,7 @@ ${it.body}
 `,
     )
 
-    console.log(ConstructedMarkdown)
+    // console.log(ConstructedMarkdown)
 
     const meta = {
       sections: ConstructedMarkdown,
@@ -167,25 +167,24 @@ ${it.body}
             )
           : of([] as [string, string][])
         ).pipe(
-          TAG(
-            values.length + " DERP + " + importMetaFilename,
-          ),
+          // TAG(
+          // values.length + " DERP + " + importMetaFilename,
+          // ),
         ),
       ),
       map(
         ([compiled, next]) =>
-          console.log({
-            importMetaFilename,
-            compiled: compiled.length,
-            next: next,
-          }) ||
+          // console.log({
+          //   importMetaFilename,
+          //   compiled: compiled.length,
+          //   next: next,
+          // }) ||
           next.reduce((html, [id, value]) => {
             return html.replace(
               `<div id="${id}"></div>`,
               value,
             )
-          }, compiled) ||
-          compiled,
+          }, compiled) || compiled,
       ),
       catchError(err => {
         console.log("OI", importMetaFilename)

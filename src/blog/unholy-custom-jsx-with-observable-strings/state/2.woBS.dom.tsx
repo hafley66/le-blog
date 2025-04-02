@@ -1,3 +1,4 @@
+// @@filename Without BehaviorSubject
 import {
   map,
   merge,
@@ -6,7 +7,6 @@ import {
   startWith,
 } from "rxjs"
 import { withId } from "~/lib/form_helpers/with.dom"
-import { registerRxJSXDemo } from "~/lib/remark_rehype/demo-runner.dom"
 import { RxJSX } from "~/lib/rxjs-vhtml/v2/jsx-runtime"
 
 const MyButton: RxJSX.FC<{ name: string }> = props => (
@@ -29,7 +29,7 @@ const state = merge(
   startWith(0),
 )
 
-const main = (
+export default () => (
   <div style="display: flex; flex-direction: column;">
     <Interactive.addOne
       style={{
@@ -52,5 +52,3 @@ const main = (
     <div>Result: {state}</div>
   </div>
 )
-
-registerRxJSXDemo(import.meta.filename, () => main)

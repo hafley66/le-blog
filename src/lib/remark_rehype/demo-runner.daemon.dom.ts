@@ -20,13 +20,19 @@ export const __activate_demo = (filename: string) => {
   const found = registeredDemos[filename]
 
   if (!found) console.log("not found", filename, found)
-  const dirname = filename.split("/").slice(0, -1).join("/")
+  const dirname =
+    filename.split("/").slice(0, -1).join("/") + "/"
   const current = activatedRootToTarget[dirname]
 
   if (current) current.unsubscribe()
 
   setTimeout(() => {
-    const target = document.getElementById(dirname)
+    const target = document
+      .getElementById(dirname)
+      ?.querySelector(
+        ".code-group-demo-area",
+      ) as HTMLElement | null
+
     let next =
       found.length > 0
         ? target

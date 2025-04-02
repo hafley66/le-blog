@@ -15,9 +15,7 @@ import {
   startWith,
   tap,
 } from "rxjs"
-import _ from "lodash"
 
-const { mapValues } = _
 /**
  * Merges multiple observables into a single observable, while preserving the key-value pairs of the original observables.
  *
@@ -306,7 +304,12 @@ export function AND_THEN<
   // @ts-ignore
   return Object.assign(
     combineLatest(
-      mapValues(combo, v => (isObservable(v) ? v : of(v))),
+      Object.fromEntries(
+        Object.entries(combo).map(
+          ([k, v]) =>
+            [k, isObservable(v) ? v : of(v)] as const,
+        ),
+      ),
     ),
     { _: combo },
   )

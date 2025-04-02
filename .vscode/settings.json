@@ -147,7 +147,11 @@
     "src/lib/CodeTabs/SITEMAP.deno.ts",
     "src/lib/CodeTabs/index.dual.tsx",
     "src/lib/shiki/shiki.deno.tsx",
-    "src/lib/CodeTabs/temp/SITEMAP.deno.ts"
+    "src/lib/CodeTabs/temp/SITEMAP.deno.ts",
+    "src/blog/unholy-custom-jsx-with-observable-strings/intro/1.sync.deno.tsx",
+    "src/blog/unholy-custom-jsx-with-observable-strings/intro/2.basic.deno.tsx",
+    "src/blog/unholy-custom-jsx-with-observable-strings/intro/3.async.deno.tsx",
+    "src/blog/unholy-custom-jsx-with-observable-strings/intro/4.async.rxjs.deno.tsx"
   ],
   "deno.config": "./deno.json",
   "files.exclude": {
