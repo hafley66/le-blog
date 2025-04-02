@@ -81,6 +81,33 @@ h3 ~ .code-group {
   margin-left: calc(var(--section-mx) * -1);
   margin-right: calc(var(--section-mx) * -1);
   scroll-padding-top: 60px;
+
+  .code-tabs-radio-input:checked+label {
+    background:#282c34;
+    position: relative;
+    z-index:1;
+    border-bottom: none;
+    
+    &:hover {
+      text-decoration: underline;
+      color: white;
+    }
+
+    border-top-color: var(--color-blue-500);
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      z-index: 10;
+      width: 100%; 
+      background: var(--color-blue-500);
+    }
+
+  }
   
   .code-group-tabs { 
     overflow: auto;

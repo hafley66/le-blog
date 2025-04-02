@@ -78,14 +78,6 @@ export const FS = {
     () => import("~/BASH.deno.ts"),
   ),
 
-  "src/shiki.deno.ts": new JSPath(
-    "src/shiki.deno.ts",
-    "src",
-    "shiki.deno.ts",
-    "ts",
-    () => import("~/shiki.deno.ts"),
-  ),
-
   "src/blog/how-its-made/this-site/index.render.deno.tsx":
     new JSPath(
       "src/blog/how-its-made/this-site/index.render.deno.tsx",
@@ -640,6 +632,14 @@ export const FS = {
     () => import("~/unix_socket_test/a_parent.deno.ts"),
   ),
 
+  "src/lib/shiki/shiki.deno.tsx": new JSPath(
+    "src/lib/shiki/shiki.deno.tsx",
+    "src/lib/shiki",
+    "shiki.deno.tsx",
+    "tsx",
+    () => import("~/lib/shiki/shiki.deno.tsx"),
+  ),
+
   "src/lib/shiki/gen.deno.ts": new JSPath(
     "src/lib/shiki/gen.deno.ts",
     "src/lib/shiki",
@@ -849,6 +849,22 @@ export const FS = {
           "~/lib/remark_rehype/remarkNestSections.deno.ts"
         ),
     ),
+
+  "src/lib/CodeTabs/listener.dom.js": new JSPath(
+    "src/lib/CodeTabs/listener.dom.js",
+    "src/lib/CodeTabs",
+    "listener.dom.js",
+    "js",
+    () => import("~/lib/CodeTabs/listener.dom.js"),
+  ),
+
+  "src/lib/CodeTabs/index.dual.tsx": new JSPath(
+    "src/lib/CodeTabs/index.dual.tsx",
+    "src/lib/CodeTabs",
+    "index.dual.tsx",
+    "tsx",
+    () => import("~/lib/CodeTabs/index.dual.tsx"),
+  ),
 
   "src/lib/Path/funcs.ts": new JSPath(
     "src/lib/Path/funcs.ts",

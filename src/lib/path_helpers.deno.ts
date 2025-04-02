@@ -116,9 +116,11 @@ export class SITEMAP_PART<
         : never]: FILESYSTEM[K]
     }>[]
   }
-  includes<T extends string>(it: T) {
+  includes<T extends string>(it: T | RegExp) {
     return Object.entries(this.fs)
-      .filter(([k, v]) => k.includes(it))
+      .filter(([k, v]) =>
+        it instanceof RegExp ? k.match(it) : k.includes(it),
+      )
       .map(i => i[1]) as unknown as Imploder<{
       [K in keyof FILESYSTEM as K extends `${string}${T}${string}`
         ? K

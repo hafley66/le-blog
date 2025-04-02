@@ -143,7 +143,10 @@
     "src/lib/remark_rehype/__demo_iframes__/blog/unholy-custom-jsx-with-observable-strings/arrays/SITEMAP.deno.ts",
     "src/lib/remark_rehype/__demo_iframes__/blog/unholy-custom-jsx-with-observable-strings/counter/SITEMAP.deno.ts",
     "src/lib/remark_rehype/__demo_iframes__/blog/unholy-custom-jsx-with-observable-strings/state/SITEMAP.deno.ts",
-    "src/lib/remark_rehype/demo-runner.dual.ts"
+    "src/lib/remark_rehype/demo-runner.dual.ts",
+    "src/lib/CodeTabs/SITEMAP.deno.ts",
+    "src/lib/CodeTabs/index.dual.tsx",
+    "src/lib/shiki/shiki.deno.tsx"
   ],
   "deno.config": "./deno.json",
   "files.exclude": {

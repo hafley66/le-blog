@@ -2,94 +2,133 @@
 // Demo scripts will use register with there filename and main observable to subscribe and unsub from
 // How to track registers and scope them to the nearest demo root? oof. Lets try to see if importfilename is same as src tag, then we can do DOM things from there
 
-import type { Observable, Subscription } from "rxjs"
-import {
-  CE_DEMO_RUNNER_ACTIVATE,
-  CE_REGISTER_DEMO_CUSTOM_EVENT,
-  DATA_DEMO_ROOT,
-  DATA_DEMO_TARGET,
-} from "./demo-runner.dual"
+import { Observable, Subscription } from "rxjs"
+import React from "react"
 
 export const registeredDemos = {} as Record<
   string,
-  {
-    target: HTMLElement | null
-    mount: (demoElement: HTMLElement) => Observable<any>
-  }
+  | ((demoElement: HTMLElement) => Observable<any>)
+  | (() => Observable<string> | React.ComponentType)
 >
 
-export const listenForDemos = () => {
-  // @ts-ignore
-  document.body.addEventListener(
-    CE_REGISTER_DEMO_CUSTOM_EVENT,
-    (
-      ce: CustomEvent<{
-        importFileName: string
-        demo: (demoElement: HTMLElement) => Observable<any>
-      }>,
-    ) => {
-      const found = document.querySelector(
-        `script[src="${ce.detail.importFileName}"]`,
-      )
+const activatedRootToTarget = {} as Record<
+  string,
+  Subscription
+>
 
-      const root =
-        (found?.closest(
-          `[${DATA_DEMO_ROOT}]`,
-        ) as HTMLElement) ?? null
+export const __activate_demo = (filename: string) => {
+  const found = registeredDemos[filename]
 
-      registeredDemos[ce.detail.importFileName] = {
-        mount: ce.detail.demo,
-        target: root?.querySelector(
-          `[${DATA_DEMO_TARGET}]`,
-        ),
+  if (!found) console.log("not found", filename, found)
+  const dirname = filename.split("/").slice(0, -1).join("/")
+  const current = activatedRootToTarget[dirname]
+
+  if (current) current.unsubscribe()
+
+  setTimeout(() => {
+    const target = document.getElementById(dirname)
+    let next =
+      found.length > 0
+        ? target
+          ? found(target)
+          : null
+        : // @ts-ignore
+          found()
+    if (
+      target &&
+      next &&
+      "subscribe" in next &&
+      "pipe" in next
+    ) {
+      activatedRootToTarget[dirname] = next.subscribe({
+        next: n => (target.innerHTML = n),
+        error: e =>
+          target?.appendChild(
+            (() => {
+              const d = document.createElement("div")
+              d.innerHTML = "/*ERROR*/\n  " + String(e)
+              return d
+            })(),
+          ),
+      })
+    } else if (target && next) {
+      activatedRootToTarget[dirname] = new Observable<any>(
+        s => {
+          let root = null as any
+          Promise.all([
+            import("react-dom/client"),
+            import("react"),
+          ]).then(
+            ([
+              { createRoot },
+              { createElement, isValidElement },
+            ]) => {
+              try {
+                root = createRoot(target)
+                root.render(
+                  isValidElement(next)
+                    ? next
+                    : createElement(
+                        next as React.ComponentType,
+                      ),
+                )
+              } catch (e) {
+                root.unmount()
+              }
+            },
+          )
+          return () => {
+            root?.unmount()
+          }
+        },
+      ).subscribe({
+        error: e =>
+          target?.appendChild(
+            (() => {
+              const d = document.createElement("div")
+              d.innerHTML = "/*ERROR*/\n  " + String(e)
+              return d
+            })(),
+          ),
+      })
+    }
+  }, 1)
+}
+
+// export const listenForActivateDemo = () => {
+//   // @ts-ignore
+//   document.body.addEventListener(
+//     CE_DEMO_RUNNER_ACTIVATE,
+//     (
+//       ce: CustomEvent<{
+//         importFileName: string
+//       }>,
+//     ) => {
+//       __activate_demo(ce.detail.importFileName)
+//     },
+//   )
+// }
+
+export const listenForInputIdAsKey = () => {
+  document.body.addEventListener("input", ({ target }) => {
+    if (!(target instanceof HTMLInputElement)) return
+    if (target.checked) {
+      const path = `${target.name}${target.value}`
+      if (path in registeredDemos) {
+        __activate_demo(path)
       }
-
-      console.log({ found, ce })
-    },
-  )
+    }
+  })
 }
 
-const activatedRootToTarget = new Map<
-  HTMLElement,
-  Subscription | null
->()
+document.addEventListener("DOMContentLoaded", () => {
+  // listenForDemos()
+  // listenForActivateDemo()
+  listenForInputIdAsKey()
+})
 
-export const listenForActivateDemo = () => {
-  // @ts-ignore
-  document.body.addEventListener(
-    CE_DEMO_RUNNER_ACTIVATE,
-    (
-      ce: CustomEvent<{
-        importFileName: string
-      }>,
-    ) => {
-      // registeredDemos[ce.detail.importFileName] =
-      //   ce.detail.demo
-      const found =
-        registeredDemos[ce.detail.importFileName]
-
-      if (!found || !found.target)
-        console.log("not found", ce, found)
-
-      const current = activatedRootToTarget.get(
-        found.target!,
-      )
-
-      if (current) current.unsubscribe()
-
-      setTimeout(() => {
-        activatedRootToTarget.set(
-          found.target!,
-          found.mount(found.target!).subscribe(),
-        )
-      }, 1)
-
-      console.log({ found, ce })
-    },
-  )
+window.demoRunner = {
+  registry: registeredDemos,
+  active: activatedRootToTarget,
+  activate: __activate_demo,
 }
-
-window.registered_demos = registeredDemos
-
-listenForDemos()
-listenForActivateDemo()

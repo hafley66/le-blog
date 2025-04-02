@@ -32,7 +32,7 @@ import {
 } from "rxjs"
 
 import _ from "lodash"
-import { SHIKI } from "~/shiki.deno.ts"
+import { SHIKI } from "./shiki/shiki.deno.tsx"
 import { remarkPlantUML } from "~/lib/remark_rehype/remark-plant-uml.deno.ts"
 import { TAG } from "~/lib/lib.dual.ts"
 
@@ -71,7 +71,7 @@ const REEEE = await unified()
     ],
   } as Parameters<typeof rehypeShikiFromHighlighter>[1])
   .use(rehypeAddIdToSectionForToc)
-  .use(rehype_AddConsoleLogsToLines)
+  // .use(rehype_AddConsoleLogsToLines)
   .use(rehypeStringify, {
     allowDangerousHtml: true,
   } as Parameters<typeof rehypeStringify>[0])

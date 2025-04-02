@@ -234,354 +234,350 @@ export function myRemarkPlugin() {
       // rmSync(`${import.meta.dirname!}/temp/${it}`)
     }
     visit(tree, (node: MNodes | Directives) => {
-      if (
-        node.type === "containerDirective" &&
-        node.name === "codes"
-      ) {
-        let srcToId = {} as Record<string, string>
-        const enhanced = node.children
-          .filter(i => i.type === "code")
-          .map(i => {
-            const maybe = i.value.match(
-              /(.*@@filename.*\n)/i,
-            )?.[1]
-            const maybeLogs =
-              i.value.match(/(.*@@log.*\n)/i)?.[1]
-            // console.log({ maybe, data: i.data });
-            const filename = maybe?.split("@@filename ")[1]
-            const id = `code-group-radio-${tab_id++}`
+      //       if (
+      //         node.type === "containerDirective" &&
+      //         node.name === "codes"
+      //       ) {
+      //         let srcToId = {} as Record<string, string>
+      //         const enhanced = node.children
+      //           .filter(i => i.type === "code")
+      //           .map(i => {
+      //             const maybe = i.value.match(
+      //               /(.*@@filename.*\n)/i,
+      //             )?.[1]
+      //             const maybeLogs =
+      //               i.value.match(/(.*@@log.*\n)/i)?.[1]
+      //             // console.log({ maybe, data: i.data });
+      //             const filename = maybe?.split("@@filename ")[1]
+      //             const id = `code-group-radio-${tab_id++}`
 
-            const f = maybe
-              ? (i.value.replace?.(maybe, "") ?? i.value)
-              : i.value
-            const g = maybeLogs
-              ? f.replace(maybeLogs, "")
-              : f
+      //             const f = maybe
+      //               ? (i.value.replace?.(maybe, "") ?? i.value)
+      //               : i.value
+      //             const g = maybeLogs
+      //               ? f.replace(maybeLogs, "")
+      //               : f
 
-            return {
-              ...i,
-              data: {
-                ...i?.data,
-                hProperties: {
-                  ...i.data?.hProperties,
-                  "data-for": id,
-                },
-              },
-              filename,
-              value: g,
-              id,
-            }
-          })
-          .map(node => {
-            if (node.value.match(/@@eval/gi)) {
-              const isFrontend =
-                node.value.match(/@@eval-frontend/gi)
-              node.value = node.value?.replace(
-                /(.*@@eval.*\n)/i,
-                "",
-              )
+      //             return {
+      //               ...i,
+      //               data: {
+      //                 ...i?.data,
+      //                 hProperties: {
+      //                   ...i.data?.hProperties,
+      //                   "data-for": id,
+      //                 },
+      //               },
+      //               filename,
+      //               value: g,
+      //               id,
+      //             }
+      //           })
+      //           .map(node => {
+      //             if (node.value.match(/@@eval/gi)) {
+      //               node.value = node.value?.replace(
+      //                 /(.*@@eval.*\n)/i,
+      //                 "",
+      //               )
 
-              let key = `${+new Date()}`
-              if (key in evalLogs) {
-                key += `-${_.uniqueId()}`
-              }
-              evalLogs[key] = []
-              const id = key
+      //               let key = `${+new Date()}`
+      //               if (key in evalLogs) {
+      //                 key += `-${_.uniqueId()}`
+      //               }
+      //               evalLogs[key] = []
+      //               const id = key
 
-              const script = `
-// ${id}
-${`const log = console.log.bind(console);
-console.log = (...args: any[]) => {
-  log(...args)
-  log('øøø')
-  return;
-};
-;`}${node.value};
-`
-              if (isFrontend) {
-              }
-              const name = `${import.meta.dirname!}/temp/${id}.${node.lang!}`
+      //               const script = `
+      // // ${id}
+      // ${`const log = console.log.bind(console);
+      // console.log = (...args: any[]) => {
+      //   log(...args)
+      //   log('øøø')
+      //   return;
+      // };
+      // ;`}${node.value};
+      // `
+      //               const name = `${import.meta.dirname!}/temp/${id}.${node.lang!}`
 
-              // console.log("Writing...", name, node.meta)
-              promises.push(
-                writeFile(name, script)
-                  .then(() =>
-                    lastValueFrom(
-                      $$`deno --allow-read --allow-env ${name}`,
-                    ),
-                  )
-                  .then(ret => {
-                    // console.log(ret)
-                    node.meta
-                    // rmSync(name)
-                    const res = ret
-                      .split("\nøøø\n")
-                      .filter(Boolean)
-                    if (res.length) {
-                      rmSync(name)
-                      // We are going to look for .line {this key} in the html pass and expode the line parent with more lines.
-                      evalLogs[`//${id}`] = res
-                      node.value += `
-//${id}`
-                    }
+      //               // console.log("Writing...", name, node.meta)
+      //               promises.push(
+      //                 writeFile(name, script)
+      //                   .then(() =>
+      //                     lastValueFrom(
+      //                       $$`deno --allow-read --allow-env ${name}`,
+      //                     ),
+      //                   )
+      //                   .then(ret => {
+      //                     // console.log(ret)
+      //                     node.meta
+      //                     // rmSync(name)
+      //                     const res = ret
+      //                       .split("\nøøø\n")
+      //                       .filter(Boolean)
+      //                     if (res.length) {
+      //                       rmSync(name)
+      //                       // We are going to look for .line {this key} in the html pass and expode the line parent with more lines.
+      //                       evalLogs[`//${id}`] = res
+      //                       node.value += `
+      // //${id}`
+      //                     }
 
-                    return ret
-                  })
-                  .catch(err => {
-                    console.log(
-                      "ERROR in remark code sample!",
-                    )
-                    console.error(err)
-                    return
-                  }),
-              )
-            }
-            if (node.value.match(/@@demo/gi)) {
-              node.value = node.value?.replace(
-                /(.*@@demo.*\n)/i,
-                "",
-              )
-              let key = `${+new Date()}`
-              if (key in demoLogs) {
-                key += `-${_.uniqueId()}`
-              }
-              demoLogs[key] = key
-              const id = key
-              demoLogs[`//${id}`] = key
-              node.value += `
-//${id}`
-            }
-            if (node.value.includes("--cut--")) {
-              const indexOf =
-                node.value.indexOf("// --cut--")
+      //                     return ret
+      //                   })
+      //                   .catch(err => {
+      //                     console.log(
+      //                       "ERROR in remark code sample!",
+      //                     )
+      //                     console.error(err)
+      //                     return
+      //                   }),
+      //               )
+      //             }
+      //             if (node.value.match(/@@demo/gi)) {
+      //               node.value = node.value?.replace(
+      //                 /(.*@@demo.*\n)/i,
+      //                 "",
+      //               )
+      //               let key = `${+new Date()}`
+      //               if (key in demoLogs) {
+      //                 key += `-${_.uniqueId()}`
+      //               }
+      //               demoLogs[key] = key
+      //               const id = key
+      //               demoLogs[`//${id}`] = key
+      //               node.value += `
+      // //${id}`
+      //             }
+      //             if (node.value.includes("--cut--")) {
+      //               const indexOf =
+      //                 node.value.indexOf("// --cut--")
 
-              node.value = node.value.substring(0, indexOf)
-            }
-            if (node.value.includes("// @@src ")) {
-              const maybe =
-                node.value.match(/(.* @@src .*\n)/i)?.[1]
-              const filename = maybe?.split("@@src ")[1]
-              if (filename) {
-                srcToId[node.id!] = filename.trim()
-                node.value = node.value?.replace(
-                  /(.* @@src .*\n)/i,
-                  "",
-                )
-              }
-              // node.src = filename
-            }
-            node.value = node.value.trim()
-            return node
-          })
+      //               node.value = node.value.substring(0, indexOf)
+      //             }
+      //             if (node.value.includes("// @@src ")) {
+      //               const maybe =
+      //                 node.value.match(/(.* @@src .*\n)/i)?.[1]
+      //               const filename = maybe?.split("@@src ")[1]
+      //               if (filename) {
+      //                 srcToId[node.id!] = filename.trim()
+      //                 node.value = node.value?.replace(
+      //                   /(.* @@src .*\n)/i,
+      //                   "",
+      //                 )
+      //               }
+      //               // node.src = filename
+      //             }
+      //             node.value = node.value.trim()
+      //             return node
+      //           })
 
-        const radioName = `code-group-${codes_id++}`
+      //         const radioName = `code-group-${codes_id++}`
 
-        node.children = [
-          {
-            type: "element",
-            data: {
-              hProperties: {
-                class: "code-group-tabs",
-                "data-sticky": "1",
-                id: radioName,
-              },
-              hName: "div",
-              hChildren: [
-                ...enhanced.flatMap((i, index) => {
-                  return [
-                    {
-                      type: "element" as const,
-                      tagName: "input",
-                      properties: {
-                        "data-scroll-to-me": `.${radioName}`,
-                        type: "radio",
-                        name: radioName,
-                        id: i.id,
-                        checked:
-                          "data-last" in
-                          (node.attributes || {})
-                            ? index ===
-                                enhanced.length - 1 &&
-                              "true"
-                            : index === 0 && "true",
-                      },
-                      children: [],
-                    },
-                    {
-                      type: "element" as const,
-                      tagName: "label",
-                      properties: {
-                        for: i.id,
-                      },
-                      children: [
-                        {
-                          type: "element",
-                          tagName: "div",
-                          properties: {
-                            class: "centerino",
-                          },
-                          children: [
-                            {
-                              type: "text",
-                              value: i.filename ?? "???",
-                            },
-                          ],
-                        },
-                      ],
-                    },
-                  ].filter(Boolean)
-                }),
-              ],
-            },
-          },
-          // @ts-ignore
-          ...enhanced,
-          {
-            type: "element",
-            data: {
-              hName: "div",
-              hProperties: {
-                class: "demo-iframe",
-                id: "demo-iframe-" + radioName,
-                [DATA_DEMO_TARGET]: true,
-              },
-            },
-          },
-          ...Object.entries(srcToId).map(([key, src]) => {
-            return {
-              type: "element" as const,
-              data: {
-                hName: "script",
-                hProperties: { type: "module", src },
-              },
-            }
-          }),
-          {
-            type: "element" as const,
-            data: {
-              hName: "script",
-              hProperties: { type: "module" },
-            },
-            value: `
-            //${JSON.stringify(srcToId)}
-${Object.entries(srcToId)
-  .map(([k, v]) => {
-    return `import '${v}';`
-  })
-  .join("\n")}
-document.addEventListener('DOMContentLoaded', () => {
-  const tabs = document.getElementById("${radioName}");
-  const demoContainer = document.getElementById("${"demo-iframe-" + radioName}");
-  const toDemoArea = (src) => {
-    demoContainer.children[0]?.remove();
-    const iframe = document.createElement('iframe');
-    iframe.style.width = 'calc(100%)';
-    iframe.onload=function(){ window.resizeIframe(this)};
-    
-    iframe.onload = function() {
-      const iframeWindow = iframe.contentWindow;
-      const doc = iframe.contentDocument || iframeWindow.document;
-    };
-    iframe.src=src;
-    // iframe.style.cssText="width:100%;";
-    demoContainer.appendChild(iframe);
-    // const doc = iframe.contentDocument || iframe.contentWindow?.document;
-    // doc.open();
-    // doc.write(\`
-    //   
-    //   <head></head>
-    //   
-    //     
-    //   </body>
-    //   </html>
-    // \`);
-    // doc.close();
-  };
+      //         node.children = [
+      //           {
+      //             type: "element",
+      //             data: {
+      //               hProperties: {
+      //                 class: "code-group-tabs",
+      //                 "data-sticky": "1",
+      //                 id: radioName,
+      //               },
+      //               hName: "div",
+      //               hChildren: [
+      //                 ...enhanced.flatMap((i, index) => {
+      //                   return [
+      //                     {
+      //                       type: "element" as const,
+      //                       tagName: "input",
+      //                       properties: {
+      //                         "data-scroll-to-me": `.${radioName}`,
+      //                         type: "radio",
+      //                         name: radioName,
+      //                         id: i.id,
+      //                         checked:
+      //                           "data-last" in
+      //                           (node.attributes || {})
+      //                             ? index ===
+      //                                 enhanced.length - 1 &&
+      //                               "true"
+      //                             : index === 0 && "true",
+      //                       },
+      //                       children: [],
+      //                     },
+      //                     {
+      //                       type: "element" as const,
+      //                       tagName: "label",
+      //                       properties: {
+      //                         for: i.id,
+      //                       },
+      //                       children: [
+      //                         {
+      //                           type: "element",
+      //                           tagName: "div",
+      //                           properties: {
+      //                             class: "centerino",
+      //                           },
+      //                           children: [
+      //                             {
+      //                               type: "text",
+      //                               value: i.filename ?? "???",
+      //                             },
+      //                           ],
+      //                         },
+      //                       ],
+      //                     },
+      //                   ].filter(Boolean)
+      //                 }),
+      //               ],
+      //             },
+      //           },
+      //           // @ts-ignore
+      //           ...enhanced,
+      //           {
+      //             type: "element",
+      //             data: {
+      //               hName: "div",
+      //               hProperties: {
+      //                 class: "demo-iframe",
+      //                 id: "demo-iframe-" + radioName,
+      //                 [DATA_DEMO_TARGET]: true,
+      //               },
+      //             },
+      //           },
+      //           ...Object.entries(srcToId).map(([key, src]) => {
+      //             return {
+      //               type: "element" as const,
+      //               data: {
+      //                 hName: "script",
+      //                 hProperties: { type: "module", src },
+      //               },
+      //             }
+      //           }),
+      //           {
+      //             // @ts-ignore
+      //             type: "element",
+      //             data: { hName: "style" },
+      //             value: `
+      // .code-group pre {display:none}
+      // .${radioName} {
+      // ${enhanced
+      //   .map(
+      //     (i, index) => `
+      //   #${i.id}+label {
 
-${Object.entries(srcToId)
-  .map(([k, v], index) => {
-    // promises.push(toDemoLayoutHtml(v))
-    const dir = `/lib/remark_rehype/__demo_iframes__${path.dirname(v)}`
-    const file = `${dir}/${path.basename(v)}.vite.html`
-    return `
-  const id${index} = document.getElementById('${k}');
-  id${index}.addEventListener('input', e => {
-    if(e.target.checked) {
-      toDemoArea("${file}")
-    }
-  });
-  if(id${index}.checked) {
-    console.log("I am checked...", id${index});
-    toDemoArea("${file}")
-  }
-  `
-  })
-  .join("\n")}
-});
-`,
-          },
-          {
-            // @ts-ignore
-            type: "element",
-            data: { hName: "style" },
-            value: `
-.code-group pre {display:none}
-.${radioName} {
-${enhanced
-  .map(
-    (i, index) => `
-  #${i.id}+label {
+      //   }
 
-  }
+      //   #${i.id}:checked+label {
+      //     background:#282c34;
+      //     position: relative;
+      //     z-index:1;
+      //     border-bottom: none;
 
-  #${i.id}:checked+label {
-    background:#282c34;
-    position: relative;
-    z-index:1;
-    border-bottom: none;
-    
-    &:hover {
-      text-decoration: underline;
-      color: white;
-    }
+      //     &:hover {
+      //       text-decoration: underline;
+      //       color: white;
+      //     }
 
-    border-top-color: var(--color-blue-500);
+      //     border-top-color: var(--color-blue-500);
 
-    &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 6px;
-      z-index: 10;
-      width: 100%; 
-      background: var(--color-blue-500);
-    }
+      //     &::before {
+      //       content: "";
+      //       position: absolute;
+      //       top: 0;
+      //       left: 0;
+      //       right: 0;
+      //       height: 6px;
+      //       z-index: 10;
+      //       width: 100%;
+      //       background: var(--color-blue-500);
+      //     }
 
-  }
+      //   }
 
-  &:has(#${i.id}:checked) pre:nth-child(${index + 2}){ 
-    display: block;
-  }
-  `,
-  )
-  .join("\n")}
-} `,
-          },
-        ]
+      //   &:has(#${i.id}:checked) pre:nth-child(${index + 2}){
+      //     display: block;
+      //   }
+      //   `,
+      //   )
+      //   .join("\n")}
+      // } `,
+      //           },
+      //           {
+      //             type: "element" as const,
+      //             data: {
+      //               hName: "script",
+      //               hProperties: { type: "module" },
+      //             },
+      //             value: `
+      //             //${JSON.stringify(srcToId)}
+      // ${Object.entries(srcToId)
+      //   .map(([k, v]) => {
+      //     return `import '${v}';`
+      //   })
+      //   .join("\n")}
+      // document.addEventListener('DOMContentLoaded', () => {
+      //   const tabs = document.getElementById("${radioName}");
+      //   const demoContainer = document.getElementById("${"demo-iframe-" + radioName}");
+      //   const toDemoArea = (src) => {
+      //     demoContainer.children[0]?.remove();
+      //     const iframe = document.createElement('iframe');
+      //     iframe.style.width = 'calc(100%)';
+      //     iframe.onload=function(){ window.resizeIframe(this)};
 
-        node.data = {
-          hName: "div",
-          hProperties: {
-            class: "code-group " + radioName,
-            [DATA_DEMO_ROOT]: true,
-            ...node.attributes,
-          },
-        }
+      //     iframe.onload = function() {
+      //       const iframeWindow = iframe.contentWindow;
+      //       const doc = iframe.contentDocument || iframeWindow.document;
+      //     };
+      //     iframe.src=src;
+      //     // iframe.style.cssText="width:100%;";
+      //     demoContainer.appendChild(iframe);
+      //     // const doc = iframe.contentDocument || iframe.contentWindow?.document;
+      //     // doc.open();
+      //     // doc.write(\`
+      //     //
+      //     //   <head></head>
+      //     //
+      //     //
+      //     //   </body>
+      //     //   </html>
+      //     // \`);
+      //     // doc.close();
+      //   };
 
-        return
-      }
+      // ${Object.entries(srcToId)
+      //   .map(([k, v], index) => {
+      //     // promises.push(toDemoLayoutHtml(v))
+      //     const dir = `/lib/remark_rehype/__demo_iframes__${path.dirname(v)}`
+      //     const file = `${dir}/${path.basename(v)}.vite.html`
+      //     return `
+      //   const id${index} = document.getElementById('${k}');
+      //   id${index}.addEventListener('input', e => {
+      //     if(e.target.checked) {
+      //       toDemoArea("${file}")
+      //     }
+      //   });
+      //   if(id${index}.checked) {
+      //     console.log("I am checked...", id${index});
+      //     toDemoArea("${file}")
+      //   }
+      //   `
+      //   })
+      //   .join("\n")}
+      // });
+      // `,
+      //           },
+      //         ]
+
+      //         node.data = {
+      //           hName: "div",
+      //           hProperties: {
+      //             class: "code-group " + radioName,
+      //             [DATA_DEMO_ROOT]: true,
+      //             ...node.attributes,
+      //           },
+      //         }
+
+      //         return
+      //       }
       if (
         node.type === "containerDirective" ||
         node.type === "leafDirective" ||
@@ -594,7 +590,7 @@ ${enhanced
         data.hProperties = hast.properties
       }
     })
-    await Promise.all(promises)
+    // await Promise.all(promises)
   }
 }
 
