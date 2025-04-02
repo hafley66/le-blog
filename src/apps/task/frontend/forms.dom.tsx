@@ -28,7 +28,7 @@ import {
   InputConfig,
   withForm,
 } from "~/lib/form_helpers/with.forms.dom.ts"
-import { shareLatest } from "~/lib/lib.dual.ts"
+import { shareLatest, TAG } from "~/lib/lib.dual.ts"
 
 import { v7 } from "uuid"
 
@@ -106,8 +106,8 @@ const editClick = TaskDiv.$.click.pipe(
     // biome-ignore lint/style/noNonNullAssertion: <explanation>
     tasks[1].find(
       it =>
-        ((i.target as HTMLDivElement).dataset["uuid"] ??
-          "") === it.uuid,
+        (i.delegateElement.dataset["uuid"] ?? "") ===
+        it.uuid,
     ),
   ),
   filter(Boolean),

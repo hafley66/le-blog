@@ -456,15 +456,15 @@ export const FS = {
         ),
     ),
 
-  "src/blog/rxjs/dom-events/index.render.deno.tsx":
+  "src/blog/rxjs/dom-events/index.render.deno2.tsx":
     new JSPath(
-      "src/blog/rxjs/dom-events/index.render.deno.tsx",
+      "src/blog/rxjs/dom-events/index.render.deno2.tsx",
       "src/blog/rxjs/dom-events",
-      "index.render.deno.tsx",
+      "index.render.deno2.tsx",
       "tsx",
       () =>
         import(
-          "~/blog/rxjs/dom-events/index.render.deno.tsx"
+          "~/blog/rxjs/dom-events/index.render.deno2.tsx"
         ),
     ),
 

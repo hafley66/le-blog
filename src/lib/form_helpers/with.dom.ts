@@ -16,6 +16,7 @@ import {
 } from "~/lib/rxjs-vhtml/v2/types.dom.events.dom.ts"
 import { TaggedComponent } from "./types.dual"
 import { fromEventDelegate } from "../lib.dom"
+import { TAG } from "../lib.dual"
 
 const NONE = Symbol("NONE")
 export function withSelector<
@@ -134,14 +135,14 @@ export function withSelector<
             mergeWith(
               _startWith.pipe(
                 tap(i => {
-                  console.log(
-                    "TAP",
-                    i,
-                    value$s,
-                    Tag,
-                    it.ref(),
-                    selector,
-                  )
+                  // console.log(
+                  //   "TAP",
+                  //   i,
+                  //   value$s,
+                  //   Tag,
+                  //   it.ref(),
+                  //   selector,
+                  // )
                   if (!it.ref()) return
                   if (p === "radio" || p === "checkbox") {
                     it.ref().checked = !!i

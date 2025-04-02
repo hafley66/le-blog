@@ -1,4 +1,5 @@
 import { Observable } from "rxjs"
+import { DelegatedObservable } from "./rxjs-vhtml/v2/types.dom.events.dom"
 
 export const event$ = function fromEventDelegateCurry(
   selector: string,
@@ -29,7 +30,7 @@ export function fromEventDelegate<
   eventName: K,
   root = document.body,
   capture = false,
-): Observable<
+): DelegatedObservable<
   K extends "input"
     ? Omit<HTMLElementEventMap[K], "target"> & {
         target: HTMLInputElement
@@ -42,8 +43,9 @@ export function fromEventDelegate<
         }
       : HTMLElementEventMap[K]
 > {
+  // @ts-ignore
   return new Observable<
-    K extends "input"
+    (K extends "input"
       ? Omit<HTMLElementEventMap[K], "target"> & {
           target: HTMLInputElement
         }
@@ -53,18 +55,30 @@ export function fromEventDelegate<
         ? Omit<HTMLElementEventMap[K], "target"> & {
             target: HTMLElement
           }
-        : HTMLElementEventMap[K]
+        : HTMLElementEventMap[K]) & {
+      delegateElement: HTMLElement
+    }
   >(sub => {
     const fn = (event: HTMLElementEventMap[K]) => {
       const { target } = event
       if (!(target instanceof HTMLElement)) {
         return
       }
-      if (target?.matches(selector)) {
-        sub.next(
+      let it: HTMLElement | null = target
+      console.log(event)
+      while (it) {
+        if (it?.matches(selector)) {
+          // console.log({ match: it, selector, event })
           // @ts-ignore
-          event,
-        )
+          event.delegateElement = it
+          sub.next(
+            // @ts-ignore
+            event,
+          )
+          break
+        }
+        // console.log({ it })
+        it = it.parentElement
       }
     }
     // console.log("Adding to   ", root, eventName, selector, fn)

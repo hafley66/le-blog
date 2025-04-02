@@ -17,14 +17,12 @@ import { trpcClient } from "~/apps/trpc.client.dom"
 import { deferFrom, shareLatest, TAG } from "~/lib/lib.dual"
 import { Task, TaskDB } from "../types"
 
-const __tasks = deferFrom(
-  () =>
-    import.meta.env.DEV
-      ? trpcClient.task.readAll.query()
-      : [],
-  // : (import("~/apps/task/db/index.json").then(
-  //     i => i.default,
-  //   ) as Promise<TaskDB>),
+const __tasks = deferFrom(() =>
+  import.meta.env.DEV
+    ? trpcClient.task.readAll.query()
+    : (import("~/apps/task/db/index.json").then(
+        i => i.default,
+      ) as Promise<TaskDB>),
 ).pipe()
 
 let hmm = []

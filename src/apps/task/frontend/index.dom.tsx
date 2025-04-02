@@ -32,19 +32,29 @@ const LANES = Object.entries(STATUS).map(([key, value]) => (
       background: DragHandlers.pipe(
         map(i =>
           i[0] === "dragover" && i[1] === key
-            ? "red"
+            ? "var(--color-slate-700)"
             : undefined,
         ),
         distinctUntilChanged(),
       ),
     }}
   >
-    <summary>{value.toUpperCase()}</summary>
+    <summary>
+      {value.toUpperCase()} {`(`}
+      {tasksByLane.pipe(
+        map(i =>
+          i[0] === "data"
+            ? (i[1]?.[key]?.length ?? 0)
+            : "...",
+        ),
+      )}
+      {")"}
+    </summary>
     <div
       style={{
         // Without this, margin collapse gets really freaky in summary vs rest of details. this html comp is weird.
         // But when i do margintop/bottom -2px trick for white border not taking height, without this it will flicker and super jump
-        marginBlock: "4px",
+        marginBlock: "10px",
       }}
     >
       {tasksByLane.pipe(
@@ -73,16 +83,28 @@ const LANES = Object.entries(STATUS).map(([key, value]) => (
                       map(i =>
                         i
                           ? {
-                              backgroundColor: "purple",
-                              [`margin${i}`]: "-2px",
+                              backgroundColor:
+                                "var(--color-emerald-700)",
+                              [`margin${i}`]: "-6px",
+                              borderRadius: "0px",
                               [`border${i}`]:
-                                "2px solid white",
+                                "6px solid white",
                             }
                           : undefined,
                       ),
                     )}
                   >
-                    {it.title}
+                    <div style="font-size: 16px; line-height: 1.2; padding-bottom: 4px;">
+                      {it.title}
+                    </div>
+                    <hr style="margin-block: 4px;" />
+                    <div>{it.description}</div>
+
+                    {it.parent ? (
+                      <pre style="padding-top: 4px; border-top: 2px solid white; margin-top: 4px;">
+                        <code>{it.parent}</code>
+                      </pre>
+                    ) : null}
                   </TaskDiv>
                 )),
         ),
@@ -123,7 +145,8 @@ if (!app) {
   app = document.createElement("div")
   app.setAttribute("id", MOUNT)
   const mount =
-    document.querySelector("main") || document.body
+    document.querySelector("main")?.parentElement ||
+    document.body
   mount.appendChild(app)
 }
 
@@ -144,25 +167,7 @@ const dd = new DiffDOM({
       )
       return true
     }
-    // console.log(
-    //   "preDiffApply",
-    //   info.diff.action,
-    //   ...(info.diff.action === "addElement"
-    //     ? [
-    //         info.diff.element.nodeName,
-    //         info.diff.element.attributes,
-    //       ]
-    //     : [
-    //         info.node,
-    //         info.diff.name,
-    //         info.diff.value,
-    //         info,
-    //       ]),
-    // )
   },
-  // postDiffApply: function (info) {
-  //   console.log("postDiffApply", { info })
-  // },
 })
 
 TASK_APP.pipe(

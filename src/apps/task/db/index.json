@@ -3,7 +3,7 @@
     "uuid": "0195f318-851f-738c-8207-4e2ca263e0a0",
     "title": "Post about React.useEffect/useState vs new Observable/Subscriber.next",
     "description": "Show how useEffect and useState can be made into a hook that looks awfully alot like the form of new Observable",
-    "parent": "/blog",
+    "parent": "/blog/rxjs/react",
     "tags": [
       "rxjs",
       "react",
@@ -13,8 +13,8 @@
     ],
     "created_at": 1743540225311,
     "updated_at": 0,
-    "status": 0,
-    "index": 1
+    "status": 1,
+    "index": 7
   },
   {
     "uuid": "0195f31a-9423-719b-a13f-6537ec34173f",
@@ -29,7 +29,7 @@
     "created_at": 1743540360226,
     "updated_at": 0,
     "status": 0,
-    "index": 2
+    "index": 10
   },
   {
     "uuid": "0195f31b-4915-7118-816b-a6d25180ff65",
@@ -40,13 +40,13 @@
     "created_at": 1743540406549,
     "updated_at": 0,
     "status": 0,
-    "index": 3
+    "index": 14
   },
   {
     "uuid": "0195f31c-212a-7497-9d9f-573e1a931a5e",
     "title": "RxJS.Observable vs EventEmitter techniques",
     "description": "Explain state machine of observables vs emitters",
-    "parent": "",
+    "parent": "/blog/js",
     "tags": [
       "events",
       "rxjs",
@@ -56,20 +56,276 @@
     "created_at": 1743540461866,
     "updated_at": 0,
     "status": 0,
-    "index": 4
+    "index": 15
   },
   {
     "uuid": "0195f34a-626b-7288-acb6-8df72bc2545e",
-    "title": "wwasd",
-    "description": "w",
-    "parent": "",
+    "title": "my fancy hex tags dont go anywhere, fix that",
+    "description": "Make hexagons clickable",
+    "parent": "/blog/misc",
     "tags": [
-      "cacaw",
-      "you fools"
+      "widgets",
+      "nav",
+      "tags"
     ],
     "created_at": 1743543493227,
     "updated_at": 0,
     "status": 0,
+    "index": 7
+  },
+  {
+    "uuid": "0195f358-53f5-7383-944b-5ba68082b8ed",
+    "title": "Observable as Classes, Promises as Instances",
+    "description": "Describe the tricky nature of observables being lazy until subscribe vs new Promise's running right away",
+    "parent": "/blog/js/async",
+    "tags": [
+      "rxjs",
+      "async",
+      "promises",
+      "fundamentals"
+    ],
+    "created_at": 1743544407029,
+    "updated_at": 0,
+    "status": 0,
+    "index": 19
+  },
+  {
+    "uuid": "0195f3b3-1354-768f-a9c8-693fe26288e6",
+    "title": "TOC: Make accessible on mobile",
+    "description": "Currently under 768 makes it inline, but i would like to add top right corner buttons in sections to allow for TOC, or floating button that is easily pongable around the screen with momentum",
+    "parent": "/blog/ui",
+    "tags": [
+      "toc",
+      "site"
+    ],
+    "created_at": 1743550354260,
+    "updated_at": 0,
+    "status": 0,
+    "index": 21
+  },
+  {
+    "uuid": "0195f3b3-8a0c-7045-b6e7-8fe82ab1c6f5",
+    "title": "withForm should be a typescript form builder",
+    "description": "...eventually. it works fine for now",
+    "parent": "/refactor",
+    "tags": [],
+    "created_at": 1743550384651,
+    "updated_at": 0,
+    "status": 0,
+    "index": 22
+  },
+  {
+    "uuid": "0195f3b4-179c-7209-a81b-63fc7cf7aa57",
+    "title": "use less offsensive colors for jira board",
+    "description": "Title",
+    "parent": "/apps/tasks",
+    "tags": [
+      "apps",
+      "ux"
+    ],
+    "created_at": 1743550420892,
+    "updated_at": 0,
+    "status": 0,
+    "index": 20
+  },
+  {
+    "uuid": "0195f3b4-ccba-7516-9847-86b319afb86d",
+    "title": "Tasks parents autocomplete",
+    "description": "Make it with pure html as much as possible",
+    "parent": "/apps/tasks",
+    "tags": [
+      "tasks",
+      "forms"
+    ],
+    "created_at": 1743550467258,
+    "updated_at": 0,
+    "status": 0,
+    "index": 25
+  },
+  {
+    "uuid": "0195f3b5-381d-76f3-9d49-12148c71b09c",
+    "title": "Multiselect for tags in tasks",
+    "description": "chips and all that",
+    "parent": "/apps/tasks",
+    "tags": [
+      "ux",
+      "widgets",
+      "forms"
+    ],
+    "created_at": 1743550494749,
+    "updated_at": 0,
+    "status": 0,
+    "index": 26
+  },
+  {
+    "uuid": "0195f3b5-dabe-778e-8a55-44482d886ff4",
+    "title": "3d viewer of task parents and tags",
+    "description": "view board and have z layer of parents pointing to their tasks on the board with isometric view",
+    "parent": "/apps/tasks",
+    "tags": [
+      "3d",
+      "visualization",
+      "tasks"
+    ],
+    "created_at": 1743550536382,
+    "updated_at": 0,
+    "status": 0,
+    "index": 27
+  },
+  {
+    "uuid": "0195f3c4-26d7-7415-adfe-d458abd9af18",
+    "title": "How I host and deploy the site",
+    "description": "choice of domain name and vps guide",
+    "parent": "/blog/misc",
+    "tags": [
+      "guide"
+    ],
+    "created_at": 1743551473367,
+    "updated_at": 0,
+    "status": 3,
+    "index": 0
+  },
+  {
+    "uuid": "0195f3c6-2a09-7334-a451-abf7d83a85cb",
+    "title": "HTML: Invokers and Popovers guide",
+    "description": "Write up a guide and a d2 diagram on how they all relate to each other",
+    "parent": "/blog/html",
+    "tags": [
+      "html",
+      "invokers-api",
+      "popover",
+      "dialog"
+    ],
+    "created_at": 1743551605257,
+    "updated_at": 0,
+    "status": 0,
+    "index": 28
+  },
+  {
+    "uuid": "0195f421-59fb-7258-a37d-c6951eb3275f",
+    "title": "Animated Diff Carousel",
+    "description": "Add to the giant remark plugin a way to grab consecutive code blocks in markdown, then use git diff somehow with stdin and comapre between each n-i-1 and n-i items. We animate the lines that were different from the other one during a scroll carousel by finding out which lines are leaving nad which are entering and fading in and progressive height changes",
+    "parent": "/blog/remark.js",
+    "tags": [
+      "remark",
+      "markdown",
+      "widget",
+      "visualization"
+    ],
+    "created_at": 1743557581306,
+    "updated_at": 0,
+    "status": 0,
+    "index": 29
+  },
+  {
+    "uuid": "0195f439-84bc-72cb-95f4-cb52edcb3f7c",
+    "title": "Tutorial for Typescript string literals with HTML",
+    "description": "Make post about using literal/const strings to build a namespacing function that simply captures constant string info into types to ensure uniqueness/correct namespacing of IDs in things like popovertarget and commandfor",
+    "parent": "/blog/typescript",
+    "tags": [
+      "invokers-api",
+      "html",
+      "typescript",
+      "intermediate",
+      "generics"
+    ],
+    "created_at": 1743559165116,
+    "updated_at": 0,
+    "status": 0,
+    "index": 30
+  },
+  {
+    "uuid": "0195f43a-5f21-71a5-aaa9-a7fa91876dc4",
+    "title": "Tutorial for height responsive hexagons using container queries",
+    "description": "Title",
+    "parent": "/blog/css",
+    "tags": [
+      "css",
+      "container queries",
+      "bestagons",
+      "tutorial"
+    ],
+    "created_at": 1743559221025,
+    "updated_at": 0,
+    "status": 0,
+    "index": 31
+  },
+  {
+    "uuid": "0195f43b-ad57-75fe-bf64-2936f0239379",
+    "title": "Create breadcrumb component",
+    "description": "Make remark breadcrumb or rxjsx component",
+    "parent": "/blog/ux",
+    "tags": [
+      "nav",
+      "site",
+      "widget",
+      "rxjsx"
+    ],
+    "created_at": 1743559306583,
+    "updated_at": 0,
+    "status": 0,
+    "index": 32
+  },
+  {
+    "uuid": "0195f43d-7369-73fa-99e9-0dbe002bbc34",
+    "title": "Save/Load cycles in redux vs rxjs",
+    "description": "Demonstrate how to handle save/load cycles for theoretical settings page using react hooks, react query, redux, and rxjs",
+    "parent": "/blog/rxjs",
+    "tags": [
+      "rxjs",
+      "comparison",
+      "react",
+      "redux",
+      "api calls"
+    ],
+    "created_at": 1743559422825,
+    "updated_at": 0,
+    "status": 0,
+    "index": 33
+  },
+  {
+    "uuid": "0195f444-b8ce-71c8-b930-1a39438f8144",
+    "title": "Plugin to run code blocks from markdown in deno subprocess",
+    "description": "Title, i can now run tsx/ts snippets from markdown during remark parsing. this compiles into a console.log that i capture and put onto the html with remark during html pass, shiki plugin has a bug that made this annoying",
+    "parent": "/lib/remark",
+    "tags": [
+      "remark",
+      "html",
+      "demos",
+      "snippets"
+    ],
+    "created_at": 1743559899342,
+    "updated_at": 0,
+    "status": 4,
     "index": 5
+  },
+  {
+    "uuid": "0195f446-02a5-778c-84d3-fa8e0c9e3e31",
+    "title": "Client demos in iframes from vite entrypoints",
+    "description": "By finding all code that is *.dom.tsx? with gnu find etc. for the vite config, i have turned every dom.ts file into an entrypoint that can be inlcuding in html and then parsed by vite to do magic bundle time stuff. So in markdown, i just use my path helper to inline the script tag with its known public url location",
+    "parent": "/lib/remark",
+    "tags": [
+      "demos",
+      "remark",
+      "iframe"
+    ],
+    "created_at": 1743559983781,
+    "updated_at": 0,
+    "status": 4,
+    "index": 4
+  },
+  {
+    "uuid": "0195f453-e74e-76d0-9575-c80933fa1bfd",
+    "title": "Add textarea to withForm and withInput",
+    "description": "Title",
+    "parent": "/lib/rxjsx",
+    "tags": [
+      "rxjsx",
+      "form"
+    ],
+    "created_at": 1743560894285,
+    "updated_at": 0,
+    "status": 0,
+    "index": 34
   }
 ]
