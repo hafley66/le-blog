@@ -38,6 +38,9 @@ export const css = String.raw`
   }
 
   ${Board.selector} {
+    &.dragging ${Lane.selector} {
+      height: unset;
+    }
     overflow: auto;
     width: 100%;
     display: grid;

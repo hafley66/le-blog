@@ -86,6 +86,7 @@ ${this.readSync()}
       type: "module",
       src: this.publicPath,
       "demo-for": this.filename,
+      defer: true,
       children: [],
     })
   }

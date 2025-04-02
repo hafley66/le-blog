@@ -55,14 +55,11 @@ export const CodeTabs = ({
     let enableEval = false
 
     let evalType: "" | "back" | "front" | string = ""
-    console.log({ filename, content: content.length })
     ;[content, filename] = eatAtAt("filename", content)
-    console.log({ filename, content: content.length })
     ;[content, evalType, enableEval] = eatAtAt(
       "eval",
       content,
     )
-    console.log({ filename, content: content.length })
     filename ||= fspath
     const cleanExt = path.extname(fspath).slice(1)
 
@@ -116,6 +113,29 @@ export const CodeTabs = ({
         ]
       },
       renderCode: () => {
+        // node.children = [
+        //   {
+        //     type: "element",
+        //     tagName: "div",
+        //     properties: {
+        //       class: "code-scroller",
+        //     },
+        //     children: node.children,
+        //   },
+        //   {
+        //     type: "element",
+        //     tagName: "button",
+        //     properties: {
+        //       class: "copy-to-clipboard caption",
+        //     },
+        //     children: [
+        //       {
+        //         type: "text",
+        //         value: "Copy",
+        //       },
+        //     ],
+        //   },
+        // ]
         return [
           combineLatest([
             Shiki({ code: content, lang: cleanExt }),
@@ -128,10 +148,16 @@ export const CodeTabs = ({
               : of(""),
           ]).pipe(
             map(([shiki, logs]) =>
-              shiki.replace(
-                "</code></pre>",
-                logs + "</code></pre>",
-              ),
+              shiki
+                .replace(
+                  "<code>",
+                  "<div class='code-scroller'><code>",
+                )
+                .replace(
+                  "</code>",
+                  "</code></div><button class='copy-to-clipboard caption'>Copy</button>",
+                )
+                .replace("</code>", logs + "</code>"),
             ),
           ),
         ]

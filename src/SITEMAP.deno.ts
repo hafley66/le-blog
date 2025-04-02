@@ -487,54 +487,6 @@ export const FS = {
     () => import("~/blog/index.render.deno.tsx"),
   ),
 
-  "src/blog/make-your-own-sitemap-with-typescript/example.css":
-    new Path(
-      "src/blog/make-your-own-sitemap-with-typescript/example.css",
-      "src/blog/make-your-own-sitemap-with-typescript",
-      "example.css",
-      "css",
-    ),
-
-  "src/blog/make-your-own-sitemap-with-typescript/index.render.deno.tsx":
-    new JSPath(
-      "src/blog/make-your-own-sitemap-with-typescript/index.render.deno.tsx",
-      "src/blog/make-your-own-sitemap-with-typescript",
-      "index.render.deno.tsx",
-      "tsx",
-      () =>
-        import(
-          "~/blog/make-your-own-sitemap-with-typescript/index.render.deno.tsx"
-        ),
-    ),
-
-  "src/blog/make-your-own-sitemap-with-typescript/src/blog/hello-world/index.css":
-    new Path(
-      "src/blog/make-your-own-sitemap-with-typescript/src/blog/hello-world/index.css",
-      "src/blog/make-your-own-sitemap-with-typescript/src/blog/hello-world",
-      "index.css",
-      "css",
-    ),
-
-  "src/blog/make-your-own-sitemap-with-typescript/src/blog/hello-world/index2.render.deno.tsx":
-    new JSPath(
-      "src/blog/make-your-own-sitemap-with-typescript/src/blog/hello-world/index2.render.deno.tsx",
-      "src/blog/make-your-own-sitemap-with-typescript/src/blog/hello-world",
-      "index2.render.deno.tsx",
-      "tsx",
-      () =>
-        import(
-          "~/blog/make-your-own-sitemap-with-typescript/src/blog/hello-world/index2.render.deno.tsx"
-        ),
-    ),
-
-  "src/blog/make-your-own-sitemap-with-typescript/src/blog/hello-world/example.png":
-    new Path(
-      "src/blog/make-your-own-sitemap-with-typescript/src/blog/hello-world/example.png",
-      "src/blog/make-your-own-sitemap-with-typescript/src/blog/hello-world",
-      "example.png",
-      "png",
-    ),
-
   "src/bash/_.watch.add-relative-fs-info.bash": new Path(
     "src/bash/_.watch.add-relative-fs-info.bash",
     "src/bash",

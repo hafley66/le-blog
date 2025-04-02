@@ -5,6 +5,7 @@ import {
   catchError,
   distinctUntilChanged,
   map,
+  merge,
   of,
   throttleTime,
 } from "rxjs"
@@ -28,16 +29,17 @@ const LANES = Object.entries(STATUS).map(([key, value]) => (
     key={key}
     open
     data-status={key}
-    style={{
-      background: DragHandlers.pipe(
-        map(i =>
-          i[0] === "dragover" && i[1] === key
-            ? "var(--color-slate-700)"
-            : undefined,
-        ),
-        distinctUntilChanged(),
+    style={DragHandlers.pipe(
+      map(i =>
+        i[0] === "dragover" && i[1] === key
+          ? {
+              backgroundColor: "var(--color-slate-700)",
+              height: "unset",
+            }
+          : undefined,
       ),
-    }}
+      distinctUntilChanged(),
+    )}
   >
     <summary>
       {value.toUpperCase()} {`(`}
@@ -115,7 +117,12 @@ const LANES = Object.entries(STATUS).map(([key, value]) => (
 ))
 
 export const TASK_APP = (
-  <Board>
+  <Board
+    className={merge(
+      TaskDiv.$.dragstart.pipe(map(() => "dragging")),
+      TaskDiv.$.dragend.pipe(map(() => "")),
+    )}
+  >
     {css}
     <BoardHeader>
       {tasks.pipe(

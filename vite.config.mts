@@ -85,13 +85,13 @@ export default defineConfig(async it => {
           )
         })
       : htmlFiles),
-    ...Object.fromEntries(
-      glob
-        .sync("src/**/*.dom.*ts*", {
-          ignore: ["dist/**", "node_modules/**"],
-        })
-        .map(i => [i, i]),
-    ),
+    // ...Object.fromEntries(
+    //   glob
+    //     .sync("src/**/*.dom.*ts*", {
+    //       ignore: ["dist/**", "node_modules/**"],
+    //     })
+    //     .map(i => [i, i]),
+    // ),
   }
 
   console.log({ input })

@@ -14,7 +14,7 @@ export default $.SSGLayout({
       </em>
     </div>
   ),
-  date_created: "2025-02-25",
+  // date_created: "2025-02-25",
   tags: [
     "typescript",
     "javascript",
