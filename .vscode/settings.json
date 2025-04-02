@@ -146,7 +146,8 @@
     "src/lib/remark_rehype/demo-runner.dual.ts",
     "src/lib/CodeTabs/SITEMAP.deno.ts",
     "src/lib/CodeTabs/index.dual.tsx",
-    "src/lib/shiki/shiki.deno.tsx"
+    "src/lib/shiki/shiki.deno.tsx",
+    "src/lib/CodeTabs/temp/SITEMAP.deno.ts"
   ],
   "deno.config": "./deno.json",
   "files.exclude": {

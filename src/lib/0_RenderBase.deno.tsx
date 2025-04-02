@@ -26,7 +26,7 @@ import {
   TOC,
 } from "./0_Layout.dual.tsx"
 import { Remark } from "./00_Remark2.deno.tsx"
-import { deferFrom } from "~/lib/lib.dual.ts"
+import { deferFrom, TAG } from "~/lib/lib.dual.ts"
 import { v7 } from "uuid"
 
 const MARKDOWN_REGEX_TO_NAIVELY_SPLIT_HEADERS__BEWARE_HASH_COMMENTS =
@@ -90,23 +90,26 @@ export const Render$ = (importMetaFilename: string) => {
     ...values: (Observable<string> | string)[]
   ) => {
     const build = [] as string[]
-    const record = Object.fromEntries(
-      values.map(
-        (i, index) =>
-          [v7(), isObservable(i) ? i : of(i)] as const,
-      ),
-    )
+    const obs = values
+      .filter(i => isObservable(i))
+      .map((i, index) => [v7(), i] as const)
 
     let i = 0
     for (const n of strings) {
-      const index = i
-      i++
+      const it = values[i]
       build.push(
-        `${n}\n\n\n<div id="${record[index]}"/>\n\n\n`,
+        `${n}${
+          !it
+            ? ""
+            : typeof it === "string"
+              ? it
+              : `\n\n\n<div id="${obs[i][0]}"></div>\n\n\n`
+        }`,
       )
+      i++
     }
     const it = build.join(" ")
-
+    console.log({ importMetaFilename, it: obs.length })
     if (!it.trim()) {
       return {
         toc: of(""),
@@ -142,6 +145,8 @@ ${it.body}
 `,
     )
 
+    console.log(ConstructedMarkdown)
+
     const meta = {
       sections: ConstructedMarkdown,
       byId,
@@ -154,19 +159,33 @@ ${it.body}
       ),
     ).pipe(
       combineLatestWith(
-        values.length ? combineLatest(record) : of(null),
+        (obs.length
+          ? combineLatest(
+              obs.map(i =>
+                i[1].pipe(map(ii => [i[0], ii] as const)),
+              ),
+            )
+          : of([] as [string, string][])
+        ).pipe(
+          TAG(
+            values.length + " DERP + " + importMetaFilename,
+          ),
+        ),
       ),
       map(
         ([compiled, next]) =>
-          Object.entries(next ?? {}).reduce(
-            (html, [id, value]) => {
-              return html.replace(
-                `<div id="${id}"/>`,
-                value,
-              )
-            },
-            compiled,
-          ) || compiled,
+          console.log({
+            importMetaFilename,
+            compiled: compiled.length,
+            next: next,
+          }) ||
+          next.reduce((html, [id, value]) => {
+            return html.replace(
+              `<div id="${id}"></div>`,
+              value,
+            )
+          }, compiled) ||
+          compiled,
       ),
       catchError(err => {
         console.log("OI", importMetaFilename)

@@ -97,7 +97,10 @@ export class SITEMAP_PART<
     Path<any, any, any, any>
   >,
 > {
-  constructor(public fs: FILESYSTEM) {}
+  constructor(
+    public fs: FILESYSTEM,
+    public path?: string,
+  ) {}
   startsWith<T extends string>(it: T) {
     return Object.entries(this.fs)
       .filter(([k, v]) => k.startsWith(it))
@@ -138,6 +141,7 @@ export class SITEMAP_PART<
           ? U
           : never]: FILESYSTEM[K]
       },
+      it,
     )
   }
 }

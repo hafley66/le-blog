@@ -35,7 +35,13 @@ export const CodeTabs = ({
   folder,
 }: CodeTabsProps) => {
   const radioName = `code-group-${folder ? path.dirname(folder) : index}`
-
+  console.log(
+    "The fuck",
+    index,
+    radioName,
+    folder,
+    path.dirname(folder),
+  )
   const files = SITEMAP.subFolder(folder).includes<
     "deno.ts" | "deno.tsx" | "dom.ts" | "dom.tsx"
   >(/\.(dom|deno)\.tsx?$/)
@@ -57,12 +63,15 @@ export const CodeTabs = ({
     let enableEval = false
 
     let evalType: "" | "back" | "front" | string = ""
+    console.log({ filename, content })
     ;[content, filename] = eatAtAt("filename", i[1])
+    console.log({ filename })
     ;[content, evalType, enableEval] = eatAtAt("eval", i[1])
+    console.log({ filename })
 
     const cleanExt = path.extname(fspath).slice(1)
 
-    mkdirSync(tempDir)
+    mkdirSync(tempDir, { recursive: true })
 
     evalType = enableEval
       ? fspath.includes(".deno.")
@@ -109,18 +118,17 @@ export const CodeTabs = ({
         ]
       },
       renderCode: () => {
-        return (
-          <>
-            <Shiki code={content} lang={cleanExt} />
-            {evalType === "backend"
-              ? runBackendDemo({
-                  tempDir,
-                  code: content,
-                  lang: cleanExt,
-                })
-              : ""}
-          </>
-        )
+        return [
+          <Shiki code={content} lang={cleanExt} />,
+          // "derp",
+          evalType === "backend"
+            ? runBackendDemo({
+                tempDir,
+                code: content,
+                lang: cleanExt,
+              })
+            : "",
+        ]
       },
       renderInlineListener: () =>
         evalType === "front"
@@ -176,15 +184,15 @@ export const CodeTabs = ({
 
 function eatAtAt(atat: string, target: string) {
   let match = target.match(
-    new RegExp(`/^.*@@${atat}(.*)\\n`, "gi"),
+    new RegExp(`/.*@@${atat}(.*)\\n`, "gi"),
   )
   if (match) {
     return [
       target?.replace(
-        new RegExp(`(.*@@${atat}.*\\n`, "i"),
+        new RegExp(`(.*@@${atat}.*)\\n`, "i"),
         "",
       ),
-      match[0],
+      match[0].split(`@@${atat} `)[1],
       true,
     ] as const
   }

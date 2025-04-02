@@ -39,8 +39,8 @@ import { TAG } from "~/lib/lib.dual.ts"
 const REEEE = await unified()
   .use(remarkParse)
   .use(remarkPlantUML)
-  .use(remarkDirective)
-  .use(myRemarkPlugin)
+  // .use(remarkDirective)
+  // .use(myRemarkPlugin)
   .use(remarkGfm, {} as Parameters<typeof remarkGfm>[0])
   .use(remarkNestSections, { enableNesting: false })
   .use(remarkRehype, {
@@ -85,15 +85,15 @@ const _cache = new BehaviorSubject(
 const RemarkDaemon = _input
   .pipe(
     scan((state, [next, filename], index) => {
-      // console.log(`[${index}] processing next`, filename)
+      console.log(`[${index}] processing next`, filename)
       if (state[next]) return state
       state[next] = new Observable<string>(sub => {
         REEEE.process(next)
           .then(i => {
-            // console.log(
-            //   `/[${index}] Output of...`,
-            //   filename,
-            // )
+            console.log(
+              `/[${index}] Output of...`,
+              filename,
+            )
             // console.log({ next, i: i.value })
             sub.next(i.value as any)
             sub.complete()

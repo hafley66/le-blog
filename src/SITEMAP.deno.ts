@@ -162,15 +162,15 @@ export const FS = {
         ),
     ),
 
-  "src/blog/unholy-custom-jsx-with-observable-strings/intro/async.deno.tsx":
+  "src/blog/unholy-custom-jsx-with-observable-strings/intro/3.async.deno.tsx":
     new JSPath(
-      "src/blog/unholy-custom-jsx-with-observable-strings/intro/async.deno.tsx",
+      "src/blog/unholy-custom-jsx-with-observable-strings/intro/3.async.deno.tsx",
       "src/blog/unholy-custom-jsx-with-observable-strings/intro",
-      "async.deno.tsx",
+      "3.async.deno.tsx",
       "tsx",
       () =>
         import(
-          "~/blog/unholy-custom-jsx-with-observable-strings/intro/async.deno.tsx"
+          "~/blog/unholy-custom-jsx-with-observable-strings/intro/3.async.deno.tsx"
         ),
     ),
 
