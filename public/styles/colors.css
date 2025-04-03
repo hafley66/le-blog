@@ -279,7 +279,7 @@
 --color-inferno-0: rgb(23, 16, 212);
 }
 
-:root {
+/* :root {
   --color-text: #232323;
   --color-text-2nd: #454545;
   --color-bg: white;
@@ -290,7 +290,7 @@
   --color-text-link: var(--color-blue-500);
   --color-resume-heading: var(--color-inferno-3);
   --section-mx: 8px;
-}
+} */
 
 body {
   background: var(--color-bg);
@@ -298,7 +298,6 @@ body {
 }
 
 
-@media (prefers-color-scheme: dark) {
   :root {
     --color-text: #DFDFDF;
     --color-text-2nd: #BCBCBC;
@@ -313,4 +312,3 @@ body {
     --color-text-link: var(--color-sky-400);
     --color-resume-heading: var(--color-text);
   }
-}
