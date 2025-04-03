@@ -151,7 +151,8 @@
     "src/blog/unholy-custom-jsx-with-observable-strings/intro/1.sync.deno.tsx",
     "src/blog/unholy-custom-jsx-with-observable-strings/intro/2.basic.deno.tsx",
     "src/blog/unholy-custom-jsx-with-observable-strings/intro/3.async.deno.tsx",
-    "src/blog/unholy-custom-jsx-with-observable-strings/intro/4.async.rxjs.deno.tsx"
+    "src/blog/unholy-custom-jsx-with-observable-strings/intro/4.async.rxjs.deno.tsx",
+    "src/blog/2025-04-02/SITEMAP.deno.ts"
   ],
   "deno.config": "./deno.json",
   "files.exclude": {
