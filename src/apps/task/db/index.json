@@ -29,7 +29,7 @@
     "created_at": 1743540360226,
     "updated_at": 0,
     "status": 0,
-    "index": 10
+    "index": 11
   },
   {
     "uuid": "0195f31b-4915-7118-816b-a6d25180ff65",
@@ -40,7 +40,7 @@
     "created_at": 1743540406549,
     "updated_at": 0,
     "status": 0,
-    "index": 15
+    "index": 16
   },
   {
     "uuid": "0195f31c-212a-7497-9d9f-573e1a931a5e",
@@ -55,8 +55,8 @@
     ],
     "created_at": 1743540461866,
     "updated_at": 0,
-    "status": 0,
-    "index": 16
+    "status": 3,
+    "index": 0
   },
   {
     "uuid": "0195f34a-626b-7288-acb6-8df72bc2545e",
@@ -70,8 +70,8 @@
     ],
     "created_at": 1743543493227,
     "updated_at": 0,
-    "status": 0,
-    "index": 7
+    "status": 3,
+    "index": 1
   },
   {
     "uuid": "0195f358-53f5-7383-944b-5ba68082b8ed",
@@ -87,7 +87,7 @@
     "created_at": 1743544407029,
     "updated_at": 0,
     "status": 0,
-    "index": 20
+    "index": 22
   },
   {
     "uuid": "0195f3b3-1354-768f-a9c8-693fe26288e6",
@@ -100,8 +100,8 @@
     ],
     "created_at": 1743550354260,
     "updated_at": 0,
-    "status": 0,
-    "index": 23
+    "status": 2,
+    "index": 0
   },
   {
     "uuid": "0195f3b3-8a0c-7045-b6e7-8fe82ab1c6f5",
@@ -112,7 +112,7 @@
     "created_at": 1743550384651,
     "updated_at": 0,
     "status": 0,
-    "index": 24
+    "index": 26
   },
   {
     "uuid": "0195f3b4-179c-7209-a81b-63fc7cf7aa57",
@@ -140,7 +140,7 @@
     "created_at": 1743550467258,
     "updated_at": 0,
     "status": 0,
-    "index": 27
+    "index": 29
   },
   {
     "uuid": "0195f3b5-381d-76f3-9d49-12148c71b09c",
@@ -154,8 +154,8 @@
     ],
     "created_at": 1743550494749,
     "updated_at": 0,
-    "status": 0,
-    "index": 28
+    "status": 1,
+    "index": 11
   },
   {
     "uuid": "0195f3b5-dabe-778e-8a55-44482d886ff4",
@@ -170,7 +170,7 @@
     "created_at": 1743550536382,
     "updated_at": 0,
     "status": 0,
-    "index": 29
+    "index": 31
   },
   {
     "uuid": "0195f3c4-26d7-7415-adfe-d458abd9af18",
@@ -199,7 +199,7 @@
     "created_at": 1743551605257,
     "updated_at": 0,
     "status": 0,
-    "index": 30
+    "index": 32
   },
   {
     "uuid": "0195f421-59fb-7258-a37d-c6951eb3275f",
@@ -215,7 +215,7 @@
     "created_at": 1743557581306,
     "updated_at": 0,
     "status": 0,
-    "index": 31
+    "index": 33
   },
   {
     "uuid": "0195f439-84bc-72cb-95f4-cb52edcb3f7c",
@@ -232,7 +232,7 @@
     "created_at": 1743559165116,
     "updated_at": 0,
     "status": 0,
-    "index": 32
+    "index": 34
   },
   {
     "uuid": "0195f43a-5f21-71a5-aaa9-a7fa91876dc4",
@@ -248,7 +248,7 @@
     "created_at": 1743559221025,
     "updated_at": 0,
     "status": 0,
-    "index": 33
+    "index": 35
   },
   {
     "uuid": "0195f43b-ad57-75fe-bf64-2936f0239379",
@@ -264,7 +264,7 @@
     "created_at": 1743559306583,
     "updated_at": 0,
     "status": 0,
-    "index": 34
+    "index": 36
   },
   {
     "uuid": "0195f43d-7369-73fa-99e9-0dbe002bbc34",
@@ -281,7 +281,7 @@
     "created_at": 1743559422825,
     "updated_at": 0,
     "status": 0,
-    "index": 35
+    "index": 37
   },
   {
     "uuid": "0195f444-b8ce-71c8-b930-1a39438f8144",
@@ -326,7 +326,7 @@
     "created_at": 1743560894285,
     "updated_at": 0,
     "status": 0,
-    "index": 36
+    "index": 38
   },
   {
     "uuid": "0195f7db-9f1a-76d4-8c07-05bc8bb67522",
@@ -356,6 +356,107 @@
     "created_at": 1743634827405,
     "updated_at": 0,
     "status": 0,
-    "index": 37
+    "index": 39
+  },
+  {
+    "uuid": "0195f9a8-70da-73f5-9f1f-4f6afacaaa39",
+    "title": "Make your own analytics on the frontend",
+    "description": "How to measure async timings with rxjs using a simple state machine. make a async widget for showing emissions of click. let user click for async mousedown and mouseup",
+    "parent": "/blog/rxjs",
+    "tags": [
+      "analytics",
+      "events",
+      "dom",
+      "state machine"
+    ],
+    "created_at": 1743650320602,
+    "updated_at": 0,
+    "status": 0,
+    "index": 40
+  },
+  {
+    "uuid": "0195f9aa-292d-70f6-9bd4-0d8ee5ca8f51",
+    "title": "Make rxjs widget to show emissions over time and stats",
+    "description": "normalized on a timeline as an animation. have error/complete/finalize/unsub/sub channels",
+    "parent": "/lib/viz/rxjs",
+    "tags": [
+      "rxjs",
+      "visualization",
+      "teaching",
+      "widget",
+      "async"
+    ],
+    "created_at": 1743650433325,
+    "updated_at": 0,
+    "status": 0,
+    "index": 41
+  },
+  {
+    "uuid": "0195f9ac-3e1e-719b-8d56-77076898f152",
+    "title": "Blog post about the \"channels\" of rxjs state machine",
+    "description": "Describe how sub/next/unsub/finalize/error/complete are ran in a pipeline and order of propogation and traversal are like a linked list or dom path",
+    "parent": "/blog/rxjs/propogation",
+    "tags": [
+      "events",
+      "rxjs",
+      "lifecycle",
+      "iterators",
+      "state machine"
+    ],
+    "created_at": 1743650569758,
+    "updated_at": 0,
+    "status": 0,
+    "index": 42
+  },
+  {
+    "uuid": "0195f9ad-01b0-7414-a801-fbd30990e0c6",
+    "title": "Post: Alternate universe where Observables were made with OOP base class",
+    "description": "Title",
+    "parent": "/blog/rxjs/oop",
+    "tags": [
+      "oop",
+      "promises",
+      "js",
+      "rxjs",
+      "classes",
+      "inheritance",
+      "interface"
+    ],
+    "created_at": 1743650619824,
+    "updated_at": 0,
+    "status": 0,
+    "index": 43
+  },
+  {
+    "uuid": "0195f9bf-b59e-703f-8026-3a4fdf43bc39",
+    "title": "add stopwatch demo",
+    "description": "Add tutorial for making stopwatch in react, then with redux, then with rxjs",
+    "parent": "/blog/rxjs/react/stopwatch",
+    "tags": [
+      "rxjs",
+      "redux",
+      "react",
+      "demo",
+      "tutorial"
+    ],
+    "created_at": 1743651845534,
+    "updated_at": 0,
+    "status": 0,
+    "index": 44
+  },
+  {
+    "uuid": "0195f9c3-485d-749a-83f4-4ea6051551eb",
+    "title": "TOC: Make falir look cooler, more triangles",
+    "description": "Title",
+    "parent": "/apps/toc",
+    "tags": [
+      "toc",
+      "ux",
+      "widgets"
+    ],
+    "created_at": 1743652079709,
+    "updated_at": 0,
+    "status": 0,
+    "index": 45
   }
 ]
