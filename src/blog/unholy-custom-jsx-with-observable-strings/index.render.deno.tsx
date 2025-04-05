@@ -98,7 +98,7 @@ I truly hope that this is a starting point for some devs to build intuition or i
 Here are 4 intro demos demonstrating basic jsx, sync jsx, and async jsx with observables, and async jsx with rxjs.
 
 The console.logs represent the value of html emitted over time.
-${SUB.endsWith("intro").CodeTabs()}
+${SUB.subFolder("intro/").CodeTabs()}
 
 ## JSX.Element Type
 In this jsx transform, thie children types are 
@@ -185,7 +185,8 @@ However there is 1 problem, our RxJSX props never get redefined. If we want to r
     - You dont have to do this if you are in typescript, but it can save a headache or two from time to time.
 2. This is not unlike \`Signal\`s in Solid.js and in general, there is no auto-reacting.
 
-:::codes 
+${
+  $.CodeTabs.markdown`
 ~~~tsx
 // @@filename RxJSX
 // @@eval
@@ -205,8 +206,7 @@ export const Component = (props: Props) => {
   </div>
 }
 ~~~
-
-~~~tsx
+~~~tsx    
 // @@filename React
 type Props = {
   isRed?: boolean
@@ -220,10 +220,45 @@ export const Component = (props: Props) => {
   </div>
 }
 ~~~
-:::
+` // ``
+}
 
 
 ## Props
+Props are the second argument to the JSX transform function's well defined interfaces. 
+
+When you do this in react/solidjs/vue jsx/anything, it must be compiled to true javascript. 
+This means functions calls:
+${
+  $.CodeTabs.markdown`
+
+~~~tsx
+// @@filename: From
+const _jsx_element_instance_ = 
+<div 
+  className="card"
+  id="hello-btn"
+>
+  Hello world
+</div>
+~~~
+~~~tsx
+// @@filename To
+const _jsx_element_instance_ = 
+jsx('div', {
+  className:"card",
+  id:"hello-btn",
+children: [
+  'Hello world'
+]})
+~~~
+
+
+` //``
+}
+it always turns into this:
+
+
 
 ## Counter Demo
 Here are some demo's of this technique **without DOM events and state**. This is what we can achieve with just a few functions from rxjs itself.
@@ -236,20 +271,19 @@ If you don't know rxjs, dont panic, just know that \`interval\` is like \`setTim
     - Imagine this is the first arg to useState, so we already have a value on initial render.
 4. It feels backwards for some things, but that is a virtue in RxJS style of composition.
 
-${<CodeTabs folder={SUB.path + "counter"} />}
+${SUB.subFolder("counter/").CodeTabs()}
 
 ## Children
+TODO: 
+
 
 ### Arrays
-
-### Conditionals
 Okay and lets make sure that doing regular array map's into jsx work as expected, as well as conditionals.
 
-:::codes
-${FS["arrays/1.static.dom.tsx"].frontendDemo("Static Array")}
-${FS["arrays/2.dynamic.dom.tsx"].frontendDemo("Observable Array")}
-${FS["arrays/3.promise.dom.tsx"].frontendDemo("Promised Array")}
-:::
+${SUB.subFolder("arrays/").CodeTabs()}
+
+### Conditionals
+TODO:
 
 ## Events
 This is easily the hardest part of designing this jsx transform. 
@@ -272,7 +306,7 @@ For idiomatic RxJS, I heavily urge you to avoid BehaviorSubject as much as possi
 
 Just know that using it will delay you from understanding everything you see as state is really just some other observable somewhere else.
 
-${<CodeTabs folder={SUB.path + "state"} />}
+${SUB.subFolder("state/").CodeTabs()}
 
-`,
+`, //``
 })

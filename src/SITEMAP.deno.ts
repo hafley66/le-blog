@@ -19,6 +19,8 @@ export const FS = {
     () => import("~/home/index.render.deno.tsx"),
   ),
 
+  "src/home/": new Path("src/home/", "src", "home/", ""),
+
   "src/main_ssg.deno.ts": new JSPath(
     "src/main_ssg.deno.ts",
     "src",
@@ -40,6 +42,8 @@ export const FS = {
     "sitemap_watcher.go",
     "go",
   ),
+
+  "src/go/": new Path("src/go/", "src", "go/", ""),
 
   "src/resume/resume.html": new Path(
     "src/resume/resume.html",
@@ -70,12 +74,26 @@ export const FS = {
     () => import("~/resume/index.render.deno.tsx"),
   ),
 
+  "src/resume/": new Path(
+    "src/resume/",
+    "src",
+    "resume/",
+    "",
+  ),
+
   "src/BASH.deno.ts": new JSPath(
     "src/BASH.deno.ts",
     "src",
     "BASH.deno.ts",
     "ts",
     () => import("~/BASH.deno.ts"),
+  ),
+
+  "src/blog/2025-04-02/": new Path(
+    "src/blog/2025-04-02/",
+    "src/blog",
+    "2025-04-02/",
+    "",
   ),
 
   "src/blog/how-its-made/this-site/index.render.deno.tsx":
@@ -90,6 +108,20 @@ export const FS = {
         ),
     ),
 
+  "src/blog/how-its-made/this-site/": new Path(
+    "src/blog/how-its-made/this-site/",
+    "src/blog/how-its-made",
+    "this-site/",
+    "",
+  ),
+
+  "src/blog/how-its-made/": new Path(
+    "src/blog/how-its-made/",
+    "src/blog",
+    "how-its-made/",
+    "",
+  ),
+
   "src/blog/translating-react-to-rxjs/index.render.deno.tsx":
     new JSPath(
       "src/blog/translating-react-to-rxjs/index.render.deno.tsx",
@@ -101,6 +133,39 @@ export const FS = {
           "~/blog/translating-react-to-rxjs/index.render.deno.tsx"
         ),
     ),
+
+  "src/blog/translating-react-to-rxjs/": new Path(
+    "src/blog/translating-react-to-rxjs/",
+    "src/blog",
+    "translating-react-to-rxjs/",
+    "",
+  ),
+
+  "src/blog/learning/css-anchor-positioning/index.render.deno.tsx":
+    new JSPath(
+      "src/blog/learning/css-anchor-positioning/index.render.deno.tsx",
+      "src/blog/learning/css-anchor-positioning",
+      "index.render.deno.tsx",
+      "tsx",
+      () =>
+        import(
+          "~/blog/learning/css-anchor-positioning/index.render.deno.tsx"
+        ),
+    ),
+
+  "src/blog/learning/css-anchor-positioning/": new Path(
+    "src/blog/learning/css-anchor-positioning/",
+    "src/blog/learning",
+    "css-anchor-positioning/",
+    "",
+  ),
+
+  "src/blog/learning/": new Path(
+    "src/blog/learning/",
+    "src/blog",
+    "learning/",
+    "",
+  ),
 
   "src/blog/unholy-custom-jsx-with-observable-strings/conditionals/1.static.dom.tsx":
     new JSPath(
@@ -124,6 +189,14 @@ export const FS = {
         import(
           "~/blog/unholy-custom-jsx-with-observable-strings/conditionals/2.dynamic.dom.tsx"
         ),
+    ),
+
+  "src/blog/unholy-custom-jsx-with-observable-strings/conditionals/":
+    new Path(
+      "src/blog/unholy-custom-jsx-with-observable-strings/conditionals/",
+      "src/blog/unholy-custom-jsx-with-observable-strings",
+      "conditionals/",
+      "",
     ),
 
   "src/blog/unholy-custom-jsx-with-observable-strings/intro/1.sync.deno.tsx":
@@ -174,6 +247,14 @@ export const FS = {
         ),
     ),
 
+  "src/blog/unholy-custom-jsx-with-observable-strings/intro/":
+    new Path(
+      "src/blog/unholy-custom-jsx-with-observable-strings/intro/",
+      "src/blog/unholy-custom-jsx-with-observable-strings",
+      "intro/",
+      "",
+    ),
+
   "src/blog/unholy-custom-jsx-with-observable-strings/state/2.woBS.dom.tsx":
     new JSPath(
       "src/blog/unholy-custom-jsx-with-observable-strings/state/2.woBS.dom.tsx",
@@ -198,6 +279,14 @@ export const FS = {
         ),
     ),
 
+  "src/blog/unholy-custom-jsx-with-observable-strings/state/":
+    new Path(
+      "src/blog/unholy-custom-jsx-with-observable-strings/state/",
+      "src/blog/unholy-custom-jsx-with-observable-strings",
+      "state/",
+      "",
+    ),
+
   "src/blog/unholy-custom-jsx-with-observable-strings/components/1.static.dom.tsx":
     new JSPath(
       "src/blog/unholy-custom-jsx-with-observable-strings/components/1.static.dom.tsx",
@@ -208,6 +297,14 @@ export const FS = {
         import(
           "~/blog/unholy-custom-jsx-with-observable-strings/components/1.static.dom.tsx"
         ),
+    ),
+
+  "src/blog/unholy-custom-jsx-with-observable-strings/components/":
+    new Path(
+      "src/blog/unholy-custom-jsx-with-observable-strings/components/",
+      "src/blog/unholy-custom-jsx-with-observable-strings",
+      "components/",
+      "",
     ),
 
   "src/blog/unholy-custom-jsx-with-observable-strings/arrays/1.static.dom.tsx":
@@ -246,6 +343,14 @@ export const FS = {
         ),
     ),
 
+  "src/blog/unholy-custom-jsx-with-observable-strings/arrays/":
+    new Path(
+      "src/blog/unholy-custom-jsx-with-observable-strings/arrays/",
+      "src/blog/unholy-custom-jsx-with-observable-strings",
+      "arrays/",
+      "",
+    ),
+
   "src/blog/unholy-custom-jsx-with-observable-strings/diffViewer/index.dom.tsx":
     new JSPath(
       "src/blog/unholy-custom-jsx-with-observable-strings/diffViewer/index.dom.tsx",
@@ -256,6 +361,14 @@ export const FS = {
         import(
           "~/blog/unholy-custom-jsx-with-observable-strings/diffViewer/index.dom.tsx"
         ),
+    ),
+
+  "src/blog/unholy-custom-jsx-with-observable-strings/diffViewer/":
+    new Path(
+      "src/blog/unholy-custom-jsx-with-observable-strings/diffViewer/",
+      "src/blog/unholy-custom-jsx-with-observable-strings",
+      "diffViewer/",
+      "",
     ),
 
   "src/blog/unholy-custom-jsx-with-observable-strings/counter/7.react.ellapsed.dom.tsx":
@@ -304,6 +417,14 @@ export const FS = {
         import(
           "~/blog/unholy-custom-jsx-with-observable-strings/counter/7.react.dom.tsx"
         ),
+    ),
+
+  "src/blog/unholy-custom-jsx-with-observable-strings/counter/":
+    new Path(
+      "src/blog/unholy-custom-jsx-with-observable-strings/counter/",
+      "src/blog/unholy-custom-jsx-with-observable-strings",
+      "counter/",
+      "",
     ),
 
   "src/blog/unholy-custom-jsx-with-observable-strings/events/1.fromEvent.dom.tsx":
@@ -378,6 +499,14 @@ export const FS = {
         ),
     ),
 
+  "src/blog/unholy-custom-jsx-with-observable-strings/events/":
+    new Path(
+      "src/blog/unholy-custom-jsx-with-observable-strings/events/",
+      "src/blog/unholy-custom-jsx-with-observable-strings",
+      "events/",
+      "",
+    ),
+
   "src/blog/unholy-custom-jsx-with-observable-strings/index.render.deno.tsx":
     new JSPath(
       "src/blog/unholy-custom-jsx-with-observable-strings/index.render.deno.tsx",
@@ -388,6 +517,14 @@ export const FS = {
         import(
           "~/blog/unholy-custom-jsx-with-observable-strings/index.render.deno.tsx"
         ),
+    ),
+
+  "src/blog/unholy-custom-jsx-with-observable-strings/":
+    new Path(
+      "src/blog/unholy-custom-jsx-with-observable-strings/",
+      "src/blog",
+      "unholy-custom-jsx-with-observable-strings/",
+      "",
     ),
 
   "src/blog/1-how-i-made-this-site/server_info.png":
@@ -424,6 +561,13 @@ export const FS = {
         ),
     ),
 
+  "src/blog/1-how-i-made-this-site/": new Path(
+    "src/blog/1-how-i-made-this-site/",
+    "src/blog",
+    "1-how-i-made-this-site/",
+    "",
+  ),
+
   "src/blog/types-of-set-state/index.render.deno.tsx":
     new JSPath(
       "src/blog/types-of-set-state/index.render.deno.tsx",
@@ -435,6 +579,13 @@ export const FS = {
           "~/blog/types-of-set-state/index.render.deno.tsx"
         ),
     ),
+
+  "src/blog/types-of-set-state/": new Path(
+    "src/blog/types-of-set-state/",
+    "src/blog",
+    "types-of-set-state/",
+    "",
+  ),
 
   "src/blog/rxjs/recreate-react-query-with-rxjs/sample.deno.tsx":
     new JSPath(
@@ -460,6 +611,20 @@ export const FS = {
         ),
     ),
 
+  "src/blog/rxjs/recreate-react-query-with-rxjs/": new Path(
+    "src/blog/rxjs/recreate-react-query-with-rxjs/",
+    "src/blog/rxjs",
+    "recreate-react-query-with-rxjs/",
+    "",
+  ),
+
+  "src/blog/rxjs/dom-events/vanilla/": new Path(
+    "src/blog/rxjs/dom-events/vanilla/",
+    "src/blog/rxjs/dom-events",
+    "vanilla/",
+    "",
+  ),
+
   "src/blog/rxjs/dom-events/index.render.deno.tsx":
     new JSPath(
       "src/blog/rxjs/dom-events/index.render.deno.tsx",
@@ -472,11 +637,32 @@ export const FS = {
         ),
     ),
 
+  "src/blog/rxjs/dom-events/": new Path(
+    "src/blog/rxjs/dom-events/",
+    "src/blog/rxjs",
+    "dom-events/",
+    "",
+  ),
+
   "src/blog/rxjs/vs-react/index.render.md": new Path(
     "src/blog/rxjs/vs-react/index.render.md",
     "src/blog/rxjs/vs-react",
     "index.render.md",
     "md",
+  ),
+
+  "src/blog/rxjs/vs-react/": new Path(
+    "src/blog/rxjs/vs-react/",
+    "src/blog/rxjs",
+    "vs-react/",
+    "",
+  ),
+
+  "src/blog/rxjs/": new Path(
+    "src/blog/rxjs/",
+    "src/blog",
+    "rxjs/",
+    "",
   ),
 
   "src/blog/state-management-showdown/state-management-showdown-rxjs-vs-react-hooks/index.render.deno.tsx":
@@ -491,6 +677,21 @@ export const FS = {
         ),
     ),
 
+  "src/blog/state-management-showdown/state-management-showdown-rxjs-vs-react-hooks/":
+    new Path(
+      "src/blog/state-management-showdown/state-management-showdown-rxjs-vs-react-hooks/",
+      "src/blog/state-management-showdown",
+      "state-management-showdown-rxjs-vs-react-hooks/",
+      "",
+    ),
+
+  "src/blog/state-management-showdown/": new Path(
+    "src/blog/state-management-showdown/",
+    "src/blog",
+    "state-management-showdown/",
+    "",
+  ),
+
   "src/blog/index.render.deno.tsx": new JSPath(
     "src/blog/index.render.deno.tsx",
     "src/blog",
@@ -498,6 +699,15 @@ export const FS = {
     "tsx",
     () => import("~/blog/index.render.deno.tsx"),
   ),
+
+  "src/blog/1-vs-many/": new Path(
+    "src/blog/1-vs-many/",
+    "src/blog",
+    "1-vs-many/",
+    "",
+  ),
+
+  "src/blog/": new Path("src/blog/", "src", "blog/", ""),
 
   "src/bash/_.watch.add-relative-fs-info.bash": new Path(
     "src/bash/_.watch.add-relative-fs-info.bash",
@@ -548,6 +758,8 @@ export const FS = {
     "bash",
   ),
 
+  "src/bash/": new Path("src/bash/", "src", "bash/", ""),
+
   "src/tags/index.render.deno.tsx": new JSPath(
     "src/tags/index.render.deno.tsx",
     "src/tags",
@@ -555,6 +767,10 @@ export const FS = {
     "tsx",
     () => import("~/tags/index.render.deno.tsx"),
   ),
+
+  "src/tags/": new Path("src/tags/", "src", "tags/", ""),
+
+  "src/notes/": new Path("src/notes/", "src", "notes/", ""),
 
   "src/vite-env.d.ts": new JSPath(
     "src/vite-env.d.ts",
@@ -596,6 +812,13 @@ export const FS = {
     () => import("~/unix_socket_test/a_parent.deno.ts"),
   ),
 
+  "src/unix_socket_test/": new Path(
+    "src/unix_socket_test/",
+    "src",
+    "unix_socket_test/",
+    "",
+  ),
+
   "src/lib/shiki/shiki.deno.tsx": new JSPath(
     "src/lib/shiki/shiki.deno.tsx",
     "src/lib/shiki",
@@ -612,12 +835,26 @@ export const FS = {
     () => import("~/lib/shiki/gen.deno.ts"),
   ),
 
+  "src/lib/shiki/": new Path(
+    "src/lib/shiki/",
+    "src/lib",
+    "shiki/",
+    "",
+  ),
+
   "src/lib/Hex/index.dual.tsx": new JSPath(
     "src/lib/Hex/index.dual.tsx",
     "src/lib/Hex",
     "index.dual.tsx",
     "tsx",
     () => import("~/lib/Hex/index.dual.tsx"),
+  ),
+
+  "src/lib/Hex/": new Path(
+    "src/lib/Hex/",
+    "src/lib",
+    "Hex/",
+    "",
   ),
 
   "src/lib/rxjs-vhtml/vhtml.deno.ts": new JSPath(
@@ -668,6 +905,13 @@ export const FS = {
       "mts",
     ),
 
+  "src/lib/rxjs-vhtml/v2/out/rxjs-vhtml/v2/": new Path(
+    "src/lib/rxjs-vhtml/v2/out/rxjs-vhtml/v2/",
+    "src/lib/rxjs-vhtml/v2/out/rxjs-vhtml",
+    "v2/",
+    "",
+  ),
+
   "src/lib/rxjs-vhtml/v2/out/rxjs-vhtml/vhtml.deno.js":
     new JSPath(
       "src/lib/rxjs-vhtml/v2/out/rxjs-vhtml/vhtml.deno.js",
@@ -692,6 +936,13 @@ export const FS = {
         ),
     ),
 
+  "src/lib/rxjs-vhtml/v2/out/rxjs-vhtml/": new Path(
+    "src/lib/rxjs-vhtml/v2/out/rxjs-vhtml/",
+    "src/lib/rxjs-vhtml/v2/out",
+    "rxjs-vhtml/",
+    "",
+  ),
+
   "src/lib/rxjs-vhtml/v2/out/lib.dual.js": new JSPath(
     "src/lib/rxjs-vhtml/v2/out/lib.dual.js",
     "src/lib/rxjs-vhtml/v2/out",
@@ -706,6 +957,13 @@ export const FS = {
     "lib.dual.d.ts",
     "ts",
     () => import("~/lib/rxjs-vhtml/v2/out/lib.dual.d.ts"),
+  ),
+
+  "src/lib/rxjs-vhtml/v2/out/": new Path(
+    "src/lib/rxjs-vhtml/v2/out/",
+    "src/lib/rxjs-vhtml/v2",
+    "out/",
+    "",
   ),
 
   "src/lib/rxjs-vhtml/v2/jsx-runtime.mts": new Path(
@@ -742,6 +1000,20 @@ export const FS = {
         ),
     ),
 
+  "src/lib/rxjs-vhtml/v2/": new Path(
+    "src/lib/rxjs-vhtml/v2/",
+    "src/lib/rxjs-vhtml",
+    "v2/",
+    "",
+  ),
+
+  "src/lib/rxjs-vhtml/": new Path(
+    "src/lib/rxjs-vhtml/",
+    "src/lib",
+    "rxjs-vhtml/",
+    "",
+  ),
+
   "src/lib/fs_watcher.deno.ts": new JSPath(
     "src/lib/fs_watcher.deno.ts",
     "src/lib",
@@ -761,6 +1033,20 @@ export const FS = {
           "~/lib/ts_experiments/tuple_mapping.deno.ts"
         ),
     ),
+
+  "src/lib/ts_experiments/": new Path(
+    "src/lib/ts_experiments/",
+    "src/lib",
+    "ts_experiments/",
+    "",
+  ),
+
+  "src/lib/remark_rehype/temp/": new Path(
+    "src/lib/remark_rehype/temp/",
+    "src/lib/remark_rehype",
+    "temp/",
+    "",
+  ),
 
   "src/lib/remark_rehype/demo-runner.daemon.dom.ts":
     new JSPath(
@@ -814,12 +1100,33 @@ export const FS = {
         ),
     ),
 
+  "src/lib/remark_rehype/": new Path(
+    "src/lib/remark_rehype/",
+    "src/lib",
+    "remark_rehype/",
+    "",
+  ),
+
+  "src/lib/CodeTabs/temp/": new Path(
+    "src/lib/CodeTabs/temp/",
+    "src/lib/CodeTabs",
+    "temp/",
+    "",
+  ),
+
   "src/lib/CodeTabs/index.dual.tsx": new JSPath(
     "src/lib/CodeTabs/index.dual.tsx",
     "src/lib/CodeTabs",
     "index.dual.tsx",
     "tsx",
     () => import("~/lib/CodeTabs/index.dual.tsx"),
+  ),
+
+  "src/lib/CodeTabs/": new Path(
+    "src/lib/CodeTabs/",
+    "src/lib",
+    "CodeTabs/",
+    "",
   ),
 
   "src/lib/Path/funcs.ts": new JSPath(
@@ -844,6 +1151,13 @@ export const FS = {
     "index.ts",
     "ts",
     () => import("~/lib/Path/index.ts"),
+  ),
+
+  "src/lib/Path/": new Path(
+    "src/lib/Path/",
+    "src/lib",
+    "Path/",
+    "",
   ),
 
   "src/lib/auto-demo.deno.tsx": new JSPath(
@@ -876,6 +1190,13 @@ export const FS = {
     "add-two-numbers.deno.ts",
     "ts",
     () => import("~/lib/leet/add-two-numbers.deno.ts"),
+  ),
+
+  "src/lib/leet/": new Path(
+    "src/lib/leet/",
+    "src/lib",
+    "leet/",
+    "",
   ),
 
   "src/lib/TextDiffMini.dual.tsx": new JSPath(
@@ -941,6 +1262,13 @@ export const FS = {
           "~/lib/ridiculous_file_watchers/SITEMAP_generator.deno.ts"
         ),
     ),
+
+  "src/lib/ridiculous_file_watchers/": new Path(
+    "src/lib/ridiculous_file_watchers/",
+    "src/lib",
+    "ridiculous_file_watchers/",
+    "",
+  ),
 
   "src/lib/lib.dual.ts": new JSPath(
     "src/lib/lib.dual.ts",
@@ -1043,6 +1371,13 @@ export const FS = {
     () => import("~/lib/client/debug-range.js"),
   ),
 
+  "src/lib/client/": new Path(
+    "src/lib/client/",
+    "src/lib",
+    "client/",
+    "",
+  ),
+
   "src/lib/form_helpers/with.forms.dom.ts": new JSPath(
     "src/lib/form_helpers/with.forms.dom.ts",
     "src/lib/form_helpers",
@@ -1067,6 +1402,15 @@ export const FS = {
     () => import("~/lib/form_helpers/with.dom.ts"),
   ),
 
+  "src/lib/form_helpers/": new Path(
+    "src/lib/form_helpers/",
+    "src/lib",
+    "form_helpers/",
+    "",
+  ),
+
+  "src/lib/": new Path("src/lib/", "src", "lib/", ""),
+
   "src/pages/about.astro": new Path(
     "src/pages/about.astro",
     "src/pages",
@@ -1088,6 +1432,13 @@ export const FS = {
     "astro",
   ),
 
+  "src/pages/blog/": new Path(
+    "src/pages/blog/",
+    "src/pages",
+    "blog/",
+    "",
+  ),
+
   "src/pages/tags/index.astro": new Path(
     "src/pages/tags/index.astro",
     "src/pages/tags",
@@ -1101,6 +1452,15 @@ export const FS = {
     "[tag].astro",
     "astro",
   ),
+
+  "src/pages/tags/": new Path(
+    "src/pages/tags/",
+    "src/pages",
+    "tags/",
+    "",
+  ),
+
+  "src/pages/": new Path("src/pages/", "src", "pages/", ""),
 
   "src/apps/trpc.listen.deno.ts": new JSPath(
     "src/apps/trpc.listen.deno.ts",
@@ -1167,6 +1527,13 @@ export const FS = {
     () => import("~/apps/task/frontend/components.dom.tsx"),
   ),
 
+  "src/apps/task/frontend/": new Path(
+    "src/apps/task/frontend/",
+    "src/apps/task",
+    "frontend/",
+    "",
+  ),
+
   "src/apps/task/types.ts": new JSPath(
     "src/apps/task/types.ts",
     "src/apps/task",
@@ -1182,12 +1549,33 @@ export const FS = {
     "json",
   ),
 
+  "src/apps/task/db/": new Path(
+    "src/apps/task/db/",
+    "src/apps/task",
+    "db/",
+    "",
+  ),
+
   "src/apps/task/api/index.trpc.deno.ts": new JSPath(
     "src/apps/task/api/index.trpc.deno.ts",
     "src/apps/task/api",
     "index.trpc.deno.ts",
     "ts",
     () => import("~/apps/task/api/index.trpc.deno.ts"),
+  ),
+
+  "src/apps/task/api/": new Path(
+    "src/apps/task/api/",
+    "src/apps/task",
+    "api/",
+    "",
+  ),
+
+  "src/apps/task/": new Path(
+    "src/apps/task/",
+    "src/apps",
+    "task/",
+    "",
   ),
 
   "src/apps/trpc.client.dom.ts": new JSPath(
@@ -1197,6 +1585,10 @@ export const FS = {
     "ts",
     () => import("~/apps/trpc.client.dom.ts"),
   ),
+
+  "src/apps/": new Path("src/apps/", "src", "apps/", ""),
+
+  "src/": new Path("src/", ".", "src/", ""),
 } as const
 export type FILESYSTEM = typeof FS
 export const SITEMAP = new SITEMAP_PART<FILESYSTEM>(FS)

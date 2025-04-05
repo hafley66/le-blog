@@ -41,7 +41,7 @@ export const SUB = SITEMAP.subFolder('$filePath/')
         super_extension=""
         importPath="${relativePath/src/'~'}"
         publicPath="/${relativePath/src\//}"
-        return
+        relativePath="$relativePath/"
     else
         isDirectory=false
         filename=$(basename -- "$filePath")

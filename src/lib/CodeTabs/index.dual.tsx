@@ -1,8 +1,10 @@
 import { writeFile } from "node:fs/promises"
+
 import path from "node:path"
 import {
   catchError,
   combineLatest,
+  from,
   map,
   of,
   switchMap,
@@ -12,9 +14,11 @@ import { FS, SITEMAP } from "~/SITEMAP.deno.ts"
 import { Shiki } from "~/lib/shiki/shiki.deno.tsx"
 import { $$ } from "~/BASH.deno.ts"
 import { rmSync } from "node:fs"
-import { deferFrom } from "~/lib/lib.dual.ts"
+import { deferFrom, TAG } from "~/lib/lib.dual.ts"
 import { v7 } from "uuid"
 import { mkdirSync } from "node:fs"
+import { unified } from "unified"
+import remarkParse from "remark-parse"
 
 export type CodeTabsProps = {
   mapping?: Record<string, string>
@@ -35,12 +39,15 @@ export const CodeTabs = ({
 }: CodeTabsProps) => {
   !folder.endsWith("/") && (folder = folder + "/")
   const radioName = `code-group-${path.dirname(folder)}`
-  const files = SITEMAP.subFolder(folder).includes<
+  console.log({ folder })
+  const files = SITEMAP.subFolder(folder as any).includes<
     "deno.ts" | "deno.tsx" | "dom.ts" | "dom.tsx"
   >(/\.(dom|deno)\.tsx?$/)
 
   const true_mapping = mapping
-    ? Object.entries(mapping)
+    ? Object.entries(mapping).map(
+        i => [i[0], i[1].trim()] as const,
+      )
     : folder
       ? (files.map(
           i => [i.path, i.readSync()] as const,
@@ -65,11 +72,14 @@ export const CodeTabs = ({
 
     mkdirSync(tempDir, { recursive: true })
 
-    evalType = fspath.includes(".deno.")
-      ? "back"
-      : fspath.includes(".dom.")
-        ? "front"
-        : evalType.trim()
+    evalType =
+      fspath.endsWith(".deno.tsx") ||
+      fspath.endsWith("deno.ts")
+        ? "back"
+        : fspath.endsWith(".dom.ts") ||
+            fspath.endsWith(".dom.tsx")
+          ? "front"
+          : evalType.trim()
 
     const itemId = fspath
     const out = {
@@ -136,6 +146,7 @@ export const CodeTabs = ({
         //     ],
         //   },
         // ]
+        console.log({ fspath, evalType })
         return [
           combineLatest([
             Shiki({ code: content, lang: cleanExt }),
@@ -225,7 +236,7 @@ function eatAtAt(atat: string, target: string) {
         new RegExp(`(.*@@${atat}.*)\\n`, "i"),
         "",
       ),
-      match[0].split(`@@${atat} `)[1],
+      match[0].split(`@@${atat} `)[1] || "",
       true,
     ] as const
   }
@@ -309,3 +320,18 @@ const list = {
 
 const escapeHTML = (str: string) =>
   str.replace(/[&<>'"]/g, tag => list[tag])
+
+CodeTabs.markdown = (
+  values: TemplateStringsArray,
+  ...args: any[]
+) => {
+  const value = values.join("")
+  return deferFrom(() =>
+    of(
+      unified()
+        .use(remarkParse)
+        .parse(value)
+        .children.filter(i => i.type === "code"),
+    ),
+  ).pipe(TAG("From markdown"))
+}

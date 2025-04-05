@@ -28,6 +28,8 @@ import {
 import { Remark } from "./00_Remark2.deno.tsx"
 import { deferFrom, TAG } from "~/lib/lib.dual.ts"
 import { v7 } from "uuid"
+import { CodeTabs } from "~/lib/CodeTabs/index.dual.tsx"
+import path from "node:path"
 
 const MARKDOWN_REGEX_TO_NAIVELY_SPLIT_HEADERS__BEWARE_HASH_COMMENTS =
   /(#{2,} .+?)\n([\s\S]*?)(?=\n#{2,} |\n*$|$)/g
@@ -35,12 +37,16 @@ const MARKDOWN_REGEX_TO_NAIVELY_SPLIT_HEADERS__BEWARE_HASH_COMMENTS =
 export const Render$ = (importMetaFilename: string) => {
   const [dontCare, ...thisOne] =
     importMetaFilename.split("/src")
-  const dir = thisOne.join("")
 
   const OUTFILE = importMetaFilename.replace(
     ".render.deno.tsx",
     ".vite.html",
   )
+  importMetaFilename = path.resolve(
+    importMetaFilename,
+    process.cwd(),
+  )
+  const dir = thisOne.join("")
 
   const safeRead = (path: string) => {
     try {
@@ -283,6 +289,9 @@ ${it.body}
     })
   }
 
+  let mid = 0
+  let midg = 0
+
   return {
     header$,
     md,
@@ -290,6 +299,34 @@ ${it.body}
     Layout,
     SSGLayout,
     markdown,
+    CodeTabs: {
+      markdown: (
+        values: TemplateStringsArray,
+        ...args: any[]
+      ): Observable<string> => {
+        const codes = CodeTabs.markdown(values, ...args)
+        return codes.pipe(
+          switchMap(nextC => {
+            return CodeTabs({
+              folder:
+                path.dirname(importMetaFilename) +
+                "/md_" +
+                midg++ +
+                "/",
+              mapping: Object.fromEntries(
+                nextC.map(
+                  (code, ci) =>
+                    [
+                      `${importMetaFilename}/md_${mid++}${code.lang ? `.${code.lang}` : ""}`,
+                      code.value,
+                    ] as const,
+                ),
+              ),
+            })
+          }),
+        )
+      },
+    },
   }
 }
 

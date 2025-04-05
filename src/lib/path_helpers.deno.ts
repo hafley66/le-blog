@@ -85,11 +85,23 @@ ${this.readSync()}
     
     `
   }
-}
 
+  CodeTab = () => {
+    return CodeTabs({
+      folder: this.dir,
+      mapping: {
+        [this.path]: this.readSync(),
+      },
+    })
+  }
+}
 type Folders<
   T extends Record<string, Path<any, any, any, any>>,
-> = keyof T extends `${infer U}/${string}` ? U : never
+> = keyof T extends `${infer U}`
+  ? U extends `${infer X}/`
+    ? `${X}/`
+    : never
+  : never
 
 export class SITEMAP_PART<
   FILESYSTEM extends Record<
@@ -100,6 +112,7 @@ export class SITEMAP_PART<
   constructor(
     public fs: FILESYSTEM,
     public path = "",
+    public self = null as null | Path<any, any, any, any>,
   ) {}
   startsWith<T extends string>(it: T) {
     return Object.entries(this.fs)
@@ -131,6 +144,7 @@ export class SITEMAP_PART<
     }>[]
   }
   subFolder<T extends Folders<FILESYSTEM>>(it: T) {
+    const folder = this.fs[it]
     return new SITEMAP_PART(
       Object.fromEntries(
         Object.entries(this.fs)
@@ -142,12 +156,14 @@ export class SITEMAP_PART<
           : never]: FILESYSTEM[K]
       },
       it,
+      folder,
     )
   }
 
-  CodeTabs() {
+  CodeTabs(props?: { mapping: Record<string, string> }) {
     return CodeTabs({
-      folder: Object.entries(this.path),
+      folder: this.self?.path,
+      ...props,
     })
   }
 }

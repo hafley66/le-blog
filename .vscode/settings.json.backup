@@ -155,7 +155,10 @@
     "src/blog/2025-04-02/SITEMAP.deno.ts",
     "src/lib/TextDiffMini.dual.tsx",
     "src/blog/unholy-custom-jsx-with-observable-strings/diffViewer/SITEMAP.deno.ts",
-    "src/lib/auto-demo.deno.tsx"
+    "src/lib/auto-demo.deno.tsx",
+    "src/blog/learning/css-anchor-positioning/index.render.deno.tsx",
+    "src/blog/learning/SITEMAP.deno.ts",
+    "src/blog/learning/css-anchor-positioning/SITEMAP.deno.ts"
   ],
   "deno.config": "./deno.json",
   "files.exclude": {

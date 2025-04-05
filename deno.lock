@@ -85,6 +85,7 @@
     "npm:remark-parse@11": "11.0.0",
     "npm:remark-rehype@^11.1.1": "11.1.1",
     "npm:remark-shiki-twoslash@^3.1.3": "3.1.3_typescript@5.8.2",
+    "npm:remark@^15.0.1": "15.0.1",
     "npm:rolldown@1.0.0-beta.3": "1.0.0-beta.3_valibot@1.0.0-beta.12__typescript@5.8.2_typescript@5.8.2",
     "npm:rxjs@*": "7.8.2",
     "npm:rxjs@^7.8.2": "7.8.2",
@@ -3980,6 +3981,15 @@
         "unified@11.0.5"
       ]
     },
+    "remark@15.0.1": {
+      "integrity": "sha512-Eht5w30ruCXgFmxVUSlNWQ9iiimq07URKeFS3hNc8cUWy1llX4KDWfyEDZRycMc+znsN9Ux5/tJ/BFdgdOwA3A==",
+      "dependencies": [
+        "@types/mdast@4.0.4",
+        "remark-parse@11.0.0",
+        "remark-stringify",
+        "unified@11.0.5"
+      ]
+    },
     "remove-accents@0.5.0": {
       "integrity": "sha512-8g3/Otx1eJaVD12e31UbJj1YzdtVvzH85HV7t+9MJYk/u3XmkOUJ5Ys9wQrf9PCPK8+xn4ymzqYCiZl6QWKn+A=="
     },
@@ -4913,6 +4923,7 @@
         "npm:remark-parse@11",
         "npm:remark-rehype@^11.1.1",
         "npm:remark-shiki-twoslash@^3.1.3",
+        "npm:remark@^15.0.1",
         "npm:rolldown@1.0.0-beta.3",
         "npm:rxjs@^7.8.2",
         "npm:scroll-into-view-if-needed@^3.1.0",

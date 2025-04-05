@@ -118,9 +118,6 @@ const RemarkDaemon = _input
       console.error(err)
       return of({})
     }),
-    tap({
-      finalize: () => "MOTHER FUCKER",
-    }),
   )
   .subscribe(_cache)
 

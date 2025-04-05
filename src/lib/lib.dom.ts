@@ -65,7 +65,6 @@ export function fromEventDelegate<
         return
       }
       let it: HTMLElement | null = target
-      console.log(event)
       while (it) {
         if (it?.matches(selector)) {
           // console.log({ match: it, selector, event })

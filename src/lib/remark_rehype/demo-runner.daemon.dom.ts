@@ -18,7 +18,7 @@ const activatedRootToTarget = {} as Record<
 
 export const __activate_demo = (filename: string) => {
   const found = registeredDemos[filename]
-  console.log("Activating", filename, found)
+  // console.log("Activating", filename, found)
   if (!found) console.log("not found", filename, found)
   const dirname =
     filename.split("/").slice(0, -1).join("/") + "/"
@@ -41,7 +41,7 @@ export const __activate_demo = (filename: string) => {
         : // @ts-ignore
           found()
 
-    console.log({ dirname, target, next })
+    // console.log({ dirname, target, next })
     if (
       target &&
       next &&
