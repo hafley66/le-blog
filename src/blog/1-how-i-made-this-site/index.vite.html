@@ -119,8 +119,8 @@ Vultr has great instance setups, so I can skip docker if I need to, or use it to
 }
 </style><div class="flair-section"></div></section>
 <section id="section-bash-time"><h3 id="bash-time"><a href="#bash-time"><span class="marker">7.2.</span>  Bash time<div class="flair-a"></div></a><div class="flair-h"></div></h3><p>Now you can add this script to your <code>~/.bash_profile</code>, and when you are ready to deploy your app, you can just sync with rsync and you are good to go.</p><pre class="shiki one-dark-pro" style="background-color:#282c34;color:#abb2bf" tabindex="0"><div class="code-scroller"><code class="language-bash"><span class="line"><span style="color:#7F848E;font-style:italic">#!/usr/bin/env bash</span></span>
-<span class="line"><span style="color:#C678DD">export</span><span style="color:#E06C75"> LE_BLOG</span><span style="color:#56B6C2">=</span><span style="color:#ABB2BF">~/</span><span style="color:#E06C75">projects</span><span style="color:#ABB2BF">/</span><span style="color:#E06C75">le-blog</span><span style="color:#ABB2BF">/</span></span>
-<span class="line"><span style="color:#C678DD">export</span><span style="color:#E06C75"> LE_BLOG_TARGET</span><span style="color:#56B6C2">=</span><span style="color:#ABB2BF">/</span><span style="color:#E06C75">var</span><span style="color:#ABB2BF">/</span><span style="color:#E06C75">www</span><span style="color:#ABB2BF">/</span><span style="color:#E06C75">html</span></span>
+<span class="line"><span style="color:#C678DD">export</span><span style="color:#E06C75"> LE_BLOG</span><span style="color:#56B6C2">=</span><span style="color:#ABB2BF">~/</span><span style="color:#E06C75">projects</span><span style="color:#ABB2BF">/</span><span style="color:#E06C75">le-blog</span><span style="color:#ABB2BF">/</span><span style="color:#E06C75">dist</span><span style="color:#ABB2BF">/</span></span>
+<span class="line"><span style="color:#C678DD">export</span><span style="color:#E06C75"> LE_BLOG_TARGET</span><span style="color:#56B6C2">=</span><span style="color:#ABB2BF">/</span><span style="color:#E06C75">var</span><span style="color:#ABB2BF">/</span><span style="color:#E06C75">www</span><span style="color:#ABB2BF">/</span><span style="color:#E06C75">html</span><span style="color:#ABB2BF">/</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#61AFEF">_.blog.sync.watch</span><span style="color:#ABB2BF">() {</span></span>
 <span class="line"><span style="color:#61AFEF">  fswatch</span><span style="color:#D19A66"> -o</span><span style="color:#E06C75"> $LE_BLOG</span><span style="color:#ABB2BF"> | </span><span style="color:#C678DD">while</span><span style="color:#56B6C2"> read</span><span style="color:#ABB2BF">;</span></span>
@@ -130,15 +130,11 @@ Vultr has great instance setups, so I can skip docker if I need to, or use it to
 <span class="line"></span>
 <span class="line"><span style="color:#61AFEF">_.blog.sync</span><span style="color:#ABB2BF">() {</span></span>
 <span class="line"><span style="color:#61AFEF">  rsync</span><span style="color:#56B6C2"> \</span></span>
-<span class="line"><span style="color:#D19A66">    --include</span><span style="color:#98C379"> index.html</span><span style="color:#56B6C2"> \</span></span>
-<span class="line"><span style="color:#D19A66">    --include</span><span style="color:#98C379"> dist/</span><span style="color:#56B6C2"> \</span></span>
-<span class="line"><span style="color:#D19A66">    --exclude</span><span style="color:#98C379"> node_modules/</span><span style="color:#56B6C2"> \</span></span>
-<span class="line"><span style="color:#D19A66">    --exclude</span><span style="color:#98C379"> .git/</span><span style="color:#56B6C2"> \</span></span>
 <span class="line"><span style="color:#D19A66">    --progress</span><span style="color:#56B6C2"> \</span></span>
 <span class="line"><span style="color:#D19A66">    -avz</span><span style="color:#56B6C2"> \</span></span>
 <span class="line"><span style="color:#E06C75">    $LE_BLOG</span><span style="color:#98C379"> root@hafley.codes:</span><span style="color:#E06C75">$LE_BLOG_TARGET</span></span>
 <span class="line"><span style="color:#ABB2BF">}</span></span>
-<span class="line"><span style="color:#ABB2BF"> </span></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><p>Is it dangerous? Hmmmmmmaybe.</p><p>Does it work? Oh yea.</p><p>Am I scared of destroying my site? No, yay git.</p><p>Do I need to run this code in 2 universes? MMMMMNot yet.</p><p>Good luck!</p><style>
+<span class="line"><span style="color:#ABB2BF"> </span></span></code></div><button class="copy-to-clipboard caption">Copy</button></pre><p>Is it dangerous? Hmmmmmmaybe.</p><p>Does it work? Oh yea.</p><p>Am I scared of destroying my site? No, yay git.</p><p>Do I need to run this code in 2 universes? MMMMMNot yet.</p><p>Good luck!</p><p>&#x3C;--EOL</p><style>
 #section-bash-time {
   --section-header-hr-start: 90%;
   --section-header-hr-stop: 100%;
@@ -490,10 +486,16 @@ document.addEventListener("keyup", e => {
 })
 </script>
     
-    <script type='module' src='/lib/client/invokers.dom.js' demo-for='invokers.dom.js'></script>
+    <script type='module' src='/lib/client/invokers.dom.js' data-src="/lib/client/invokers.dom.js"></script>
+    <div id="/lib/client/">
+      <div class="code-group-demo-area"></div>
+    </div>
     
     
     
-    <script type='module' src='/lib/client/dialog-closeby-attribute-polyfill.dom.js' demo-for='dialog-closeby-attribute-polyfill.dom.js'></script>
+    <script type='module' src='/lib/client/dialog-closeby-attribute-polyfill.dom.js' data-src="/lib/client/dialog-closeby-attribute-polyfill.dom.js"></script>
+    <div id="/lib/client/">
+      <div class="code-group-demo-area"></div>
+    </div>
     
     <script type="module" src="/lib/client/on-click-scroll.dom.ts" defer="true"></script></body></html>

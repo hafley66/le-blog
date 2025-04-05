@@ -1,5 +1,7 @@
 import { readFileSync } from "node:fs"
+import path from "node:path"
 import jsx from "~/lib/rxjs-vhtml/v2/jsx-runtime.tsx"
+import { CodeTabs } from "~/lib/CodeTabs/index.dual.tsx"
 type Imploder<T> = T[keyof T]
 
 export class Path<
@@ -76,21 +78,18 @@ ${this.readSync()}
   demoScript = () => {
     return `
     
-    <script type='module' src='${this.publicPath}' demo-for='${this.filename}'></script>
+    <script type='module' src='${this.publicPath}' data-src="${this.publicPath}"></script>
+    <div id="${path.dirname(this.publicPath)}/">
+      <div class="code-group-demo-area"></div>
+    </div>
     
     `
   }
-
-  demoScript$ = () => {
-    return jsx("script", {
-      type: "module",
-      src: this.publicPath,
-      "demo-for": this.filename,
-      defer: true,
-      children: [],
-    })
-  }
 }
+
+type Folders<
+  T extends Record<string, Path<any, any, any, any>>,
+> = keyof T extends `${infer U}/${string}` ? U : never
 
 export class SITEMAP_PART<
   FILESYSTEM extends Record<
@@ -111,7 +110,7 @@ export class SITEMAP_PART<
         : never]: FILESYSTEM[K]
     }>[]
   }
-  endsWith<T extends string>(it: T) {
+  endsWith<T extends Folders<FILESYSTEM>>(it: T) {
     return Object.entries(this.fs)
       .filter(([k, v]) => k.endsWith(it))
       .map(i => i[1]) as unknown as Imploder<{
@@ -131,7 +130,7 @@ export class SITEMAP_PART<
         : never]: FILESYSTEM[K]
     }>[]
   }
-  subFolder<T extends string>(it: T) {
+  subFolder<T extends Folders<FILESYSTEM>>(it: T) {
     return new SITEMAP_PART(
       Object.fromEntries(
         Object.entries(this.fs)
@@ -144,5 +143,11 @@ export class SITEMAP_PART<
       },
       it,
     )
+  }
+
+  CodeTabs() {
+    return CodeTabs({
+      folder: Object.entries(this.path),
+    })
   }
 }

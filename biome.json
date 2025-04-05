@@ -26,12 +26,14 @@
 				"noNonNullAssertion": "info",
 				"useConst": "info",
 				"noUnusedTemplateLiteral": "off",
-				"useTemplate": "info"
+				"useTemplate": "info",
+				"useSingleVarDeclarator": "info"
 			},
 			"suspicious": {
 				"noAssignInExpressions": "warn",
 				"noExplicitAny": "warn",
-				"noFallthroughSwitchClause": "off"
+				"noFallthroughSwitchClause": "off",
+				"noArrayIndexKey": "info"
 			}
 		}
 	},

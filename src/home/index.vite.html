@@ -6,7 +6,14 @@
 <p>This site is powered by a (currently) 725 lines of a custom remark.js plugin, and a variant of JSX that is just RxJS and strings over time.</p>
 <hr>
 <p>Here is my TODO board. I made this using absolutely zero BehaviorSubjects, useState, useContext, useEffect, or for that matter any imperative global state, or ornate class diagram.</p>
-<p>Quite literally just form states, api calls, and RxJS. I made it to test out how to do a full interactive app with my RxJS (RxJS + JSX) library. It looks a lot like React, <strong>but its not</strong>.</p></div><script type="module" src="/apps/task/frontend/index.dom.tsx" demo-for="index.dom.tsx" defer="true"></script></div></main><footer></footer><script>function copyToClipboard(text) {
+<p>Quite literally just form states, api calls, and RxJS. I made it to test out how to do a full interactive app with my RxJS (RxJS + JSX) library. It looks a lot like React, <strong>but its not</strong>.</p></div>
+    
+    <script type='module' src='/apps/task/frontend/index.dom.tsx' data-src="/apps/task/frontend/index.dom.tsx"></script>
+    <div id="/apps/task/frontend/">
+      <div class="code-group-demo-area"></div>
+    </div>
+    
+    </div></main><footer></footer><script>function copyToClipboard(text) {
   navigator.clipboard
     .writeText(text)
     .then(() => {
@@ -141,10 +148,16 @@ document.addEventListener("keyup", e => {
 })
 </script>
     
-    <script type='module' src='/lib/client/invokers.dom.js' demo-for='invokers.dom.js'></script>
+    <script type='module' src='/lib/client/invokers.dom.js' data-src="/lib/client/invokers.dom.js"></script>
+    <div id="/lib/client/">
+      <div class="code-group-demo-area"></div>
+    </div>
     
     
     
-    <script type='module' src='/lib/client/dialog-closeby-attribute-polyfill.dom.js' demo-for='dialog-closeby-attribute-polyfill.dom.js'></script>
+    <script type='module' src='/lib/client/dialog-closeby-attribute-polyfill.dom.js' data-src="/lib/client/dialog-closeby-attribute-polyfill.dom.js"></script>
+    <div id="/lib/client/">
+      <div class="code-group-demo-area"></div>
+    </div>
     
     <script type="module" src="/lib/client/on-click-scroll.dom.ts" defer="true"></script></body></html>

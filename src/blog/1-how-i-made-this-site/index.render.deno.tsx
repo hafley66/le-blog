@@ -1,6 +1,7 @@
 import { FS } from "~/SITEMAP.deno.ts"
 import { Render$ } from "~/lib/0_RenderBase.deno.tsx"
 const $ = Render$(import.meta.filename!)
+// hmm
 
 export default $.SSGLayout({
   title: "How I started this site as of 2025/02/27",
@@ -9,6 +10,7 @@ export default $.SSGLayout({
   date_created: "2025-02-25",
   tags: ["astro", "vultr", "bash", "dns", "vps", "ssh"],
   ...$.md`
+<-EOL
 ## Buy a domain
 I used [Porkbun](https://porkbun.com/), very easy to use. They also come with easy to use WHOIS protection, which is a big plus.
 
@@ -100,5 +102,8 @@ Do I need to run this code in 2 universes? MMMMMNot yet.
 
 Good luck!
 
+<--EOL
 `,
+  //``
+  author: "wasd",
 })

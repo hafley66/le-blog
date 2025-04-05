@@ -246,6 +246,18 @@ export const FS = {
         ),
     ),
 
+  "src/blog/unholy-custom-jsx-with-observable-strings/diffViewer/index.dom.tsx":
+    new JSPath(
+      "src/blog/unholy-custom-jsx-with-observable-strings/diffViewer/index.dom.tsx",
+      "src/blog/unholy-custom-jsx-with-observable-strings/diffViewer",
+      "index.dom.tsx",
+      "tsx",
+      () =>
+        import(
+          "~/blog/unholy-custom-jsx-with-observable-strings/diffViewer/index.dom.tsx"
+        ),
+    ),
+
   "src/blog/unholy-custom-jsx-with-observable-strings/counter/7.react.ellapsed.dom.tsx":
     new JSPath(
       "src/blog/unholy-custom-jsx-with-observable-strings/counter/7.react.ellapsed.dom.tsx",
@@ -834,6 +846,14 @@ export const FS = {
     () => import("~/lib/Path/index.ts"),
   ),
 
+  "src/lib/auto-demo.deno.tsx": new JSPath(
+    "src/lib/auto-demo.deno.tsx",
+    "src/lib",
+    "auto-demo.deno.tsx",
+    "tsx",
+    () => import("~/lib/auto-demo.deno.tsx"),
+  ),
+
   "src/lib/lib.deno.ts": new JSPath(
     "src/lib/lib.deno.ts",
     "src/lib",
@@ -856,6 +876,14 @@ export const FS = {
     "add-two-numbers.deno.ts",
     "ts",
     () => import("~/lib/leet/add-two-numbers.deno.ts"),
+  ),
+
+  "src/lib/TextDiffMini.dual.tsx": new JSPath(
+    "src/lib/TextDiffMini.dual.tsx",
+    "src/lib",
+    "TextDiffMini.dual.tsx",
+    "tsx",
+    () => import("~/lib/TextDiffMini.dual.tsx"),
   ),
 
   "src/lib/idea.deno.tsx": new JSPath(
@@ -981,6 +1009,14 @@ export const FS = {
     "on-click-scroll.dom.ts",
     "ts",
     () => import("~/lib/client/on-click-scroll.dom.ts"),
+  ),
+
+  "src/lib/client/auto-demo.ts": new JSPath(
+    "src/lib/client/auto-demo.ts",
+    "src/lib/client",
+    "auto-demo.ts",
+    "ts",
+    () => import("~/lib/client/auto-demo.ts"),
   ),
 
   "src/lib/client/code-copy.init.dom.js": new JSPath(

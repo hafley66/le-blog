@@ -444,7 +444,7 @@ export namespace JSX {
 
   export interface IntrinsicElements {
     [key: string]: {
-      key?: string
+      key?: string | number
       id?: string
       style?:
         | string

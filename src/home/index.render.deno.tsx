@@ -7,7 +7,8 @@ export default $.SSGLayout({
   disable_toc: true,
   children: [
     <div key="1" style="text-align:center;">
-      {$.markdown`
+      {
+        $.markdown`
 
 I'm Chris Hafley, and this is my personal site/blog/portfolio/notebook/garden/living resume.
 
@@ -31,11 +32,11 @@ ${
   // ::figurecaption[Rare footage of me constantly working on this site's remark.js custom plugin]{}
   // :::
 }
-`}
+`
+        //``
+      }
     </div>,
-    FS[
-      "src/apps/task/frontend/index.dom.tsx"
-    ].demoScript$(),
+    FS["src/apps/task/frontend/index.dom.tsx"].demoScript(),
   ],
 })
 

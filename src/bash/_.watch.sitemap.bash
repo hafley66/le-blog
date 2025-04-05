@@ -34,6 +34,13 @@ import { SITEMAP } from '~/SITEMAP.deno.ts'
 
 export const SUB = SITEMAP.subFolder('$filePath/')
 " > "$filePath/SITEMAP.deno.ts"
+        isDirectory=true
+        filename="$(basename -- "$filePath")/"
+        dirname=$(dirname -- "$filePath")
+        extension=""
+        super_extension=""
+        importPath="${relativePath/src/'~'}"
+        publicPath="/${relativePath/src\//}"
         return
     else
         isDirectory=false

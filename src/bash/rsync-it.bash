@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-export LE_BLOG=~/projects/le-blog/
-export LE_BLOG_TARGET=/var/www/html
+export LE_BLOG=~/projects/le-blog/dist/
+export LE_BLOG_TARGET=/var/www/html/
 
 _.blog.sync.watch() {
   fswatch -o $LE_BLOG | while read;
@@ -10,10 +10,6 @@ _.blog.sync.watch() {
 
 _.blog.sync() {
   rsync \
-    --include index.html \
-    --include dist/ \
-    --exclude node_modules/ \
-    --exclude .git/ \
     --progress \
     -avz \
     $LE_BLOG root@hafley.codes:$LE_BLOG_TARGET

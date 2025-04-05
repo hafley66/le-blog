@@ -1,10 +1,8 @@
+// deno-lint-ignore-file jsx-key
 import { SUB } from "~/blog/unholy-custom-jsx-with-observable-strings/SITEMAP.deno.ts"
 import { Render$ } from "~/lib/0_RenderBase.deno.tsx"
 import { CodeTabs } from "~/lib/CodeTabs/index.dual.tsx"
 const $ = Render$(import.meta.filename!)
-const { fs: FS } = SUB
-const F =
-  "src/blog/unholy-custom-jsx-with-observable-strings" as const
 
 export default $.SSGLayout({
   title:
@@ -100,7 +98,7 @@ I truly hope that this is a starting point for some devs to build intuition or i
 Here are 4 intro demos demonstrating basic jsx, sync jsx, and async jsx with observables, and async jsx with rxjs.
 
 The console.logs represent the value of html emitted over time.
-${<CodeTabs folder={SUB.path! + "intro/"} index={0} />}
+${SUB.endsWith("intro").CodeTabs()}
 
 ## JSX.Element Type
 In this jsx transform, thie children types are 
