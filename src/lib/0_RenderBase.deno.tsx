@@ -43,8 +43,7 @@ export const Render$ = (importMetaFilename: string) => {
     ".vite.html",
   )
   importMetaFilename = path.resolve(
-    importMetaFilename,
-    process.cwd(),
+    importMetaFilename.replace(process.cwd(), ""),
   )
   const dir = thisOne.join("")
 

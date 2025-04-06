@@ -1,17 +1,19 @@
-import type { Node, Nodes as MNodes, Root } from "mdast";
-import { lastValueFrom } from "rxjs";
-import { visit } from "unist-util-visit";
-import { $$ } from "~/BASH.deno.ts";
-import { $ } from "zx";
+import type { Node, Nodes as MNodes, Root } from "mdast"
+import { lastValueFrom } from "rxjs"
+import { visit } from "unist-util-visit"
+import { $$ } from "~/BASH.deno.ts"
+import { $ } from "zx"
 export function remarkPlantUML() {
   return async (tree: Root) => {
-    const plantUMLServerUrl = Deno.env.get("URL_PLANT_UML");
+    const plantUMLServerUrl = Deno.env.get("URL_PLANT_UML")
 
     if (!plantUMLServerUrl) {
-      throw new Error("URL_PLANT_UML environment variable is not set");
+      throw new Error(
+        "URL_PLANT_UML environment variable is not set",
+      )
     }
 
-    const promises: Promise<any>[] = [];
+    const promises: Promise<any>[] = []
 
     visit(tree, "code", (node, index, parent) => {
       if (node.lang === "plantuml") {
@@ -23,49 +25,55 @@ export function remarkPlantUML() {
             },
             body: node.value,
           })
-            .then(async (response) => {
+            .then(async response => {
               if (!response.ok) {
                 throw new Error(
                   `Failed to generate diagram: ${response.statusText}`,
-                );
+                )
               }
 
-              const svg = await response.text();
+              const svg = await response.text()
 
               const imageNode = {
                 type: "html",
                 value: svg, // Insert the SVG directly into the markdown
-              };
+              }
 
-              parent.children[index] = imageNode;
-            }).catch((error) => {
-              console.error(error);
+              parent.children[index] = imageNode
+            })
+            .catch(error => {
+              console.error(error)
               // Optionally, replace node with an error message
               parent.children[index] = {
                 type: "text",
                 value: `Error generating PlantUML diagram: ${error.message}`,
-              };
+              }
             }),
-        );
+        )
       } else if (node.lang === "d2") {
         // Replace this stub with the logic to execute the D2 binary
         promises.push(
-          generateD2Diagram(node.value.trim()).then((svg) => {
-            parent.children[index] = { type: "html", value: svg };
-          }).catch((error) => {
-            console.error(error);
-            parent.children[index] = {
-              type: "text",
-              value: `Error generating D2 diagram: ${error.message}`,
-            };
-          }),
-        );
+          generateD2Diagram(node.value.trim())
+            .then(svg => {
+              parent.children[index] = {
+                type: "html",
+                value: svg,
+              }
+            })
+            .catch(error => {
+              console.error(error)
+              parent.children[index] = {
+                type: "text",
+                value: `Error generating D2 diagram: ${error.message}`,
+              }
+            }),
+        )
       }
-    });
+    })
 
-    await Promise.all(promises);
-    return;
-  };
+    await Promise.all(promises)
+    return
+  }
 }
 
 // This function would run the D2 binary to generate an SVG
@@ -75,10 +83,10 @@ async function generateD2Diagram(d2Content: string) {
   // Consider using an HTTP service wrapped around your D2 tool if complex
   // console.log("Calling D2", d2Content);
   // Example using Deno.run (stub implementation - adjust args and paths):
-  const command = $`d2 -`;
+  const command = $`d2 --pad 0 --dark-theme 200 --layout elk -`
 
-  command.stdin.write(d2Content);
-  command.stdin.end();
+  command.stdin.write(d2Content)
+  command.stdin.end()
 
-  return await command.text(); // foo\n\bar\n
+  return await command.text() // foo\n\bar\n
 }

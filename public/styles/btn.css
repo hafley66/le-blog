@@ -1,0 +1,27 @@
+button[class*="btn"] {
+  width: 100%;
+  display: block;
+  border: none;
+  height: 40px;
+  border-radius: 0px;
+  cursor: not-allowed;
+
+  &:not(:disabled) { 
+    cursor: pointer;
+    &:hover:active {
+    background-image: linear-gradient(rgb(0 0 0/40%) 0 0);
+    }
+
+    &:hover {
+      background-image: linear-gradient(rgb(0 0 0/12%) 0 0);
+    }
+  }
+  &:disabled {
+    opacity: 50%;
+  }
+}
+
+.btn--blue {
+  background-color: var(--color-blue-400);
+  color: white;
+}

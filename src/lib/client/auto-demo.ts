@@ -11,6 +11,12 @@ export function autoDemo(
     | ((demoElement: HTMLElement) => Observable<any>)
     | (() => Observable<string> | ComponentType<{}>),
 ) {
+  try {
+    fsfilename = new URL(fsfilename).pathname
+  } catch (e) {
+    console.log("autoDemo", { fsfilename })
+    console.log(e)
+  }
   registeredDemos[fsfilename] = me
   __activate_demo(fsfilename)
 }

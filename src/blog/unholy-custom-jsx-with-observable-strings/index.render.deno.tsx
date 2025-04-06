@@ -1,7 +1,6 @@
 // deno-lint-ignore-file jsx-key
 import { SUB } from "~/blog/unholy-custom-jsx-with-observable-strings/SITEMAP.deno.ts"
 import { Render$ } from "~/lib/0_RenderBase.deno.tsx"
-import { CodeTabs } from "~/lib/CodeTabs/index.dual.tsx"
 const $ = Render$(import.meta.filename!)
 
 export default $.SSGLayout({
@@ -231,9 +230,8 @@ When you do this in react/solidjs/vue jsx/anything, it must be compiled to true 
 This means functions calls:
 ${
   $.CodeTabs.markdown`
-
 ~~~tsx
-// @@filename: From
+// @@filename From
 const _jsx_element_instance_ = 
 <div 
   className="card"
@@ -243,22 +241,17 @@ const _jsx_element_instance_ =
 </div>
 ~~~
 ~~~tsx
-// @@filename To
-const _jsx_element_instance_ = 
-jsx('div', {
+// @@filename To   
+const _jsx_element_instance_ = jsx(
+'div', {
   className:"card",
   id:"hello-btn",
 children: [
-  'Hello world'
+ 'Hello world'
 ]})
 ~~~
-
-
 ` //``
 }
-it always turns into this:
-
-
 
 ## Counter Demo
 Here are some demo's of this technique **without DOM events and state**. This is what we can achieve with just a few functions from rxjs itself.
@@ -275,7 +268,6 @@ ${SUB.subFolder("counter/").CodeTabs()}
 
 ## Children
 TODO: 
-
 
 ### Arrays
 Okay and lets make sure that doing regular array map's into jsx work as expected, as well as conditionals.

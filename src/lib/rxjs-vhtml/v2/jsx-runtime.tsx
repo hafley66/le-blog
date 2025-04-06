@@ -69,6 +69,7 @@ export function jsx(
     if (isObservable(value)) {
       return value.pipe(
         map(v => {
+          console.log(meta)
           // if (debug)
           // console.log("resolveObservable", value, v, meta)
           return v === null || v === undefined
@@ -94,7 +95,11 @@ export function jsx(
                     ? v
                       ? "true"
                       : undefined
-                    : String(v)
+                    : meta === "popover"
+                      ? v
+                        ? ""
+                        : undefined
+                      : String(v)
         }),
       )
     }
@@ -103,7 +108,11 @@ export function jsx(
         ? ""
         : value === 0
           ? "0"
-          : String(value),
+          : meta === "popover"
+            ? value
+              ? ""
+              : undefined
+            : String(value),
     )
   }
   const ME: Observable<string> = deferFrom(() => {

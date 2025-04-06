@@ -141,6 +141,7 @@ export const Layout = (
           rel="stylesheet"
           href="/styles/nav_and_toc.css"
         />
+        <link rel="stylesheet" href="/styles/btn.css" />
         <link rel="stylesheet" href="/styles/hex.css" />
         <link rel="stylesheet" href="/styles/code.css" />
         <link rel="stylesheet" href="/styles/img.css" />

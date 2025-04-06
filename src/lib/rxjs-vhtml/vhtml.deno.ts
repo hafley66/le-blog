@@ -68,19 +68,23 @@ export function vhtml(
   if (name) {
     s += "<" + name
     for (const _i in attrs) {
+      const it = attrs[_i]
       if (
         attrs[_i] !== false &&
         attrs[_i] != null &&
         _i !== setInnerHTMLAttr
       ) {
-        s +=
-          " " +
-          (DOMAttributeNames[_i]
+        if (_i === "popover" && !it) continue
+        const rhs =
+          _i === "popover" && it
+            ? ""
+            : `="${esc(attrs[_i])}"`
+
+        s += ` ${
+          DOMAttributeNames[_i]
             ? DOMAttributeNames[_i]
-            : esc(_i)) +
-          '="' +
-          esc(attrs[_i]) +
-          '"'
+            : esc(_i)
+        }${rhs}`
       }
     }
     s += ">"

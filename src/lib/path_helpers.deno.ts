@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs"
 import path from "node:path"
 import jsx from "~/lib/rxjs-vhtml/v2/jsx-runtime.tsx"
 import { CodeTabs } from "~/lib/CodeTabs/index.dual.tsx"
+import { of } from "rxjs"
 type Imploder<T> = T[keyof T]
 
 export class Path<
@@ -78,12 +79,27 @@ ${this.readSync()}
   demoScript = () => {
     return `
     
+    
     <script type='module' src='${this.publicPath}' data-src="${this.publicPath}"></script>
     <div id="${path.dirname(this.publicPath)}/">
       <div class="code-group-demo-area"></div>
     </div>
     
+
     `
+  }
+
+  DemoScript = () => {
+    return of(`
+    
+    
+    <script type='module' src='${this.publicPath}' data-src="${this.publicPath}"></script>
+    <div id="${path.dirname(this.publicPath)}/">
+      <div class="code-group-demo-area"></div>
+    </div>
+    
+
+    `)
   }
 
   CodeTab = () => {

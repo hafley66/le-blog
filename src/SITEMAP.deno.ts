@@ -141,6 +141,18 @@ export const FS = {
     "",
   ),
 
+  "src/blog/learning/css-anchor-positioning/tldr.demo.dom.tsx":
+    new JSPath(
+      "src/blog/learning/css-anchor-positioning/tldr.demo.dom.tsx",
+      "src/blog/learning/css-anchor-positioning",
+      "tldr.demo.dom.tsx",
+      "tsx",
+      () =>
+        import(
+          "~/blog/learning/css-anchor-positioning/tldr.demo.dom.tsx"
+        ),
+    ),
+
   "src/blog/learning/css-anchor-positioning/index.render.deno.tsx":
     new JSPath(
       "src/blog/learning/css-anchor-positioning/index.render.deno.tsx",
@@ -1158,14 +1170,6 @@ export const FS = {
     "src/lib",
     "Path/",
     "",
-  ),
-
-  "src/lib/auto-demo.deno.tsx": new JSPath(
-    "src/lib/auto-demo.deno.tsx",
-    "src/lib",
-    "auto-demo.deno.tsx",
-    "tsx",
-    () => import("~/lib/auto-demo.deno.tsx"),
   ),
 
   "src/lib/lib.deno.ts": new JSPath(
