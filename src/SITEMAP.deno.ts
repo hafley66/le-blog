@@ -580,6 +580,33 @@ export const FS = {
     "",
   ),
 
+  "src/blog/event-delegation/demo.dom.tsx": new JSPath(
+    "src/blog/event-delegation/demo.dom.tsx",
+    "src/blog/event-delegation",
+    "demo.dom.tsx",
+    "tsx",
+    () => import("~/blog/event-delegation/demo.dom.tsx"),
+  ),
+
+  "src/blog/event-delegation/index.render.deno.tsx":
+    new JSPath(
+      "src/blog/event-delegation/index.render.deno.tsx",
+      "src/blog/event-delegation",
+      "index.render.deno.tsx",
+      "tsx",
+      () =>
+        import(
+          "~/blog/event-delegation/index.render.deno.tsx"
+        ),
+    ),
+
+  "src/blog/event-delegation/": new Path(
+    "src/blog/event-delegation/",
+    "src/blog",
+    "event-delegation/",
+    "",
+  ),
+
   "src/blog/types-of-set-state/index.render.deno.tsx":
     new JSPath(
       "src/blog/types-of-set-state/index.render.deno.tsx",
@@ -667,6 +694,25 @@ export const FS = {
     "src/blog/rxjs/vs-react/",
     "src/blog/rxjs",
     "vs-react/",
+    "",
+  ),
+
+  "src/blog/rxjs/observable-vs-useEffect/index.render.deno.tsx":
+    new JSPath(
+      "src/blog/rxjs/observable-vs-useEffect/index.render.deno.tsx",
+      "src/blog/rxjs/observable-vs-useEffect",
+      "index.render.deno.tsx",
+      "tsx",
+      () =>
+        import(
+          "~/blog/rxjs/observable-vs-useEffect/index.render.deno.tsx"
+        ),
+    ),
+
+  "src/blog/rxjs/observable-vs-useEffect/": new Path(
+    "src/blog/rxjs/observable-vs-useEffect/",
+    "src/blog/rxjs",
+    "observable-vs-useEffect/",
     "",
   ),
 
@@ -829,6 +875,14 @@ export const FS = {
     "src",
     "unix_socket_test/",
     "",
+  ),
+
+  "src/lib/scan.dual.tsx": new JSPath(
+    "src/lib/scan.dual.tsx",
+    "src/lib",
+    "scan.dual.tsx",
+    "tsx",
+    () => import("~/lib/scan.dual.tsx"),
   ),
 
   "src/lib/shiki/shiki.deno.tsx": new JSPath(
@@ -1017,6 +1071,67 @@ export const FS = {
     "src/lib/rxjs-vhtml",
     "v2/",
     "",
+  ),
+
+  "src/lib/rxjs-vhtml/v3/util.dual.ts": new JSPath(
+    "src/lib/rxjs-vhtml/v3/util.dual.ts",
+    "src/lib/rxjs-vhtml/v3",
+    "util.dual.ts",
+    "ts",
+    () => import("~/lib/rxjs-vhtml/v3/util.dual.ts"),
+  ),
+
+  "src/lib/rxjs-vhtml/v3/jsx-runtime.mts": new Path(
+    "src/lib/rxjs-vhtml/v3/jsx-runtime.mts",
+    "src/lib/rxjs-vhtml/v3",
+    "jsx-runtime.mts",
+    "mts",
+  ),
+
+  "src/lib/rxjs-vhtml/v3/package.json": new Path(
+    "src/lib/rxjs-vhtml/v3/package.json",
+    "src/lib/rxjs-vhtml/v3",
+    "package.json",
+    "json",
+  ),
+
+  "src/lib/rxjs-vhtml/v3/jsx-runtime.tsx": new JSPath(
+    "src/lib/rxjs-vhtml/v3/jsx-runtime.tsx",
+    "src/lib/rxjs-vhtml/v3",
+    "jsx-runtime.tsx",
+    "tsx",
+    () => import("~/lib/rxjs-vhtml/v3/jsx-runtime.tsx"),
+  ),
+
+  "src/lib/rxjs-vhtml/v3/it.test.tsx": new JSPath(
+    "src/lib/rxjs-vhtml/v3/it.test.tsx",
+    "src/lib/rxjs-vhtml/v3",
+    "it.test.tsx",
+    "tsx",
+    () => import("~/lib/rxjs-vhtml/v3/it.test.tsx"),
+  ),
+
+  "src/lib/rxjs-vhtml/v3/toHTML.ts": new JSPath(
+    "src/lib/rxjs-vhtml/v3/toHTML.ts",
+    "src/lib/rxjs-vhtml/v3",
+    "toHTML.ts",
+    "ts",
+    () => import("~/lib/rxjs-vhtml/v3/toHTML.ts"),
+  ),
+
+  "src/lib/rxjs-vhtml/v3/": new Path(
+    "src/lib/rxjs-vhtml/v3/",
+    "src/lib/rxjs-vhtml",
+    "v3/",
+    "",
+  ),
+
+  "src/lib/rxjs-vhtml/diff-render.dom.tsx": new JSPath(
+    "src/lib/rxjs-vhtml/diff-render.dom.tsx",
+    "src/lib/rxjs-vhtml",
+    "diff-render.dom.tsx",
+    "tsx",
+    () => import("~/lib/rxjs-vhtml/diff-render.dom.tsx"),
   ),
 
   "src/lib/rxjs-vhtml/": new Path(

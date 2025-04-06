@@ -2,8 +2,16 @@
 // Demo scripts will use register with there filename and main observable to subscribe and unsub from
 // How to track registers and scope them to the nearest demo root? oof. Lets try to see if importfilename is same as src tag, then we can do DOM things from there
 
-import { Observable, Subscription } from "rxjs"
+import {
+  animationFrameScheduler,
+  combineLatestWith,
+  distinctUntilChanged,
+  Observable,
+  Subscription,
+  throttleTime,
+} from "rxjs"
 import React from "react"
+import { deferFrom } from "../lib.dual"
 
 export const registeredDemos = {} as Record<
   string,
@@ -48,17 +56,39 @@ export const __activate_demo = (filename: string) => {
       "subscribe" in next &&
       "pipe" in next
     ) {
-      activatedRootToTarget[dirname] = next.subscribe({
-        next: n => (target.innerHTML = n),
-        error: e =>
-          target?.appendChild(
-            (() => {
-              const d = document.createElement("div")
-              d.innerHTML = "/*ERROR*/\n  " + String(e)
-              return d
-            })(),
+      activatedRootToTarget[dirname] = next
+        .pipe(
+          throttleTime(16, animationFrameScheduler, {
+            leading: true,
+            trailing: true,
+          }),
+          distinctUntilChanged(),
+          combineLatestWith(
+            deferFrom(() =>
+              import(
+                "../rxjs-vhtml/diff-render.dom.tsx"
+              ).then(i => {
+                const d = document.createElement("div")
+                target.appendChild(d)
+                return i.makeDiffer(d, dirname)
+              }),
+            ),
           ),
-      })
+        )
+
+        .subscribe({
+          next: ([n, differ]) => {
+            differ(n)
+          },
+          error: e =>
+            target?.appendChild(
+              (() => {
+                const d = document.createElement("div")
+                d.innerHTML = "/*ERROR*/\n  " + String(e)
+                return d
+              })(),
+            ),
+        })
     } else if (target && next) {
       activatedRootToTarget[dirname] = new Observable<any>(
         s => {

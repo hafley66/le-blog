@@ -155,6 +155,11 @@ export function jsx(
           } else if (isObservable(it)) {
             // debug && console.log("B", it, tag)
             isObservableChildren = true
+            // Set up key hierarchy
+            it.rootId = ME.rootId
+            it.parentKey = ME.key
+            it.key = ME.parentKey + "/" + index
+
             // @ts-ignore
             it.rootId = rootId
             subs.push(
@@ -373,9 +378,9 @@ export function jsx(
               tag,
               {
                 ...i.props,
-                // "data-root-id": ME.rootId,
-                // "data-myId": "" + myId,
-                // "data-myKey": key,
+                "data-root-id": ME.rootId,
+                "data-myId": "" + myId,
+                "data-myKey": ME.key,
               },
               i.children,
             ) as string,
@@ -389,6 +394,7 @@ export function jsx(
   })
   // Thanks to defer from, we get this back propogation of rootId for free.
   ME.rootId = rootId || ROOT_ID++
+  ME.key = key
   if (debug) console.log({ ME })
   return ME
 }

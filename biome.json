@@ -17,7 +17,8 @@
 				"noUselessConstructor": "off",
 				"noForEach": "off",
 				"useLiteralKeys": "off",
-				"useArrowFunction": "off"
+				"useArrowFunction": "off",
+				"noUselessFragments": "off"
 			},
 			"style": {
 				"useNodejsImportProtocol": "off",
@@ -27,7 +28,8 @@
 				"useConst": "info",
 				"noUnusedTemplateLiteral": "off",
 				"useTemplate": "info",
-				"useSingleVarDeclarator": "info"
+				"useSingleVarDeclarator": "info",
+				"useSelfClosingElements": "off"
 			},
 			"suspicious": {
 				"noAssignInExpressions": "warn",

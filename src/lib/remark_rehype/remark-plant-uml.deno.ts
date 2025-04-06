@@ -56,8 +56,19 @@ export function remarkPlantUML() {
           generateD2Diagram(node.value.trim())
             .then(svg => {
               parent.children[index] = {
-                type: "html",
-                value: svg,
+                type: "element",
+                data: {
+                  hName: "div",
+                  hProperties: {
+                    style: "max-width: 600px",
+                  },
+                },
+                children: [
+                  {
+                    type: "html",
+                    value: svg,
+                  },
+                ],
               }
             })
             .catch(error => {
@@ -77,7 +88,7 @@ export function remarkPlantUML() {
 }
 
 // This function would run the D2 binary to generate an SVG
-async function generateD2Diagram(d2Content: string) {
+export async function generateD2Diagram(d2Content: string) {
   // Use Deno.run or another mechanism to execute the D2 binary
   // This is a stub - actual implementation depends on setup
   // Consider using an HTTP service wrapped around your D2 tool if complex

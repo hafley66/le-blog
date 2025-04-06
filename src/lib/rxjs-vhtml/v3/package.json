@@ -1,0 +1,9 @@
+{
+	"type": "module",
+	"exports": {
+		"./jsx-runtime": "./out/rxjs-vhtml/v2/jsx-runtime.js"
+	},
+	"dependencies": {
+		"vitest": "^3.1.1"
+	}
+}

@@ -39,7 +39,7 @@ import { TAG } from "~/lib/lib.dual.ts"
 const REEEE = await unified()
   .use(remarkParse)
   .use(remarkPlantUML)
-  // .use(remarkDirective)
+  .use(remarkDirective)
   // .use(myRemarkPlugin)
   .use(remarkGfm, {} as Parameters<typeof remarkGfm>[0])
   .use(remarkNestSections, { enableNesting: false })

@@ -10,6 +10,7 @@ const Demo = () => (
       }
 
       #my-popover {
+        margin: 0px;
         position: absolute;
         position-anchor: --my-important-button;
         position-area: top center;

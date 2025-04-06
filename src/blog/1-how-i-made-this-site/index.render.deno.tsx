@@ -5,12 +5,10 @@ const $ = Render$(import.meta.filename!)
 
 export default $.SSGLayout({
   title: "How I started this site as of 2025/02/27",
-  description:
-    "Old fashioned porkbun and vultr on the rocks",
+  description: "The path to cheap sudo",
   date_created: "2025-02-25",
-  tags: ["astro", "vultr", "bash", "dns", "vps", "ssh"],
+  tags: ["vultr", "bash", "dns", "vps", "ssh"],
   ...$.md`
-<-EOL
 ## Buy a domain
 I used [Porkbun](https://porkbun.com/), very easy to use. They also come with easy to use WHOIS protection, which is a big plus.
 
@@ -102,8 +100,6 @@ Do I need to run this code in 2 universes? MMMMMNot yet.
 
 Good luck!
 
-<--EOL
 `,
   //``
-  author: "wasd",
 })

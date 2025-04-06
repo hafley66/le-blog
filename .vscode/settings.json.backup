@@ -158,7 +158,13 @@
     "src/lib/auto-demo.deno.tsx",
     "src/blog/learning/css-anchor-positioning/index.render.deno.tsx",
     "src/blog/learning/SITEMAP.deno.ts",
-    "src/blog/learning/css-anchor-positioning/SITEMAP.deno.ts"
+    "src/blog/learning/css-anchor-positioning/SITEMAP.deno.ts",
+    "src/blog/rxjs/observable-vs-useEffect/index.render.deno.tsx",
+    "src/blog/event-delegation/index.render.deno.ts",
+    "src/blog/event-delegation/index.render.deno.tsx",
+    "src/blog/event-delegation/SITEMAP.deno.ts",
+    "src/blog/rxjs/observable-vs-useEffect/SITEMAP.deno.ts",
+    "src/lib/scan.dual.tsx"
   ],
   "deno.config": "./deno.json",
   "files.exclude": {

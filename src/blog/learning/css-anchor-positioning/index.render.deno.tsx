@@ -1,11 +1,14 @@
 // deno-lint-ignore-file jsx-key
 import { Render$ } from "~/lib/0_RenderBase.deno.tsx"
 import { SUB } from "~/blog/learning/css-anchor-positioning/SITEMAP.deno.ts"
+import { generateD2Diagram } from "~/lib/remark_rehype/remark-plant-uml.deno.ts"
+import { from } from "rxjs"
 const $ = Render$(import.meta.filename!)
 
 export default $.SSGLayout({
   title: "Notes: CSS Anchor Positioning",
-  description: "position: absolute KAIOKEN x 10",
+  description:
+    "position: absolute KAIOKEN x 10. Popper.js is in CSS now.",
   date_created: "2025-02-25",
   tags: ["css", "anchor-positioning"],
   ...$.md`
@@ -55,8 +58,12 @@ ${SUB.fs["tldr.demo.dom.tsx"].DemoScript()}
 
 This SUPER powers \`position: absolute\`, my favorite css feature. It's a natural evolution and its pretty great.
 
-### Perhaps a chart
-~~~d2
+${(
+  <details className="basic">
+    <summary>Perhaps a chart {"(click to expand)"}</summary>
+    <div style="max-width:500px; margin: auto;">
+      {from(
+        generateD2Diagram(`
 vars: {
   d2-config: {
     layout-engine: elk
@@ -106,16 +113,20 @@ css.anchor -> html.anchor
 **.style.font-size: 12
 (** -> **)[*]: {
   style.font-size: 12
-}
-~~~
+}    
+`),
+      )}
+    </div>
+  </details>
+)}
 
-## Create Anchor __A(x)__
+## Create Anchor Name
 use rule \`anchor-name: --VAR-NAME\` 
 
-## Create Anchor Reference __R(y)__
+### Reference Anchor Name
 use rule \`position-anchor: --VAR-NAME\`
 
-## Call   Anchor Function __anchor(A(x))__
+## Call anchor for inset rules
 use built in css function
 ~~~css
 .anchor-x {
@@ -130,39 +141,11 @@ use built in css function
 }
 ~~~
 
-## Centering with justify-self
-Neat, new value for justify-self is \`anchor-center\`.
+### YOU CAN REFERENCE MULTIPLE ANCHORS
+There are 2 anchor function signatures, one with 1 arg (implicit ref), or 2 args where first is explicit anchor name.
 
-~~~css
-.positioned-notice {
-  position: absolute;
-  /*  Anchor reference  */
-  position-anchor: --anchor-el;
-  /*  Position bottom of positioned elem at top of anchor  */
-  bottom: anchor(top);
-  /*  Center justification to the anchor */
-  justify-self: anchor-center;
-}
-~~~
+This allows multi-reference.
 
-## position-area: To indicate positioning
-This is the __placement__ from popper.js
-~~~css
-.positioned-notice {
-  position: absolute;
-  
-  /*  Anchor reference  */
-  position-anchor: --anchor-el;
-  
-  /* Reads: place my bottom on top of anchor, and center me on x-axis */
-  position-area: top center; 
-}
-~~~
-
-## CALL anchor-size(height)
-WOW. You can just read the height of element? This has got to be busted. I'm gonna try this out later
-
-## YOU CAN REFERENCE MULTIPLE ANCHORS
 ~~~css
 .anchor-x {
   anchor-name: --anchor-x;
@@ -180,7 +163,50 @@ WOW. You can just read the height of element? This has got to be busted. I'm gon
 ~~~
 
 
-## Configure dynamic positioning of popper.js with @position-try
+## Define position-area 
+This is the __placement__ from popper.js
+~~~css
+.positioned-notice {
+  position: absolute;
+  
+  /*  Anchor reference  */
+  position-anchor: --anchor-el;
+  
+  /* Reads: place my bottom on top of anchor, and center me on x-axis */
+  position-area: top center; 
+}
+~~~
+
+### Center with justify-self
+Neat, new value for justify-self is \`anchor-center\`.
+
+~~~css
+.positioned-notice {
+  position: absolute;
+  /*  Anchor reference  */
+  position-anchor: --anchor-el;
+  /*  Position bottom of positioned elem at top of anchor  */
+  bottom: anchor(top);
+  /*  Center justification to the anchor */
+  justify-self: anchor-center;
+}
+~~~
+
+## Woah anchor-size(height) function
+WOW. You can just read the height of element? This has got to be busted. I'm gonna try this out later
+
+
+## Auto flip with position-try-fallbacks
+Instead of having to make the config every time, you can use common presets like:
+
+~~~css
+position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
+~~~
+
+### @position-try
+Funky @ rule to allow custom fallback options that aren't just auto flip.
+But auto flip and centering cover all usecases I have had with popper.js.
+
 ~~~css
 /* Step 0. Like @animation, you must declare a name for it, then do a configuration */
 @position-try --bottom {
@@ -199,14 +225,7 @@ WOW. You can just read the height of element? This has got to be busted. I'm gon
 ~~~
 
 
-## Auto flip config aka preset position-try/fallbacks
-Instead of having to make the config every time, you can use common presets like:
-
-~~~css
-position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
-~~~
-
-## position-visibility this is great
+## position-visibility
 position-visibility: no-overflow;
 vs 
 position-visibility: anchors-visible;

@@ -144,9 +144,9 @@ export const Layout = (
         <link rel="stylesheet" href="/styles/btn.css" />
         <link rel="stylesheet" href="/styles/hex.css" />
         <link rel="stylesheet" href="/styles/code.css" />
-        <link rel="stylesheet" href="/styles/img.css" />
+        <link rel="stylesheet" href="/styles/img.css" />{" "}
+        <link rel="stylesheet" href="/styles/details.css" />
         <link rel="stylesheet" href="/shiki-twoslash.css" />
-
         <title>{props.title}</title>
         <script
           type="module"
@@ -299,48 +299,4 @@ export const TOC = (props: {
       </nav>
     </details>
   )
-}
-
-export function toDemoLayoutHtml(src: string) {
-  return firstValueFrom(
-    <html style="height: fit-content;">
-      <head>
-        <link rel="stylesheet" href="/styles/colors.css" />
-        <link rel="stylesheet" href="/styles/fonts.css" />
-        <link rel="stylesheet" href="/styles/global.css" />
-        <link
-          rel="stylesheet"
-          href="/styles/nav_and_toc.css"
-        />
-        <link rel="stylesheet" href="/styles/hex.css" />
-        <link rel="stylesheet" href="/styles/code.css" />
-        <link rel="stylesheet" href="/styles/img.css" />
-        <link rel="stylesheet" href="/shiki-twoslash.css" />
-      </head>
-      <body style="margin: 4px; height: fit-content;"></body>
-      <script type="module" src={src}></script>
-      <script>
-        {`(function() {
-      const observer = new MutationObserver(() => {
-        // Adjust the height of the parent iframe based on the body's height
-        window.frameElement.style.height = (document.documentElement.offsetHeight + 1) +'px';
-      });
-
-      // Start observing changes in the body element
-      observer.observe(document.body, { childList: true, subtree: true, attributes: true });
-
-      // Initial setting of height
-      window.frameElement.style.height = (document.documentElement.offsetHeight + 1) + 'px';
-    })();`}
-      </script>
-    </html>,
-  )
-    .then(val => {
-      val
-      const dir = `${process.cwd()}/src/lib/remark_rehype/__demo_iframes__${path.dirname(src)}`
-      const file = `${process.cwd()}/src/lib/remark_rehype/__demo_iframes__${path.dirname(src)}/${path.basename(src)}.vite.html`
-      mkdirSync(dir, { recursive: true })
-      return writeFile(file, val)
-    })
-    .catch(err => console.error(err))
 }
