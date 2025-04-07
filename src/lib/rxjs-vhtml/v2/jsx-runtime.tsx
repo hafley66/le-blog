@@ -124,10 +124,14 @@ export function jsx(
           rootId,
         )
       // @ts-ignore
-      return tag({
+      const it = tag({
         ...propsWithChildren,
         ...{ "data-root-id": ME.rootId },
       })
+      it.rootId = ME.rootId
+      it.parentKey = ME.parentKey
+      it.key = key ? `${ME.parentKey}/${key}` : ME.key
+      return it
     }
 
     try {
@@ -156,10 +160,10 @@ export function jsx(
             // debug && console.log("B", it, tag)
             isObservableChildren = true
             // Set up key hierarchy
-            it.rootId = ME.rootId
-            it.parentKey = ME.key
-            it.key = ME.parentKey + "/" + index
-
+            it.rootId = rootId
+            let k = key || ME.key
+            it.parentKey = k
+            it.key = k + "/" + index
             // @ts-ignore
             it.rootId = rootId
             subs.push(
@@ -380,7 +384,10 @@ export function jsx(
                 ...i.props,
                 "data-root-id": ME.rootId,
                 "data-myId": "" + myId,
-                "data-myKey": ME.key,
+                "data-myKey": key
+                  ? `${ME.parentKey}/${key}`
+                  : ME.key,
+                "data-parentKey": ME.parentKey,
               },
               i.children,
             ) as string,

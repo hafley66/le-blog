@@ -73,7 +73,9 @@ const highlighter = await createHighlighter({
   ],
 })
 
-export const Shiki = (props: {
+export const Shiki = ({
+  ...props
+}: {
   src?: string
   code?: string
   lang?: string

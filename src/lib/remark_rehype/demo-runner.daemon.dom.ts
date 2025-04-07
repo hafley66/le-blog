@@ -12,6 +12,7 @@ import {
 } from "rxjs"
 import React from "react"
 import { deferFrom } from "../lib.dual"
+import { VNode } from "snabbdom"
 
 export const registeredDemos = {} as Record<
   string,
@@ -56,6 +57,7 @@ export const __activate_demo = (filename: string) => {
       "subscribe" in next &&
       "pipe" in next
     ) {
+      let currentVnode = null as null | VNode
       activatedRootToTarget[dirname] = next
         .pipe(
           throttleTime(16, animationFrameScheduler, {
@@ -74,11 +76,28 @@ export const __activate_demo = (filename: string) => {
               }),
             ),
           ),
+          combineLatestWith(
+            deferFrom(() =>
+              import("../rxjs-vhtml/v3/util.dual.ts").then(
+                i => i.snabPatch,
+              ),
+            ),
+          ),
         )
 
         .subscribe({
-          next: ([n, differ]) => {
-            differ(n)
+          next: ([[n, differ], patch]) => {
+            if (typeof n === "string") differ(n)
+            else {
+              if (!currentVnode) {
+                // First render
+                patch(target, n)
+              } else {
+                // Update existing DOM
+                patch(currentVnode, n)
+              }
+              currentVnode = n
+            }
           },
           error: e =>
             target?.appendChild(

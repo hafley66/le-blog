@@ -600,6 +600,18 @@ export const FS = {
         ),
     ),
 
+  "src/blog/event-delegation/demo.without-outer-scan.dom.tsx":
+    new JSPath(
+      "src/blog/event-delegation/demo.without-outer-scan.dom.tsx",
+      "src/blog/event-delegation",
+      "demo.without-outer-scan.dom.tsx",
+      "tsx",
+      () =>
+        import(
+          "~/blog/event-delegation/demo.without-outer-scan.dom.tsx"
+        ),
+    ),
+
   "src/blog/event-delegation/": new Path(
     "src/blog/event-delegation/",
     "src/blog",
@@ -694,6 +706,37 @@ export const FS = {
     "src/blog/rxjs/vs-react/",
     "src/blog/rxjs",
     "vs-react/",
+    "",
+  ),
+
+  "src/blog/rxjs/observable-vs-useEffect/1.demo/1.react.dom.tsx":
+    new JSPath(
+      "src/blog/rxjs/observable-vs-useEffect/1.demo/1.react.dom.tsx",
+      "src/blog/rxjs/observable-vs-useEffect/1.demo",
+      "1.react.dom.tsx",
+      "tsx",
+      () =>
+        import(
+          "~/blog/rxjs/observable-vs-useEffect/1.demo/1.react.dom.tsx"
+        ),
+    ),
+
+  "src/blog/rxjs/observable-vs-useEffect/1.demo/2.rxjs.dom.tsx":
+    new JSPath(
+      "src/blog/rxjs/observable-vs-useEffect/1.demo/2.rxjs.dom.tsx",
+      "src/blog/rxjs/observable-vs-useEffect/1.demo",
+      "2.rxjs.dom.tsx",
+      "tsx",
+      () =>
+        import(
+          "~/blog/rxjs/observable-vs-useEffect/1.demo/2.rxjs.dom.tsx"
+        ),
+    ),
+
+  "src/blog/rxjs/observable-vs-useEffect/1.demo/": new Path(
+    "src/blog/rxjs/observable-vs-useEffect/1.demo/",
+    "src/blog/rxjs/observable-vs-useEffect",
+    "1.demo/",
     "",
   ),
 
@@ -1119,6 +1162,14 @@ export const FS = {
     () => import("~/lib/rxjs-vhtml/v3/toHTML.ts"),
   ),
 
+  "src/lib/rxjs-vhtml/v3/o.mjs.dual.js": new JSPath(
+    "src/lib/rxjs-vhtml/v3/o.mjs.dual.js",
+    "src/lib/rxjs-vhtml/v3",
+    "o.mjs.dual.js",
+    "js",
+    () => import("~/lib/rxjs-vhtml/v3/o.mjs.dual.js"),
+  ),
+
   "src/lib/rxjs-vhtml/v3/": new Path(
     "src/lib/rxjs-vhtml/v3/",
     "src/lib/rxjs-vhtml",
@@ -1495,6 +1546,14 @@ export const FS = {
     "src/lib",
     "client/",
     "",
+  ),
+
+  "src/lib/debug.dual.ts": new JSPath(
+    "src/lib/debug.dual.ts",
+    "src/lib",
+    "debug.dual.ts",
+    "ts",
+    () => import("~/lib/debug.dual.ts"),
   ),
 
   "src/lib/form_helpers/with.forms.dom.ts": new JSPath(

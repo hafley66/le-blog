@@ -23,6 +23,7 @@ import remarkParse from "remark-parse"
 export type CodeTabsProps = {
   mapping?: Record<string, string>
   folder: string
+  height?: number
 }
 
 /**
@@ -36,6 +37,7 @@ export type CodeTabsProps = {
 export const CodeTabs = ({
   mapping,
   folder,
+  height,
 }: CodeTabsProps) => {
   !folder.endsWith("/") && (folder = folder + "/")
   const radioName = `code-group-${path.dirname(folder)}`
@@ -162,7 +164,11 @@ export const CodeTabs = ({
               shiki
                 .replace(
                   "<code>",
-                  "<div class='code-scroller'><code>",
+                  `<div class='code-scroller' ${
+                    height
+                      ? `style='height: ${height};'`
+                      : ""
+                  }><code>`,
                 )
                 .replace(
                   "</code>",

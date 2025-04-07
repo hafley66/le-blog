@@ -1,33 +1,78 @@
+import _ from "lodash"
+import { debug$ } from "~/lib/debug.dual.ts"
+import { RxJSXNode } from "~/lib/rxjs-vhtml/v3/jsx-runtime.tsx"
+
 import {
   Observable,
-  Subscription,
   isObservable,
   of,
   combineLatest,
+  tap,
+  filter,
+  throttleTime,
+  animationFrameScheduler,
+  from,
+  defer,
+  ObservableInput,
 } from "rxjs"
 import { map, switchMap } from "rxjs/operators"
 import {
   combinePartialArray,
   combinePartialRecord,
+  TAG,
 } from "../../lib.dual.ts"
 
 // Import Snabbdom modules
 import { init, VNode } from "snabbdom"
 import { propsModule } from "snabbdom"
 import { styleModule } from "snabbdom"
-import { eventListenersModule } from "snabbdom"
 import { classModule } from "snabbdom"
 import { attributesModule } from "snabbdom"
-import { h } from "snabbdom"
 
+const lol = debug$[import.meta.url ?? ""]
 // Initialize Snabbdom with modules
-export const snabPatch = init([
-  propsModule,
-  styleModule,
-  eventListenersModule,
-  classModule,
-  attributesModule,
-])
+export const snabPatch = init(
+  [
+    propsModule,
+    styleModule,
+    classModule,
+    attributesModule,
+    {
+      pre() {},
+      // create(e, v) {
+      //   console.log(
+      //     "CREATE",
+      //     e.key,
+      //     v.key,
+      //     v.elm?.outerHTML,
+      //   )
+      // },
+      // update(o, n) {
+      //   console.log(
+      //     "UPDATE",
+      //     n.key,
+      //     deepObjectDiff(o, n),
+      //     _.cloneDeep(o),
+      //     _.cloneDeep(n),
+      //   )
+      // },
+      // destroy(vnode) {
+      //   console.log(
+      //     "DESTROY",
+      //     vnode.key,
+      //     vnode.elm.outerHTML,
+      //     vnode,
+      //   )
+      // },
+    },
+  ],
+  undefined,
+  {
+    experimental: {
+      fragments: true,
+    },
+  },
+)
 
 // Utility functions
 export const isEmpty = (value: any): boolean => {
@@ -94,7 +139,7 @@ export function resolveObservable(
         if (v === 0) return "0"
 
         if (Array.isArray(v)) {
-          return combinePartialArray(
+          return combineLatest(
             v.map(i => (isObservable(i) ? i : of(i))),
           ).pipe(
             map(partial =>
@@ -113,25 +158,43 @@ export function resolveObservable(
 
 // Convert primitive values to text nodes
 export function primitiveToVNode(
-  value: string | number,
-): VNode {
-  return h("text", value.toString())
+  child:
+    | string
+    | number
+    | boolean
+    | null
+    | undefined
+    | VNode,
+): VNode | null {
+  if (child == null || child === false) return null
+  if (
+    typeof child === "string" ||
+    typeof child === "number" ||
+    typeof child === "boolean"
+  ) {
+    return child === true ? "" : child
+  }
+  if ("sel" in child && "key" in child) return child
+  return null
 }
 
 // Process style prop
 export function processStyleProp(
   value: any,
-): Observable<Record<string, string>> {
+): [Observable<Record<string, string>>, boolean] {
   if (isObservable(value)) {
-    return value.pipe(
-      map(v =>
-        typeof v === "string"
-          ? processStyle(v)
-          : typeof v === "object" && !isEmpty(v)
-            ? v
-            : {},
+    return [
+      value.pipe(
+        map(v =>
+          typeof v === "string"
+            ? processStyle(v)
+            : typeof v === "object" && !isEmpty(v)
+              ? v
+              : {},
+        ),
       ),
-    )
+      true,
+    ] as const
   }
 
   if (
@@ -139,148 +202,203 @@ export function processStyleProp(
     !Array.isArray(value) &&
     !isEmpty(value)
   ) {
-    return combinePartialRecord(
+    let has = false
+    const out = combinePartialRecord(
       Object.fromEntries(
         Object.entries(value).map(([k, v]) =>
-          isObservable(v) ? [k, v] : ([k, of(v)] as const),
+          isObservable(v)
+            ? ((has = true), [k, v])
+            : ([k, of(v)] as const),
         ),
       ),
     )
+
+    return [out, has] as const
   }
 
-  return of(processStyle(value as string))
+  return [of(processStyle(value as string)), false]
 }
 
 // Process className prop
 export function processClassNameProp(
   value: any,
 ): Observable<string> {
+  // console.log({ value })
   return isObservable(value)
     ? value.pipe(
         map(v => (Array.isArray(v) ? v.join(" ") : v)),
       )
     : of(Array.isArray(value) ? value.join(" ") : value)
 }
-
+const _log = debug$[import.meta.url]
 // Create a children observable that handles path propagation
 export function createChildrenObservable(
-  children: any[],
-  rootId: number,
-  parentKey: string,
+  children: RxJSXNode[],
+  rootId: number | string | undefined,
+  parentKey: string | number | undefined,
   debug?: boolean,
+  recursionLevel = 0,
 ): Observable<VNode[]> {
-  return new Observable<VNode[]>(subscriber => {
-    const subs: Subscription[] = []
-    const latest: VNode[] = []
-    let hasObservableChildren = false
+  return deferFrom(() => {
+    // console.log("Hmm", parentKey, children)
+    const log = _log.extend(`<${parentKey}>`)
+    log(`STARTING`)
+    if (recursionLevel > 4) {
+      return of([])
+    }
+    return combineLatest(
+      children.map(function recurseChildren(child, index):
+        | Observable<VNode | null>
+        | Observable<(VNode | null)[]> {
+        // Handle observable children
+        if (isObservable(child)) {
+          const C = castRXJSX_Obs(child)
+          // Set up key hierarchy
+          C.rootId = rootId
+          C.parentKey = parentKey
+          C.key = `${parentKey}/${C.key || index}`
 
-    children.forEach((child, index) => {
-      debug && console.log(index, child)
-      // Handle primitive children
-      if (
-        typeof child === "string" ||
-        typeof child === "number"
-      ) {
-        latest[index] = primitiveToVNode(child)
-      }
-      // Handle observable children
-      else if (isObservable(child)) {
-        hasObservableChildren = true
-
-        // Set up key hierarchy
-        child.rootId = rootId
-        child.parentKey = parentKey
-        child.key = parentKey + "/" + index
-
-        subs.push(
-          child
-            .pipe(
-              switchMap(value => {
-                // Handle arrays of observables
-                if (Array.isArray(value)) {
-                  return value.length
-                    ? combinePartialArray(
-                        value.map(item =>
-                          isObservable(item)
-                            ? item
-                            : of(item),
-                        ),
-                      )
-                    : of([])
-                }
-
-                // Handle nested observables
-                if (isObservable(value)) {
-                  value.rootId = rootId
-                  return value
-                }
-
-                return of(value)
-              }),
+          if (C?.IS_PURE && C.pure) {
+            log(
+              `${parentKey} to ${C.key} PURE %o`,
+              C.pure(),
             )
-            .subscribe(next => {
-              debug && console.log("Child#", index, next)
+            return of(C.pure() as VNode)
+          }
 
-              if (Array.isArray(next)) {
-                latest[index] = next as unknown as VNode
-              } else if (
-                typeof next === "string" ||
-                typeof next === "number"
-              ) {
-                latest[index] = primitiveToVNode(next)
-              } else {
-                latest[index] = next as VNode
+          log(`${parentKey} to ${C.key} IMPURE %o`, C)
+          return C.pipe(
+            switchMap((value, swindex) => {
+              // Handle nested observables
+              if (isObservable(value)) {
+                const CC = castRXJSX_Obs(value)
+                // CC.key = `${parentKey}/${originalKey || index}/${CC.key ?? "$"}`
+                log(
+                  `${index}/${swindex} switchMap OBSERVABLE`,
+                )
+                return createChildrenObservable(
+                  [CC],
+                  rootId,
+                  C.key,
+                  debug,
+                  recursionLevel + 1,
+                )
               }
-              debug && console.log({ latest })
-              subscriber.next(latest.filter(Boolean))
+
+              // Handle arrays of observables as special case
+              if (Array.isArray(value)) {
+                if (!value.length) {
+                  log(
+                    `${index}/${swindex} switchMap EMPTY Array`,
+                  )
+                  return of(null)
+                }
+
+                if (
+                  value.length &&
+                  value.every(
+                    i => isObservable(i) && isRXJSX_Obs(i),
+                  )
+                ) {
+                  log(
+                    `${index}/${swindex} switchMap PURE Array`,
+                  )
+                  return of(value.map(i => i.pure!()))
+                }
+
+                log(
+                  `${index}/${swindex} switchMap ANY Array`,
+                )
+                return createChildrenObservable(
+                  value,
+                  rootId,
+                  C.key,
+                  debug,
+                  recursionLevel + 1,
+                )
+              }
+              log(`${index}/${swindex} switchMap PRIMITIVE`)
+              return of([primitiveToVNode(value)])
             }),
-        )
-      }
-    })
+            map(i =>
+              i === null ? i : Array.isArray(i) ? i : [i],
+            ),
+            filter(Boolean),
+          )
+        }
 
-    // Emit initial children if no observables
-    if (!hasObservableChildren) {
-      subscriber.next(latest.filter(Boolean))
-    }
+        if (Array.isArray(child)) {
+          return createChildrenObservable(
+            child,
+            rootId,
+            parentKey,
+            debug,
+            recursionLevel + 1,
+          )
+        }
 
-    return () => {
-      subs.forEach(sub => sub.unsubscribe())
-    }
-  })
+        return of([primitiveToVNode(child)])
+      }),
+    )
+
+    // // Emit initial children if no observables
+    // if (!hasObservableChildren) {
+    //   debug && console.log("SYNC EMIT")
+    //   subscriber.next(latest.filter(Boolean))
+    //   // subscriber.complete()
+    // }
+
+    // return combineLatest()
+  }).pipe(
+    filter(Boolean),
+    map(i => i.flat().filter(i => i != null)),
+    throttleTime(16, animationFrameScheduler, {
+      leading: true,
+      trailing: true,
+    }),
+    debug ? TAG(`<${parentKey ?? ""}>`) : i => i,
+  )
 }
 
 // Process props into observables
 export function processProps(
   props: Record<string, any> | null | undefined,
   tag: string,
-): Record<string, Observable<any>> {
+): [
+  Record<string, Observable<any>>,
+  isObservable: boolean,
+] {
   const attrObservables: Record<
     string,
     Observable<any>
   > = {}
+  if (!props) return [attrObservables, false]
 
-  if (!props) return attrObservables
-
+  let isObservableProps = false
   for (const key in props) {
     const value = props[key]
 
     // Handle style prop
     if (key === "style") {
-      attrObservables[key] = processStyleProp(value)
+      let ans = processStyleProp(value)
+      attrObservables[key] = ans[0]
+      isObservableProps ||= ans[1]
     }
     // Handle className prop
     else if (key === "className") {
       attrObservables["class"] = processClassNameProp(value)
+      isObservableProps ||= isObservable(value)
     }
     // Handle other props
     else {
       attrObservables[key] = isObservable(value)
-        ? resolveObservable(value, key, tag)
+        ? ((isObservableProps ||= true),
+          resolveObservable(value, key, tag))
         : of(value)
     }
   }
 
-  return attrObservables
+  return [attrObservables, isObservableProps]
 }
 
 // Add data attributes to props
@@ -292,18 +410,16 @@ export function addDataAttributes(
   parentKey?: string,
 ): Record<string, any> {
   props.attrs = props.attrs || {}
-  props.attrs["data-root-id"] = rootId
-  props.attrs["data-myId"] = "" + nodeId
+  // props.attrs["data-root-id"] = rootId
+  // props.attrs["data-myId"] = "" + nodeId
 
-  if (key) {
-    props.attrs["data-myKey"] = parentKey
-      ? `${parentKey}/${key}`
-      : key
-  }
+  // if (key) {
+  props.attrs["data-myKey"] = key
+  // }
 
-  if (parentKey) {
-    props.attrs["data-parentKey"] = parentKey
-  }
+  // if (parentKey) {
+  props.attrs["data-parentKey"] = parentKey
+  // }
 
   return props
 }
@@ -331,4 +447,183 @@ export function processFragments(
   }
 
   return vnode
+}
+
+// Convenience, very useful to convert lazy observable of 1 value on init of many places.
+export function deferFrom<T>(
+  factory: () => ObservableInput<T>,
+): Observable<T> {
+  return defer(() => from(factory()))
+}
+
+// Type definition for diff entries
+type DiffEntry = {
+  path: string[]
+  oldValue: any
+  newValue: any
+}
+
+function deepObjectDiff(base, object) {
+  const diff = {}
+  const diffEntries: DiffEntry[] = []
+
+  function compareValues(baseValue, objectValue, path) {
+    const key = path[path.length - 1]
+    const pathStr = path.join(".")
+    if (key.includes("elm")) debugger
+    if (!_.isEqual(baseValue, objectValue)) {
+      // Set the diff in object format
+      _.set(diff, pathStr, objectValue)
+
+      // Add to diff entries list
+      diffEntries.push({
+        type: "primitive",
+        path,
+        oldValue: baseValue,
+        newValue: objectValue,
+      })
+    }
+  }
+
+  function traverse(baseObj, targetObj, currentPath = []) {
+    // Handle arrays
+    if (
+      Array.isArray(baseObj) &&
+      Array.isArray(targetObj)
+    ) {
+      const maxLength = Math.max(
+        baseObj.length,
+        targetObj.length,
+      )
+
+      for (let i = 0; i < maxLength; i++) {
+        const newPath = [...currentPath, i.toString()]
+
+        if (i >= baseObj.length) {
+          // Added item
+          _.set(diff, newPath.join("."), targetObj[i])
+          diffEntries.push({
+            type: "array-add",
+            path: newPath,
+            oldValue: undefined,
+            newValue: targetObj[i],
+          })
+        } else if (i >= targetObj.length) {
+          // Removed item
+          _.set(diff, newPath.join("."), undefined)
+          diffEntries.push({
+            type: "array-remove",
+            path: newPath,
+            oldValue: baseObj[i],
+            newValue: undefined,
+          })
+        } else if (
+          _.isObject(baseObj[i]) &&
+          _.isObject(targetObj[i])
+        ) {
+          // Recurse for objects/arrays
+          traverse(baseObj[i], targetObj[i], newPath)
+        } else if (!_.isEqual(baseObj[i], targetObj[i])) {
+          // Different values
+          _.set(diff, newPath.join("."), targetObj[i])
+          diffEntries.push({
+            type: "array-wtf",
+            path: newPath,
+            oldValue: baseObj[i],
+            newValue: targetObj[i],
+          })
+        }
+      }
+      return
+    }
+
+    // Handle objects
+    if (
+      _.isObject(baseObj) &&
+      _.isObject(targetObj) &&
+      !Array.isArray(baseObj) &&
+      !Array.isArray(targetObj)
+    ) {
+      // Check for properties in targetObj
+      _.forOwn(targetObj, (value, key) => {
+        const newPath = [...currentPath, key]
+
+        if (!_.has(baseObj, key)) {
+          // Added property
+          _.set(diff, newPath.join("."), value)
+          diffEntries.push({
+            type: "object-add",
+            path: newPath,
+            oldValue: undefined,
+            newValue: value,
+          })
+        } else if (
+          _.isObject(value) &&
+          _.isObject(baseObj[key])
+        ) {
+          // Recurse for nested objects/arrays
+          traverse(baseObj[key], value, newPath)
+        } else if (!_.isEqual(baseObj[key], value)) {
+          // Different values
+          _.set(diff, newPath.join("."), value)
+          diffEntries.push({
+            type: "object-wtf",
+            path: newPath,
+            oldValue: baseObj[key],
+            newValue: value,
+          })
+        }
+      })
+
+      // Check for properties in baseObj that are not in targetObj
+      _.forOwn(baseObj, (value, key) => {
+        if (!_.has(targetObj, key)) {
+          const newPath = [...currentPath, key]
+          _.set(diff, newPath.join("."), undefined)
+          diffEntries.push({
+            type: "object-remove",
+            path: newPath,
+            oldValue: value,
+            newValue: undefined,
+          })
+        }
+      })
+
+      return
+    }
+
+    // Handle primitive values
+    compareValues(baseObj, targetObj, currentPath)
+  }
+
+  traverse(base, object)
+
+  return {
+    a: base,
+    b: object,
+    diff: {
+      ba: diff,
+      entries: diffEntries,
+    },
+  }
+}
+
+export type RxJSXObservable<T> = Observable<T> & {
+  pure?: () => VNode
+  IS_PURE?: boolean
+  key?: string | number
+  rootId?: string | number
+  parentKey?: string | number
+}
+
+export function isRXJSX_Obs<T>(
+  it: Observable<T>,
+): it is RxJSXObservable<T> {
+  return isObservable(it) && "rootId" in it
+}
+
+export function castRXJSX_Obs<T>(
+  it: Observable<T>,
+): RxJSXObservable<T> {
+  return it
 }

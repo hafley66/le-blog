@@ -15,6 +15,8 @@ import {
   startWith,
   tap,
 } from "rxjs"
+import { debug$ } from "~/lib/debug.dual.ts"
+import { Debugger } from "debug"
 
 /**
  * Merges multiple observables into a single observable, while preserving the key-value pairs of the original observables.
@@ -182,7 +184,41 @@ export function shareLatest<T>() {
     )
 }
 
-export function TAG<T>(TAG_PREFIX: string | number) {
+const _tags = {} as Record<string, number>
+const _log = debug$[import.meta.url]
+export function TAG<T>(
+  TAG_PREFIX_: string | number | Debugger,
+  _TAG_PREFIX?: string | number,
+) {
+  const TAG_PREFIX = _TAG_PREFIX ?? `${TAG_PREFIX_}`
+  const log =
+    typeof TAG_PREFIX_ === "number" ||
+    typeof TAG_PREFIX_ === "string"
+      ? _log.extend(`${TAG_PREFIX_}`)
+      : TAG_PREFIX_.extend(`${_TAG_PREFIX ?? ""}`)
+
+  return (source: Observable<T>) => {
+    return new Observable<T>(sub => {
+      _tags[TAG_PREFIX] = (_tags[TAG_PREFIX] ?? -1) + 1
+      let id = _tags[TAG_PREFIX]
+      const s = tap<T>({
+        subscribe: () => log(`(${id})/subscribe`),
+
+        next: n => log(`(${id})/next`, n),
+        error: e => log(`(${id})/error`, e),
+        complete: () => log(`(${id})/complete`),
+
+        unsubscribe: () => log(`(${id})/unsubscribe`),
+        finalize: () => log(`(${id})/finalize`),
+      })(source).subscribe(sub)
+      return () => {
+        s.unsubscribe()
+      }
+    })
+  }
+}
+
+export function DEBUG_TAG<T>(TAG_PREFIX: string | number) {
   return (source: Observable<T>) =>
     tap<T>({
       next: n => console.log(`${TAG_PREFIX}/next`, n),

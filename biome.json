@@ -6,7 +6,7 @@
 		"useIgnoreFile": false
 	},
 	"files": {
-		"include": ["./**/*"]
+		"include": ["./**/*", "./**/*.dual."]
 	},
 	"organizeImports": { "enabled": false },
 	"linter": {
@@ -29,7 +29,11 @@
 				"noUnusedTemplateLiteral": "off",
 				"useTemplate": "info",
 				"useSingleVarDeclarator": "info",
-				"useSelfClosingElements": "off"
+				"useSelfClosingElements": "off",
+				"noUselessElse": "off"
+			},
+			"correctness": {
+				"noFlatMapIdentity": "off"
 			},
 			"suspicious": {
 				"noAssignInExpressions": "warn",

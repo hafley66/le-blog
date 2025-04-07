@@ -64,20 +64,15 @@ const myButtomDemoEvents_Grouped = delegateAllFor(
     const start = +new Date()
     return group$.pipe(
       scan(
-        (sum, next, index) => (
+        (sum, next, index) => {
           sum.push({
             event: next[0].type,
             index,
             time: +new Date(),
             percent: 0,
-          }),
-          sum.map(i => {
-            i.percent =
-              ((i.time - start) / (+new Date() - start)) *
-              100
-            return i
           })
-        ),
+          return sum
+        },
         [] as {
           event: string
           index: number
@@ -85,25 +80,8 @@ const myButtomDemoEvents_Grouped = delegateAllFor(
           percent: number
         }[],
       ),
-      map(i => ({
-        key: group$.key,
-        value: i,
-      })),
     )
   }),
-  // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
-  scan(
-    (s, n) => ((s[n.key] = n.value), s),
-    {} as Record<
-      string,
-      {
-        event: string
-        index: number
-        time: number
-        percent: number
-      }[]
-    >,
-  ),
 )
 
 autoDemo(import.meta.url, () => (
@@ -126,55 +104,54 @@ autoDemo(import.meta.url, () => (
       key="all-events"
       style={{ display: "flex", flexDirection: "column" }}
     >
-      {myButtomDemoEvents_Grouped.pipe(
-        switchMap(it =>
-          combineLatest(
-            Object.entries(it).map(([k, v]) => {
+      <div
+        style={{
+          display: "flex",
+          position: "relative",
+          alignItems: "center",
+        }}
+      >
+        {myButtomDemoEvents_Grouped.pipe(
+          map(it =>
+            Object.entries(it).map(([k, v], index) => {
               return (
-                <div
-                  key={k}
-                  style={{
-                    display: "flex",
-                    position: "relative",
-                    alignItems: "center",
-                  }}
-                >
-                  <div style={{ width: "100px" }}>{k}</div>
-                  {
+                <>
+                  {index === 0 ? (
+                    <div key={0} style={{ width: "100px" }}>
+                      {v.event}
+                    </div>
+                  ) : null}
+                  <div
+                    key="events"
+                    style={{
+                      flex: "1 1 auto",
+                      display: "flex",
+                      position: "relative",
+                      marginRight: 20,
+                    }}
+                  >
                     <div
+                      key={v.index}
                       style={{
-                        flex: "1 1 auto",
-                        display: "flex",
-                        position: "relative",
-                        marginRight: 20,
+                        position: "absolute",
+                        top: 0,
+                        borderRadius: "50%",
+                        backgroundColor: "red",
+                        width: "6px",
+                        height: "6px",
+                        color: "white",
                       }}
                     >
-                      {v.map(e => (
-                        <div
-                          key={e.index}
-                          style={{
-                            position: "absolute",
-                            top: 0,
-                            left: e.percent + "%",
-                            borderRadius: "50%",
-                            backgroundColor: "red",
-                            width: "6px",
-                            height: "6px",
-                            color: "white",
-                          }}
-                        >
-                          {e.index}
-                        </div>
-                      ))}
+                      {v.index}
                     </div>
-                  }
-                </div>
+                  </div>
+                </>
               )
             }),
-          ).pipe(TAG("wat")),
-        ),
-        startWith(null),
-      )}
+          ),
+          startWith(null),
+        )}
+      </div>
     </div>
   </div>
 ))

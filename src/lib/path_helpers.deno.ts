@@ -176,7 +176,10 @@ export class SITEMAP_PART<
     )
   }
 
-  CodeTabs(props?: { mapping: Record<string, string> }) {
+  CodeTabs(props?: {
+    mapping?: Record<string, string>
+    height?: number
+  }) {
     return CodeTabs({
       folder: this.self?.path,
       ...props,

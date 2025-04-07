@@ -68,7 +68,33 @@ test.only("JSX renders nested elements", async () => {
     .pipe(map(extractNodeStructure))
     .toPromise()
 
-  expect(result).toMatchInlineSnapshot()
+  expect(result).toMatchInlineSnapshot(`
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "data": {},
+              "sel": undefined,
+              "text": "Title",
+            },
+          ],
+          "data": {
+            "attrs": {},
+            "key": "undefined/0",
+            "style": undefined,
+          },
+          "sel": "h1",
+        },
+      ],
+      "data": {
+        "attrs": {},
+        "key": undefined,
+        "style": undefined,
+      },
+      "sel": "div",
+    }
+  `)
 })
 
 // Test attributes
