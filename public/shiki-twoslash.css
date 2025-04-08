@@ -21,6 +21,18 @@ pre.shiki div.line {
   min-height: 1rem;
 }
 
+
+code .diff.add:before{ 
+  color: #3dd68c;
+  /* position: absolute; */
+  /* left: 10px; */
+}
+
+code .diff.add {
+  display: inline-block;
+  width: 100%;
+  background-color: rgba(16, 185, 129, .16);
+}
 /** Don't show the language identifiers */
 pre.shiki .language-id {
   display: none;

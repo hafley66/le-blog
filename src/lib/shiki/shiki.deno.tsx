@@ -10,7 +10,16 @@ import mermaid from "@shikijs/langs/mermaid"
 import vitesseDark from "@shikijs/themes/vitesse-dark"
 import vitesseLight from "@shikijs/themes/vitesse-light"
 import oneDarkPro from "@shikijs/themes/one-dark-pro"
-
+import {
+  transformerNotationDiff,
+  transformerMetaHighlight,
+  transformerMetaWordHighlight,
+  transformerNotationFocus,
+  transformerNotationMap,
+  transformerNotationHighlight,
+  transformerNotationWordHighlight,
+  // ...
+} from "@shikijs/transformers"
 import { createHighlighterCore } from "shiki/core"
 import { createOnigurumaEngine } from "shiki/engine/oniguruma"
 import { deferFrom, TAG } from "../lib.dual"
@@ -101,6 +110,15 @@ export const Shiki = ({
           transformerTwoslash({
             explicitTrigger: true, // <--
           }),
+          transformerNotationFocus({
+            matchAlgorithm: "v3",
+          }),
+          transformerNotationDiff({
+            matchAlgorithm: "v3",
+          }),
+          transformerNotationWordHighlight(),
+          transformerMetaWordHighlight(),
+          transformerMetaHighlight(),
         ],
       }),
     ),

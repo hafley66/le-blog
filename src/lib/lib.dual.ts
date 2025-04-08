@@ -218,6 +218,29 @@ export function TAG<T>(
   }
 }
 
+// export function TAGGER<T>(
+//   TAG_PREFIX_: string | number | Debugger,
+// ) {
+
+//   return (source: Observable<T>) => {
+//     return new Observable<T>(sub => {
+//       const s = tap<T>({
+//         subscribe: () => log(`(${id})/subscribe`),
+
+//         next: n => log(`(${id})/next`, n),
+//         error: e => log(`(${id})/error`, e),
+//         complete: () => log(`(${id})/complete`),
+
+//         unsubscribe: () => log(`(${id})/unsubscribe`),
+//         finalize: () => log(`(${id})/finalize`),
+//       })(source).subscribe(sub)
+//       return () => {
+//         s.unsubscribe()
+//       }
+//     })
+//   }
+// }
+
 export function DEBUG_TAG<T>(TAG_PREFIX: string | number) {
   return (source: Observable<T>) =>
     tap<T>({

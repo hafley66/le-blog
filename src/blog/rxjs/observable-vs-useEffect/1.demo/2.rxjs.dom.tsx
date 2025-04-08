@@ -26,7 +26,9 @@ const myEffect$ = new Observable<number>(subscriber => {
 const Clicker = () => {
   return (
     <div>
-      <button id="example">Click me!</button>
+      <button id="example" className="btn--blue">
+        Click me!
+      </button>
       <div>{myEffect$} clicked this many times</div>
     </div>
   )

@@ -186,7 +186,8 @@
     "src/blog/rxjs/observable-vs-useEffect/1.demo/SITEMAP.deno.ts",
     "src/lib/rxjs-vhtml/v3/i.mjs.dual.ts",
     "src/lib/rxjs-vhtml/v3/o.mjs.dual.ts",
-    "src/lib/debug.dual.ts"
+    "src/lib/debug.dual.ts",
+    "src/apps/code-recorder/SITEMAP.deno.ts"
   ],
   "deno.config": "./deno.json",
   "files.exclude": {

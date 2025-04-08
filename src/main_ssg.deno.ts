@@ -9,7 +9,7 @@ import {
 import { deferFrom } from "~/lib/fs_watcher.deno.ts"
 import path from "node:path"
 import _ from "lodash"
-import { SITEMAP } from "~/SITEMAP.deno.ts"
+import { SUB as SITEMAP } from "~/blog/rxjs/observable-vs-useEffect/SITEMAP.deno.ts"
 import { createServer } from "vite"
 import { trpcServer } from "~/apps/trpc.listen.deno.ts"
 

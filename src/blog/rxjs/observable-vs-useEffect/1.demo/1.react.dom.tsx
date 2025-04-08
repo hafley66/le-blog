@@ -23,7 +23,9 @@ const Clicker = () => {
 
   return (
     <div>
-      <button id="example">Click me!</button>
+      <button id="example" className="btn--blue">
+        Click me!
+      </button>
       <div>{state} clicked this many times</div>
     </div>
   )

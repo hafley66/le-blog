@@ -1,6 +1,9 @@
 import { writeFile } from "node:fs/promises"
 
+import { rmSync } from "node:fs"
+import { mkdirSync } from "node:fs"
 import path from "node:path"
+import remarkParse from "remark-parse"
 import {
   catchError,
   combineLatest,
@@ -9,16 +12,15 @@ import {
   of,
   switchMap,
   takeLast,
+  tap,
 } from "rxjs"
-import { FS, SITEMAP } from "~/SITEMAP.deno.ts"
-import { Shiki } from "~/lib/shiki/shiki.deno.tsx"
-import { $$ } from "~/BASH.deno.ts"
-import { rmSync } from "node:fs"
-import { deferFrom, TAG } from "~/lib/lib.dual.ts"
-import { v7 } from "uuid"
-import { mkdirSync } from "node:fs"
 import { unified } from "unified"
-import remarkParse from "remark-parse"
+import { v7 } from "uuid"
+import { $$ } from "~/BASH.deno.ts"
+import { FS, SITEMAP } from "~/SITEMAP.deno.ts"
+import { TAG, deferFrom } from "~/lib/lib.dual.ts"
+import { Shiki } from "~/lib/shiki/shiki.deno.tsx"
+import { writeFileSync } from "node:fs"
 
 export type CodeTabsProps = {
   mapping?: Record<string, string>
@@ -41,26 +43,30 @@ export const CodeTabs = ({
 }: CodeTabsProps) => {
   !folder.endsWith("/") && (folder = folder + "/")
   const radioName = `code-group-${path.dirname(folder)}`
-  console.log({ folder })
+  // console.log({ folder })
   const files = SITEMAP.subFolder(folder as any).includes<
     "deno.ts" | "deno.tsx" | "dom.ts" | "dom.tsx"
   >(/\.(dom|deno)\.tsx?$/)
-
+  folder.includes("md_") &&
+    console.log("Folder", { folder, mapping })
   const true_mapping = mapping
     ? Object.entries(mapping).map(
-        i => [i[0], i[1].trim()] as const,
+        i => [i[0], i[1].trim(), true] as const,
       )
     : folder
       ? (files.map(
-          i => [i.path, i.readSync()] as const,
-        ) as [string, string][])
+          i => [i.path, i.readSync(), false] as const,
+        ) as [string, string, boolean][])
       : []
-  const tempDir = `${import.meta.dirname!}/temp/${folder}`
+  const tempDir = `${import.meta.dirname!}/temp${
+    folder.startsWith("/") ? "" : "/"
+  }${folder.replace(process.cwd() + "/", "")}`
 
   const configs = true_mapping.map((i, cIndex) => {
     const fspath = i[0]
     let filename: null | string = null
     let content = i[1]
+    let inline = i[2]
     let enableEval = false
 
     let evalType: "" | "back" | "front" | string = ""
@@ -81,14 +87,30 @@ export const CodeTabs = ({
         : fspath.endsWith(".dom.ts") ||
             fspath.endsWith(".dom.tsx")
           ? "front"
-          : evalType.trim()
-
+          : evalType.trim().includes("front")
+            ? "front"
+            : evalType.trim().includes("backend")
+              ? "back"
+              : ""
+    const inlineTempFsPath = path.join(
+      tempDir,
+      path.basename(fspath),
+    )
+    if (inline)
+      console.log({
+        fspath,
+        evalType,
+        inlineTempFsPath,
+        tempDir,
+      })
     const itemId = fspath
     const out = {
       itemId,
       path: i[0],
       filename,
       content,
+      inline,
+      inlineTempFsPath,
       evalType,
       renderCss: () => {
         return `
@@ -125,30 +147,6 @@ export const CodeTabs = ({
         ]
       },
       renderCode: () => {
-        // node.children = [
-        //   {
-        //     type: "element",
-        //     tagName: "div",
-        //     properties: {
-        //       class: "code-scroller",
-        //     },
-        //     children: node.children,
-        //   },
-        //   {
-        //     type: "element",
-        //     tagName: "button",
-        //     properties: {
-        //       class: "copy-to-clipboard caption",
-        //     },
-        //     children: [
-        //       {
-        //         type: "text",
-        //         value: "Copy",
-        //       },
-        //     ],
-        //   },
-        // ]
-        console.log({ fspath, evalType })
         return [
           combineLatest([
             Shiki({ code: content, lang: cleanExt }),
@@ -179,11 +177,21 @@ export const CodeTabs = ({
           ),
         ]
       },
+      makeTempFile: () =>
+        writeFile(inlineTempFsPath, content),
       renderInlineListener: () =>
         evalType === "front"
-          ? `import("${fspath.replace("src/", "~/")}").then(({default: def}) => {
+          ? `import("${
+              inline
+                ? `~/${inlineTempFsPath.replace(process.cwd() + "/src/", "")}`
+                : fspath.replace("src/", "~/")
+            }").then(({default: def}) => {
   window.demoRunner.registry["${fspath}"] = def;
-  ${cIndex === 0 ? `window.demoRunner.activate("${fspath}");` : ""}
+  ${
+    cIndex === 0
+      ? `window.demoRunner.activate("${fspath}");`
+      : ""
+  }
 });`
           : "",
     }
@@ -193,6 +201,14 @@ export const CodeTabs = ({
   const frontends = configs
     .map(c => c.renderInlineListener())
     .filter(Boolean)
+
+  const makeAllFrontendTempFiles = deferFrom(() =>
+    Promise.all(
+      configs
+        .filter(i => i.evalType === "front" && i.inline)
+        .map(i => i.makeTempFile()),
+    ),
+  )
 
   return (
     <div className={`code-group`} id={folder}>
@@ -205,17 +221,21 @@ export const CodeTabs = ({
       </div>
       {configs.map(i => i.renderCode())}
       {frontends.length
-        ? deferFrom(() =>
-            of(
-              writeFile(
-                `${tempDir}/index.vite.ts`,
-                frontends.join("\n"),
+        ? makeAllFrontendTempFiles.pipe(
+            switchMap(() =>
+              deferFrom(() =>
+                of(
+                  writeFile(
+                    `${tempDir}/index.vite.ts`,
+                    frontends.join("\n"),
+                  ),
+                ),
+              ).pipe(
+                map(
+                  () =>
+                    `<script defer src="${`${tempDir}/index.vite.ts`}" type="module"></script>`,
+                ),
               ),
-            ),
-          ).pipe(
-            map(
-              () =>
-                `<script defer src="${`${tempDir}/index.vite.ts`}" type="module"></script>`,
             ),
           )
         : ""}
@@ -247,6 +267,15 @@ function eatAtAt(atat: string, target: string) {
     ] as const
   }
   return [target, "", false] as const
+}
+
+function createTempFileForCodeSnippet(props: {
+  dir: string
+  filename: string
+  code: string
+  lang: string
+}) {
+  const name = `${props.tempDir}/${props.lang!}`
 }
 
 function runBackendDemo(props: {
@@ -339,5 +368,5 @@ CodeTabs.markdown = (
         .parse(value)
         .children.filter(i => i.type === "code"),
     ),
-  ).pipe(TAG("From markdown"))
+  ).pipe()
 }

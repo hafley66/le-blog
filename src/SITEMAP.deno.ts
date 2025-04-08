@@ -1640,6 +1640,13 @@ export const FS = {
 
   "src/pages/": new Path("src/pages/", "src", "pages/", ""),
 
+  "src/apps/code-recorder/": new Path(
+    "src/apps/code-recorder/",
+    "src/apps",
+    "code-recorder/",
+    "",
+  ),
+
   "src/apps/trpc.listen.deno.ts": new JSPath(
     "src/apps/trpc.listen.deno.ts",
     "src/apps",

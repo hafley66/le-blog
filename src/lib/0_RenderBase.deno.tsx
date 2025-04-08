@@ -15,6 +15,7 @@ import {
   pipe,
   switchMap,
   takeUntil,
+  tap,
   timer,
 } from "rxjs"
 import {
@@ -30,9 +31,31 @@ import { deferFrom, TAG } from "~/lib/lib.dual.ts"
 import { v7 } from "uuid"
 import { CodeTabs } from "~/lib/CodeTabs/index.dual.tsx"
 import path from "node:path"
+import { $ } from "zx"
+import { watchFile } from "node:fs"
+import { makeWatcher$ } from "~/lib/fs_watcher.deno.ts"
+import { statSync } from "node:fs"
+import { TAKE_UNTIL_EXIT } from "~/lib/lib.deno.ts"
+import { watch } from "node:fs/promises"
+import { readFileSync } from "node:fs"
 
 const MARKDOWN_REGEX_TO_NAIVELY_SPLIT_HEADERS__BEWARE_HASH_COMMENTS =
   /(#{2,} .+?)\n([\s\S]*?)(?=\n#{2,} |\n*$|$)/g
+
+type TemplateComponentStart<T extends string> = [
+  "start",
+  T,
+  index: number,
+  (value: string) => Observable<string>,
+]
+type TemplateComponentEnd<T extends string> = [
+  "end",
+  T,
+  index: number,
+]
+type TemplateComponent<T extends string> =
+  | TemplateComponentStart<T>
+  | TemplateComponentEnd<T>
 
 export const Render$ = (importMetaFilename: string) => {
   const [dontCare, ...thisOne] =
@@ -92,8 +115,23 @@ export const Render$ = (importMetaFilename: string) => {
 
   const md = (
     strings: TemplateStringsArray,
-    ...values: (Observable<string> | string)[]
+    ...values: (
+      | Observable<string>
+      | string
+      | TemplateComponent<any>
+    )[]
   ) => {
+    const extractedComponents = {} as Record<
+      string,
+      | [index: number, value: TemplateComponentStart<any>]
+      | Observable<string>
+    >
+
+    const parseStack = [] as [
+      index: number,
+      value: TemplateComponentStart<any>,
+    ][]
+
     const build = [] as string[]
     const obs = values
       .filter(i => isObservable(i))
@@ -102,15 +140,48 @@ export const Render$ = (importMetaFilename: string) => {
     let i = 0
     for (const n of strings) {
       const it = values[i]
-      build.push(
-        `${n}${
-          !it
-            ? ""
-            : typeof it === "string"
-              ? it
-              : `\n\n\n<div id="${obs.find(x => x[1] === it)?.[0]}"></div>\n\n\n`
-        }`,
-      )
+      if (Array.isArray(it)) {
+        const key = it[0] + it[1]
+        const entry = parseStack.at(-1)
+        if (it[0] === "start") {
+          if (entry) {
+            console.error(
+              "Bad parse, i do not support nesting you goober",
+            )
+          }
+          build.push(n)
+          parseStack.push([i, it] as const)
+        } else if (it[0] === "end") {
+          if (!entry) {
+            console.error("Missing start for an end!")
+          }
+          if (entry && "findIndex" in entry) {
+            const [startFoundAtIndex] = entry
+            const slice = strings.slice(
+              startFoundAtIndex + 1,
+              i + 1,
+            )
+            const obss = entry[1][3](slice.join("\n\n"))
+            obs.push([key, obss] as const)
+            build.push(
+              `\n\n\n<div id="${key}"></div>\n\n\n`,
+            )
+            parseStack.pop()
+          }
+        }
+      } else if (parseStack.length) {
+        continue
+      } else {
+        build.push(
+          `${n}${
+            !it
+              ? ""
+              : typeof it === "string"
+                ? it
+                : `\n\n\n<div id="${obs.find(x => x[1] === it)?.[0]}"></div>\n\n\n`
+          }`,
+        )
+      }
       i++
     }
     const it = build.join(" ")
@@ -171,19 +242,10 @@ ${it.body}
               ),
             )
           : of([] as [string, string][])
-        ).pipe(
-          // TAG(
-          // values.length + " DERP + " + importMetaFilename,
-          // ),
-        ),
+        ).pipe(),
       ),
       map(
         ([compiled, next]) =>
-          // console.log({
-          //   importMetaFilename,
-          //   compiled: compiled.length,
-          //   next: next,
-          // }) ||
           next.reduce((html, [id, value]) => {
             return html.replace(
               `<div id="${id}"></div>`,
@@ -271,7 +333,9 @@ ${it.body}
     }
   }
 
-  const SSGLayout = (props: Omit<LayoutProps, "url">) => {
+  const SSGLayout = (
+    props: Omit<LayoutProps, "url"> & { debug?: boolean },
+  ) => {
     const it = (<Layout {...props} url={dir} />).pipe(
       writeToDist,
       map(i => ({
@@ -291,7 +355,7 @@ ${it.body}
   let mid = 0
   let midg = 0
 
-  return {
+  const $ = {
     header$,
     md,
     writeToDist,
@@ -306,17 +370,14 @@ ${it.body}
         const codes = CodeTabs.markdown(values, ...args)
         return codes.pipe(
           switchMap(nextC => {
+            const folder = `${path.dirname(importMetaFilename)}/md_${midg++}/`
             return CodeTabs({
-              folder:
-                path.dirname(importMetaFilename) +
-                "/md_" +
-                midg++ +
-                "/",
+              folder,
               mapping: Object.fromEntries(
                 nextC.map(
                   (code, ci) =>
                     [
-                      `${importMetaFilename}/md_${mid++}${code.lang ? `.${code.lang}` : ""}`,
+                      `${folder}md_${mid++}${code.lang ? `.${code.lang}` : ""}`,
                       code.value,
                     ] as const,
                 ),
@@ -325,8 +386,70 @@ ${it.body}
           }),
         )
       },
+      start: (opts?: {
+        groupName?: string
+        autoSave?: boolean
+      }) =>
+        [
+          "start",
+          "CodeTabs",
+          midg,
+          (templateStringValueBetween: string) => {
+            const fspath =
+              process.cwd() + importMetaFilename
+            if (
+              opts?.autoSave &&
+              statSync(fspath) &&
+              opts.groupName
+            ) {
+              // hehehehe
+
+              return deferFrom(() =>
+                watch(fspath, {
+                  persistent: false,
+                  recursive: true,
+                }),
+              ).pipe(
+                debounceTime(100),
+                map(nextLol => {
+                  console.log("NEXT LOL", nextLol)
+                  const me = readFileSync(fspath).toString()
+                  const lol = [
+                    ...me.matchAll(
+                      /\$\.CodeTabs\.start\((?:\s|\n)*\{(?:\s|\n)*autoSave: true,?(?:.|\n)*?\}\)\}\n((?:\n|.)+?)\$\{\$\.CodeTabs\.end\(\)/gi,
+                    ),
+                  ]
+                  const mineLol = lol.find(i =>
+                    i?.[0]?.includes(
+                      `groupName: "${opts.groupName}"`,
+                    ),
+                  )
+                  return mineLol?.[1]
+                }),
+                switchMap(i =>
+                  $.CodeTabs.markdown(
+                    // @ts-ignore
+                    [i],
+                  ),
+                ),
+                TAKE_UNTIL_EXIT(),
+              )
+            }
+            return $.CodeTabs.markdown(
+              // @ts-ignore
+              [templateStringValueBetween],
+            )
+          },
+        ] as TemplateComponentStart<"CodeTabs">,
+      end: () =>
+        [
+          "end",
+          "CodeTabs",
+          midg,
+        ] as TemplateComponentEnd<"CodeTabs">,
     },
   }
+  return $
 }
 
 function TypedAssign<T extends Record<any, any>, Next>(
