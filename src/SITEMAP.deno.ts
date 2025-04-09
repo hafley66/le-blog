@@ -580,6 +580,13 @@ export const FS = {
     "",
   ),
 
+  "src/blog/promises/": new Path(
+    "src/blog/promises/",
+    "src/blog",
+    "promises/",
+    "",
+  ),
+
   "src/blog/event-delegation/demo.dom.tsx": new JSPath(
     "src/blog/event-delegation/demo.dom.tsx",
     "src/blog/event-delegation",
@@ -706,6 +713,13 @@ export const FS = {
     "src/blog/rxjs/vs-react/",
     "src/blog/rxjs",
     "vs-react/",
+    "",
+  ),
+
+  "src/blog/rxjs/http/": new Path(
+    "src/blog/rxjs/http/",
+    "src/blog/rxjs",
+    "http/",
     "",
   ),
 

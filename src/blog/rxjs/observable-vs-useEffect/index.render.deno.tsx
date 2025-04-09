@@ -338,6 +338,7 @@ export default () => Stopwatch
 
 ~~~tsx
 /** @jsxImportSource react */
+// @@diff-prev
 // @@eval front
 // @@filename 3: Effects
 import React from 'react';

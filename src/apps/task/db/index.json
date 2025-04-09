@@ -13,8 +13,8 @@
     ],
     "created_at": 1743540225311,
     "updated_at": 0,
-    "status": 1,
-    "index": 9
+    "status": 2,
+    "index": 1
   },
   {
     "uuid": "0195f31a-9423-719b-a13f-6537ec34173f",
@@ -28,8 +28,8 @@
     ],
     "created_at": 1743540360226,
     "updated_at": 0,
-    "status": 0,
-    "index": 11
+    "status": 1,
+    "index": 0
   },
   {
     "uuid": "0195f31b-4915-7118-816b-a6d25180ff65",
@@ -40,7 +40,7 @@
     "created_at": 1743540406549,
     "updated_at": 0,
     "status": 0,
-    "index": 16
+    "index": 17
   },
   {
     "uuid": "0195f31c-212a-7497-9d9f-573e1a931a5e",
@@ -55,8 +55,8 @@
     ],
     "created_at": 1743540461866,
     "updated_at": 0,
-    "status": 3,
-    "index": 0
+    "status": 0,
+    "index": 32
   },
   {
     "uuid": "0195f34a-626b-7288-acb6-8df72bc2545e",
@@ -70,8 +70,8 @@
     ],
     "created_at": 1743543493227,
     "updated_at": 0,
-    "status": 3,
-    "index": 1
+    "status": 0,
+    "index": 20
   },
   {
     "uuid": "0195f358-53f5-7383-944b-5ba68082b8ed",
@@ -87,7 +87,7 @@
     "created_at": 1743544407029,
     "updated_at": 0,
     "status": 0,
-    "index": 22
+    "index": 26
   },
   {
     "uuid": "0195f3b3-1354-768f-a9c8-693fe26288e6",
@@ -100,8 +100,8 @@
     ],
     "created_at": 1743550354260,
     "updated_at": 0,
-    "status": 2,
-    "index": 0
+    "status": 0,
+    "index": 18
   },
   {
     "uuid": "0195f3b3-8a0c-7045-b6e7-8fe82ab1c6f5",
@@ -112,7 +112,7 @@
     "created_at": 1743550384651,
     "updated_at": 0,
     "status": 0,
-    "index": 28
+    "index": 33
   },
   {
     "uuid": "0195f3b4-179c-7209-a81b-63fc7cf7aa57",
@@ -140,7 +140,7 @@
     "created_at": 1743550467258,
     "updated_at": 0,
     "status": 0,
-    "index": 31
+    "index": 38
   },
   {
     "uuid": "0195f3b5-381d-76f3-9d49-12148c71b09c",
@@ -154,8 +154,8 @@
     ],
     "created_at": 1743550494749,
     "updated_at": 0,
-    "status": 1,
-    "index": 11
+    "status": 0,
+    "index": 36
   },
   {
     "uuid": "0195f3b5-dabe-778e-8a55-44482d886ff4",
@@ -170,7 +170,7 @@
     "created_at": 1743550536382,
     "updated_at": 0,
     "status": 0,
-    "index": 33
+    "index": 40
   },
   {
     "uuid": "0195f3c4-26d7-7415-adfe-d458abd9af18",
@@ -199,7 +199,7 @@
     "created_at": 1743551605257,
     "updated_at": 0,
     "status": 0,
-    "index": 34
+    "index": 37
   },
   {
     "uuid": "0195f421-59fb-7258-a37d-c6951eb3275f",
@@ -215,7 +215,7 @@
     "created_at": 1743557581306,
     "updated_at": 0,
     "status": 0,
-    "index": 35
+    "index": 42
   },
   {
     "uuid": "0195f439-84bc-72cb-95f4-cb52edcb3f7c",
@@ -232,7 +232,7 @@
     "created_at": 1743559165116,
     "updated_at": 0,
     "status": 0,
-    "index": 36
+    "index": 43
   },
   {
     "uuid": "0195f43a-5f21-71a5-aaa9-a7fa91876dc4",
@@ -248,7 +248,7 @@
     "created_at": 1743559221025,
     "updated_at": 0,
     "status": 0,
-    "index": 37
+    "index": 44
   },
   {
     "uuid": "0195f43b-ad57-75fe-bf64-2936f0239379",
@@ -264,7 +264,7 @@
     "created_at": 1743559306583,
     "updated_at": 0,
     "status": 0,
-    "index": 38
+    "index": 45
   },
   {
     "uuid": "0195f43d-7369-73fa-99e9-0dbe002bbc34",
@@ -281,7 +281,7 @@
     "created_at": 1743559422825,
     "updated_at": 0,
     "status": 0,
-    "index": 39
+    "index": 46
   },
   {
     "uuid": "0195f444-b8ce-71c8-b930-1a39438f8144",
@@ -326,7 +326,7 @@
     "created_at": 1743560894285,
     "updated_at": 0,
     "status": 0,
-    "index": 40
+    "index": 48
   },
   {
     "uuid": "0195f7db-9f1a-76d4-8c07-05bc8bb67522",
@@ -356,7 +356,7 @@
     "created_at": 1743634827405,
     "updated_at": 0,
     "status": 0,
-    "index": 41
+    "index": 49
   },
   {
     "uuid": "0195f9a8-70da-73f5-9f1f-4f6afacaaa39",
@@ -372,7 +372,7 @@
     "created_at": 1743650320602,
     "updated_at": 0,
     "status": 0,
-    "index": 42
+    "index": 50
   },
   {
     "uuid": "0195f9aa-292d-70f6-9bd4-0d8ee5ca8f51",
@@ -389,7 +389,7 @@
     "created_at": 1743650433325,
     "updated_at": 0,
     "status": 0,
-    "index": 43
+    "index": 52
   },
   {
     "uuid": "0195f9ac-3e1e-719b-8d56-77076898f152",
@@ -406,7 +406,7 @@
     "created_at": 1743650569758,
     "updated_at": 0,
     "status": 0,
-    "index": 44
+    "index": 53
   },
   {
     "uuid": "0195f9ad-01b0-7414-a801-fbd30990e0c6",
@@ -425,7 +425,7 @@
     "created_at": 1743650619824,
     "updated_at": 0,
     "status": 0,
-    "index": 45
+    "index": 54
   },
   {
     "uuid": "0195f9bf-b59e-703f-8026-3a4fdf43bc39",
@@ -441,8 +441,8 @@
     ],
     "created_at": 1743651845534,
     "updated_at": 0,
-    "status": 0,
-    "index": 46
+    "status": 2,
+    "index": 0
   },
   {
     "uuid": "0195f9c3-485d-749a-83f4-4ea6051551eb",
@@ -457,6 +457,20 @@
     "created_at": 1743652079709,
     "updated_at": 0,
     "status": 0,
-    "index": 47
+    "index": 56
+  },
+  {
+    "uuid": "019617b9-fb18-7204-88e6-68bbb51c38e6",
+    "title": "Markdown: Create basic components in string template literals",
+    "description": "Haha, this is hiarlious. Its markdown directives but with start/end pairs in the template string values",
+    "parent": "/blog/lib",
+    "tags": [
+      "js",
+      "template strings"
+    ],
+    "created_at": 1744154786584,
+    "updated_at": 0,
+    "status": 3,
+    "index": 2
   }
 ]
