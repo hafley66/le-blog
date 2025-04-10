@@ -382,12 +382,12 @@ export function jsx(
               tag,
               {
                 ...i.props,
-                "data-root-id": ME.rootId,
-                "data-myId": "" + myId,
-                "data-myKey": key
-                  ? `${ME.parentKey}/${key}`
-                  : ME.key,
-                "data-parentKey": ME.parentKey,
+                // "data-root-id": ME.rootId,
+                // "data-myId": "" + myId,
+                // "data-myKey": key
+                // ? `${ME.parentKey}/${key}`
+                // : ME.key,
+                // "data-parentKey": ME.parentKey,
               },
               i.children,
             ) as string,
