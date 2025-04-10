@@ -187,7 +187,15 @@
     "src/lib/rxjs-vhtml/v3/i.mjs.dual.ts",
     "src/lib/rxjs-vhtml/v3/o.mjs.dual.ts",
     "src/lib/debug.dual.ts",
-    "src/apps/code-recorder/SITEMAP.deno.ts"
+    "src/apps/code-recorder/SITEMAP.deno.ts",
+    "src/blog/promises/SITEMAP.deno.ts",
+    "src/blog/rxjs/http/SITEMAP.deno.ts",
+    "src/blog/rxjs/vs-rtk-query/index.render.deno.tsx",
+    "src/blog/rxjs/vs-rtk-query/SITEMAP.deno.ts",
+    "src/blog/rxjs/http/index.render.deno.tsx",
+    "src/lib/ts-morph-plugins/SITEMAP.deno.ts",
+    "src/lib/ts-morph-plugins/rxjs-pide-piper.deno.ts",
+    "src/blog/rxjs/http/dummy-data.dual.ts"
   ],
   "deno.config": "./deno.json",
   "files.exclude": {

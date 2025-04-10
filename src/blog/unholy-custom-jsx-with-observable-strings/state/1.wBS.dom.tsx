@@ -29,7 +29,7 @@ export default () => (
   <div style="display: flex; flex-direction: column;">
     <Interactive.addOne
       style={{
-        padding: 10,
+        padding: "10px",
         color: "white",
         background: "blue",
       }}
@@ -39,7 +39,7 @@ export default () => (
     <Interactive.subOne
       name="sub-one"
       style={{
-        padding: 10,
+        padding: "10px",
         color: "white",
       }}
     >

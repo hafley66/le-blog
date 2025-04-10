@@ -7,25 +7,23 @@ import remarkParse from "remark-parse"
 import {
   catchError,
   combineLatest,
-  from,
   map,
   of,
   switchMap,
   takeLast,
-  tap,
 } from "rxjs"
 import { unified } from "unified"
 import { v7 } from "uuid"
 import { $$ } from "~/BASH.deno.ts"
-import { FS, SITEMAP } from "~/SITEMAP.deno.ts"
-import { TAG, deferFrom } from "~/lib/lib.dual.ts"
+import { SITEMAP } from "~/SITEMAP.deno.ts"
+import { deferFrom } from "~/lib/lib.dual.ts"
 import { Shiki } from "~/lib/shiki/shiki.deno.tsx"
-import { writeFileSync } from "node:fs"
 
 export type CodeTabsProps = {
   mapping?: Record<string, string>
   folder: string
   height?: number
+  debug?: boolean
 }
 
 /**
@@ -40,15 +38,15 @@ export const CodeTabs = ({
   mapping,
   folder,
   height,
+  debug,
 }: CodeTabsProps) => {
   !folder.endsWith("/") && (folder = folder + "/")
   const radioName = `code-group-${path.dirname(folder)}`
-  // console.log({ folder })
+  debug && console.log({ folder })
   const files = SITEMAP.subFolder(folder as any).includes<
     "deno.ts" | "deno.tsx" | "dom.ts" | "dom.tsx"
   >(/\.(dom|deno)\.tsx?$/)
-  folder.includes("md_") &&
-    console.log("Folder", { folder, mapping })
+  debug && console.log("Folder", { folder, mapping })
   const true_mapping = mapping
     ? Object.entries(mapping).map(
         i => [i[0], i[1].trim(), true] as const,
@@ -61,6 +59,7 @@ export const CodeTabs = ({
   const tempDir = `${import.meta.dirname!}/temp${
     folder.startsWith("/") ? "" : "/"
   }${folder.replace(process.cwd() + "/", "")}`
+  debug && console.log("Folder", { folder, true_mapping })
 
   const configs = true_mapping.map((i, cIndex) => {
     const fspath = i[0]
@@ -96,7 +95,7 @@ export const CodeTabs = ({
       tempDir,
       path.basename(fspath),
     )
-    if (inline)
+    if (debug && inline)
       console.log({
         fspath,
         evalType,
@@ -115,13 +114,13 @@ export const CodeTabs = ({
       renderCss: () => {
         return `
   &:has(#${cssEscapeSimple(itemId)}:checked) { 
-    & pre:nth-child(${cIndex + 2}){
+    & pre:nth-child(${cIndex + 1}){
       & + .console\\.log-details {
         display: block;
       }
       display: block;
     }
-    pre:nth-child(${cIndex + 2})
+    pre:nth-child(${cIndex + 1})
   }
   `
       },
@@ -135,7 +134,7 @@ export const CodeTabs = ({
             name={folder}
             className="code-tabs-radio-input"
             {...{
-              "data-scroll-to-me": `${folder}`,
+              "data-scroll-to-me": `${folder}/code-group-demo-area`,
             }}
             checked={cIndex === 0 ? "true" : undefined}
           />,
@@ -219,27 +218,32 @@ export const CodeTabs = ({
       >
         {configs.map(i => i.renderTab())}
       </div>
-      {configs.map(i => i.renderCode())}
-      {frontends.length
-        ? makeAllFrontendTempFiles.pipe(
-            switchMap(() =>
-              deferFrom(() =>
-                of(
-                  writeFile(
-                    `${tempDir}/index.vite.ts`,
-                    frontends.join("\n"),
+      <div data-sticky-boundary>
+        {configs.map(i => i.renderCode())}
+        {frontends.length
+          ? makeAllFrontendTempFiles.pipe(
+              switchMap(() =>
+                deferFrom(() =>
+                  of(
+                    writeFile(
+                      `${tempDir}/index.vite.ts`,
+                      frontends.join("\n"),
+                    ),
+                  ),
+                ).pipe(
+                  map(
+                    () =>
+                      `<script defer src="${`${tempDir}/index.vite.ts`}" type="module" data-from="CodeTabs"></script>`,
                   ),
                 ),
-              ).pipe(
-                map(
-                  () =>
-                    `<script defer src="${`${tempDir}/index.vite.ts`}" type="module"></script>`,
-                ),
               ),
-            ),
-          )
-        : ""}
-
+            )
+          : ""}
+        <div
+          className="code-group-demo-area"
+          id={`${folder}/code-group-demo-area`}
+        ></div>
+      </div>
       {String.raw`
 <style>
   #${cssEscapeSimple(folder)}{
@@ -247,7 +251,6 @@ export const CodeTabs = ({
   }
 </style>
 `}
-      <div className="code-group-demo-area"></div>
     </div>
   )
 }
@@ -267,15 +270,6 @@ function eatAtAt(atat: string, target: string) {
     ] as const
   }
   return [target, "", false] as const
-}
-
-function createTempFileForCodeSnippet(props: {
-  dir: string
-  filename: string
-  code: string
-  lang: string
-}) {
-  const name = `${props.tempDir}/${props.lang!}`
 }
 
 function runBackendDemo(props: {

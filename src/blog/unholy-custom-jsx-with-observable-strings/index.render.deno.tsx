@@ -30,9 +30,7 @@ export default $.SSGLayout({
 
 ## HTML Over Time
 React Components represent **HTML** over time.
-
 Observables represent **any value**  over time.
-
 So then, we can say React Components are \`Observable<JSX>\` over time.
 
 After seeing this logic, I decided to create a RxJS version of \`JSX\`. It is meant to be as simple as possible, and promote what I view as idiomatic/practical RxJS.
@@ -43,12 +41,6 @@ I have a lot of experience getting react to work with RxJS. Often times, its a c
 My biggest frustration was making this blog while learning the ReactDOM server API's. You must spam \`use(Promise)\` everywhere to prevent rendering your blog post. useEffect cannot be used as a way to defer rendering. React notes this in their docs for 19, with a special info block that tells you to use a meta-framework that does all this for you. Talk about friendly and intuitive ergonomics.
 
 These are simply non-problems in RxJS, so I decided to write a version of jsx that __naturally__ allows lazy programming, by leveraging Observable's and RxJS.
-
-If you want to defer rendering for a blog post, just do whatever combo of rxjs that you need.
-
-RxJS is fundamentally the reverse order of how you do things in other libraries, but they express all the same things.
-
-I truly hope that this is a starting point for some devs to build intuition or interest in RxJS, and more importantly, Observable's as a standard data structure.
 
 ### Comparisons with React
 1. Components
@@ -184,8 +176,7 @@ However there is 1 problem, our RxJSX props never get redefined. If we want to r
     - You dont have to do this if you are in typescript, but it can save a headache or two from time to time.
 2. This is not unlike \`Signal\`s in Solid.js and in general, there is no auto-reacting.
 
-${
-  $.CodeTabs.markdown`
+${$.CodeTabs.start()}
 ~~~tsx
 // @@filename RxJSX
 // @@eval
@@ -219,17 +210,14 @@ export const Component = (props: Props) => {
   </div>
 }
 ~~~
-` // ``
-}
-
+${$.CodeTabs.end()}
 
 ## Props
 Props are the second argument to the JSX transform function's well defined interfaces. 
 
 When you do this in react/solidjs/vue jsx/anything, it must be compiled to true javascript. 
 This means functions calls:
-${
-  $.CodeTabs.markdown`
+${$.CodeTabs.start()}
 ~~~tsx
 // @@filename From
 const _jsx_element_instance_ = 
@@ -250,8 +238,7 @@ children: [
  'Hello world'
 ]})
 ~~~
-` //``
-}
+${$.CodeTabs.end()}
 
 ## Counter Demo
 Here are some demo's of this technique **without DOM events and state**. This is what we can achieve with just a few functions from rxjs itself.
@@ -272,26 +259,10 @@ TODO:
 ### Arrays
 Okay and lets make sure that doing regular array map's into jsx work as expected, as well as conditionals.
 
-${SUB.subFolder("arrays/").CodeTabs()}
+${SUB.subFolder("arrays/").CodeTabs({ debug: true })}
 
 ### Conditionals
 TODO:
-
-## Events
-This is easily the hardest part of designing this jsx transform. 
-
-For starters, RxJS already has a built in shortcut, called \`fromEvent\`, which takes an HTMLElement, and an event string.
-
-This works well __when the element already exists__. That is, you must have a reference to the element before calling it.
-
-Here are some examples
-:::codes
-~~~ts
-import { fromEvent } from 'rxjs'
-
-document.body
-~~~
-:::
 
 ## State
 For idiomatic RxJS, I heavily urge you to avoid BehaviorSubject as much as possible. BUT, it exists for a reason, and when you are starting out, you will want to use it all the time.

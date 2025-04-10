@@ -24,6 +24,10 @@ import {
   castRXJSX_Obs,
 } from "./util.dual.ts"
 import { debug$ } from "~/lib/debug.dual.ts"
+import type {
+  DelegatedObservable,
+  HtmlEventIndex$,
+} from "../v2/types.dom.events.dom.ts"
 
 // ID generators for tracking nodes
 export let ROOT_ID = 0
@@ -170,6 +174,14 @@ export function jsx(
           snabbdomProps.key = ME.key
           snabbdomProps.style = state.props.style
           ;(snabbdomProps.data ||= {}).key = ME.key
+          snabbdomProps.on = Object.fromEntries(
+            Object.entries(props)
+              .filter(i => i[0].match(/on[A-Z]/))
+              .map(i => [
+                i[0].slice(2).toLowerCase(),
+                i[1],
+              ]),
+          )
           delete snabbdomProps.attrs.style
           return h(
             tag as string,
@@ -213,6 +225,12 @@ export function jsx(
       ;(snabbdomProps.data ||= {}).key = ME.key
       ;(snabbdomProps.props ||= {}).className =
         props.className
+
+      snabbdomProps.on = Object.fromEntries(
+        Object.entries(props)
+          .filter(i => i[0].match(/on[A-Z]/))
+          .map(i => [i[0].slice(2).toLowerCase(), i[1]]),
+      )
       snabbdomProps.attrs["data-IS_PURE"] = "1"
 
       return h(
@@ -369,7 +387,13 @@ export namespace JSX {
   interface ElementAttributesProperty {
     key?: string
   }
-
+  type Lol = {
+    [K in keyof HtmlEventIndex$ as `on${Capitalize<K>}`]?: HtmlEventIndex$[K] extends DelegatedObservable<
+      infer U
+    >
+      ? (event: U) => void
+      : never
+  }
   export interface IntrinsicElements {
     [key: string]: {
       key?: string | number
@@ -383,14 +407,14 @@ export namespace JSX {
         | string[]
         | Observable<string | string[]>
       children?: RxJSXNode
-    } & {
-      [prop: string]:
-        | string
-        | number
-        | boolean
-        | Observable<string | number | boolean>
-        | undefined
-        | {}
-    }
+    } & Lol & {
+        [prop: string]:
+          | string
+          | number
+          | boolean
+          | Observable<string | number | boolean>
+          | undefined
+          | {}
+      }
   }
 }

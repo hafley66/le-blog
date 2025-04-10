@@ -6,12 +6,6 @@ export default $.SSGLayout({
   description: (
     <div className="f-col">
       <strong>DRAFT!!!</strong>
-      <em>
-        <blockquote>
-          "Do you think God stays in heaven because he too
-          lives in fear of what he's created?"
-        </blockquote>
-      </em>
     </div>
   ),
   // date_created: "2025-02-25",

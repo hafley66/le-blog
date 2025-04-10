@@ -1,3 +1,4 @@
+// @@filename Static Nav Array
 const navItems = [
   "home",
   "resume",

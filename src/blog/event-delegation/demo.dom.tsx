@@ -129,48 +129,46 @@ autoDemo(import.meta.url, () => (
       {myButtomDemoEvents_Grouped.pipe(
         switchMap(it =>
           combineLatest(
-            Object.entries(it).map(([k, v]) => {
-              return (
-                <div
-                  key={k}
-                  style={{
-                    display: "flex",
-                    position: "relative",
-                    alignItems: "center",
-                  }}
-                >
-                  <div style={{ width: "100px" }}>{k}</div>
-                  {
-                    <div
-                      style={{
-                        flex: "1 1 auto",
-                        display: "flex",
-                        position: "relative",
-                        marginRight: 20,
-                      }}
-                    >
-                      {v.map(e => (
-                        <div
-                          key={e.index}
-                          style={{
-                            position: "absolute",
-                            top: 0,
-                            left: e.percent + "%",
-                            borderRadius: "50%",
-                            backgroundColor: "red",
-                            width: "6px",
-                            height: "6px",
-                            color: "white",
-                          }}
-                        >
-                          {e.index}
-                        </div>
-                      ))}
-                    </div>
-                  }
-                </div>
-              )
-            }),
+            Object.entries(it).map(([k, v]) => (
+              <div
+                key={k}
+                style={{
+                  display: "flex",
+                  position: "relative",
+                  alignItems: "center",
+                }}
+              >
+                <div style={{ width: "100px" }}>{k}</div>
+                {
+                  <div
+                    style={{
+                      flex: "1 1 auto",
+                      display: "flex",
+                      position: "relative",
+                      marginRight: 20,
+                    }}
+                  >
+                    {v.map(e => (
+                      <div
+                        key={e.index}
+                        style={{
+                          position: "absolute",
+                          top: 0,
+                          left: e.percent + "%",
+                          borderRadius: "50%",
+                          backgroundColor: "red",
+                          width: "6px",
+                          height: "6px",
+                          color: "white",
+                        }}
+                      >
+                        {e.index}
+                      </div>
+                    ))}
+                  </div>
+                }
+              </div>
+            )),
           ).pipe(TAG("wat")),
         ),
         startWith(null),

@@ -89,13 +89,6 @@ export const FS = {
     () => import("~/BASH.deno.ts"),
   ),
 
-  "src/blog/2025-04-02/": new Path(
-    "src/blog/2025-04-02/",
-    "src/blog",
-    "2025-04-02/",
-    "",
-  ),
-
   "src/blog/how-its-made/this-site/index.render.deno.tsx":
     new JSPath(
       "src/blog/how-its-made/this-site/index.render.deno.tsx",
@@ -288,6 +281,18 @@ export const FS = {
       () =>
         import(
           "~/blog/unholy-custom-jsx-with-observable-strings/state/1.wBS.dom.tsx"
+        ),
+    ),
+
+  "src/blog/unholy-custom-jsx-with-observable-strings/state/3.pureBs.dom.tsx":
+    new JSPath(
+      "src/blog/unholy-custom-jsx-with-observable-strings/state/3.pureBs.dom.tsx",
+      "src/blog/unholy-custom-jsx-with-observable-strings/state",
+      "3.pureBs.dom.tsx",
+      "tsx",
+      () =>
+        import(
+          "~/blog/unholy-custom-jsx-with-observable-strings/state/3.pureBs.dom.tsx"
         ),
     ),
 
@@ -645,6 +650,25 @@ export const FS = {
     "",
   ),
 
+  "src/blog/rxjs/vs-rtk-query/index.render.deno.tsx":
+    new JSPath(
+      "src/blog/rxjs/vs-rtk-query/index.render.deno.tsx",
+      "src/blog/rxjs/vs-rtk-query",
+      "index.render.deno.tsx",
+      "tsx",
+      () =>
+        import(
+          "~/blog/rxjs/vs-rtk-query/index.render.deno.tsx"
+        ),
+    ),
+
+  "src/blog/rxjs/vs-rtk-query/": new Path(
+    "src/blog/rxjs/vs-rtk-query/",
+    "src/blog/rxjs",
+    "vs-rtk-query/",
+    "",
+  ),
+
   "src/blog/rxjs/recreate-react-query-with-rxjs/sample.deno.tsx":
     new JSPath(
       "src/blog/rxjs/recreate-react-query-with-rxjs/sample.deno.tsx",
@@ -714,6 +738,29 @@ export const FS = {
     "src/blog/rxjs",
     "vs-react/",
     "",
+  ),
+
+  "src/blog/rxjs/http/dummy-data.dual.ts": new JSPath(
+    "src/blog/rxjs/http/dummy-data.dual.ts",
+    "src/blog/rxjs/http",
+    "dummy-data.dual.ts",
+    "ts",
+    () => import("~/blog/rxjs/http/dummy-data.dual.ts"),
+  ),
+
+  "src/blog/rxjs/http/chat.md.m": new Path(
+    "src/blog/rxjs/http/chat.md.m",
+    "src/blog/rxjs/http",
+    "chat.md.m",
+    "m",
+  ),
+
+  "src/blog/rxjs/http/index.render.deno.tsx": new JSPath(
+    "src/blog/rxjs/http/index.render.deno.tsx",
+    "src/blog/rxjs/http",
+    "index.render.deno.tsx",
+    "tsx",
+    () => import("~/blog/rxjs/http/index.render.deno.tsx"),
   ),
 
   "src/blog/rxjs/http/": new Path(
@@ -1460,6 +1507,25 @@ export const FS = {
     "lib.dual.ts",
     "ts",
     () => import("~/lib/lib.dual.ts"),
+  ),
+
+  "src/lib/ts-morph-plugins/rxjs-pide-piper.deno.ts":
+    new JSPath(
+      "src/lib/ts-morph-plugins/rxjs-pide-piper.deno.ts",
+      "src/lib/ts-morph-plugins",
+      "rxjs-pide-piper.deno.ts",
+      "ts",
+      () =>
+        import(
+          "~/lib/ts-morph-plugins/rxjs-pide-piper.deno.ts"
+        ),
+    ),
+
+  "src/lib/ts-morph-plugins/": new Path(
+    "src/lib/ts-morph-plugins/",
+    "src/lib",
+    "ts-morph-plugins/",
+    "",
   ),
 
   "src/lib/path_helpers.deno.ts": new JSPath(

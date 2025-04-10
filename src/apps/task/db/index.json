@@ -29,7 +29,7 @@
     "created_at": 1743540360226,
     "updated_at": 0,
     "status": 1,
-    "index": 0
+    "index": 1
   },
   {
     "uuid": "0195f31b-4915-7118-816b-a6d25180ff65",
@@ -70,8 +70,8 @@
     ],
     "created_at": 1743543493227,
     "updated_at": 0,
-    "status": 0,
-    "index": 20
+    "status": 1,
+    "index": 0
   },
   {
     "uuid": "0195f358-53f5-7383-944b-5ba68082b8ed",
@@ -214,8 +214,8 @@
     ],
     "created_at": 1743557581306,
     "updated_at": 0,
-    "status": 0,
-    "index": 42
+    "status": 1,
+    "index": 2
   },
   {
     "uuid": "0195f439-84bc-72cb-95f4-cb52edcb3f7c",
@@ -280,8 +280,8 @@
     ],
     "created_at": 1743559422825,
     "updated_at": 0,
-    "status": 0,
-    "index": 46
+    "status": 1,
+    "index": 4
   },
   {
     "uuid": "0195f444-b8ce-71c8-b930-1a39438f8144",
@@ -388,8 +388,8 @@
     ],
     "created_at": 1743650433325,
     "updated_at": 0,
-    "status": 0,
-    "index": 52
+    "status": 1,
+    "index": 3
   },
   {
     "uuid": "0195f9ac-3e1e-719b-8d56-77076898f152",
@@ -471,6 +471,28 @@
     "created_at": 1744154786584,
     "updated_at": 0,
     "status": 3,
-    "index": 2
+    "index": 3
+  },
+  {
+    "uuid": "01961d73-6dbd-731b-959f-5181de74c32d",
+    "title": "Fix ordering of blogs index",
+    "description": "Add like by folders view vs time order, and add tags and such, make it simply lively and mimic the header of the blog post",
+    "parent": "",
+    "tags": [],
+    "created_at": 1744250826173,
+    "updated_at": 0,
+    "status": 0,
+    "index": 57
+  },
+  {
+    "uuid": "01961d73-a379-73fb-a850-7d60c9fbf523",
+    "title": "RSS: Add file and learn some basics",
+    "description": "Title",
+    "parent": "",
+    "tags": [],
+    "created_at": 1744250839929,
+    "updated_at": 0,
+    "status": 0,
+    "index": 58
   }
 ]

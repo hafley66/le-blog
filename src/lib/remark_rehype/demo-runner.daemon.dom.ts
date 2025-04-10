@@ -8,6 +8,7 @@ import {
   distinctUntilChanged,
   Observable,
   Subscription,
+  tap,
   throttleTime,
 } from "rxjs"
 import React from "react"
@@ -33,7 +34,15 @@ export const __activate_demo = (filename: string) => {
     filename.split("/").slice(0, -1).join("/") + "/"
   const current = activatedRootToTarget[dirname]
 
-  if (current) current.unsubscribe()
+  if (current) {
+    console.log(
+      "Unsupping current from group",
+      dirname,
+      current,
+      filename,
+    )
+    current.unsubscribe()
+  }
 
   setTimeout(() => {
     const target = document
@@ -58,6 +67,8 @@ export const __activate_demo = (filename: string) => {
       "pipe" in next
     ) {
       let currentVnode = null as null | VNode
+      let root = null as null | HTMLElement
+      let differ: ((n: string) => void) | null = null
       activatedRootToTarget[dirname] = next
         .pipe(
           throttleTime(16, animationFrameScheduler, {
@@ -66,14 +77,9 @@ export const __activate_demo = (filename: string) => {
           }),
           distinctUntilChanged(),
           combineLatestWith(
-            deferFrom(() =>
-              import(
-                "../rxjs-vhtml/diff-render.dom.tsx"
-              ).then(i => {
-                const d = document.createElement("div")
-                target.appendChild(d)
-                return i.makeDiffer(d, dirname)
-              }),
+            deferFrom(
+              () =>
+                import("../rxjs-vhtml/diff-render.dom.tsx"),
             ),
           ),
           combineLatestWith(
@@ -84,14 +90,37 @@ export const __activate_demo = (filename: string) => {
             ),
           ),
         )
-
+        .pipe(
+          tap({
+            finalize: () => {
+              root?.remove()
+              console.log("finalize", filename)
+            },
+          }),
+        )
         .subscribe({
-          next: ([[n, differ], patch]) => {
-            if (typeof n === "string") differ(n)
-            else {
+          next: ([[n, diffDom], patch]) => {
+            if (typeof n === "string") {
+              if (!root) {
+                root = diffDom.htmlToNode(n)
+                if (root) {
+                  target.appendChild(root)
+                }
+              }
+              differ ||= diffDom.makeDiffer(root, dirname)
+              differ?.(n)
+            } else {
+              if (!root) {
+                root = document.createElement(
+                  (n as VNode).sel,
+                )
+                if (root) {
+                  target.appendChild(root)
+                }
+              }
               if (!currentVnode) {
                 // First render
-                patch(target, n)
+                patch(root, n)
               } else {
                 // Update existing DOM
                 patch(currentVnode, n)
@@ -99,14 +128,16 @@ export const __activate_demo = (filename: string) => {
               currentVnode = n
             }
           },
-          error: e =>
+          error: e => {
+            root?.remove()
             target?.appendChild(
               (() => {
                 const d = document.createElement("div")
                 d.innerHTML = "/*ERROR*/\n  " + String(e)
                 return d
               })(),
-            ),
+            )
+          },
         })
     } else if (target && next) {
       activatedRootToTarget[dirname] = new Observable<any>(
@@ -149,7 +180,7 @@ export const __activate_demo = (filename: string) => {
           ),
       })
     }
-  }, 1)
+  }, 20)
 }
 
 // export const listenForActivateDemo = () => {

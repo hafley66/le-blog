@@ -26,7 +26,7 @@ import {
 import { init, VNode } from "snabbdom"
 import { propsModule } from "snabbdom"
 import { styleModule } from "snabbdom"
-import { classModule } from "snabbdom"
+import { classModule, eventListenersModule } from "snabbdom"
 import { attributesModule } from "snabbdom"
 
 const lol = debug$[import.meta.url ?? ""]
@@ -37,6 +37,7 @@ export const snabPatch = init(
     styleModule,
     classModule,
     attributesModule,
+    eventListenersModule,
     {
       pre() {},
       // create(e, v) {

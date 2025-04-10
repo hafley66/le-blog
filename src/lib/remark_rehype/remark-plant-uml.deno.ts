@@ -94,7 +94,7 @@ export async function generateD2Diagram(d2Content: string) {
   // Consider using an HTTP service wrapped around your D2 tool if complex
   // console.log("Calling D2", d2Content);
   // Example using Deno.run (stub implementation - adjust args and paths):
-  const command = $`d2 --pad 0 --dark-theme 200 --layout elk -`
+  const command = $`d2 --pad 0 --dark-theme 200 -`
 
   command.stdin.write(d2Content)
   command.stdin.end()

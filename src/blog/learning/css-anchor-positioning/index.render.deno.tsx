@@ -64,11 +64,7 @@ ${(
     <div style="max-width:500px; margin: auto;">
       {from(
         generateD2Diagram(`
-vars: {
-  d2-config: {
-    layout-engine: elk
-  }
-}
+
 css: {
   anchor: |css
     #my-anchor {
@@ -109,6 +105,11 @@ html: {
 
 css.popover -> html.popover
 css.anchor -> html.anchor
+vars: {
+  d2-config: {
+    layout-engine: elk
+  }
+}
 *.style.font-size: 12
 **.style.font-size: 12
 (** -> **)[*]: {

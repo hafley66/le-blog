@@ -9,7 +9,7 @@ export default $.SSGLayout({
   description:
     "Creating an all events visualizer for debugging",
   date_created: "2025-04-06",
-  tags: ["rxjs", "events"],
+  tags: ["rxjs", "events", "dom"],
   ...$.md`
 
 ## Intro

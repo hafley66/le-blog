@@ -412,12 +412,14 @@ export type Prims =
   | number
   | string
   | boolean
+  | null
   | Observable<
       | string
       | number
       | boolean
-      | (string | number | boolean)[]
-      | Observable<string | number | boolean>[]
+      | null
+      | (string | number | boolean | null)[]
+      | Observable<string | number | boolean | null>[]
     >
 
 export type Node$ = Prims | Prims[]

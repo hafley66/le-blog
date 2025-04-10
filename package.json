@@ -83,6 +83,7 @@
 		"shiki": "^3.0.0",
 		"shiki-codegen": "^3.2.1",
 		"snabbdom": "^3.6.2",
+		"ts-morph": "^25.0.1",
 		"ts-plugin-sort-import-suggestions": "^1.0.4",
 		"unified": "^11.0.5",
 		"unist-builder": "^4.0.0",
