@@ -131,12 +131,11 @@ export const CodeTabs = ({
         return `
   &:has(#${cssEscapeSimple(itemId)}:checked) { 
     & pre:nth-child(${cIndex + 1}){
+      display: block;
       & + .console\\.log-details {
         display: block;
       }
-      display: block;
     }
-    pre:nth-child(${cIndex + 1})
   }
   `
       },
