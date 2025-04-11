@@ -106,7 +106,7 @@ const myButtomDemoEvents_Grouped = delegateAllFor(
   ),
 )
 
-autoDemo(import.meta.url, () => (
+export default () => (
   <div key="parent">
     {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
     <button
@@ -175,4 +175,4 @@ autoDemo(import.meta.url, () => (
       )}
     </div>
   </div>
-))
+)
