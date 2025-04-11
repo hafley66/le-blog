@@ -37,4 +37,4 @@ const Demo = () => (
   </div>
 )
 
-autoDemo(import.meta.url, Demo)
+export default Demo

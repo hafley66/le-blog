@@ -88,12 +88,33 @@ ${this.readSync()}
 
     `
   }
-
+  //   renderInlineListener: () =>
+  //     evalType === "front"
+  //       ? `import("${
+  //           inline
+  //             ? `~/${inlineTempFsPath.replace(process.cwd() + "/src/", "")}`
+  //             : fspath.replace("src/", "~/")
+  //         }").then(({default: def}) => {
+  // window.demoRunner.registry["${fspath}"] = def;
+  // ${
+  // cIndex === 0
+  //   ? `window.demoRunner.activate("${fspath}");`
+  //   : ""
+  // }
+  // });`
+  // : "",
   DemoScript = () => {
     return of(`
     
     
-    <script type='module' src='${this.publicPath}' data-src="${this.publicPath}"></script>
+    <script defer type='module'>
+      import('${this.publicPath}').then(
+        ({default: def}) => {
+          window.demoRunner.registry["${this.publicPath}"] = def;
+          window.demoRunner.activate("${this.publicPath}");
+        }
+      )
+    </script>
     <div id="${path.dirname(this.publicPath)}/">
       <div class="code-group-demo-area"></div>
     </div>
@@ -106,7 +127,10 @@ ${this.readSync()}
     return CodeTabs({
       folder: this.dir,
       mapping: {
-        [this.path]: this.readSync(),
+        [this.path]: {
+          value: this.readSync(),
+          lang: this.ext.replace(".", ""),
+        },
       },
     })
   }

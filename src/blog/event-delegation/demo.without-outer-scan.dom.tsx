@@ -1,19 +1,14 @@
 /** @jsxImportSource ~/lib/rxjs-vhtml/v3/ */
 import {
-  combineLatest,
   filter,
   groupBy,
   map,
   mergeMap,
   Observable,
-  of,
   scan,
   startWith,
-  switchMap,
-  tap,
 } from "rxjs"
 import { autoDemo } from "~/lib/client/auto-demo"
-import { shareLatest, TAG } from "~/lib/lib.dual"
 
 const allEvents = Object.getOwnPropertyNames(window)
   .filter(propertyName => propertyName.startsWith("on"))

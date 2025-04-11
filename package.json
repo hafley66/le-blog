@@ -8,7 +8,8 @@
 		"postinstall": "deno run --allow-all npm:playwright install chromium",
 		"watch:sitemap": "deno run --allow-all src/lib/ridiculous_file_watchers/SITEMAP_generator.deno.ts",
 		"watch:sitemap2": "./src/bash/sitemap-watcher.bash",
-		"watch:deno-settings": "deno run --allow-all src/lib/ridiculous_file_watchers/fix-deno-vscode-settings.deno.ts"
+		"watch:deno-settings": "deno run --allow-all src/lib/ridiculous_file_watchers/fix-deno-vscode-settings.deno.ts",
+		"fuckyou": "pnpm build && cd dist && python3 -m http.server 5173"
 	},
 	"dependencies": {
 		"@beoe/rehype-mermaid": "^0.4.2",

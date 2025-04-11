@@ -59,12 +59,10 @@ export function processCodeCuts(
               display: inline-flex;
               height: 0px;
               overflow: hidden;
-              
             }
             #${cssEscapeSimple(id)}:has(.cut-toggle-${c.index}:checked) [data-region="cut-${c.index}"] {
               height: unset;
             }
-            
             `,
           )
           .join("\n"),

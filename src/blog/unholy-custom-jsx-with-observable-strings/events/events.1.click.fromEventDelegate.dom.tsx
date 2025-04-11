@@ -1,6 +1,6 @@
 import { BehaviorSubject, Observable } from "rxjs"
+import { autoDemo } from "~/lib/client/auto-demo"
 import { withId } from "~/lib/form_helpers/with.dom"
-import { registerRxJSXDemo } from "~/lib/remark_rehype/demo-runner.dom"
 import { RxJSX } from "~/lib/rxjs-vhtml/v2/jsx-runtime"
 
 const MyButton: RxJSX.FC<{ name: string }> = props => (
@@ -40,4 +40,4 @@ const main = (
 )
 
 // --cut--
-registerRxJSXDemo(import.meta.filename, () => main)
+autoDemo(import.meta.filename, () => main)

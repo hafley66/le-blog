@@ -2,7 +2,7 @@ import { from } from "rxjs"
 import { Render$ } from "~/lib/0_RenderBase.deno.tsx"
 import { generateD2Diagram } from "~/lib/remark_rehype/remark-plant-uml.deno.ts"
 import { SUB } from "./SITEMAP.deno.ts"
-const $ = Render$(import.meta.filename!, { debug: true })
+const $ = Render$(import.meta.filename!)
 export default $.SSGLayout({
   title: "Part 1: Basic queries with RxJS",
   description: "Its all switchMap",
@@ -512,6 +512,7 @@ Some ideas for implementing:
 6. Must learn how to use merge on multiple queries into 1 bigger query
 
 Caching is intense, but once you understand merge + scan combos
+
 ${SUB.fs["demo.dom.tsx"].DemoScript()}
 
 ## Intro
