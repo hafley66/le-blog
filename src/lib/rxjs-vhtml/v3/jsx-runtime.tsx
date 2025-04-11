@@ -232,11 +232,13 @@ export function jsx(
           .map(i => [i[0].slice(2).toLowerCase(), i[1]]),
       )
       snabbdomProps.attrs["data-IS_PURE"] = "1"
-
+      debug && console.log("tag", tag, children)
       return h(
         tag as string,
         snabbdomProps,
-        children.map(i => (isObservable(i) ? i.pure() : i)),
+        children
+          .map(i => (isObservable(i) ? i.pure() : i))
+          .filter(i => i !== false && i != null),
       )
     }
     ME.pureProps = propsWithChildren
@@ -354,7 +356,7 @@ export type Prims =
           | VNode
         >[]
     >
-export type Node$ = Prims
+export type Node$ = (Prims | Prims[])[] | Prims | Prims[]
 export type RxJSXNode = Node$
 
 export namespace RxJSX {

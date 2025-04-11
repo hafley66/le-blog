@@ -18,9 +18,18 @@ import { $$ } from "~/BASH.deno.ts"
 import { SITEMAP } from "~/SITEMAP.deno.ts"
 import { deferFrom } from "~/lib/lib.dual.ts"
 import { Shiki } from "~/lib/shiki/shiki.deno.tsx"
+import { propsModule } from "snabbdom"
+import rehypeStringify from "rehype-stringify"
 
 export type CodeTabsProps = {
-  mapping?: Record<string, string>
+  mapping?: Record<
+    string,
+    {
+      value: string
+      lang?: string | null
+      meta?: string | null
+    }
+  >
   folder: string
   height?: number
   debug?: boolean
@@ -49,12 +58,18 @@ export const CodeTabs = ({
   debug && console.log("Folder", { folder, mapping })
   const true_mapping = mapping
     ? Object.entries(mapping).map(
-        i => [i[0], i[1].trim(), true] as const,
+        i =>
+          [
+            i[0],
+            i[1].value.trim(),
+            true,
+            i[1].meta ?? "",
+          ] as const,
       )
     : folder
-      ? (files.map(
-          i => [i.path, i.readSync(), false] as const,
-        ) as [string, string, boolean][])
+      ? files.map(
+          i => [i.path, i.readSync(), false, ""] as const,
+        )
       : []
   const tempDir = `${import.meta.dirname!}/temp${
     folder.startsWith("/") ? "" : "/"
@@ -66,6 +81,7 @@ export const CodeTabs = ({
     let filename: null | string = null
     let content = i[1]
     let inline = i[2]
+    let meta = i[3]
     let enableEval = false
 
     let evalType: "" | "back" | "front" | string = ""
@@ -148,7 +164,13 @@ export const CodeTabs = ({
       renderCode: () => {
         return [
           combineLatest([
-            Shiki({ code: content, lang: cleanExt }),
+            Shiki({
+              code: content,
+              lang: cleanExt,
+              meta,
+              debug,
+              id: fspath,
+            }),
             evalType === "back"
               ? runBackendDemo({
                   tempDir,
@@ -157,22 +179,85 @@ export const CodeTabs = ({
                 })
               : of(""),
           ]).pipe(
-            map(([shiki, logs]) =>
-              shiki
-                .replace(
-                  "<code>",
-                  `<div class='code-scroller' ${
-                    height
-                      ? `style='height: ${height};'`
-                      : ""
-                  }><code>`,
+            map(([shiki, logs]) => {
+              if (typeof shiki !== "string") {
+                debug &&
+                  content.includes("twoslash") &&
+                  console.log(shiki)
+                const pre = shiki.children.find(
+                  c =>
+                    c.type === "element" &&
+                    c.tagName === "pre",
                 )
-                .replace(
-                  "</code>",
-                  "</code></div><button class='copy-to-clipboard caption'>Copy</button>",
-                )
-                .replace("</code>", logs + "</code>"),
-            ),
+
+                if (pre && pre.type === "element") {
+                  const code = pre.children.find(
+                    i =>
+                      i.type === "element" &&
+                      i.tagName === "code",
+                  )
+                  pre.children = [
+                    {
+                      type: "element",
+                      tagName: "div",
+                      properties: {
+                        class: "code-scroller",
+                      },
+                      children:
+                        code && code.type === "element"
+                          ? [
+                              {
+                                ...code,
+                                children: [
+                                  ...code.children,
+                                  ...(logs
+                                    ? [
+                                        {
+                                          type: "raw",
+                                          value: logs,
+                                        } as const,
+                                      ]
+                                    : []),
+                                ],
+                              },
+                            ]
+                          : [],
+                    },
+                    {
+                      type: "element",
+                      tagName: "button",
+                      properties: {
+                        class: "copy-to-clipboard",
+                      },
+                      children: [
+                        { type: "text", value: "Copy" },
+                      ],
+                    },
+                  ]
+                }
+
+                return unified()
+                  .use(rehypeStringify)
+                  .stringify(shiki)
+                  .toString()
+                // .then(i => i.toString())
+              }
+              return of("")
+              // return shiki
+              //   .replace(
+              //     "<code>",
+              //     `<div class='code-scroller' ${
+              //       height
+              //         ? `style='height: ${height};'`
+              //         : ""
+              //     }><code>`,
+              //   )
+              //   .replace(
+              //     "</code>",
+              //     "</code></div><button class='copy-to-clipboard caption'>Copy</button>",
+              //   )
+              //   .replace("</code>", logs + "</code>")
+            }),
           ),
         ]
       },

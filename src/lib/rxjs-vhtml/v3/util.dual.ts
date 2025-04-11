@@ -168,12 +168,12 @@ export function primitiveToVNode(
     | VNode,
 ): VNode | null {
   if (child == null || child === false) return null
+  if (typeof child === "boolean") return ""
   if (
     typeof child === "string" ||
-    typeof child === "number" ||
-    typeof child === "boolean"
+    typeof child === "number"
   ) {
-    return child === true ? "" : child
+    return child
   }
   if ("sel" in child && "key" in child) return child
   return null
@@ -319,10 +319,20 @@ export function createChildrenObservable(
                 )
               }
               log(`${index}/${swindex} switchMap PRIMITIVE`)
-              return of([primitiveToVNode(value)])
+              return of(
+                [primitiveToVNode(value)].filter(
+                  i => i !== false && i != null,
+                ),
+              )
             }),
             map(i =>
-              i === null ? i : Array.isArray(i) ? i : [i],
+              i === null
+                ? i
+                : Array.isArray(i)
+                  ? i
+                  : [i].filter(
+                      i => i !== false && i != null,
+                    ),
             ),
             filter(Boolean),
           )
@@ -338,7 +348,11 @@ export function createChildrenObservable(
           )
         }
 
-        return of([primitiveToVNode(child)])
+        return of(
+          [primitiveToVNode(child)].filter(
+            i => i !== false && i != null,
+          ),
+        )
       }),
     )
 
@@ -352,7 +366,9 @@ export function createChildrenObservable(
     // return combineLatest()
   }).pipe(
     filter(Boolean),
-    map(i => i.flat().filter(i => i != null)),
+    map(i =>
+      i.flat().filter(i => i != null && i !== false),
+    ),
     throttleTime(16, animationFrameScheduler, {
       leading: true,
       trailing: true,
@@ -464,150 +480,150 @@ type DiffEntry = {
   newValue: any
 }
 
-function deepObjectDiff(base, object) {
-  const diff = {}
-  const diffEntries: DiffEntry[] = []
+// function deepObjectDiff(base, object) {
+//   const diff = {}
+//   const diffEntries: DiffEntry[] = []
 
-  function compareValues(baseValue, objectValue, path) {
-    const key = path[path.length - 1]
-    const pathStr = path.join(".")
-    if (key.includes("elm")) debugger
-    if (!_.isEqual(baseValue, objectValue)) {
-      // Set the diff in object format
-      _.set(diff, pathStr, objectValue)
+//   function compareValues(baseValue, objectValue, path) {
+//     const key = path[path.length - 1]
+//     const pathStr = path.join(".")
+//     if (key.includes("elm")) debugger
+//     if (!_.isEqual(baseValue, objectValue)) {
+//       // Set the diff in object format
+//       _.set(diff, pathStr, objectValue)
 
-      // Add to diff entries list
-      diffEntries.push({
-        type: "primitive",
-        path,
-        oldValue: baseValue,
-        newValue: objectValue,
-      })
-    }
-  }
+//       // Add to diff entries list
+//       diffEntries.push({
+//         type: "primitive",
+//         path,
+//         oldValue: baseValue,
+//         newValue: objectValue,
+//       })
+//     }
+//   }
 
-  function traverse(baseObj, targetObj, currentPath = []) {
-    // Handle arrays
-    if (
-      Array.isArray(baseObj) &&
-      Array.isArray(targetObj)
-    ) {
-      const maxLength = Math.max(
-        baseObj.length,
-        targetObj.length,
-      )
+//   function traverse(baseObj, targetObj, currentPath = []) {
+//     // Handle arrays
+//     if (
+//       Array.isArray(baseObj) &&
+//       Array.isArray(targetObj)
+//     ) {
+//       const maxLength = Math.max(
+//         baseObj.length,
+//         targetObj.length,
+//       )
 
-      for (let i = 0; i < maxLength; i++) {
-        const newPath = [...currentPath, i.toString()]
+//       for (let i = 0; i < maxLength; i++) {
+//         const newPath = [...currentPath, i.toString()]
 
-        if (i >= baseObj.length) {
-          // Added item
-          _.set(diff, newPath.join("."), targetObj[i])
-          diffEntries.push({
-            type: "array-add",
-            path: newPath,
-            oldValue: undefined,
-            newValue: targetObj[i],
-          })
-        } else if (i >= targetObj.length) {
-          // Removed item
-          _.set(diff, newPath.join("."), undefined)
-          diffEntries.push({
-            type: "array-remove",
-            path: newPath,
-            oldValue: baseObj[i],
-            newValue: undefined,
-          })
-        } else if (
-          _.isObject(baseObj[i]) &&
-          _.isObject(targetObj[i])
-        ) {
-          // Recurse for objects/arrays
-          traverse(baseObj[i], targetObj[i], newPath)
-        } else if (!_.isEqual(baseObj[i], targetObj[i])) {
-          // Different values
-          _.set(diff, newPath.join("."), targetObj[i])
-          diffEntries.push({
-            type: "array-wtf",
-            path: newPath,
-            oldValue: baseObj[i],
-            newValue: targetObj[i],
-          })
-        }
-      }
-      return
-    }
+//         if (i >= baseObj.length) {
+//           // Added item
+//           _.set(diff, newPath.join("."), targetObj[i])
+//           diffEntries.push({
+//             type: "array-add",
+//             path: newPath,
+//             oldValue: undefined,
+//             newValue: targetObj[i],
+//           })
+//         } else if (i >= targetObj.length) {
+//           // Removed item
+//           _.set(diff, newPath.join("."), undefined)
+//           diffEntries.push({
+//             type: "array-remove",
+//             path: newPath,
+//             oldValue: baseObj[i],
+//             newValue: undefined,
+//           })
+//         } else if (
+//           _.isObject(baseObj[i]) &&
+//           _.isObject(targetObj[i])
+//         ) {
+//           // Recurse for objects/arrays
+//           traverse(baseObj[i], targetObj[i], newPath)
+//         } else if (!_.isEqual(baseObj[i], targetObj[i])) {
+//           // Different values
+//           _.set(diff, newPath.join("."), targetObj[i])
+//           diffEntries.push({
+//             type: "array-wtf",
+//             path: newPath,
+//             oldValue: baseObj[i],
+//             newValue: targetObj[i],
+//           })
+//         }
+//       }
+//       return
+//     }
 
-    // Handle objects
-    if (
-      _.isObject(baseObj) &&
-      _.isObject(targetObj) &&
-      !Array.isArray(baseObj) &&
-      !Array.isArray(targetObj)
-    ) {
-      // Check for properties in targetObj
-      _.forOwn(targetObj, (value, key) => {
-        const newPath = [...currentPath, key]
+//     // Handle objects
+//     if (
+//       _.isObject(baseObj) &&
+//       _.isObject(targetObj) &&
+//       !Array.isArray(baseObj) &&
+//       !Array.isArray(targetObj)
+//     ) {
+//       // Check for properties in targetObj
+//       _.forOwn(targetObj, (value, key) => {
+//         const newPath = [...currentPath, key]
 
-        if (!_.has(baseObj, key)) {
-          // Added property
-          _.set(diff, newPath.join("."), value)
-          diffEntries.push({
-            type: "object-add",
-            path: newPath,
-            oldValue: undefined,
-            newValue: value,
-          })
-        } else if (
-          _.isObject(value) &&
-          _.isObject(baseObj[key])
-        ) {
-          // Recurse for nested objects/arrays
-          traverse(baseObj[key], value, newPath)
-        } else if (!_.isEqual(baseObj[key], value)) {
-          // Different values
-          _.set(diff, newPath.join("."), value)
-          diffEntries.push({
-            type: "object-wtf",
-            path: newPath,
-            oldValue: baseObj[key],
-            newValue: value,
-          })
-        }
-      })
+//         if (!_.has(baseObj, key)) {
+//           // Added property
+//           _.set(diff, newPath.join("."), value)
+//           diffEntries.push({
+//             type: "object-add",
+//             path: newPath,
+//             oldValue: undefined,
+//             newValue: value,
+//           })
+//         } else if (
+//           _.isObject(value) &&
+//           _.isObject(baseObj[key])
+//         ) {
+//           // Recurse for nested objects/arrays
+//           traverse(baseObj[key], value, newPath)
+//         } else if (!_.isEqual(baseObj[key], value)) {
+//           // Different values
+//           _.set(diff, newPath.join("."), value)
+//           diffEntries.push({
+//             type: "object-wtf",
+//             path: newPath,
+//             oldValue: baseObj[key],
+//             newValue: value,
+//           })
+//         }
+//       })
 
-      // Check for properties in baseObj that are not in targetObj
-      _.forOwn(baseObj, (value, key) => {
-        if (!_.has(targetObj, key)) {
-          const newPath = [...currentPath, key]
-          _.set(diff, newPath.join("."), undefined)
-          diffEntries.push({
-            type: "object-remove",
-            path: newPath,
-            oldValue: value,
-            newValue: undefined,
-          })
-        }
-      })
+//       // Check for properties in baseObj that are not in targetObj
+//       _.forOwn(baseObj, (value, key) => {
+//         if (!_.has(targetObj, key)) {
+//           const newPath = [...currentPath, key]
+//           _.set(diff, newPath.join("."), undefined)
+//           diffEntries.push({
+//             type: "object-remove",
+//             path: newPath,
+//             oldValue: value,
+//             newValue: undefined,
+//           })
+//         }
+//       })
 
-      return
-    }
+//       return
+//     }
 
-    // Handle primitive values
-    compareValues(baseObj, targetObj, currentPath)
-  }
+//     // Handle primitive values
+//     compareValues(baseObj, targetObj, currentPath)
+//   }
 
-  traverse(base, object)
+//   traverse(base, object)
 
-  return {
-    a: base,
-    b: object,
-    diff: {
-      ba: diff,
-      entries: diffEntries,
-    },
-  }
-}
+//   return {
+//     a: base,
+//     b: object,
+//     diff: {
+//       ba: diff,
+//       entries: diffEntries,
+//     },
+//   }
+// }
 
 export type RxJSXObservable<T> = Observable<T> & {
   pure?: () => VNode

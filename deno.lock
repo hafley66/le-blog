@@ -78,6 +78,7 @@
     "npm:rehype-expressive-code@~0.40.2": "0.40.2",
     "npm:rehype-external-links@3": "3.0.0",
     "npm:rehype-mermaid@3": "3.0.0_playwright@1.51.0",
+    "npm:rehype-parse@^9.0.1": "9.0.1",
     "npm:rehype-raw@7": "7.0.0",
     "npm:rehype-sanitize@6": "6.0.0",
     "npm:rehype-slug@6": "6.0.0",
@@ -3969,6 +3970,14 @@
         "vfile@6.0.3"
       ]
     },
+    "rehype-parse@9.0.1": {
+      "integrity": "sha512-ksCzCD0Fgfh7trPDxr2rSylbwq9iYDkSn8TCDmEJ49ljEUBxDVCzCHv7QNzZOfODanX4+bWQ4WZqLCRWYLfhag==",
+      "dependencies": [
+        "@types/hast",
+        "hast-util-from-html",
+        "unified@11.0.5"
+      ]
+    },
     "rehype-raw@7.0.0": {
       "integrity": "sha512-/aE8hCfKlQeA8LmyeyQvQF3eBiLRGNlfBJEvWH7ivp9sBqs7TNqBL5X3v157rM4IFETqDnIOO+z5M/biZbo9Ww==",
       "dependencies": [
@@ -5040,6 +5049,7 @@
         "npm:rehype-expressive-code@~0.40.2",
         "npm:rehype-external-links@3",
         "npm:rehype-mermaid@3",
+        "npm:rehype-parse@^9.0.1",
         "npm:rehype-raw@7",
         "npm:rehype-sanitize@6",
         "npm:rehype-slug@6",

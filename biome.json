@@ -18,7 +18,9 @@
 				"noForEach": "off",
 				"useLiteralKeys": "off",
 				"useArrowFunction": "off",
-				"noUselessFragments": "off"
+				"noUselessFragments": "off",
+				"noStaticOnlyClass": "off",
+				"noBannedTypes": "info"
 			},
 			"style": {
 				"useNodejsImportProtocol": "off",

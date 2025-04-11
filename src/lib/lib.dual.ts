@@ -184,6 +184,31 @@ export function shareLatest<T>() {
     )
 }
 
+export function CONSOLE_TAG<T>(
+  TAG_PREFIX_: string | number,
+) {
+  return (source: Observable<T>) => {
+    let _id = 0
+    return new Observable<T>(sub => {
+      let id = `${TAG_PREFIX_} ${_id++}`
+      const s = tap<T>({
+        subscribe: () => console.log(`(${id})/subscribe`),
+
+        next: n => console.log(`(${id})/next`, n),
+        error: e => console.log(`(${id})/error`, e),
+        complete: () => console.log(`(${id})/complete`),
+
+        unsubscribe: () =>
+          console.log(`(${id})/unsubscribe`),
+        finalize: () => console.log(`(${id})/finalize`),
+      })(source).subscribe(sub)
+      return () => {
+        s.unsubscribe()
+      }
+    })
+  }
+}
+
 const _tags = {} as Record<string, number>
 const _log = debug$[import.meta.url]
 export function TAG<T>(

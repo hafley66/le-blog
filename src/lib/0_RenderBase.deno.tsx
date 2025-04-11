@@ -1,7 +1,6 @@
 import _ from "lodash"
 
 import {
-  MonoTypeOperatorFunction,
   Observable,
   Subject,
   catchError,
@@ -14,9 +13,6 @@ import {
   of,
   pipe,
   switchMap,
-  takeUntil,
-  tap,
-  timer,
 } from "rxjs"
 import {
   FootnoteFlat,
@@ -27,13 +23,10 @@ import {
   TOC,
 } from "./0_Layout.dual.tsx"
 import { Remark } from "./00_Remark2.deno.tsx"
-import { deferFrom, TAG } from "~/lib/lib.dual.ts"
+import { deferFrom } from "~/lib/lib.dual.ts"
 import { v7 } from "uuid"
 import { CodeTabs } from "~/lib/CodeTabs/index.dual.tsx"
 import path from "node:path"
-import { $ } from "zx"
-import { watchFile } from "node:fs"
-import { makeWatcher$ } from "~/lib/fs_watcher.deno.ts"
 import { statSync } from "node:fs"
 import { TAKE_UNTIL_EXIT } from "~/lib/lib.deno.ts"
 import { watch } from "node:fs/promises"
@@ -57,7 +50,10 @@ type TemplateComponent<T extends string> =
   | TemplateComponentStart<T>
   | TemplateComponentEnd<T>
 
-export const Render$ = (importMetaFilename: string) => {
+export const Render$ = (
+  importMetaFilename: string,
+  opts?: { debug?: boolean },
+) => {
   const [dontCare, ...thisOne] =
     importMetaFilename.split("/src")
 
@@ -372,13 +368,14 @@ ${it.body}
           switchMap(nextC => {
             const folder = `${path.dirname(importMetaFilename)}/md_${midg++}/`
             return CodeTabs({
+              debug: opts?.debug,
               folder,
               mapping: Object.fromEntries(
                 nextC.map(
                   (code, ci) =>
                     [
                       `${folder}md_${mid++}${code.lang ? `.${code.lang}` : ""}`,
-                      code.value,
+                      code,
                     ] as const,
                 ),
               ),

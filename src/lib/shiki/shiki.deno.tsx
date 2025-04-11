@@ -58,6 +58,7 @@ export const SHIKI = await createHighlighterCore({
 })
 
 import { createHighlighter } from "shiki"
+import { processCodeCuts } from "~/lib/remark_rehype/code-cutter.deno.ts"
 
 // `createHighlighter` is async, it initializes the internal and
 // loads the themes and languages specified.
@@ -81,46 +82,59 @@ const highlighter = await createHighlighter({
     "html",
   ],
 })
-
+let id = 0
 export const Shiki = ({
   ...props
 }: {
   src?: string
   code?: string
   lang?: string
+  meta?: string | null
+  debug?: boolean
+  id?: string
 }) => {
   const code = props.src
     ? deferFrom(() =>
         readFile(props.src!).then(i => i.toString("utf-8")),
       )
     : of(props.code ?? "")
-
+  const _id = props.id ?? `${id++}`
+  props.debug &&
+    console.log({ meta: props.code?.includes("twoslash") })
   return code.pipe(
     map(c =>
-      highlighter.codeToHtml(c, {
-        mergeWhitespaces: false,
-        lang:
-          (props.lang && ensureDotExt(props.lang)) ||
-          (props.src &&
-            ensureDotExt(path.extname(props.src!))) ||
-          "tsx",
-        theme: "one-dark-pro",
+      processCodeCuts(
+        // @ts-ignore shhh hast types dont matter, stop mismatching
+        highlighter.codeToHast(c.trim(), {
+          mergeWhitespaces: false,
+          lang:
+            (props.lang && ensureDotExt(props.lang)) ||
+            (props.src &&
+              ensureDotExt(path.extname(props.src!))) ||
+            "tsx",
+          theme: "one-dark-pro",
 
-        transformers: [
-          transformerTwoslash({
-            explicitTrigger: true, // <--
-          }),
-          transformerNotationFocus({
-            matchAlgorithm: "v3",
-          }),
-          transformerNotationDiff({
-            matchAlgorithm: "v3",
-          }),
-          transformerNotationWordHighlight(),
-          transformerMetaWordHighlight(),
-          transformerMetaHighlight(),
-        ],
-      }),
+          transformers: [
+            ...(props.code?.includes("twoslash")
+              ? [
+                  transformerTwoslash({
+                    throws: true,
+                  }),
+                ]
+              : []),
+            transformerNotationFocus({
+              matchAlgorithm: "v3",
+            }),
+            transformerNotationDiff({
+              matchAlgorithm: "v3",
+            }),
+            transformerNotationWordHighlight(),
+            transformerMetaWordHighlight(),
+            transformerMetaHighlight(),
+          ],
+        }),
+        _id,
+      ),
     ),
   )
 }

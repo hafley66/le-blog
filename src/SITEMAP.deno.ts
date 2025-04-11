@@ -726,6 +726,13 @@ export const FS = {
     "",
   ),
 
+  "src/blog/rxjs/scan/": new Path(
+    "src/blog/rxjs/scan/",
+    "src/blog/rxjs",
+    "scan/",
+    "",
+  ),
+
   "src/blog/rxjs/vs-react/index.render.md": new Path(
     "src/blog/rxjs/vs-react/index.render.md",
     "src/blog/rxjs/vs-react",
@@ -740,12 +747,27 @@ export const FS = {
     "",
   ),
 
+  "src/blog/rxjs/http/demo.dom.tsx": new JSPath(
+    "src/blog/rxjs/http/demo.dom.tsx",
+    "src/blog/rxjs/http",
+    "demo.dom.tsx",
+    "tsx",
+    () => import("~/blog/rxjs/http/demo.dom.tsx"),
+  ),
+
   "src/blog/rxjs/http/dummy-data.dual.ts": new JSPath(
     "src/blog/rxjs/http/dummy-data.dual.ts",
     "src/blog/rxjs/http",
     "dummy-data.dual.ts",
     "ts",
     () => import("~/blog/rxjs/http/dummy-data.dual.ts"),
+  ),
+
+  "src/blog/rxjs/http/debugging-rxjs.md": new Path(
+    "src/blog/rxjs/http/debugging-rxjs.md",
+    "src/blog/rxjs/http",
+    "debugging-rxjs.md",
+    "md",
   ),
 
   "src/blog/rxjs/http/chat.md.m": new Path(
@@ -987,6 +1009,61 @@ export const FS = {
     "scan.dual.tsx",
     "tsx",
     () => import("~/lib/scan.dual.tsx"),
+  ),
+
+  "src/lib/tagPipe/demo.core2.dom.tsx": new JSPath(
+    "src/lib/tagPipe/demo.core2.dom.tsx",
+    "src/lib/tagPipe",
+    "demo.core2.dom.tsx",
+    "tsx",
+    () => import("~/lib/tagPipe/demo.core2.dom.tsx"),
+  ),
+
+  "src/lib/tagPipe/monkey-patch.dual.tsx.ts": new JSPath(
+    "src/lib/tagPipe/monkey-patch.dual.tsx.ts",
+    "src/lib/tagPipe",
+    "monkey-patch.dual.tsx.ts",
+    "ts",
+    () => import("~/lib/tagPipe/monkey-patch.dual.tsx.ts"),
+  ),
+
+  "src/lib/tagPipe/index.dual.ts": new JSPath(
+    "src/lib/tagPipe/index.dual.ts",
+    "src/lib/tagPipe",
+    "index.dual.ts",
+    "ts",
+    () => import("~/lib/tagPipe/index.dual.ts"),
+  ),
+
+  "src/lib/tagPipe/core.dual.ts": new JSPath(
+    "src/lib/tagPipe/core.dual.ts",
+    "src/lib/tagPipe",
+    "core.dual.ts",
+    "ts",
+    () => import("~/lib/tagPipe/core.dual.ts"),
+  ),
+
+  "src/lib/tagPipe/visualizer.dom.tsx": new JSPath(
+    "src/lib/tagPipe/visualizer.dom.tsx",
+    "src/lib/tagPipe",
+    "visualizer.dom.tsx",
+    "tsx",
+    () => import("~/lib/tagPipe/visualizer.dom.tsx"),
+  ),
+
+  "src/lib/tagPipe/core.2.dual.ts": new JSPath(
+    "src/lib/tagPipe/core.2.dual.ts",
+    "src/lib/tagPipe",
+    "core.2.dual.ts",
+    "ts",
+    () => import("~/lib/tagPipe/core.2.dual.ts"),
+  ),
+
+  "src/lib/tagPipe/": new Path(
+    "src/lib/tagPipe/",
+    "src/lib",
+    "tagPipe/",
+    "",
   ),
 
   "src/lib/shiki/shiki.deno.tsx": new JSPath(
@@ -1338,6 +1415,14 @@ export const FS = {
           "~/lib/remark_rehype/remarkNestSections.deno.ts"
         ),
     ),
+
+  "src/lib/remark_rehype/code-cutter.deno.ts": new JSPath(
+    "src/lib/remark_rehype/code-cutter.deno.ts",
+    "src/lib/remark_rehype",
+    "code-cutter.deno.ts",
+    "ts",
+    () => import("~/lib/remark_rehype/code-cutter.deno.ts"),
+  ),
 
   "src/lib/remark_rehype/": new Path(
     "src/lib/remark_rehype/",

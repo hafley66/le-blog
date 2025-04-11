@@ -399,7 +399,7 @@ pre .logger.log-log svg {
 }
 
 .twoslash-hover.twoslash-query-presisted {
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
 }
 
@@ -426,8 +426,14 @@ pre .logger.log-log svg {
   margin-top: -1px;
 }
 
-.twoslash .twoslash-query-presisted .twoslash-popup-container .twoslash-popup-code {
-  padding: 0px;
+.twoslash .twoslash-query-presisted .twoslash-popup-container .twoslash-popup-code:not(:has(pre)) {
+  padding: 4px;
+  background-color: inherit;
+  border: 1px solid var(--twoslash-border-color);
+}
+
+span.line:last-child:empty {
+  display: none;
 }
 
 .twoslash .twoslash-hover:hover .twoslash-popup-container,
@@ -656,4 +662,61 @@ pre .logger.log-log svg {
   background-color: var(--twoslash-tag-annotate-bg);
   border-left: 3px solid var(--twoslash-tag-annotate-color);
   color: var(--twoslash-tag-annotate-color);
+}
+
+/* Hide cut lines by default */
+.cut-line {
+  /* display: inline-flex; */
+  /* height: 0px; */
+  /* overflow: hidden; */
+}
+
+/* Hide the checkbox */
+.cut-toggle {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* Style the toggle label */
+.cut-toggle-label {
+  width: calc(100% + 4px);
+  display: inline-block;
+  padding-block: 6px;
+  margin-left: -4px;
+  background-color: #f0f0f0;
+  color: #0366d6;
+  cursor: pointer;
+  font-size: 0.85em;
+  font-family: sans-serif;
+  margin-bottom: -1.4rem;
+}
+
+.cut-toggle-label:hover {
+  background-color: #e0e0e0;
+}
+
+/* Hide the toggle label when checked */
+.cut-toggle:checked ~ .cut-toggle-label {
+  display: none;
+}
+
+/* Container for the toggle button */
+.cut-toggle-container {
+  &:has(.cut-toggle:checked){ 
+    margin: 0;
+  }
+  width: 100%;
+  display: inline-flex;
+  position: relative;
+  margin: 4px 0;
+  line-height: 1;
+  text-align: center;
+}
+
+.cut-op {
+  display: none;
+  counter-increment: step 0;
 }

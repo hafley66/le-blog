@@ -195,7 +195,14 @@
     "src/blog/rxjs/http/index.render.deno.tsx",
     "src/lib/ts-morph-plugins/SITEMAP.deno.ts",
     "src/lib/ts-morph-plugins/rxjs-pide-piper.deno.ts",
-    "src/blog/rxjs/http/dummy-data.dual.ts"
+    "src/blog/rxjs/http/dummy-data.dual.ts",
+    "src/lib/remark_rehype/code-cutter.deno.ts",
+    "src/lib/tagPipe/index.dual.ts",
+    "src/lib/tagPipe/monkey-patch.dual.tsx.ts",
+    "src/blog/rxjs/scan/SITEMAP.deno.ts",
+    "src/lib/tagPipe/SITEMAP.deno.ts",
+    "src/lib/tagPipe/core.dual.ts",
+    "src/lib/tagPipe/core.2.dual.ts"
   ],
   "deno.config": "./deno.json",
   "files.exclude": {
