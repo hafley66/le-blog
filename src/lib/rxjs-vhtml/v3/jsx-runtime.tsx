@@ -408,7 +408,7 @@ export namespace JSX {
         | string
         | string[]
         | Observable<string | string[]>
-      children?: RxJSXNode
+      children?: RxJSXNode | Observable<VNode> | JSX.Element
     } & Lol & {
         [prop: string]:
           | string

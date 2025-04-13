@@ -1,48 +1,81 @@
+// deno-lint-ignore-file no-fallthrough
+import { stat } from "node:fs"
 import {
-  map,
+  BehaviorSubject,
   Observable,
-  of,
   OperatorFunction,
   Subject,
-  tap,
   UnaryFunction,
+  map,
+  merge,
+  of,
   pipe as rxjsPipe,
+  scan,
+  shareReplay,
+  tap,
 } from "rxjs"
+import { string } from "zod"
+import { u } from "unist-builder"
+
+type LifeEvents =
+  | ["subscribe", url: string, index: number]
+  | [
+      "subscribe-start",
+      url: string,
+      index: number,
+      time: number,
+    ]
+  | [
+      "subscribe-end",
+      url: string,
+      index: number,
+      time: number,
+    ]
+  | [
+      "next",
+      url: string,
+      index: number,
+      valueIndex: number,
+      value: any,
+    ]
+  | ["complete", url: string, subIndex: number]
+  | ["error", url: string, subIndex: number, error: any]
+  | [
+      "error-during-subscribe",
+      url: string,
+      subIndex: number,
+      error: any,
+    ]
+  | ["unsubscribe", url: string, subIndex: number]
+  | ["unsubscribe-start", url: string, subIndex: number]
+  | ["unsubscribe-end", url: string, subIndex: number]
+  | [
+      "finalize-start",
+      url: string,
+      subIndex: number,
+      time: number,
+    ]
+  | ["finalize-end", url: string, sub: number, time: number]
+  | ["dynamic-ref", url: string, sub: number, ref: string]
 
 // Event subjects for tracking
-export const lifeEvents = new Subject<
-  | ["subscribe", string, number]
-  | ["subscribe-start", string, number, number]
-  | ["subscribe-end", string, number, number]
-  | ["next", string, number, number]
-  | ["complete", string, number]
-  | ["error", string, number, any]
-  | ["error-during-subscribe", string, number, any]
-  | ["unsubscribe", string, number]
-  | ["finalize", string, number]
-  | ["finalize-start", string, number, number]
-  | ["finalize-end", string, number, number]
->()
+export const lifeEvents = new Subject<LifeEvents>()
 
 export const pipeEvents = new Subject<
-  | ["op", string, number, Function]
-  | ["op-call", string, number, ...args: any[]]
-  | ["op-source", string, source: Observable<any>]
-  | ["op-source-result", string, result: Observable<any>]
-  | ["pipe-start", string, source: Observable<any>]
-  | ["pipe-end", string, result: Observable<any>]
+  | ["op", url: string, number, Function]
+  | ["op-call", url: string, number, args: any[]]
+  | ["op-source", url: string, source: Observable<any>]
   | [
-      "pipe-operator",
-      string,
-      operatorIndex: number,
-      operatorName: string,
+      "op-source-result",
+      url: string,
+      result: Observable<any>,
     ]
+  | ["pipe-start", url: string, source: Observable<any>]
+  | ["pipe-end", url: string, result: Observable<any>]
   | ["observable-created", string, Observable<any>]
 >()
 
 // Global counters and maps
-let globalFunId = 0
-let globalPipeCounter = 0
 let globalObsCounter = 0
 const funMap = new WeakMap<Function, number>()
 const funCallMap = new WeakMap<Function, number>()
@@ -70,12 +103,6 @@ export interface PipeNode {
 
 export const pipeTree: Record<string, PipeNode> = {}
 
-// Map to associate observables with their IDs
-const observableIdMap = new WeakMap<
-  Observable<any>,
-  string
->()
-
 /**
  * Wrap an observable with lifecycle tracking
  */
@@ -87,20 +114,7 @@ export function wrapWithLifecycle<T>(
 
   return new Observable<T>(subscriber => {
     const this_id = sub_id++
-    const fullId = `${prefixId}:${this_id}`
     let n_id = 0
-
-    // Track subscriber in pipe metadata
-    if (pipeMetadata[prefixId]) {
-      pipeMetadata[prefixId].subscriberIds =
-        pipeMetadata[prefixId].subscriberIds || []
-      pipeMetadata[prefixId].subscriberIds.push(fullId)
-
-      // Also update the tree
-      if (pipeTree[prefixId]) {
-        pipeTree[prefixId].subscribers.push(fullId)
-      }
-    }
 
     lifeEvents.next([
       "subscribe-start",
@@ -111,15 +125,13 @@ export function wrapWithLifecycle<T>(
 
     try {
       const subscription = tap<T>({
-        subscribe: () =>
-          lifeEvents.next(["subscribe", prefixId, this_id]),
-
         next: value =>
           lifeEvents.next([
             "next",
             prefixId,
             this_id,
             n_id++,
+            value,
           ]),
 
         error: err =>
@@ -139,10 +151,28 @@ export function wrapWithLifecycle<T>(
             prefixId,
             this_id,
           ]),
-
-        finalize: () =>
-          lifeEvents.next(["finalize", prefixId, this_id]),
       })(source).subscribe(subscriber)
+
+      const old =
+        subscription.unsubscribe.bind(subscription)
+      subscription.unsubscribe = (...args) => {
+        console.log(subscription._parentage)
+        !subscription.closed &&
+          lifeEvents.next([
+            "unsubscribe-start",
+            prefixId,
+            this_id,
+          ])
+        const wasClosedBefore = subscription.closed
+        const r = old(...args)
+        !wasClosedBefore &&
+          lifeEvents.next([
+            "unsubscribe-end",
+            prefixId,
+            this_id,
+          ])
+        return r
+      }
 
       lifeEvents.next([
         "subscribe-end",
@@ -152,7 +182,21 @@ export function wrapWithLifecycle<T>(
       ])
 
       return () => {
-        subscription.unsubscribe()
+        !subscription.closed &&
+          lifeEvents.next([
+            "finalize-start",
+            prefixId,
+            this_id,
+            +new Date(),
+          ])
+        if (!subscription.closed) subscription.unsubscribe()
+        !subscription.closed &&
+          lifeEvents.next([
+            "finalize-end",
+            prefixId,
+            this_id,
+            +new Date(),
+          ])
       }
     } catch (subscribeTimeError) {
       lifeEvents.next([
@@ -174,28 +218,11 @@ export function registerObservable<T>(
   id?: string,
 ): Observable<T> {
   const obsId = id || `obs-${globalObsCounter++}`
-  observableIdMap.set(obs, obsId)
   pipeEvents.next(["observable-created", obsId, obs])
-
   // Create a wrapped version with lifecycle tracking
   const wrappedObs = wrapWithLifecycle(obs, obsId)
-  observableIdMap.set(wrappedObs, obsId)
-
-  // Add pipe metadata
-  pipeMetadata[obsId] = {
-    id: obsId,
-    operations: ["source"],
-    subscriberIds: [],
-  }
-
-  // Add to tree
-  pipeTree[obsId] = {
-    id: obsId,
-    operators: ["source"],
-    children: [],
-    subscribers: [],
-  }
-
+  // Add metadata to the wrapper
+  wrappedObs.url = obsId
   return wrappedObs
 }
 
@@ -205,59 +232,58 @@ export function registerObservable<T>(
 export function o<
   T extends (...args: any[]) => OperatorFunction<any, any>,
 >(fun: T): T {
-  const opBaseId = `op-${fun.name || "unknown"}-${globalFunId++}`
-  const funId = funMap.get(fun) ?? 0
-  funMap.set(fun, funId + 1)
-
-  pipeEvents.next(["op", opBaseId, funId, fun])
-
-  // Create a wrapper function with the same signature as the original
-  const wrapper = (...args: any[]) => {
-    const callId = funCallMap.get(fun) ?? 0
-    funCallMap.set(fun, callId + 1)
-    const opCallId = `${opBaseId}:${callId}`
-
-    pipeEvents.next(["op-call", opCallId, callId, ...args])
-
-    // Get the original operator function
-    const originalOperatorFn = fun(...args)
-
-    // Return an enhanced operator function
-    return (source: Observable<any>): Observable<any> => {
-      const sourceId =
-        observableIdMap.get(source) || "unknown"
-      pipeEvents.next(["op-source", opCallId, source])
-
-      // Apply the original operator function to get the result observable
-      const og = originalOperatorFn(source)
-
-      // Store the operator ID on the source if it's part of a pipe
-      if (sourceId && pipeMetadata[sourceId]) {
-        pipeMetadata[sourceId].operatorIds =
-          pipeMetadata[sourceId].operatorIds || []
-        pipeMetadata[sourceId].operatorIds.push(opCallId)
-      }
-
-      // Generate a result ID for this operator application
-      const resultId = `${opCallId}-result`
-      pipeEvents.next(["op-source-result", resultId, og])
-
-      // Wrap the result with lifecycle tracking
-      const wrappedResult = wrapWithLifecycle(og, resultId)
-      observableIdMap.set(wrappedResult, resultId)
-
-      return wrappedResult
-    }
-  }
-
-  // Copy properties from original function
+  const wrapper = {
+    [fun.name]: (...args: any[]) => {
+      const originalOperatorFn = fun(...args)
+      return wrapOperatorFunction(
+        originalOperatorFn,
+        fun.name,
+      )
+    },
+  }[fun.name]
   Object.assign(wrapper, fun)
-
-  // Add metadata to the wrapper
-  wrapper.opId = opBaseId
-  wrapper.opName = fun.name || "unknown"
-
   return wrapper as any
+}
+
+export const wrapOperatorFunction = (
+  originalOperatorFn: OperatorFunction<any, any>,
+  opName?: string,
+) => {
+  const wrapper = (
+    source: Observable<any>,
+  ): Observable<any> => {
+    const url = `${wrapper.parentUrl}/${wrapper.index}/${wrapper.opName}`
+
+    pipeEvents.next(["op-source", url, source])
+
+    // Apply the original operator function to get the result observable
+    const og = originalOperatorFn(source)
+    // Generate a result ID for this operator application
+    pipeEvents.next(["op-source-result", url, og])
+
+    // Wrap the result with lifecycle tracking
+    const wrappedResult = wrapWithLifecycle(og, url)
+    // observableIdMap.set(wrappedResult, id)
+
+    return wrappedResult
+  }
+  // Add metadata to the wrapper
+  wrapper.opName = opName ?? "?op?"
+  wrapper.parentUrl = ""
+  wrapper.index = 0
+  return wrapper
+}
+
+let currentRefScope = ""
+
+export const withCurrentRefScope = <T>(
+  scope: string,
+  it: () => T,
+) => {
+  currentRefScope = scope
+  const out = it()
+  currentRefScope = ""
+  return out
 }
 
 /**
@@ -265,98 +291,15 @@ export function o<
  */
 export function pipeId<T>(
   id: string,
+  tag?: string,
 ): UnaryFunction<Observable<T>, Observable<T>> {
   const it = (source: Observable<T>): Observable<T> => {
     // This is a no-op operator that just passes the source through
     return source
   }
   it.pipeId = id
+  it.pipeIdUrl = tag
   return it
-}
-
-// Store original pipe method
-const originalPipe = Observable.prototype.pipe
-
-// Monkey patch the pipe method
-Observable.prototype.pipe = function (
-  ...operations: OperatorFunction<any, any>[]
-): any {
-  let pipeIdentifier: string | null = null
-
-  // Look for pipeId operator to extract the identifier
-  for (let i = 0; i < operations.length; i++) {
-    const op = operations[i]
-    if (
-      op &&
-      typeof op === "function" &&
-      (op as any).pipeId
-    ) {
-      // Extract the ID from the operator
-      pipeIdentifier = (op as any).pipeId
-      // Remove the pipeId operator as it's just for identification
-      operations.splice(i, 1)
-      break
-    }
-  }
-
-  if (!pipeIdentifier)
-    return originalPipe.apply(this, operations)
-
-  // Generate a default pipe ID
-  // const defaultPipeId = `pipe-${globalPipeCounter++}`
-
-  const oid = `${this.parentPipeId}/${pipeIdentifier}`
-  this.pipeFilename = pipeIdentifier
-  this.pipeId = oid
-
-  // // Register the result observable with the pipe ID
-  // observableIdMap.set(result, pipeIdentifier)
-
-  // Emit pipe-start event
-  pipeEvents.next(["pipe-start", this.pipeId, this])
-
-  // Store metadata about this pipe
-  pipeMetadata[pipeIdentifier] = {
-    id: this.pipeId,
-    operations: operations.map(op => {
-      // Track each operator in the pipe
-      const opName = op.opName || op.name || "unknown"
-      pipeEvents.next([
-        "pipe-operator",
-        this.pipeId,
-        operations.indexOf(op),
-        opName,
-      ])
-      return opName
-    }),
-    operatorIds: [],
-    subscriberIds: [],
-  }
-
-  // Update the tree structure
-  pipeTree[pipeIdentifier] = {
-    id: pipeIdentifier,
-    parentId: sourceObsId,
-    operators: pipeMetadata[pipeIdentifier].operations,
-    children: [],
-    subscribers: [],
-  }
-
-  // If this pipe has a parent, add it as a child in the tree
-  if (sourceObsId && pipeTree[sourceObsId]) {
-    pipeTree[sourceObsId].children.push(
-      pipeTree[pipeIdentifier],
-    )
-  }
-
-  // Call the original pipe method
-  const result = originalPipe.apply(this, operations)
-
-  // Emit pipe-end event
-  pipeEvents.next(["pipe-end", pipeIdentifier, result])
-
-  result.parentPipeId = pipeIdentifier
-  return result
 }
 
 // Monkey patch observable creation methods
@@ -369,32 +312,255 @@ export function enhancedOf<T>(...args: T[]): Observable<T> {
   )
 }
 
-// Setup console logging for events
-pipeEvents.subscribe(event => {
-  console.log("Pipe Event:", event)
+globalThis.pipeEvents = []
+pipeEvents.subscribe(n => globalThis.pipeEvents.push(n))
+lifeEvents.subscribe(n => globalThis.pipeEvents.push(n))
+
+const state = new BehaviorSubject({
+  subs: {} as Record<
+    string,
+    {
+      root: null | [url: string, subIndex: number]
+      events: {
+        time: number
+        value: LifeEvents
+      }[]
+    }[]
+  >,
+  activeSubRoots: [] as {
+    url: string
+    subIndex: number
+    deps: [url: string, subIndex: number][]
+  }[],
+  subscribeChain: { root: null, stack: [] } as {
+    root: null | [url: string, subIndex: number]
+    stack: [url: string, subIndex: number][]
+  },
+  observables: {} as Record<string, Entry>,
+  currentNode: [
+    {
+      url: "",
+      parent: null,
+      children: [],
+      depth: 0,
+      childPipes: [],
+      refs: [],
+      before: "",
+    },
+  ] as Entry[],
 })
 
-lifeEvents.subscribe(event => {
-  console.log("Life Event:", event)
-})
+globalThis.state = state
+export { state as rxjsState }
+export const rxjsDebugState = merge(
+  lifeEvents.pipe(
+    map(i => ({ type: "life", value: i }) as const),
+  ),
+  pipeEvents.pipe(
+    map(i => ({ type: "pipe", value: i }) as const),
+  ),
+).pipe(
+  scan((state, { type, value }) => {
+    switch (type) {
+      case "pipe": {
+        const current = state.currentNode.at(-1)
+        if (!current) return state
+        const before = current.children.at(-1)
 
-// Example usage
-export function logPipeTree() {
-  console.log(
-    "Pipe Tree:",
-    JSON.stringify(pipeTree, null, 2),
-  )
-  console.log(
-    "Pipe Metadata:",
-    JSON.stringify(pipeMetadata, null, 2),
-  )
-}
+        switch (value[0]) {
+          case "observable-created":
+          case "pipe-start": {
+            current.children.push(value[1])
+            const it: Entry = {
+              parent: value[2].url ?? current.url ?? null,
+              url: value[1],
+              children: [],
+              depth: current.depth + 1,
+              childPipes: [],
+              refs: [],
+              before: before || current.url,
+            }
+            state.currentNode.push(it)
+            state.observables[value[1]] = it
+            if (value[2].url) {
+              state.observables[
+                value[2].url
+              ].childPipes.push(value[1])
+            }
+            return state
+          }
+          case "op-source": {
+            const current = state.currentNode.at(-1)
+            const before = current?.children.at(-1)
 
-// Example usage with the enhanced operators
-const example = originalOf(1).pipe(
-  pipeId("example-pipe"),
-  o(map)(i => i + 1),
+            current?.children.push(value[1])
+
+            state.observables[value[1]] ??= {
+              url: value[1],
+              children: [],
+              refs: [],
+              parent: current?.url ?? null,
+              depth: (current?.depth ?? 0) + 1,
+              childPipes: [],
+              before: before || current?.url,
+            }
+            return state
+          }
+          case "pipe-end": {
+            state.currentNode.pop()
+            return state
+          }
+          default:
+            return state
+        }
+      }
+      case "life":
+        {
+          state.subs[value[1]] ||= []
+          state.subs[value[1]][value[2]] ||= {
+            events: [],
+            root: null,
+          }
+          state.subs[value[1]][value[2]].events.push({
+            time: +new Date(),
+            superNow: performance.now(),
+            value,
+          })
+          const isRoot = state.activeSubRoots.find(
+            i =>
+              i.url === value[1] && i.subIndex === value[2],
+          )
+
+          switch (value[0]) {
+            case "subscribe-start": {
+              state.subscribeChain.stack.push([
+                value[1],
+                value[2],
+              ])
+              return state
+            }
+            case "subscribe-end": {
+              // We have started reversing, here is root? idk we will find out lmfao
+              if (!state.subscribeChain.root) {
+                state.subscribeChain.root = [
+                  value[1],
+                  value[2],
+                ]
+                state.activeSubRoots.push({
+                  url: value[1],
+                  subIndex: value[2],
+                  deps: [],
+                })
+              } else {
+                const r = state.subscribeChain.root
+                state.activeSubRoots
+                  .find(
+                    i =>
+                      i.url === r?.[0] &&
+                      i.subIndex === r?.[1],
+                  )
+                  ?.deps?.push([value[1], value[2]])
+              }
+
+              // const foundRoots = []
+              // Find all dependents that are not finalized
+              // if (state.value[1])
+              // U can b ur own root
+              state.subs[value[1]][value[2]].root =
+                state.subscribeChain.root
+
+              // Pop the stack and validate
+              const peek = state.subscribeChain.stack.pop()
+              if (peek && peek[0] !== value[1]) {
+                console.log("WTF", peek, value)
+              }
+
+              // Clear root once stack is cleared?
+              if (!state.subscribeChain.stack.length) {
+                state.subscribeChain.root = null
+              }
+
+              return state
+            }
+            case "unsubscribe-start": {
+              if (!isRoot) {
+                const root =
+                  state.subs[value[1]][value[2]]?.root
+
+                if (root) {
+                  const anotherRoot =
+                    state.activeSubRoots.find(
+                      i =>
+                        i.url === root[0] &&
+                        i.subIndex === root[1],
+                    )
+
+                  if (anotherRoot) {
+                    const me = anotherRoot.deps.findIndex(
+                      i =>
+                        i[0] === value[1] &&
+                        i[1] === value[2],
+                    )
+                    // console.log(
+                    //   "Cutting from root deps",
+                    //   value,
+                    //   [...anotherRoot.deps],
+                    //   me,
+                    //   { ...root },
+                    // )
+                    if (me > -1) {
+                      anotherRoot.deps?.splice(me, 1)
+                    }
+                  }
+                }
+              }
+              return state
+            }
+            case "unsubscribe-end": {
+              if (isRoot) {
+                const updatees = isRoot.deps
+                // this is everyone alive after finalization, so something is up lol.
+                console.log({ updatees: [...updatees] })
+              }
+            }
+
+            // case "next": {
+            // }
+            // case "error": {
+            // }
+            // case "error-during-subscribe": {
+            // }
+            // case "complete": {
+            // }
+            // case "unsubscribe": {
+            // }
+          }
+        }
+        return state
+    }
+  }, state.value),
+  tap(state),
+  shareReplay({ bufferSize: 1, refCount: true }),
 )
 
-// You can subscribe to the example to see the events
-example.subscribe()
+rxjsDebugState.subscribe()
+// .subscribe(x => console.log(JSON.stringify(x, null, 2)))
+// .subscribe(console.log)
+
+type Entry = {
+  parent: null | string
+  url: string
+  children: string[]
+  depth: number
+  childPipes: string[]
+  before?: string | null
+  refs: string[] // Optional refs for things like merge/combine and mergeWith etc.
+}
+// // Example usage with the enhanced operators
+// const example = originalOf(1).pipe(
+//   pipeId("example-pipe"),
+//   o(map)(i => i + 1),
+// )
+
+// // You can subscribe to the example to see the events
+// example.subscribe()

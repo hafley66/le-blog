@@ -1035,20 +1035,19 @@ export const FS = {
     () => import("~/lib/tagPipe/index.dual.ts"),
   ),
 
-  "src/lib/tagPipe/core.dual.ts": new JSPath(
-    "src/lib/tagPipe/core.dual.ts",
+  "src/lib/tagPipe/index.css": new Path(
+    "src/lib/tagPipe/index.css",
     "src/lib/tagPipe",
-    "core.dual.ts",
-    "ts",
-    () => import("~/lib/tagPipe/core.dual.ts"),
+    "index.css",
+    "css",
   ),
 
-  "src/lib/tagPipe/visualizer.dom.tsx": new JSPath(
-    "src/lib/tagPipe/visualizer.dom.tsx",
+  "src/lib/tagPipe/rxjs.dual.ts": new JSPath(
+    "src/lib/tagPipe/rxjs.dual.ts",
     "src/lib/tagPipe",
-    "visualizer.dom.tsx",
-    "tsx",
-    () => import("~/lib/tagPipe/visualizer.dom.tsx"),
+    "rxjs.dual.ts",
+    "ts",
+    () => import("~/lib/tagPipe/rxjs.dual.ts"),
   ),
 
   "src/lib/tagPipe/core.2.dual.ts": new JSPath(

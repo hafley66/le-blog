@@ -7,9 +7,11 @@ import {
   PipeNode,
   pipeEvents,
   lifeEvents,
+  rxjsDebugState,
 } from "./core.2.dual"
 import { RxJSXNode } from "~/lib/rxjs-vhtml/v3/jsx-runtime"
 import { CONSOLE_TAG, TAG } from "../lib.dual"
+import "./index.css"
 
 const trigger = merge(
   of(null),
@@ -94,243 +96,156 @@ const NodeVisualization = ({
   )
 }
 
-// Main debugger component
-export const RXJS_DEBUGGER = trigger.pipe(
-  map(() => {
-    // Find root nodes (those without parents)
-    const rootNodes = Object.values(pipeTree).filter(
-      node => !node.parentId,
-    )
-
-    const containerStyle = {
-      fontFamily: "sans-serif",
-      padding: "20px",
-      backgroundColor: "#ffffff",
-      border: "1px solid #e0e0e0",
-      borderRadius: "8px",
-      boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-      maxWidth: "100%",
-      overflow: "auto",
-    }
-
-    const headerStyle = {
-      fontSize: "20px",
-      fontWeight: "bold",
-      marginBottom: "15px",
-      color: "#333",
-      borderBottom: "1px solid #eee",
-      paddingBottom: "10px",
-    }
-
-    const statsStyle = {
-      marginBottom: "15px",
-      fontSize: "14px",
-      color: "#666",
-    }
-
-    return (
-      <div style={containerStyle}>
-        <div style={headerStyle}>
-          RxJS Pipe Flow Visualization
-        </div>
-
-        <div style={statsStyle}>
-          <div>
-            Total Pipes: {Object.keys(pipeTree).length}
-          </div>
-          <div>
-            Total Metadata Entries:{" "}
-            {Object.keys(pipeMetadata).length}
-          </div>
-        </div>
-
-        <div>
-          {rootNodes.map((node, index) => (
-            <NodeVisualization
-              key={`${node.id}-${index}`}
-              node={node}
-              depth={0}
-            />
-          ))}
-
-          {rootNodes.length === 0 && (
-            <div
-              style={{
-                color: "#999",
-                fontStyle: "italic",
-              }}
-            >
-              No RxJS pipes detected yet. Start using
-              observables to see them here.
-            </div>
-          )}
-        </div>
-      </div>
-    )
-  }),
-)
-
 // // Additional components for more detailed views
 
 // Component to show detailed pipe metadata
-export const PipeMetadataView = trigger.pipe(
-  map(() => {
-    const containerStyle = {
-      fontFamily: "monospace",
-      padding: "15px",
-      backgroundColor: "#f8f8f8",
-      border: "1px solid #ddd",
-      borderRadius: "4px",
-      maxHeight: "500px",
-      overflow: "auto",
-    }
+export const PipeMetadataView = rxjsDebugState.pipe(
+  map(
+    ({
+      currentNode,
+      observables,
+      subs,
+      subscribeChain,
+      activeSubRoots,
+    }) => {
+      const tree = `
+      display: grid;
+      grid-template-columns: auto 100px 150px;
+      row-gap: 4px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    `
 
-    const headerStyle = {
-      fontSize: "16px",
-      fontWeight: "bold",
-      marginBottom: "10px",
-    }
+      const subtree = `
+      display: grid;
+      grid-template-columns: subgrid;
+    `
 
-    const pipeStyle = {
-      padding: "8px",
-      margin: "5px 0",
-      backgroundColor: "#fff",
-      border: "1px solid #eee",
-      borderRadius: "4px",
-    }
+      const node = `
+      display: grid;
+      grid-template-columns: subgrid;
+      grid-column: 1 / -1;
+    `
 
-    const pipeIdStyle = {
-      fontWeight: "bold",
-      color: "#0066cc",
-    }
+      // .node > :first-child {
+      //   padding-left: calc(var(--depth) * 1.5rem);
+      // }
 
-    return (
-      <div style={containerStyle}>
-        <div style={headerStyle}>Pipe Metadata</div>
-
-        {Object.entries(pipeMetadata).map(([id, data]) => (
-          <div key={id} style={pipeStyle} debug>
-            <div style={pipeIdStyle}>{id}</div>
-            <div>
-              Operations: {data.operations.join(", ")}
-            </div>
-            {!!data.sourceId && (
-              <div>Source: {data.sourceId}</div>
-            )}
-            {!!data.resultId && (
-              <div>Result: {data.resultId}</div>
-            )}
-            {!!data.operatorIds &&
-              data.operatorIds.length > 0 && (
-                <div>
-                  Operators: {data.operatorIds.join(", ")}
-                </div>
-              )}
-            {!!data.subscriberIds &&
-              data.subscriberIds.length > 0 && (
-                <div>
-                  Subscribers:{" "}
-                  {data.subscriberIds.join(", ")}
-                </div>
-              )}
-          </div>
-        ))}
-
-        {Object.keys(pipeMetadata).length === 0 && (
-          <div
-            style={{ color: "#999", fontStyle: "italic" }}
-          >
-            No pipe metadata available yet.
-          </div>
-        )}
-      </div>
-    )
-  }),
-)
-
-// Component to show a simplified tree view
-export const SimpleTreeView = trigger.pipe(
-  map(() => {
-    const containerStyle = {
-      fontFamily: "sans-serif",
-      padding: "15px",
-    }
-
-    const treeStyle = {
-      listStyleType: "none",
-      padding: 0,
-      margin: 0,
-    }
-
-    const renderTreeNode = (
-      node: PipeNode,
-      depth: number,
-    ) => {
-      const nodeStyle = {
-        marginLeft: `${depth * 20}px`,
-        padding: "5px 0",
+      const containerStyle = {
+        fontFamily: "monospace",
+        padding: "15px",
+        backgroundColor: "#f8f8f8",
+        border: "1px solid #ddd",
+        borderRadius: "4px",
+        maxHeight: "500px",
+        overflow: "auto",
       }
 
+      // const headerStyle = {
+      //   fontSize: "16px",
+      //   fontWeight: "bold",
+      //   marginBottom: "10px",
+      // }
+
+      // const pipeStyle = {
+      //   padding: "8px",
+      //   margin: "5px 0",
+      //   backgroundColor: "#fff",
+      //   border: "1px solid #eee",
+      //   borderRadius: "4px",
+      // }
+
+      // const pipeIdStyle = {
+      //   fontWeight: "bold",
+      //   color: "#0066cc",
+      // }
+
+      // Grab all unique root, trace them recursively by observable ID
+
+      const Node = (lol: (typeof observables)[string]) => {
+        if (!lol) {
+          return null
+        }
+
+        return (
+          <li
+            className="__node"
+            style={{ ["--depth" as any]: lol.depth }}
+          >
+            <p>{lol.url.replace(lol.parent ?? "", "")}</p>
+            {!!lol.children && (
+              <ol>
+                {lol.children
+                  .map(i => observables[i])
+                  .map(Node)}
+              </ol>
+            )}
+          </li>
+        )
+      }
       return (
-        <li key={node.id} style={nodeStyle}>
-          <strong>{node.id}</strong> (
-          {node.operators.join(", ")})
-          {node.children.length > 0 && (
-            <ul style={treeStyle}>
-              {node.children.map(child =>
-                renderTreeNode(child, depth + 1),
-              )}
-            </ul>
+        <div className="rxjs-debugger">
+          {!!currentNode[0].children && (
+            <ol className={"__tree"}>
+              {Object.entries(subs)
+                .flatMap(([k, v]) =>
+                  v.map(it => ({
+                    url: k,
+                    lol: it.events,
+                    parent: it.root?.[0] ?? null,
+                    children: [],
+                    childPipes: [],
+                    depth: observables[k].depth,
+                    refs: [],
+                  })),
+                )
+                .map(Node)}
+            </ol>
           )}
-        </li>
+        </div>
       )
-    }
 
-    // Find root nodes
-    const rootNodes = Object.values(pipeTree).filter(
-      node => !node.parentId,
-    )
+      // return (
+      //   <div style={containerStyle}>
+      //     <div style={headerStyle}>Pipe Metadata</div>
 
-    return (
-      <div style={containerStyle}>
-        <h3>Observable Tree</h3>
-        <ul style={treeStyle}>
-          {rootNodes.map(node => renderTreeNode(node, 0))}
-        </ul>
-      </div>
-    )
-  }),
+      //     {Object.entries(pipeMetadata).map(([id, data]) => (
+      //       <div key={id} style={pipeStyle} debug>
+      //         <div style={pipeIdStyle}>{id}</div>
+      //         <div>
+      //           Operations: {data.operations.join(", ")}
+      //         </div>
+      //         {!!data.sourceId && (
+      //           <div>Source: {data.sourceId}</div>
+      //         )}
+      //         {!!data.resultId && (
+      //           <div>Result: {data.resultId}</div>
+      //         )}
+      //         {!!data.operatorIds &&
+      //           data.operatorIds.length > 0 && (
+      //             <div>
+      //               Operators: {data.operatorIds.join(", ")}
+      //             </div>
+      //           )}
+      //         {!!data.subscriberIds &&
+      //           data.subscriberIds.length > 0 && (
+      //             <div>
+      //               Subscribers:{" "}
+      //               {data.subscriberIds.join(", ")}
+      //             </div>
+      //           )}
+      //       </div>
+      //     ))}
+      //   </div>
+      // )
+    },
+  ),
 )
-// function withId<Selector extends string = any>(
-//   id: Selector,
-// ) {
-//   return {
-//     id,
-//     selector: "#" + id,
-//     click: fromEventDelegate(`#${id}`, "click"),
-//     props: {
-//       id: "#" + id,
-//     },
-//   }
-// }
 
-// function ROOT<T extends string = any>(id?: T) {
-//   return "my-confirm-dialog-" + (id ?? "")
-// }
-
-// const Buttons = {
-//   confirm: ROOT("confirm"),
-//   cancel: ROOT("cancel"),
-//   extra: ROOT("extra"),
-// }
-
-// Buttons.
-// In your render method:
 export const RXJSX_DEBUG_DEMO = (
   <div>
     <h1>RxJS Debugger</h1>
-    {RXJS_DEBUGGER}
     {PipeMetadataView}
-    {SimpleTreeView}
   </div>
 )

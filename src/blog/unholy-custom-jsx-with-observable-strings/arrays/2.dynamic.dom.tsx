@@ -1,12 +1,12 @@
+/** @jsxImportSource ~/lib/rxjs-vhtml/v3/ */
 // @@filename Static Nav Array
 import {
   Observable,
   interval,
   isObservable,
   map,
-  of,
-  switchMap,
 } from "rxjs"
+import { RxJSXNode } from "~/lib/rxjs-vhtml/v3/jsx-runtime"
 
 const navItems = [
   "home",
@@ -28,11 +28,11 @@ export default () => (
   </nav>
 )
 
-function toNavItem(
-  item: string | Observable<string>,
-): string | Observable<string> {
+function toNavItem(item: string | Observable<string>) {
   if (!item) return ""
   if (typeof item === "string") return <li>{item}</li>
   // Recursive
-  return item.pipe(switchMap(toNavItem))
+  return isObservable(item)
+    ? item.pipe(map(i => !!i && <li>{i}</li>))
+    : null
 }

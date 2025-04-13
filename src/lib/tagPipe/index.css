@@ -1,0 +1,39 @@
+.rxjs-debugger {
+  /* containment helps layout performance */
+  contain: layout;
+
+  p {
+    margin: 2px;
+  }
+
+  .__tree {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    row-gap: 4px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .__node {
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-column: 1 / -1;
+    margin: 2px;
+  }
+  
+  p {  
+    border-bottom: 1px solid white;
+    border-left: 1px solid var(--color-border, white);
+  }
+  
+  .__node > p:first-child {
+    margin-left: calc(var(--depth, 0) * 0.5rem);
+    padding-left: 4px;
+  }
+
+  .__node > ol {
+    display: contents; /* children nodes become grid items too */
+  }
+
+}
