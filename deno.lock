@@ -45,6 +45,7 @@
     "npm:globals@^15.15.0": "15.15.0",
     "npm:hast-util-find-and-replace@^5.0.1": "5.0.1",
     "npm:hastscript@^9.0.1": "9.0.1",
+    "npm:history@^5.3.0": "5.3.0",
     "npm:htm@^3.1.1": "3.1.1",
     "npm:invokers-polyfill@~0.5.2": "0.5.2",
     "npm:jquery@^3.7.1": "3.7.1",
@@ -69,6 +70,7 @@
     "npm:mdast-util-find-and-replace@^3.0.2": "3.0.2",
     "npm:mermaid-isomorphic@3": "3.0.0_playwright@1.51.0",
     "npm:mermaid@^11.4.1": "11.4.1_cytoscape@3.31.1",
+    "npm:path-to-regexp@^8.2.0": "8.2.0",
     "npm:playwright@^1.51.0": "1.51.0",
     "npm:react-dom@19": "19.0.0_react@19.0.0",
     "npm:react-query@^3.39.3": "3.39.3_react@18.3.1",
@@ -2720,6 +2722,12 @@
     "headers-polyfill@4.0.3": {
       "integrity": "sha512-IScLbePpkvO846sIwOtOTDjutRMWdXdJmXdMvk6gCBHxFO8d+QKOQedyZSxFTTFYRSmlgSTDtXqqq4pcenBXLQ=="
     },
+    "history@5.3.0": {
+      "integrity": "sha512-ZqaKwjjrAYUYfLG+htGaIIZ4nioX2L70ZUMIFysS3xvBsSG4x/n1V6TXV3N8ZYNuFGlDirFg32T7B6WOUPDYcQ==",
+      "dependencies": [
+        "@babel/runtime"
+      ]
+    },
     "htm@3.1.1": {
       "integrity": "sha512-983Vyg8NwUE7JkZ6NmOqpCZ+sh1bKv2iYTlUkzlWmA5JD2acKoxd4KVxbMmxX/85mtfdnDmTFoNKcg5DGAvxNQ=="
     },
@@ -3608,7 +3616,7 @@
         "headers-polyfill",
         "is-node-process",
         "outvariant",
-        "path-to-regexp",
+        "path-to-regexp@6.3.0",
         "picocolors",
         "strict-event-emitter",
         "type-fest@4.37.0",
@@ -3742,6 +3750,9 @@
     },
     "path-to-regexp@6.3.0": {
       "integrity": "sha512-Yhpw4T9C6hPpgPeA28us07OJeqZ5EzQTkbfwuhsUg0c237RomFoETJgmp2sa3F/41gfLE6G5cqcYwznmeEeOlQ=="
+    },
+    "path-to-regexp@8.2.0": {
+      "integrity": "sha512-TdrF7fW9Rphjq4RjrW0Kp2AW0Ahwu9sRGTkS6bvDi0SCwZlEZYmcfDbEsTz8RVk0EHIS/Vd1bv3JhG+1xZuAyQ=="
     },
     "pathe@2.0.3": {
       "integrity": "sha512-WUjGcAqP1gQacoQe+OBJsFA7Ld4DyXuUIjZ5cc75cLHvJ7dtNsTugphxIADwspS+AraAUePCKrSVtPLFj/F88w=="
@@ -5017,6 +5028,7 @@
         "npm:globals@^15.15.0",
         "npm:hast-util-find-and-replace@^5.0.1",
         "npm:hastscript@^9.0.1",
+        "npm:history@^5.3.0",
         "npm:htm@^3.1.1",
         "npm:invokers-polyfill@~0.5.2",
         "npm:jquery@^3.7.1",
@@ -5040,6 +5052,7 @@
         "npm:mdast-util-find-and-replace@^3.0.2",
         "npm:mermaid-isomorphic@3",
         "npm:mermaid@^11.4.1",
+        "npm:path-to-regexp@^8.2.0",
         "npm:playwright@^1.51.0",
         "npm:react-dom@19",
         "npm:react-query@^3.39.3",

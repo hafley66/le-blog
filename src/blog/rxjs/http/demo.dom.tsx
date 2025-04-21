@@ -2,11 +2,8 @@
 import {
   interval,
   map,
-  filter,
   take,
-  of,
   tap,
-  repeat,
   share,
   timer,
 } from "rxjs"
@@ -18,6 +15,10 @@ import {
 } from "~/lib/tagPipe/core.2.dual.ts"
 import "~/lib/tagPipe/monkey-patch.dual.tsx"
 import { repeat_ } from "~/lib/tagPipe/rxjs.dual"
+
+import testIt from "~/lib/StrStr/test.dual"
+
+testIt()
 
 // Example usage
 const source = registerObservable(

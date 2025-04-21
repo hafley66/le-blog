@@ -1554,6 +1554,60 @@ export const FS = {
     () => import("~/lib/0_Layout.dual.tsx"),
   ),
 
+  "src/lib/StrStr/index.dual.ts": new JSPath(
+    "src/lib/StrStr/index.dual.ts",
+    "src/lib/StrStr",
+    "index.dual.ts",
+    "ts",
+    () => import("~/lib/StrStr/index.dual.ts"),
+  ),
+
+  "src/lib/StrStr/test.dual.ts": new JSPath(
+    "src/lib/StrStr/test.dual.ts",
+    "src/lib/StrStr",
+    "test.dual.ts",
+    "ts",
+    () => import("~/lib/StrStr/test.dual.ts"),
+  ),
+
+  "src/lib/StrStr/index.2.dual.ts": new JSPath(
+    "src/lib/StrStr/index.2.dual.ts",
+    "src/lib/StrStr",
+    "index.2.dual.ts",
+    "ts",
+    () => import("~/lib/StrStr/index.2.dual.ts"),
+  ),
+
+  "src/lib/StrStr/2/1_strstr_type.ts": new JSPath(
+    "src/lib/StrStr/2/1_strstr_type.ts",
+    "src/lib/StrStr/2",
+    "1_strstr_type.ts",
+    "ts",
+    () => import("~/lib/StrStr/2/1_strstr_type.ts"),
+  ),
+
+  "src/lib/StrStr/2/0_helper_types.ts": new JSPath(
+    "src/lib/StrStr/2/0_helper_types.ts",
+    "src/lib/StrStr/2",
+    "0_helper_types.ts",
+    "ts",
+    () => import("~/lib/StrStr/2/0_helper_types.ts"),
+  ),
+
+  "src/lib/StrStr/2/": new Path(
+    "src/lib/StrStr/2/",
+    "src/lib/StrStr",
+    "2/",
+    "",
+  ),
+
+  "src/lib/StrStr/": new Path(
+    "src/lib/StrStr/",
+    "src/lib",
+    "StrStr/",
+    "",
+  ),
+
   "src/lib/ridiculous_file_watchers/fix-deno-vscode-settings.deno.ts":
     new JSPath(
       "src/lib/ridiculous_file_watchers/fix-deno-vscode-settings.deno.ts",
