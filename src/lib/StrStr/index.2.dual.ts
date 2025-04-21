@@ -5,8 +5,8 @@ import { HtmlEventIndex$ } from "~/lib/rxjs-vhtml/v2/types.dom.events.dom.ts"
 import {
   ExtractKeysFromParts,
   PathParts,
-  Split,
   Serial,
+  Split,
   ToMutable,
 } from "./2/0_helper_types.ts"
 
@@ -373,24 +373,37 @@ const xx = StrStr(["users", ":id", "card"]).with({
   id: "123",
 })
 
-const root = StrStr("admin/sensor/:sensor_id")
-const _ = <T>(i: T) => i
-const PATHS = root.children({
-  edit: _,
-  logs: _,
-  collectors: _,
-  "collectors/:collector_id": _,
-  "collectors/:collector_id/networks": _,
-  "collectors/:collector_id/networks/:network_id": _,
+const root = StrStr("admin/sites/:site_id").declareQuery({
+  grid: Serial<Partial<GridState>>(),
 })
 
-PATHS["collectors/:collector_id/networks/:network_id"]
-  .Types["with"]
+root.with({
+  grid: {},
+  site_id: 123,
+})
 
-PATHS["collectors/:collector_id/networks"]
+const _ = <T>(i: T) => i
+const PATHS = root.children({
+  edit: i => i,
+  logs: i => i,
+  posts: i => i,
+  "posts/:post_id": i => i,
+  "posts/:post_id/edit": i => i,
+  "posts/:post_id/create": i => i,
+  "posts/:post_id/delete": i => i,
+  "posts/:post_id/comments": i => i,
+  "posts/:post_id/comments/edit": i => i,
+  "posts/:post_id/comments/:comment_id": i => i,
+  "posts/:post_id/comments/:comment_id/edit": i => i,
+})
+
+PATHS["posts/:post_id/comments/:comment_id"].Types["with"]
+
+PATHS["posts/:post_id/comments"]
   .with({
-    sensor_id: "123",
-    collector_id: "123",
+    post_id: "123",
+    site_id: 123,
+    grid: {},
   })
   .x("submit-btn")
-  .to.id()
+  .to.location()

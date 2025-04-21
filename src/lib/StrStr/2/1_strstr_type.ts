@@ -82,33 +82,84 @@ export type StrStrType<
     H
   >
 
-  // Renamed from declare to children, with parent reference
+  // // Renamed from declare to children, with parent reference
+  // children<
+  //   T extends {
+  //     [K in keyof T]: (
+  //       k: StrStrType<
+  //         [...P, ...Split<K & string, "/">],
+  //         any,
+  //         Q,
+  //         H
+  //       > & { parent: StrStrType<P, Keys, Q, H> },
+  //     ) => any
+  //   },
+  // >(
+  //   defs: T,
+  // ): {
+  //   [K in keyof T]: StrStrType<
+  //     [...P, ...Split<K & string, "/">],
+  //     | Keys
+  //     | ExtractKeysFromParts<
+  //         ToMutable<Split<K & string, "/">>
+  //       >,
+  //     Q,
+  //     H
+  //   > & {
+  //     parent: StrStrType<P, Keys, Q, H>
+  //   }
+  // }
+  // Update the children method type to support nested definitions
+  // children<
+  //   T extends {
+  //     [K in keyof T]: (
+  //       k: StrStrType<
+  //         [...P, ...Split<K & string, "/">],
+  //         | Keys
+  //         | ExtractKeysFromParts<
+  //             ToMutable<Split<K & string, "/">>
+  //           >,
+  //         Q,
+  //         H
+  //       > & { parent: StrStrType<P, Keys, Q, H> },
+  //     ) => any
+  //   },
+  // >(
+  //   defs: T,
+  // ): {
+  //   [K in keyof T]: ReturnType<T[K]> extends StrStrType<
+  //     any,
+  //     any
+  //   >
+  //     ? StrStrType<
+  //         [...P, ...Split<K & string, "/">],
+  //         | Keys
+  //         | ExtractKeysFromParts<
+  //             ToMutable<Split<K & string, "/">>
+  //           >,
+  //         Q,
+  //         H
+  //       > & {
+  //         parent: StrStrType<P, Keys, Q, H>
+  //       }
+  //     : ReturnType<T[K]>
+  // }
+  // Update the children method type
   children<
     T extends {
       [K in keyof T]: (
         k: StrStrType<
           [...P, ...Split<K & string, "/">],
-          any,
+          | Keys
+          | ExtractKeysFromParts<
+              ToMutable<Split<K & string, "/">>
+            >,
           Q,
           H
         > & { parent: StrStrType<P, Keys, Q, H> },
       ) => any
     },
-  >(
-    defs: T,
-  ): {
-    [K in keyof T]: StrStrType<
-      [...P, ...Split<K & string, "/">],
-      | Keys
-      | ExtractKeysFromParts<
-          ToMutable<Split<K & string, "/">>
-        >,
-      Q,
-      H
-    > & {
-      parent: StrStrType<P, Keys, Q, H>
-    }
-  } & { _: { [K in keyof T]: ReturnType<T[K]> } }
+  >(defs: T): FlattenPaths<P, T, Q, H, Keys>
 
   // Define query types using Serial markers
   declareQuery<QTypes extends Record<string, any>>(
@@ -232,3 +283,75 @@ export type LocationString<
   Q extends Record<string, any>,
   H extends Record<string, any>,
 > = `/${Join<P, "/">}${ObjectToQueryString<Q>}${ObjectToHashString<H>}`
+// Helper type to flatten nested path definitions
+type FlattenPaths<
+  P extends PathParts,
+  T extends Record<string, any>,
+  Q extends Record<string, any>,
+  H extends Record<string, any>,
+  Keys extends string,
+> = {
+  [K in keyof T]: ReturnType<T[K]> extends StrStrType<
+    any,
+    any
+  >
+    ? ReturnType<T[K]>
+    : StrStrType<
+        [...P, ...Split<K & string, "/">],
+        | Keys
+        | ExtractKeysFromParts<
+            ToMutable<Split<K & string, "/">>
+          >,
+        Q,
+        H
+      > & { parent: StrStrType<P, Keys, Q, H> }
+} & {
+  [K in keyof T as FlattenNestedKeys<
+    K & string,
+    T[K]
+  >]: FlattenNestedTypes<P, K & string, T[K], Q, H, Keys>
+}
+
+// Helper type to extract nested keys
+type FlattenNestedKeys<K extends string, V> = V extends (
+  k: any,
+) => infer R
+  ? R extends { children: (...args: any[]) => infer C }
+    ?
+        | `${K}/${keyof C & string}`
+        | FlattenNestedKeys<
+            `${K}/${keyof C & string}`,
+            C[keyof C]
+          >
+    : never
+  : never
+
+// Helper type to extract nested types
+type FlattenNestedTypes<
+  P extends PathParts,
+  K extends string,
+  V,
+  Q extends Record<string, any>,
+  H extends Record<string, any>,
+  Keys extends string,
+> = V extends (k: any) => infer R
+  ? R extends { children: (...args: any[]) => infer C }
+    ? {
+        [NK in keyof C]: StrStrType<
+          [
+            ...P,
+            ...Split<K, "/">,
+            ...Split<NK & string, "/">,
+          ],
+          | Keys
+          | ExtractKeysFromParts<ToMutable<Split<K, "/">>>
+          | ExtractKeysFromParts<
+              ToMutable<Split<NK & string, "/">>
+            >,
+          Q,
+          H
+        > & { parent: StrStrType<P, Keys, Q, H> }
+      }[keyof C]
+    : never
+  : never
+// Update the children method type

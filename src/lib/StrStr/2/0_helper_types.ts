@@ -162,7 +162,7 @@ export type TypesHelper<
 
   // Direct mapped type instead of intersection
   with: {
-    [K in PathKeys | keyof Q | keyof H]?: K extends PathKeys
+    [K in PathKeys | keyof Q | keyof H]: K extends PathKeys
       ? string | number
       : K extends keyof Q
         ? ExtractSerialType<Q[K]>
