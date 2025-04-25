@@ -179,9 +179,9 @@ export type StrStrType<
     url(): Join<P, "/">
     dot(): Join<P, ".">
     debug(): Join<P, ":">
-    css(): Join<P, "-">
-    id(): `#${Join<P, "-">}`
-    className(): `.${Join<P, "-">}`
+    css(): Join<P, "--">
+    id(): `#${Join<P, "--">}`
+    className(): `.${Join<P, "--">}`
     lodash(): `[${Join<P, "][">}]`
 
     // Enhanced URL formats with query and hash
@@ -283,6 +283,7 @@ export type LocationString<
   Q extends Record<string, any>,
   H extends Record<string, any>,
 > = `/${Join<P, "/">}${ObjectToQueryString<Q>}${ObjectToHashString<H>}`
+
 // Helper type to flatten nested path definitions
 type FlattenPaths<
   P extends PathParts,
@@ -354,4 +355,87 @@ type FlattenNestedTypes<
       }[keyof C]
     : never
   : never
-// Update the children method type
+
+type Iter<T extends number> = T extends 5
+  ? 4
+  : T extends 4
+    ? 3
+    : T extends 3
+      ? 2
+      : T extends 2
+        ? 1
+        : T extends 1
+          ? 0
+          : never
+
+type Fu<
+  T extends Record<string, any>,
+  Parent extends string = "",
+  Depth extends number = 5,
+> = Depth extends 0
+  ? never
+  : IsEmpty<T> extends true
+    ? T
+    : {
+        [K in keyof T as Join<
+          [Parent, K & string],
+          "/"
+        >]: T[K] extends Record<string, any>
+          ? Fu<
+              T[K],
+              Join<[Parent, K & string], "/">,
+              Iter<Depth>
+            >
+          : T[K]
+      }
+
+type ToEntries<
+  T extends Record<string, any>,
+  Depth extends number = 5,
+> = Depth extends 0
+  ? never
+  :
+      | {
+          [K in keyof T]: [K, T[K]]
+        }[keyof T]
+      | {
+          [K in keyof T]: T[K] extends Record<string, any>
+            ? ToEntries<T[K], Iter<Depth>>
+            : never
+        }[keyof T]
+
+type TupleToObject<T extends [string, any]> = {
+  [K in T as K[0]]: K[1]
+}
+
+type Ex = {
+  a: {}
+  b: {
+    c: {}
+    d: {}
+    e: { f: {}; g: { h: { i: { DERP: {} } } } }
+  }
+}
+
+// Test it
+type A = Fu<Ex>
+type AAA = ToEntries<Fu<Ex>>
+type AA = TupleToObject<AAA>
+
+type Haha = AA
+type B = Iter<0>
+
+const ex = {
+  a: {},
+  b: {
+    c: {},
+    d: {},
+    e: { f: {}, g: { h: { i: { DERP: {} } } } },
+  },
+}
+
+let ex2 = ex as unknown as TupleToObject<
+  ToEntries<Fu<typeof ex>>
+>
+ex2["b/e/f"]
+type D = Join<["b"], "/">

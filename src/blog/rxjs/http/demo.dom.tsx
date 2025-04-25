@@ -41,21 +41,5 @@ const source2 = source.pipe(
   tap(),
   pipeId("source2", import.meta.url), // Name this pipe
 )
-// setTimeout(() => source.subscribe(), 500)
-// const evenNumbers = source.pipe(
-//   pipeId("evenFilter"), // Name this pipe
-//   filter(x => x % 2 === 0),
-//   map(x => `Even: ${x}`),
-// )
-
-// const oddNumbers = source.pipe(
-//   pipeId("oddFilter"), // Name this pipe
-//   filter(x => x % 2 !== 0),
-//   map(x => `Odd: ${x}`),
-// )
-
-// // Subscribe to the observables
-// evenNumbers.subscribe(console.log)
-// oddNumbers.subscribe(console.log)
 
 export default () => RXJSX_DEBUG_DEMO

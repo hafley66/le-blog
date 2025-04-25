@@ -402,10 +402,6 @@ export default () => Stopwatch
 
 ${$.CodeTabs.end()}
 
-#### 
-
-### Build a stopwatch: RxJS(X)
-
 `,
   // ``
 })

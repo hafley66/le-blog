@@ -32,7 +32,9 @@ export type Join<
           infer F extends string,
           ...infer R extends string[],
         ]
-      ? `${F}${D}${Join<R, D>}`
+      ? F extends ""
+        ? Join<R, D>
+        : `${F}${D}${Join<R, D>}`
       : string
 
 export type ExtractTemplateKeys<S extends string> =
@@ -65,44 +67,6 @@ export type FillPathParts<
   ? R
   : never
 
-// // Simplify WithInput to avoid complexity
-// export type WithInput<
-//   PathKeys extends string,
-//   Q extends Record<string, any>,
-//   H extends Record<string, any>,
-// > = {
-//   [K in PathKeys]?: string | number
-// } & {
-//   query?: Partial<Q>
-//   hash?: Partial<H>
-// }
-// Update WithInput to be a flat object
-// export type WithInput<
-//   PathKeys extends string,
-//   Q extends Record<string, any>,
-//   H extends Record<string, any>,
-// > = {
-//   [K in PathKeys | keyof Q | keyof H]?: K extends PathKeys
-//     ? string | number
-//     : K extends keyof Q
-//       ? ExtractSerialType<Q[K]>
-//       : K extends keyof H
-//         ? ExtractSerialType<H[K]>
-//         : never
-// }
-
-// // Type helper for the Types field
-// export type TypesHelper<
-//   PathKeys extends string,
-//   Q extends Record<string, any>,
-//   H extends Record<string, any>,
-// > = {
-//   path: Record<PathKeys, string | number>
-//   query: { [K in keyof Q]: ExtractSerialType<Q[K]> }
-//   hash: { [K in keyof H]: ExtractSerialType<H[K]> }
-//   with: WithInput<PathKeys, Q, H>
-// }
-
 export type WithInput<
   PathKeys extends string,
   Q extends Record<string, any>,
@@ -115,24 +79,6 @@ export type WithInput<
   [K in keyof H]: ExtractSerialType<H[K]>
 }
 
-// export type TypesHelper<
-//   PathKeys extends string,
-//   Q extends Record<string, any>,
-//   H extends Record<string, any>,
-// > = {
-//   path: Record<PathKeys, string | number>
-//   query: { [K in keyof Q]: ExtractSerialType<Q[K]> }
-//   hash: { [K in keyof H]: ExtractSerialType<H[K]> }
-
-//   // Use the flattened WithInput directly
-//   with: {
-//     [K in PathKeys]?: string | number
-//   } & {
-//     [K in keyof Q]?: ExtractSerialType<Q[K]>
-//   } & {
-//     [K in keyof H]?: ExtractSerialType<H[K]>
-//   }
-// }
 // Create a cleaner flattened type
 export type FlattenedWithInput<
   PathKeys extends string,
@@ -201,3 +147,6 @@ export type HtmlEventIndex$WithParams<
     Keys
   >
 }
+
+type JoinTA = Join<["", "a"], "/">
+type JoinTB = Join<["a", "b"], "/">
