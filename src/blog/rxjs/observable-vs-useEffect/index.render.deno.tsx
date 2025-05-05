@@ -263,8 +263,8 @@ Lets start by creating
 3. event: did we click toggle = callback
 
 ${$.CodeTabs.start({
-  autoSave: true,
-  groupName: "1.stopwatch-init",
+  // autoSave: true,
+  // groupName: "1.stopwatch-init",
 })}
 
 ~~~tsx

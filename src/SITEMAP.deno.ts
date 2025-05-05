@@ -89,6 +89,84 @@ export const FS = {
     () => import("~/BASH.deno.ts"),
   ),
 
+  "src/blog/openapi-codegen/idea.md.m": new Path(
+    "src/blog/openapi-codegen/idea.md.m",
+    "src/blog/openapi-codegen",
+    "idea.md.m",
+    "m",
+  ),
+
+  "src/blog/openapi-codegen/gen2.deno.ts": new JSPath(
+    "src/blog/openapi-codegen/gen2.deno.ts",
+    "src/blog/openapi-codegen",
+    "gen2.deno.ts",
+    "ts",
+    () => import("~/blog/openapi-codegen/gen2.deno.ts"),
+  ),
+
+  "src/blog/openapi-codegen/generator.deno.ts": new JSPath(
+    "src/blog/openapi-codegen/generator.deno.ts",
+    "src/blog/openapi-codegen",
+    "generator.deno.ts",
+    "ts",
+    () =>
+      import("~/blog/openapi-codegen/generator.deno.ts"),
+  ),
+
+  "src/blog/openapi-codegen/components2.ts": new JSPath(
+    "src/blog/openapi-codegen/components2.ts",
+    "src/blog/openapi-codegen",
+    "components2.ts",
+    "ts",
+    () => import("~/blog/openapi-codegen/components2.ts"),
+  ),
+
+  "src/blog/openapi-codegen/Endpoint.ts": new JSPath(
+    "src/blog/openapi-codegen/Endpoint.ts",
+    "src/blog/openapi-codegen",
+    "Endpoint.ts",
+    "ts",
+    () => import("~/blog/openapi-codegen/Endpoint.ts"),
+  ),
+
+  "src/blog/openapi-codegen/sdk2.ts": new JSPath(
+    "src/blog/openapi-codegen/sdk2.ts",
+    "src/blog/openapi-codegen",
+    "sdk2.ts",
+    "ts",
+    () => import("~/blog/openapi-codegen/sdk2.ts"),
+  ),
+
+  "src/blog/openapi-codegen/petstore.json": new Path(
+    "src/blog/openapi-codegen/petstore.json",
+    "src/blog/openapi-codegen",
+    "petstore.json",
+    "json",
+  ),
+
+  "src/blog/openapi-codegen/sdk3.ts": new JSPath(
+    "src/blog/openapi-codegen/sdk3.ts",
+    "src/blog/openapi-codegen",
+    "sdk3.ts",
+    "ts",
+    () => import("~/blog/openapi-codegen/sdk3.ts"),
+  ),
+
+  "src/blog/openapi-codegen/index.ts": new JSPath(
+    "src/blog/openapi-codegen/index.ts",
+    "src/blog/openapi-codegen",
+    "index.ts",
+    "ts",
+    () => import("~/blog/openapi-codegen/index.ts"),
+  ),
+
+  "src/blog/openapi-codegen/": new Path(
+    "src/blog/openapi-codegen/",
+    "src/blog",
+    "openapi-codegen/",
+    "",
+  ),
+
   "src/blog/how-its-made/this-site/index.render.deno.tsx":
     new JSPath(
       "src/blog/how-its-made/this-site/index.render.deno.tsx",
@@ -1427,6 +1505,47 @@ export const FS = {
     "src/lib/remark_rehype/",
     "src/lib",
     "remark_rehype/",
+    "",
+  ),
+
+  "src/lib/codehike/index.deno.ts": new JSPath(
+    "src/lib/codehike/index.deno.ts",
+    "src/lib/codehike",
+    "index.deno.ts",
+    "ts",
+    () => import("~/lib/codehike/index.deno.ts"),
+  ),
+
+  "src/lib/codehike/example.mdx": new Path(
+    "src/lib/codehike/example.mdx",
+    "src/lib/codehike",
+    "example.mdx",
+    "mdx",
+  ),
+
+  "src/lib/codehike/TokenTransition/smooth-pre.deno.tsx":
+    new JSPath(
+      "src/lib/codehike/TokenTransition/smooth-pre.deno.tsx",
+      "src/lib/codehike/TokenTransition",
+      "smooth-pre.deno.tsx",
+      "tsx",
+      () =>
+        import(
+          "~/lib/codehike/TokenTransition/smooth-pre.deno.tsx"
+        ),
+    ),
+
+  "src/lib/codehike/TokenTransition/": new Path(
+    "src/lib/codehike/TokenTransition/",
+    "src/lib/codehike",
+    "TokenTransition/",
+    "",
+  ),
+
+  "src/lib/codehike/": new Path(
+    "src/lib/codehike/",
+    "src/lib",
+    "codehike/",
     "",
   ),
 

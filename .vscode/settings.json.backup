@@ -203,7 +203,13 @@
     "src/lib/tagPipe/SITEMAP.deno.ts",
     "src/lib/tagPipe/core.dual.ts",
     "src/lib/tagPipe/core.2.dual.ts",
-    "src/lib/tagPipe/rxjs.dual.ts"
+    "src/lib/tagPipe/rxjs.dual.ts",
+    "src/lib/tagPipe/test3.dual.ts",
+    "src/lib/StrStr/test.dual.ts",
+    "src/lib/StrStr/index.dual.ts",
+    "src/lib/StrStr/index.2.dual.ts",
+    "src/lib/StrStr/2/SITEMAP.deno.ts",
+    "src/lib/StrStr/SITEMAP.deno.ts"
   ],
   "deno.config": "./deno.json",
   "files.exclude": {
