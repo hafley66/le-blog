@@ -213,7 +213,8 @@
     "src/blog/openapi-codegen/generator.deno.ts",
     "src/lib/codehike/index.deno.ts",
     "src/lib/codehike/TokenTransition/smooth-pre.deno.tsx",
-    "src/blog/openapi-codegen/gen2.deno.ts"
+    "src/blog/openapi-codegen/gen2.deno.ts",
+    "src/lib/Signal/index.deno.ts"
   ],
   "deno.config": "./deno.json",
   "files.exclude": {

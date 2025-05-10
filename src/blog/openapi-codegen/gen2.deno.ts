@@ -1,7 +1,7 @@
-import SwaggerParser from "@apidevtools/swagger-parser"
 import fs from "node:fs/promises"
-import { OpenAPI } from "openapi-types"
 import path from "node:path"
+import SwaggerParser from "@apidevtools/swagger-parser"
+import { OpenAPI } from "openapi-types"
 
 const getOperations = (api: OpenAPI.Document) => {
   const ops: { method: string; path: string; op: any }[] =

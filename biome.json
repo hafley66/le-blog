@@ -53,7 +53,7 @@
 			"semicolons": "asNeeded",
 			"indentStyle": "space",
 			"indentWidth": 2,
-			"lineWidth": 60
+			"lineWidth": 120
 		}
 	}
 }

@@ -14,10 +14,7 @@ export default defineConfig(async it => {
     })
     .reduce(
       (acc, path) => {
-        if (it.command === "serve")
-          acc[
-            path.replace(".vite", "").replace(/^src/i, "")
-          ] = path.replace(/^src/i, "")
+        if (it.command === "serve") acc[path.replace(".vite", "").replace(/^src/i, "")] = path.replace(/^src/i, "")
         else {
           acc[path.replace(".vite", "")] = path
         }
@@ -60,28 +57,15 @@ export default defineConfig(async it => {
       ? await Promise.all(
           Object.entries(htmlFiles).map(
             ([k, v]) => (
-              existsSync(
-                `${process.cwd()}/${v.replace("index.vite.html", "index.html")}`,
-              )
-                ? rmSync(
-                    `${process.cwd()}/${v.replace("index.vite.html", "index.html")}`,
-                  )
+              existsSync(`${process.cwd()}/${v.replace("index.vite.html", "index.html")}`)
+                ? rmSync(`${process.cwd()}/${v.replace("index.vite.html", "index.html")}`)
                 : null,
-              link(
-                `${process.cwd()}/${v}`,
-                `${process.cwd()}/${v.replace("index.vite.html", "index.html")}`,
-              )
+              link(`${process.cwd()}/${v}`, `${process.cwd()}/${v.replace("index.vite.html", "index.html")}`)
             ),
           ),
         ).then(() => {
           return Object.fromEntries(
-            Object.entries(htmlFiles).map(
-              i =>
-                [
-                  i[0],
-                  i[1].replace("vite.html", "html"),
-                ] as const,
-            ),
+            Object.entries(htmlFiles).map(i => [i[0], i[1].replace("vite.html", "html")] as const),
           )
         })
       : htmlFiles),
@@ -94,7 +78,7 @@ export default defineConfig(async it => {
     ),
   }
 
-  console.log({ input })
+  // console.log({ input })
 
   return {
     root: "src",
@@ -102,9 +86,7 @@ export default defineConfig(async it => {
       environment: "jsdom",
       globals: true,
       // setupFiles: ['./src/test/setup.ts'],
-      include: [
-        "**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}",
-      ],
+      include: ["**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
       // coverage: {
       //   provider: 'v8',
       //   reporter: ['text', 'json', 'html'],
@@ -117,9 +99,7 @@ export default defineConfig(async it => {
         name: "remove index.html copies",
         buildEnd(error) {
           Object.entries(htmlFiles).map(([k, v]) =>
-            rmSync(
-              `${process.cwd()}/${v.replace("index.vite.html", "index.html")}`,
-            ),
+            rmSync(`${process.cwd()}/${v.replace("index.vite.html", "index.html")}`),
           )
         },
       },
