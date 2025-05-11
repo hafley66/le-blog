@@ -6,7 +6,7 @@
 		"useIgnoreFile": false
 	},
 	"files": {
-		"include": ["./**/*", "./**/*.dual."]
+		"include": ["./**/*", "./**/*.dual.", "./**/*.test*"]
 	},
 	"organizeImports": { "enabled": false },
 	"linter": {
@@ -25,6 +25,7 @@
 			"style": {
 				"useNodejsImportProtocol": "off",
 				"useImportType": "off",
+				"noInferrableTypes": "off",
 				"noCommaOperator": "off",
 				"noNonNullAssertion": "info",
 				"useConst": "info",

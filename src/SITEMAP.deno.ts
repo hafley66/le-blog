@@ -1283,12 +1283,78 @@ export const FS = {
     () => import("~/lib/lib.dual.ts"),
   ),
 
+  "src/lib/Signal2/tests/index.2.dual.test.ts": new JSPath(
+    "src/lib/Signal2/tests/index.2.dual.test.ts",
+    "src/lib/Signal2/tests",
+    "index.2.dual.test.ts",
+    "ts",
+    () => import("~/lib/Signal2/tests/index.2.dual.test.ts"),
+  ),
+
+  "src/lib/Signal2/tests/index.test.ts": new JSPath(
+    "src/lib/Signal2/tests/index.test.ts",
+    "src/lib/Signal2/tests",
+    "index.test.ts",
+    "ts",
+    () => import("~/lib/Signal2/tests/index.test.ts"),
+  ),
+
+  "src/lib/Signal2/tests/index3.dual.test.ts": new JSPath(
+    "src/lib/Signal2/tests/index3.dual.test.ts",
+    "src/lib/Signal2/tests",
+    "index3.dual.test.ts",
+    "ts",
+    () => import("~/lib/Signal2/tests/index3.dual.test.ts"),
+  ),
+
+  "src/lib/Signal2/tests/": new Path("src/lib/Signal2/tests/", "src/lib/Signal2", "tests/", ""),
+
+  "src/lib/Signal2/3_SignalReact.deno.ts": new JSPath(
+    "src/lib/Signal2/3_SignalReact.deno.ts",
+    "src/lib/Signal2",
+    "3_SignalReact.deno.ts",
+    "ts",
+    () => import("~/lib/Signal2/3_SignalReact.deno.ts"),
+  ),
+
   "src/lib/Signal2/index.deno.ts": new JSPath(
     "src/lib/Signal2/index.deno.ts",
     "src/lib/Signal2",
     "index.deno.ts",
     "ts",
     () => import("~/lib/Signal2/index.deno.ts"),
+  ),
+
+  "src/lib/Signal2/types.ts": new JSPath(
+    "src/lib/Signal2/types.ts",
+    "src/lib/Signal2",
+    "types.ts",
+    "ts",
+    () => import("~/lib/Signal2/types.ts"),
+  ),
+
+  "src/lib/Signal2/2_Signal.deno.ts": new JSPath(
+    "src/lib/Signal2/2_Signal.deno.ts",
+    "src/lib/Signal2",
+    "2_Signal.deno.ts",
+    "ts",
+    () => import("~/lib/Signal2/2_Signal.deno.ts"),
+  ),
+
+  "src/lib/Signal2/0_SignalCreator.deno.ts": new JSPath(
+    "src/lib/Signal2/0_SignalCreator.deno.ts",
+    "src/lib/Signal2",
+    "0_SignalCreator.deno.ts",
+    "ts",
+    () => import("~/lib/Signal2/0_SignalCreator.deno.ts"),
+  ),
+
+  "src/lib/Signal2/1_SignalMemoFunction.deno.ts": new JSPath(
+    "src/lib/Signal2/1_SignalMemoFunction.deno.ts",
+    "src/lib/Signal2",
+    "1_SignalMemoFunction.deno.ts",
+    "ts",
+    () => import("~/lib/Signal2/1_SignalMemoFunction.deno.ts"),
   ),
 
   "src/lib/Signal2/": new Path("src/lib/Signal2/", "src/lib", "Signal2/", ""),

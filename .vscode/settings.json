@@ -215,7 +215,15 @@
     "src/lib/codehike/TokenTransition/smooth-pre.deno.tsx",
     "src/blog/openapi-codegen/gen2.deno.ts",
     "src/lib/Signal/index.deno.ts",
-    "src/lib/Signal2/index.deno.ts"
+    "src/lib/Signal2/index.deno.ts",
+    "src/lib/Signal2/index.2.dual.test.ts",
+    "src/lib/Signal2/index3.dual.test.ts",
+    "src/lib/Signal2/0_SignalCreator.deno.ts",
+    "src/lib/Signal2/1_SignalMemoFunction.deno.ts",
+    "src/lib/Signal2/2_Signal.deno.ts",
+    "src/lib/Signal2/3_SignalReact.deno.ts",
+    "src/lib/Signal2/tests/index.2.dual.test.ts",
+    "src/lib/Signal2/tests/index3.dual.test.ts"
   ],
   "deno.config": "./deno.json",
   "files.exclude": {

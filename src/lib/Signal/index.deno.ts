@@ -279,7 +279,7 @@ const MEMO_PRE = function <T>(fun: (...args: any[]) => T) {
           filter(i => i.type === "get"),
           tap({
             subscribe: () => console.log("sub3"),
-            next: n => console.log("next", n.value.value),
+            next: n => console.log("next", n.value.$.id(), n.value._),
           }),
           takeUntil(
             end.pipe(
