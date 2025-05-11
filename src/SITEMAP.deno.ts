@@ -1283,6 +1283,16 @@ export const FS = {
     () => import("~/lib/lib.dual.ts"),
   ),
 
+  "src/lib/Signal2/index.deno.ts": new JSPath(
+    "src/lib/Signal2/index.deno.ts",
+    "src/lib/Signal2",
+    "index.deno.ts",
+    "ts",
+    () => import("~/lib/Signal2/index.deno.ts"),
+  ),
+
+  "src/lib/Signal2/": new Path("src/lib/Signal2/", "src/lib", "Signal2/", ""),
+
   "src/lib/ts-morph-plugins/rxjs-pide-piper.deno.ts": new JSPath(
     "src/lib/ts-morph-plugins/rxjs-pide-piper.deno.ts",
     "src/lib/ts-morph-plugins",

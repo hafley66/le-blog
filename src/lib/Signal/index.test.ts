@@ -1,6 +1,6 @@
+import { firstValueFrom, take, takeUntil, timer, toArray } from "rxjs"
 import { describe, expect, test } from "vitest"
 import { Signal } from "./index.deno"
-import { firstValueFrom, take, takeUntil, timer, toArray } from "rxjs"
 
 describe("Signal$", () => {
   test("derp", async () => {
@@ -14,8 +14,9 @@ describe("Signal$", () => {
       x: Signal<"a" | "b" | "c" | null>("a"),
       ff: Signal(null as null | { a: number; b: { x: number } | null }),
       g: Signal(null as null | []),
-      gg: Signal(null as null | { a: number; b: null | { x: 123 } }[]),
+      gg: Signal(null as null | { a: number; b?: null | { x: 123 }; c?: { z: ""; zz?: string }[] }[]),
     }
+
     expect(x.a()).toEqual(null)
     expect(x.b()).toEqual(123)
     expect(x.b(456)).toEqual(x.b)
@@ -53,12 +54,26 @@ describe("Signal$", () => {
 
     console.log("KK")
     expect(await sub).toEqual([1122, 555 + 123])
+
+    expect(x.gg._.length()).toEqual(undefined)
+    expect(x.gg([]))
+    expect(x.gg._.length()).toEqual(0)
+
+    expect(x.gg._[12]({ a: 123, b: null }))
+
+    expect(x.gg()?.[12]).toEqual({ a: 123, b: null })
+    expect(x.gg()?.[12]).toEqual({ a: 123, b: null })
+    expect(x.gg._[12]()).toEqual({ a: 123, b: null })
+    const spec = x.gg._[12]._.c
+    spec([])
+    expect(x.gg._[12]()).toEqual({ a: 123, b: null, c: [] })
+    spec._[0]({ z: "" })
+    expect(spec._[0]()).toEqual({ z: "" })
+    expect(spec()).toEqual([{ z: "" }])
+    x.gg._[12](undefined)
+    expect(spec()).toEqual(undefined)
+    expect(spec._[0]()).toEqual(undefined)
+    x.gg(undefined)
+    expect(x.gg._[12]()).toEqual(undefined)
   })
 })
-
-type X = "a" | "b" | "c" | null
-type Nullish<T> = T extends null | undefined ? true : never
-type x = {
-  a: Nullish<X>
-  b: Nullish<"a" | "b">
-}
