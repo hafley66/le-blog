@@ -60,6 +60,15 @@ describe("Signal$", () => {
     expect(x.gg.length._).toEqual(undefined)
     expect(x.gg.$([]))
     expect(x.gg.length.$()).toEqual(0)
+
+    x.gg.push._?.({ a: 123, b: null })
+    expect(x.gg._).toEqual([
+      {
+        a: 123,
+        b: null,
+      },
+    ])
+    delete x.gg._[0]
   })
 })
 

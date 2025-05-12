@@ -56,17 +56,17 @@ export const MEMO_PRE = function <T>(fun: (...args: any[]) => T) {
       ),
       scan(
         (found, next) => {
-          if (found.all.find(i => i === next.value)) {
+          if (found.all.find(i => i === next.value.it)) {
             return {
               all: found.all,
               next: null,
             }
           }
-          const all = found.all.concat([next.value])
+          const all = found.all.concat([next.value.it])
 
           return {
             all,
-            next: next.value,
+            next: next.value.it,
           }
         },
         { next: null, all: [] } as { next: ISignal<any> | null; all: ISignal<any>[] },

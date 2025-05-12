@@ -1,3 +1,5 @@
+import { Draft } from "immer"
+import { SyntheticEvent } from "react"
 import { Observable } from "rxjs"
 
 export type Act<T extends string, V> = {
@@ -7,67 +9,67 @@ export type Act<T extends string, V> = {
 
 export type DepthLimit = [never, 0, 1, 2, 3, 4, 5, 6]
 
-export interface ASignal<T> extends Observable<T> {
+export type ASignal<T, Meta = unknown> = Observable<T> & {
   (): T
-  (next: T): this
+  (next: T): ASignal<T, Meta>
   value: T
-  next: (next: T) => this
+  next: (next: T) => ASignal<T, Meta>
+  setImmer: (draft: Draft<T>) => undefined | Draft<T>
   use: () => T
-  ref: T
   path: string[]
-}
+} & Meta
 
-export type ISignal<T, Depth extends number = 5> = RSignal<T, Depth> & {
-  $: ASignal<T> & {
+export type ISignal<T, M = unknown, Depth extends number = 5> = RSignal<T, M, Depth> & {
+  $: ASignal<T, M> & {
     id: {
-      (setId: string): ISignal<T>
+      (setId: string): ISignal<T, M, Depth>
       (): string
     }
   }
   _: T
 }
 
-export interface ASignalNullish<T> extends Observable<T | undefined> {
+export type ASignalNullish<T, M = unknown> = Observable<T | undefined> & {
   (): T | undefined
-  (next: T | undefined): ASignalNullish<T>
+  (next: T | undefined): ASignalNullish<T, M>
   value: T | undefined
-  next: (next: T | undefined) => ASignalNullish<T>
+  next: (next: T | undefined) => ASignalNullish<T, M>
+  setImmer: (draft: Draft<T>) => undefined | Draft<T>
   use: () => T | undefined
-  ref: T | undefined
   path: string[]
-}
+} & M
 
-export type ISignalNullish<T, Depth extends number = 5> = RSignalNullish<T, Depth> & {
-  $: ASignalNullish<T> & {
+export type ISignalNullish<T, M = unknown, Depth extends number = 5> = RSignalNullish<T, M, Depth> & {
+  $: ASignalNullish<T, M> & {
     id: {
-      (setId: string): ISignalNullish<T>
+      (setId: string): ISignalNullish<T, M, Depth>
       (): string
     }
   }
   _: T | undefined
 }
 
-export type RSignal<T, Depth extends number = 5> = Depth extends never
+export type RSignal<T, M = unknown, Depth extends number = 5> = Depth extends never
   ? never
   : Nullish<T> extends true
     ? RSignalNullish<NonNullable<T>, Depth>
     : isRecursive<T> extends 1
       ? {
-          [K in keyof T as T[K] extends Function ? never : K]-?: ISignal<T[K], DepthLimit[Depth]>
-        }
+          [K in keyof T]-?: Functional<T[K]> extends 1 ? T[K] : ISignal<T[K], M, DepthLimit[Depth]>
+        } & (T extends unknown[] ? Record<number, ISignal<T[number], M, DepthLimit[Depth]>> : {}) // Array case, we iterate over all prototype above, but we actually get the generic of number => T mapping here
       : {
-          $: ASignal<T>
+          $: ASignal<T, M>
           _: T
         }
 
-export type RSignalNullish<T, Depth extends number = 5> = Depth extends never
+export type RSignalNullish<T, M = unknown, Depth extends number = 5> = Depth extends never
   ? never
   : isRecursive<T> extends 1
     ? {
-        [K in keyof T as T[K] extends Function ? never : K]-?: ISignalNullish<T[K], DepthLimit[Depth]>
-      }
+        [K in keyof T as K]-?: ISignalNullish<T[K], M, DepthLimit[Depth]>
+      } & (T extends unknown[] ? Record<number, ISignalNullish<T[number], M, DepthLimit[Depth]>> : {})
     : {
-        $: ASignalNullish<T>
+        $: ASignalNullish<T, M>
         _: T | undefined
       }
 
@@ -88,6 +90,8 @@ type XX = {
 }
 
 type NonFunctionKeys<T> = { [K in keyof T]: [K, T[K]] }[keyof T]
+
+type Functional<T> = T extends (...args: any) => any ? 1 : 0
 export type isRecursive<T> = NonNullable<T> extends Record<any, any>
   ? NonNullable<T> extends never
     ? 0
@@ -95,6 +99,7 @@ export type isRecursive<T> = NonNullable<T> extends Record<any, any>
   : [] extends NonNullable<T>
     ? 1
     : 0
+
 type h = {
   x: NonFunctionKeys<string>
   _: isRecursive<{ a: "WAT" }>
@@ -127,5 +132,23 @@ type h = {
   wtf: NonNullable<null>
   wtf2: NonNullable<null> extends Record<any, any> ? 1 : 0
   ar: Record<any, any> extends any[] ? 1 : 0
+  fun: Functional<number | undefined>
   ar2: any[] extends Record<any, any> ? 1 : 0
+  tr: {
+    a: isRecursive<TR>
+    b: Nullish<TR>
+    c: Functional<TR>
+    x: ISignalNullish<TR>
+    xx: ISignalNullish<any[] | null>
+    x1: ISignalNullish<{}[] | null>
+    x2: isRecursive<{}[] | null>
+  }
 }
+type TR =
+  | {
+      a: number
+      b: null | {
+        x: 123
+      }
+    }[]
+  | null

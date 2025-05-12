@@ -223,7 +223,8 @@
     "src/lib/Signal2/2_Signal.deno.ts",
     "src/lib/Signal2/3_SignalReact.deno.ts",
     "src/lib/Signal2/tests/index.2.dual.test.ts",
-    "src/lib/Signal2/tests/index3.dual.test.ts"
+    "src/lib/Signal2/tests/index3.dual.test.ts",
+    "src/lib/Signal2/4_FormSignal.deno.ts"
   ],
   "deno.config": "./deno.json",
   "files.exclude": {

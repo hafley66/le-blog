@@ -1341,6 +1341,14 @@ export const FS = {
     () => import("~/lib/Signal2/2_Signal.deno.ts"),
   ),
 
+  "src/lib/Signal2/4_FormSignal.deno.ts": new JSPath(
+    "src/lib/Signal2/4_FormSignal.deno.ts",
+    "src/lib/Signal2",
+    "4_FormSignal.deno.ts",
+    "ts",
+    () => import("~/lib/Signal2/4_FormSignal.deno.ts"),
+  ),
+
   "src/lib/Signal2/0_SignalCreator.deno.ts": new JSPath(
     "src/lib/Signal2/0_SignalCreator.deno.ts",
     "src/lib/Signal2",
