@@ -14,7 +14,7 @@ import {
   exhaustMap,
 } from "rxjs"
 import { isEqual } from "lodash"
-import { ISignal } from "~/lib/Signal2/types.ts"
+import { RSignal } from "~/lib/Signal2/types.ts"
 import { SignalCreator } from "~/lib/Signal2/0_SignalCreator.deno.ts"
 
 export const MEMO_PRE = function <T>(fun: (...args: any[]) => T) {
@@ -69,7 +69,7 @@ export const MEMO_PRE = function <T>(fun: (...args: any[]) => T) {
             next: next.value.it,
           }
         },
-        { next: null, all: [] } as { next: ISignal<any> | null; all: ISignal<any>[] },
+        { next: null, all: [] } as { next: RSignal<any> | null; all: RSignal<any>[] },
       ),
       filter(i => !!i.next),
       mergeMap(i =>

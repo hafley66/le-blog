@@ -1283,12 +1283,12 @@ export const FS = {
     () => import("~/lib/lib.dual.ts"),
   ),
 
-  "src/lib/Signal2/tests/index.2.dual.test.ts": new JSPath(
-    "src/lib/Signal2/tests/index.2.dual.test.ts",
-    "src/lib/Signal2/tests",
-    "index.2.dual.test.ts",
-    "ts",
-    () => import("~/lib/Signal2/tests/index.2.dual.test.ts"),
+  "src/lib/Signal2/4_FormSignal.deno.tsx": new JSPath(
+    "src/lib/Signal2/4_FormSignal.deno.tsx",
+    "src/lib/Signal2",
+    "4_FormSignal.deno.tsx",
+    "tsx",
+    () => import("~/lib/Signal2/4_FormSignal.deno.tsx"),
   ),
 
   "src/lib/Signal2/tests/index.test.ts": new JSPath(
@@ -1299,23 +1299,7 @@ export const FS = {
     () => import("~/lib/Signal2/tests/index.test.ts"),
   ),
 
-  "src/lib/Signal2/tests/index3.dual.test.ts": new JSPath(
-    "src/lib/Signal2/tests/index3.dual.test.ts",
-    "src/lib/Signal2/tests",
-    "index3.dual.test.ts",
-    "ts",
-    () => import("~/lib/Signal2/tests/index3.dual.test.ts"),
-  ),
-
   "src/lib/Signal2/tests/": new Path("src/lib/Signal2/tests/", "src/lib/Signal2", "tests/", ""),
-
-  "src/lib/Signal2/3_SignalReact.deno.ts": new JSPath(
-    "src/lib/Signal2/3_SignalReact.deno.ts",
-    "src/lib/Signal2",
-    "3_SignalReact.deno.ts",
-    "ts",
-    () => import("~/lib/Signal2/3_SignalReact.deno.ts"),
-  ),
 
   "src/lib/Signal2/index.deno.ts": new JSPath(
     "src/lib/Signal2/index.deno.ts",
@@ -1339,14 +1323,6 @@ export const FS = {
     "2_Signal.deno.ts",
     "ts",
     () => import("~/lib/Signal2/2_Signal.deno.ts"),
-  ),
-
-  "src/lib/Signal2/4_FormSignal.deno.ts": new JSPath(
-    "src/lib/Signal2/4_FormSignal.deno.ts",
-    "src/lib/Signal2",
-    "4_FormSignal.deno.ts",
-    "ts",
-    () => import("~/lib/Signal2/4_FormSignal.deno.ts"),
   ),
 
   "src/lib/Signal2/0_SignalCreator.deno.ts": new JSPath(

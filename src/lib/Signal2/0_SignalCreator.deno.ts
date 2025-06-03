@@ -1,7 +1,7 @@
-import { BehaviorSubject, map, Observable, shareReplay, Subject, tap } from "rxjs"
+import { BehaviorSubject, filter, map, Observable, shareReplay, Subject, tap } from "rxjs"
 import { get, isEqual, set } from "lodash"
 import { Draft, produce, isDraftable } from "immer"
-import { Act, ASignal, ISignal } from "~/lib/Signal2/types.ts"
+import { ASignal, RSignal, SignalEvents } from "~/lib/Signal2/types.ts"
 // dirty recursive upward
 // invalid recursive upward
 // touched is also upward
@@ -9,17 +9,20 @@ import { Act, ASignal, ISignal } from "~/lib/Signal2/types.ts"
 // commit is down
 // default change is down
 
+// biome-ignore lint/suspicious/noConfusingVoidType: <explanation>
 type ValidDraftReturnType<State> = State | void | undefined
 
-export function SignalCreator<T, Meta = unknown>({
+export function SignalCreator<T, Base extends {} = {}>({
   initialState,
   observable,
-  createMeta,
+  // createMeta,
+  createBase,
 }: {
   initialState?: T
   observable?: Observable<T>
-  createMeta?: (root?: ISignal<T>, path?: string[]) => Meta
-}): ISignal<T, Meta> {
+  // createMeta?: (root?: RSignal<T>, path?: string[]) => Meta
+  createBase?: (root?: RSignal<T>, path?: string[]) => Base
+}): RSignal<T, Base, 5> {
   const state$ = new BehaviorSubject(initialState as T)
   const root$ = !observable
     ? state$
@@ -35,9 +38,17 @@ export function SignalCreator<T, Meta = unknown>({
         }),
       )
 
-  const activeSubs: ISignal<T>[] = []
+  const activeSubs: RSignal<T>[] = []
 
-  const createProxy = (_path: string[], meta?: Meta): ISignal<T, Meta> => {
+  const createProxy = (
+    _path: string[],
+    // meta?: Meta,
+    base?: Base,
+  ): RSignal<
+    T,
+    // Meta,
+    Base
+  > => {
     // In case a symbol gets thru, bc that will break array.join
     const path = _path.filter(i => typeof i === "string")
     const depth = path.length
@@ -85,7 +96,7 @@ export function SignalCreator<T, Meta = unknown>({
             })
 
             if (!isEqual(next, context)) {
-              const parent: ISignal<any> = depth > 1 ? get(rootProxy, path.slice(0, -1)) : rootProxy
+              const parent: RSignal<any> = depth > 1 ? get(rootProxy, path.slice(0, -1)) : rootProxy
               parent.$.next(next)
             }
 
@@ -101,17 +112,18 @@ export function SignalCreator<T, Meta = unknown>({
       [path.join("/")]: (...args: any[]) => {
         if (args.length) {
           setter(args[0])
-          SignalCreator.dispatch.next({ type: "set", value: { it: proxy as ISignal<any>, path, value: args[0] } })
+          SignalCreator.dispatch.next({ type: "set", value: { it: proxy as RSignal<T>, path, value: args[0] } })
           return _self.$
         }
-        SignalCreator.dispatch.next({ type: "get", value: { it: proxy as ISignal<any>, path } })
+        SignalCreator.dispatch.next({ type: "get", value: { it: proxy as RSignal<T>, path } })
         return getter()
       },
     }[path.join("/")]
     let ID = ""
 
     const _self = {
-      $: new Proxy(_selfFn as ASignal<T, Meta>, {
+      ...base,
+      $: new Proxy(_selfFn as ASignal<T>, {
         get(target, p) {
           if (p === "value") {
             return _selfFn()
@@ -121,7 +133,16 @@ export function SignalCreator<T, Meta = unknown>({
           }
           if (p === "setImmer") return setterImmer
           if (p === "path") return path
-          if (p === "meta") return meta
+          // if (p === "meta") return meta
+          if (p === "$") {
+            return SignalCreator.dispatch.pipe(
+              filter(
+                i =>
+                  // @ts-expect-error
+                  i.value === proxy,
+              ),
+            )
+          }
 
           // Hit cache
           if (p in target) return (target as any)[p as any]
@@ -185,11 +206,25 @@ export function SignalCreator<T, Meta = unknown>({
           }
         },
       }),
-    } as ISignal<T, Meta>
+    } as RSignal<
+      T,
+      // Meta,
+      Base
+    >
 
-    const proxy = new Proxy<ISignal<T, Meta>>(
+    const proxy = new Proxy<
+      RSignal<
+        T,
+        // Meta,
+        Base
+      >
+    >(
       /** Bc of how proxies work, we must pass a function if we want apply to work */
-      _self as ISignal<T, Meta>,
+      _self as RSignal<
+        T,
+        // Meta,
+        Base
+      >,
       {
         get(target, p) {
           if (p in target) return (target as any)[p as any]
@@ -200,23 +235,27 @@ export function SignalCreator<T, Meta = unknown>({
             return (target as any)[p]
           }
           // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
-          return ((target as any)[p] ||= createProxy([...path, p as string], createMeta?.(rootProxy, path)))
+          return ((target as any)[p] ||= createProxy(
+            [...path, p as string],
+            // createMeta?.(rootProxy, path),
+            createBase?.(rootProxy, [...path, p as string]),
+          ))
         },
       },
     )
     return proxy
   }
 
-  const rootProxy = createProxy([], createMeta?.()) as ISignal<T, Meta>
+  const rootProxy = createProxy(
+    [],
+    // createMeta?.(),
+    createBase?.(),
+  ) as RSignal<
+    T,
+    // Meta,
+    Base
+  >
   return rootProxy
 }
 
-SignalCreator.dispatch = new Subject<
-  | Act<"create", { it: ISignal<any>; path: string[] }>
-  | Act<"subscribe", { it: ISignal<any>; path: string[] }>
-  | Act<"get", { it: ISignal<any>; path: string[] }>
-  | Act<"set", { it: ISignal<any>; path: string[]; value: any }>
-  | Act<"next", { it: ISignal<any> }>
-  | Act<"unsubscribe", { it: ISignal<any>; path: string[] }>
-  | Act<"destory", { it: ISignal<any>; path: string[] }>
->()
+SignalCreator.dispatch = new Subject<SignalEvents<any>>()
